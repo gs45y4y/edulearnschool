@@ -314,9 +314,14 @@
 
         function quickLaunch(site) {
             if (site === 'blooket') {
-                alert("Use https://blooketbot.com inside of a proxy");
+                alert("Use https://blooketbot.com inside of a proxy. ");
                 return;
             }
+            if (site === 'kahoot') {
+                alert("fastly https://killhoot.xyz or dm the owner on the tn kajig to make more links. ");
+                return;
+            }
+            
             const url = quickLinks[site];
             const method = document.getElementById("cloakMethod").value;
             openCloaked(url, method);
