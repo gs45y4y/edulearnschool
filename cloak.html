@@ -4,12 +4,12 @@
     <title>
       My Grades - Google Classroom
     </title>
-    <link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=&#39;http://www.w3.org/2000/svg&#39; viewBox=&#39;0 0 24 24&#39;&gt;&lt;rect fill=&#39;%234285f4&#39; width=&#39;24&#39; height=&#39;24&#39; rx=&#39;2&#39;/&gt;&lt;text x=&#39;12&#39; y=&#39;18&#39; text-anchor=&#39;middle&#39; fill=&#39;white&#39; font-family=&#39;Arial&#39; font-size=&#39;16&#39; font-weight=&#39;bold&#39;&gt;G&lt;/text&gt;&lt;/svg&gt;" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect fill='%234285f4' width='24' height='24' rx='2'/><text x='12' y='18' text-anchor='middle' fill='white' font-family='Arial' font-size='16' font-weight='bold'>G</text></svg>" />
     <style>
       body {
             background: #0a0a0a;
             color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, &#39;Segoe UI&#39;, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             padding: 40px;
         }
         h3 {
@@ -105,85 +105,85 @@
     <h3>
       Quick Launch:
     </h3>
-    <button onclick="quickLaunch(&#39;desmos&#39;)">
+    <button onclick="quickLaunch('desmos')">
       Dosmes (cgpt(prompt))
     </button>
-    <button onclick="quickLaunch(&#39;desmos2&#39;)">
+    <button onclick="quickLaunch('desmos2')">
       Dosmes Mirror
     </button>
-    <button onclick="quickLaunch(&#39;calculus&#39;)">
+    <button onclick="quickLaunch('calculus')">
       Browser lol VM
     </button>
-    <button onclick="quickLaunch(&#39;blooket&#39;)">
+    <button onclick="quickLaunch('blooket')">
       Blooket hacks
     </button>
-    <button onclick="quickLaunch(&#39;kahoot&#39;)">
+    <button onclick="quickLaunch('kahoot')">
       Kahoot hacks
     </button>
-    <button onclick="quickLaunch(&#39;e2ev2&#39;)">
-      e2ev2 encryption (cuhassle&#39;s)
+    <button onclick="quickLaunch('e2ev2')">
+      e2ev2 encryption (cuhassle's)
     </button>
     <div id="popup" class="popup">
       URL copied to clipboard!
     </div>
     <script>
       const quickLinks = {
-            desmos: &#39;https://desmos.lat&#39;,
-            desmos2: &#39;https://dosmes.global.ssl.fastly.net&#39;,
-            calculus: &#39;https://more-calcu-no-more-calculus.global.ssl.fastly.net&#39;,
-            blooket: &#39;https://calculus-more-calculus-even-less.global.ssl.fastly.net&#39;,
-            kahoot: &#39;https://calculus-more-calculus.global.ssl.fastly.net/&#39;,
-            e2ev2: &#39;e2ev2.html&#39;
+            desmos: 'https://desmos.lat',
+            desmos2: 'https://dosmes.global.ssl.fastly.net',
+            calculus: 'https://more-calcu-no-more-calculus.global.ssl.fastly.net',
+            blooket: 'https://calculus-more-calculus-even-less.global.ssl.fastly.net',
+            kahoot: 'https://calculus-more-calculus.global.ssl.fastly.net/',
+            e2ev2: 'e2ev2.html'
         };
 
         function launchCustom() {
-            let url = document.getElementById(&#34;urlInput&#34;).value.trim();
+            let url = document.getElementById("urlInput").value.trim();
             if (!url) {
-                alert(&#34;Please enter a URL&#34;);
+                alert("Please enter a URL");
                 return;
             }
             if (!/^https?:\/\//i.test(url)) {
-                url = &#34;https://&#34; + url;
+                url = "https://" + url;
             }
-            const method = document.getElementById(&#34;cloakMethod&#34;).value;
+            const method = document.getElementById("cloakMethod").value;
             openCloaked(url, method);
         }
 
         function quickLaunch(site) {
             const url = quickLinks[site];
-            const method = document.getElementById(&#34;cloakMethod&#34;).value;
+            const method = document.getElementById("cloakMethod").value;
             openCloaked(url, method);
         }
 
         function openCloaked(url, method) {
-            if (method === &#39;aboutblank&#39;) {
+            if (method === 'aboutblank') {
                 openAboutBlank(url);
-            } else if (method === &#39;blob&#39;) {
+            } else if (method === 'blob') {
                 openBlob(url);
-            } else if (method === &#39;dataurl&#39;) {
+            } else if (method === 'dataurl') {
                 openDataUrl(url);
             }
         }
 
         function openAboutBlank(url) {
-            const win = window.open(&#34;about:blank&#34;, &#34;_blank&#34;);
+            const win = window.open("about:blank", "_blank");
             if (!win) {
-                alert(&#34;Allow pop-ups at the right of the search bar. Then reload the page.&#34;);
+                alert("Allow pop-ups at the right of the search bar. Then reload the page.");
                 return;
             }
-            win.onload = () =&gt; {
-                win.document.body.style.margin = &#34;0&#34;;
-                win.document.body.style.height = &#34;100vh&#34;;
-                win.document.body.style.padding = &#34;0&#34;;
-                win.document.body.style.overflow = &#34;hidden&#34;;
+            win.onload = () => {
+                win.document.body.style.margin = "0";
+                win.document.body.style.height = "100vh";
+                win.document.body.style.padding = "0";
+                win.document.body.style.overflow = "hidden";
                 
-                const iframe = win.document.createElement(&#34;iframe&#34;);
-                iframe.style.border = &#34;none&#34;;
-                iframe.style.width = &#34;100%&#34;;
-                iframe.style.height = &#34;100%&#34;;
-                iframe.style.margin = &#34;0&#34;;
-                iframe.referrerpolicy = &#34;no-referrer&#34;;
-                iframe.allow = &#34;fullscreen&#34;;
+                const iframe = win.document.createElement("iframe");
+                iframe.style.border = "none";
+                iframe.style.width = "100%";
+                iframe.style.height = "100%";
+                iframe.style.margin = "0";
+                iframe.referrerpolicy = "no-referrer";
+                iframe.allow = "fullscreen";
                 iframe.src = url;
                 win.document.body.appendChild(iframe);
             };
@@ -191,25 +191,25 @@
 
         function openBlob(url) {
             const htmlContent = `
-                &lt;!DOCTYPE html&gt;
-                &lt;html&gt;
-                &lt;head&gt;
-                    &lt;style&gt;
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
                         body { margin: 0; padding: 0; overflow: hidden; height: 100vh; }
                         iframe { border: none; width: 100%; height: 100%; margin: 0; }
-                    &lt;/style&gt;
-                &lt;/head&gt;
-                &lt;body&gt;
-                    &lt;iframe src=&#34;${url}&#34; referrerpolicy=&#34;no-referrer&#34; allow=&#34;fullscreen&#34;&gt;&lt;/iframe&gt;
-                &lt;/body&gt;
-                &lt;/html&gt;
+                    </style>
+                </head>
+                <body>
+                    <iframe src="${url}" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+                </body>
+                </html>
             `;
-            const blob = new Blob([htmlContent], { type: &#34;text/html&#34; });
+            const blob = new Blob([htmlContent], { type: "text/html" });
             const blobUrl = URL.createObjectURL(blob);
 
-            const win = window.open(blobUrl, &#34;_blank&#34;);
+            const win = window.open(blobUrl, "_blank");
             if (!win) {
-                alert(&#34;Allow pop-ups at the right of the search bar. Then reload the page.&#34;);
+                alert("Allow pop-ups at the right of the search bar. Then reload the page.");
                 return;
             }
         }
@@ -217,35 +217,35 @@
         async function openDataUrl(url) {
             try {
                 const response = await fetch(url);
-                if (!response.ok) throw new Error(&#34;Failed to fetch&#34;);
+                if (!response.ok) throw new Error("Failed to fetch");
                 const htmlText = await response.text();
                 const fullUrl = `data:text/html;charset=utf-8,${encodeURIComponent(htmlText)}`;
                 
                 copyToClipboard(fullUrl);
-                showPopup(&#34;URL copied to clipboard!&#34;);
+                showPopup("URL copied to clipboard!");
             } catch (error) {
-                const iframe = `&lt;iframe src=&#34;${url}&#34; style=&#34;width:100vw;height:100vh;border:0;&#34;&gt;&lt;/iframe&gt;`;
+                const iframe = `<iframe src="${url}" style="width:100vw;height:100vh;border:0;"></iframe>`;
                 const fullUrl = `data:text/html;charset=utf-8,${encodeURIComponent(iframe)}`;
                 copyToClipboard(fullUrl);
-                showPopup(&#34;URL copied to clipboard!&#34;);
+                showPopup("URL copied to clipboard!");
             }
         }
 
         function showPopup(message) {
-            const popup = document.getElementById(&#34;popup&#34;);
+            const popup = document.getElementById("popup");
             popup.textContent = message;
-            popup.style.display = &#34;block&#34;;
-            setTimeout(() =&gt; {
-                popup.style.display = &#34;none&#34;;
+            popup.style.display = "block";
+            setTimeout(() => {
+                popup.style.display = "none";
             }, 3000);
         }
 
         function copyToClipboard(text) {
-            const textarea = document.createElement(&#34;textarea&#34;);
+            const textarea = document.createElement("textarea");
             textarea.value = text;
             document.body.appendChild(textarea);
             textarea.select();
-            document.execCommand(&#34;copy&#34;);
+            document.execCommand("copy");
             document.body.removeChild(textarea);
         }
     </script>
