@@ -1,7 +1,8 @@
 # TO GITHUB:
-# PLEASE DONT DMCA THIS REPOSITORY, NO GAME ASSETS OR INTELLECTUAL PROPERTY IS HOSTED HERE, ALL FILES HERE ARE MADE, AND CODED BY, (genizy/breadbb)
+# PLEASE DONT DMCA THIS REPOSITORY, NO GAME ASSETS OR INTELLECTUAL PROPERTY IS HOSTED HERE, ALL FILES HERE ARE MADE, AND CODED BY, (genizy/breadbb).
+GN MATH YAP ->
 
-# <<<<<gn-math yap>>>>>
+
 gn-math is the best unblocked games site to play at school.
 ## features:
 - hundreds of links (in the discord)
