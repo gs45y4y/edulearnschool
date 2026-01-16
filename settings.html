@@ -1,1 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background: #0d1117;
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #58a6ff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .setting-item {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s;
+        }
+
+        .setting-item:hover {
+            border-color: #58a6ff;
+        }
+
+        .setting-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .setting-title {
+            color: #c9d1d9;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .setting-description {
+            color: #8b949e;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 13px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active {
+            background: #238636;
+            border-color: #238636;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: #c9d1d9;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(22px);
+        }
+
+        .status-text {
+            font-size: 0.75rem;
+            color: #8b949e;
+            margin-top: 0.5rem;
+        }
+
+        .status-text.enabled {
+            color: #238636;
+        }
+
+        .reset-button {
+            width: 100%;
+            padding: 0.85rem;
+            background: #21262d;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #c9d1d9;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .reset-button:hover {
+            background: #30363d;
+            border-color: #58a6ff;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.3rem;
+            }
+
+            .setting-item {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Settings</h1>
+
+        <div class="setting-item">
+            <div class="setting-header">
+                <div class="setting-title">Tab Click-Off Close</div>
+                <div class="toggle-switch" id="clickoffToggle" onclick="toggleSetting('clickoff')">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="setting-description">
+                Automatically close the iframe when you switch tabs or click away from the window. Helps quickly hide content when needed.
+            </div>
+            <div class="status-text" id="clickoffStatus">Currently disabled</div>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-header">
+                <div class="setting-title">Exit Confirmation</div>
+                <div class="toggle-switch" id="exitconfirmToggle" onclick="toggleSetting('exitconfirm')">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="setting-description">
+                Show a confirmation dialog before closing or leaving the page. Prevents accidental closures by teachers or others.
+            </div>
+            <div class="status-text" id="exitconfirmStatus">Currently disabled</div>
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-header">
+                <div class="setting-title">Auto about:blank Launch</div>
+                <div class="toggle-switch" id="autolaunchToggle" onclick="toggleSetting('autolaunch')">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="setting-description">
+                Automatically open the site in an about:blank window whenever you visit. Provides instant cloaking on page load.
+            </div>
+            <div class="status-text" id="autolaunchStatus">Currently disabled</div>
+        </div>
+
+        <button class="reset-button" onclick="resetSettings()">Reset All Settings</button>
+    </div>
+
+    <script>
+        // Load settings from localStorage
+        function loadSettings() {
+            const clickoff = localStorage.getItem('setting_clickoff') === 'true';
+            const exitconfirm = localStorage.getItem('setting_exitconfirm') === 'true';
+            const autolaunch = localStorage.getItem('setting_autolaunch') === 'true';
+
+            updateToggle('clickoff', clickoff);
+            updateToggle('exitconfirm', exitconfirm);
+            updateToggle('autolaunch', autolaunch);
+
+            // Apply click-off functionality
+            if (clickoff) {
+                enableClickOff();
+            }
+
+            // Apply exit confirmation
+            if (exitconfirm) {
+                enableExitConfirm();
+            }
+        }
+
+        function toggleSetting(setting) {
+            const currentValue = localStorage.getItem(`setting_${setting}`) === 'true';
+            const newValue = !currentValue;
+            
+            localStorage.setItem(`setting_${setting}`, newValue);
+            updateToggle(setting, newValue);
+
+            // Apply settings immediately
+            if (setting === 'clickoff') {
+                if (newValue) {
+                    enableClickOff();
+                } else {
+                    disableClickOff();
+                }
+            } else if (setting === 'exitconfirm') {
+                if (newValue) {
+                    enableExitConfirm();
+                } else {
+                    disableExitConfirm();
+                }
+            }
+
+            // Notify parent window if settings changed
+            if (window.parent !== window) {
+                window.parent.postMessage({ type: 'settingsChanged', setting, value: newValue }, '*');
+            }
+        }
+
+        function updateToggle(setting, isActive) {
+            const toggle = document.getElementById(`${setting}Toggle`);
+            const status = document.getElementById(`${setting}Status`);
+
+            if (isActive) {
+                toggle.classList.add('active');
+                status.textContent = 'Currently enabled';
+                status.classList.add('enabled');
+            } else {
+                toggle.classList.remove('active');
+                status.textContent = 'Currently disabled';
+                status.classList.remove('enabled');
+            }
+        }
+
+        function resetSettings() {
+            if (confirm('Are you sure you want to reset all settings to default?')) {
+                localStorage.removeItem('setting_clickoff');
+                localStorage.removeItem('setting_exitconfirm');
+                localStorage.removeItem('setting_autolaunch');
+                
+                updateToggle('clickoff', false);
+                updateToggle('exitconfirm', false);
+                updateToggle('autolaunch', false);
+
+                disableClickOff();
+                disableExitConfirm();
+
+                // Notify parent
+                if (window.parent !== window) {
+                    window.parent.postMessage({ type: 'settingsReset' }, '*');
+                }
+            }
+        }
+
+        // Click-off functionality
+        let clickOffHandler = null;
+        let visibilityChangeHandler = null;
+
+        function enableClickOff() {
+            // Close when tab loses focus
+            visibilityChangeHandler = () => {
+                if (document.hidden) {
+                    if (window.parent !== window) {
+                        window.parent.postMessage({ type: 'closeIframe' }, '*');
+                    } else {
+                        window.close();
+                    }
+                }
+            };
+            document.addEventListener('visibilitychange', visibilityChangeHandler);
+
+            // Close when window loses focus
+            clickOffHandler = () => {
+                if (window.parent !== window) {
+                    window.parent.postMessage({ type: 'closeIframe' }, '*');
+                } else {
+                    window.close();
+                }
+            };
+            window.addEventListener('blur', clickOffHandler);
+        }
+
+        function disableClickOff() {
+            if (visibilityChangeHandler) {
+                document.removeEventListener('visibilitychange', visibilityChangeHandler);
+            }
+            if (clickOffHandler) {
+                window.removeEventListener('blur', clickOffHandler);
+            }
+        }
+
+        // Exit confirmation functionality
+        let exitConfirmHandler = null;
+
+        function enableExitConfirm() {
+            exitConfirmHandler = (e) => {
+                e.preventDefault();
+                e.returnValue = '';
+                return '';
+            };
+            window.addEventListener('beforeunload', exitConfirmHandler);
+        }
+
+        function disableExitConfirm() {
+            if (exitConfirmHandler) {
+                window.removeEventListener('beforeunload', exitConfirmHandler);
+            }
+        }
+
+        // Initialize settings on load
+        loadSettings();
+
+        // Auto-launch check (should be in main page, but we set the flag here)
+        // The main page will check this setting and auto-launch if needed
+    </script>
+</body>
+</html>
