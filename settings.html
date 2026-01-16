@@ -143,19 +143,6 @@
 
         <div class="setting-item">
             <div class="setting-header">
-                <div class="setting-title">Tab Click-Off Close</div>
-                <div class="toggle-switch" id="clickoffToggle" onclick="toggleSetting('clickoff')">
-                    <div class="toggle-slider"></div>
-                </div>
-            </div>
-            <div class="setting-description">
-                Automatically close the iframe when you switch tabs or click away from the window. Helps quickly hide content when needed.
-            </div>
-            <div class="status-text" id="clickoffStatus">Currently disabled</div>
-        </div>
-
-        <div class="setting-item">
-            <div class="setting-header">
                 <div class="setting-title">Exit Confirmation</div>
                 <div class="toggle-switch" id="exitconfirmToggle" onclick="toggleSetting('exitconfirm')">
                     <div class="toggle-slider"></div>
@@ -169,61 +156,119 @@
 
         <div class="setting-item">
             <div class="setting-header">
-                <div class="setting-title">Auto about:blank Launch</div>
-                <div class="toggle-switch" id="autolaunchToggle" onclick="toggleSetting('autolaunch')">
+                <div class="setting-title">Panic Key</div>
+                <div class="toggle-switch" id="panickeyToggle" onclick="toggleSetting('panickey')">
                     <div class="toggle-slider"></div>
                 </div>
             </div>
             <div class="setting-description">
-                Automatically open the site in an about:blank window whenever you visit. Provides instant cloaking on page load.
+                Press the Escape key to instantly close the window and redirect to Google. Quick emergency exit when needed.
             </div>
-            <div class="status-text" id="autolaunchStatus">Currently disabled</div>
+            <div class="status-text" id="panickeyStatus">Currently disabled</div>
         </div>
 
         <button class="reset-button" onclick="resetSettings()">Reset All Settings</button>
     </div>
 
     <script>
-        // Load settings from localStorage
-        function loadSettings() {
-            const clickoff = localStorage.getItem('setting_clickoff') === 'true';
-            const exitconfirm = localStorage.getItem('setting_exitconfirm') === 'true';
-            const autolaunch = localStorage.getItem('setting_autolaunch') === 'true';
+        // IndexedDB setup
+        let db;
+        const DB_NAME = 'SettingsDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'settings';
 
-            updateToggle('clickoff', clickoff);
-            updateToggle('exitconfirm', exitconfirm);
-            updateToggle('autolaunch', autolaunch);
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+                
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'key' });
+                    }
+                };
+            });
+        }
 
-            // Apply click-off functionality
-            if (clickoff) {
-                enableClickOff();
-            }
+        function saveSetting(key, value) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.put({ key, value });
+                
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
 
-            // Apply exit confirmation
-            if (exitconfirm) {
+        function getSetting(key) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.get(key);
+                
+                request.onsuccess = () => {
+                    resolve(request.result ? request.result.value : null);
+                };
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        function deleteSetting(key) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.delete(key);
+                
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // Load settings from IndexedDB
+        async function loadSettings() {
+            await initDB();
+            
+            const exitconfirm = await getSetting('setting_exitconfirm');
+            const panickey = await getSetting('setting_panickey');
+
+            updateToggle('exitconfirm', exitconfirm === true);
+            updateToggle('panickey', panickey === true);
+
+            // Apply settings on load
+            if (exitconfirm === true) {
                 enableExitConfirm();
+            }
+            if (panickey === true) {
+                enablePanicKey();
             }
         }
 
-        function toggleSetting(setting) {
-            const currentValue = localStorage.getItem(`setting_${setting}`) === 'true';
-            const newValue = !currentValue;
+        async function toggleSetting(setting) {
+            const currentValue = await getSetting(`setting_${setting}`);
+            const newValue = currentValue !== true;
             
-            localStorage.setItem(`setting_${setting}`, newValue);
+            await saveSetting(`setting_${setting}`, newValue);
             updateToggle(setting, newValue);
 
             // Apply settings immediately
-            if (setting === 'clickoff') {
-                if (newValue) {
-                    enableClickOff();
-                } else {
-                    disableClickOff();
-                }
-            } else if (setting === 'exitconfirm') {
+            if (setting === 'exitconfirm') {
                 if (newValue) {
                     enableExitConfirm();
                 } else {
                     disableExitConfirm();
+                }
+            } else if (setting === 'panickey') {
+                if (newValue) {
+                    enablePanicKey();
+                } else {
+                    disablePanicKey();
                 }
             }
 
@@ -248,18 +293,17 @@
             }
         }
 
-        function resetSettings() {
+        async function resetSettings() {
             if (confirm('Are you sure you want to reset all settings to default?')) {
-                localStorage.removeItem('setting_clickoff');
-                localStorage.removeItem('setting_exitconfirm');
-                localStorage.removeItem('setting_autolaunch');
+                await deleteSetting('setting_exitconfirm');
+                await deleteSetting('setting_panickey');
                 
-                updateToggle('clickoff', false);
                 updateToggle('exitconfirm', false);
-                updateToggle('autolaunch', false);
+                updateToggle('panickey', false);
 
-                disableClickOff();
+                // Disable features
                 disableExitConfirm();
+                disablePanicKey();
 
                 // Notify parent
                 if (window.parent !== window) {
@@ -268,19 +312,7 @@
             }
         }
 
-        // Click-off functionality
-        let clickOffHandler = null;
-        let visibilityChangeHandler = null;
-
-        function enableClickOff() {
-            // This just saves the setting - the actual click-off is handled by the parent window
-            // No need to implement here since this is inside an iframe
-        }
-
-        function disableClickOff() {
-            // This just saves the setting - the actual click-off is handled by the parent window
-            // No need to implement here since this is inside an iframe
-        }
+        // Click-off functionality - REMOVED
 
         // Exit confirmation functionality
         let exitConfirmHandler = null;
@@ -300,11 +332,30 @@
             }
         }
 
+        // Panic key functionality
+        let panicKeyHandler = null;
+
+        function enablePanicKey() {
+            panicKeyHandler = (e) => {
+                if (e.key === 'Escape') {
+                    if (window.parent !== window) {
+                        window.parent.location.replace('https://www.google.com');
+                    } else {
+                        window.location.replace('https://www.google.com');
+                    }
+                }
+            };
+            document.addEventListener('keydown', panicKeyHandler);
+        }
+
+        function disablePanicKey() {
+            if (panicKeyHandler) {
+                document.removeEventListener('keydown', panicKeyHandler);
+            }
+        }
+
         // Initialize settings on load
         loadSettings();
-
-        // Auto-launch check (should be in main page, but we set the flag here)
-        // The main page will check this setting and auto-launch if needed
     </script>
 </body>
 </html>
