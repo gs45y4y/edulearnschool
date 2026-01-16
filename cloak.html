@@ -432,7 +432,9 @@
         window.addEventListener('load', () => {
             if (localStorage.getItem('setting_autolaunch') === 'true' && !sessionStorage.getItem('autoLaunched')) {
                 sessionStorage.setItem('autoLaunched', 'true');
-                const currentUrl = window.location.href;
+                
+                // Get the base URL without any hash or query params
+                const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/index.html');
                 
                 const win = window.open("about:blank", "_blank");
                 if (win) {
@@ -446,7 +448,7 @@
                             </style>
                         </head>
                         <body>
-                            <iframe src="${currentUrl}" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+                            <iframe src="${baseUrl}" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
                         </body>
                         </html>
                     `);
