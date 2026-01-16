@@ -355,6 +355,44 @@
     <div id="popup" class="popup">URL copied to clipboard!</div>
 
     <script>
+        // IndexedDB setup
+        let db;
+        const DB_NAME = 'SettingsDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'settings';
+
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+                
+                request.onupgradeneeded = (event) => {
+                    db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'key' });
+                    }
+                };
+            });
+        }
+
+        function getSetting(key) {
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.get(key);
+                
+                request.onsuccess = () => {
+                    resolve(request.result ? request.result.value : null);
+                };
+                request.onerror = () => reject(request.error);
+            });
+        }
+
         // Listen for messages from settings iframe
         window.addEventListener('message', (event) => {
             if (event.data.type === 'settingsChanged') {
@@ -421,20 +459,30 @@
         }
 
         // Apply settings on page load
-        if (localStorage.getItem('setting_clickoff') === 'true') {
-            enableMainClickOff();
-        }
-        if (localStorage.getItem('setting_exitconfirm') === 'true') {
-            enableMainExitConfirm();
-        }
+        async function applyStoredSettings() {
+            await initDB();
+            
+            const clickoff = await getSetting('setting_clickoff');
+            const exitconfirm = await getSetting('setting_exitconfirm');
+            const autolaunch = await getSetting('setting_autolaunch');
+            
+            if (clickoff === true) {
+                enableMainClickOff();
+            }
+            if (exitconfirm === true) {
+                enableMainExitConfirm();
+            }
 
-        // Check for auto-launch setting - must happen after page load
-        window.addEventListener('load', () => {
-            if (localStorage.getItem('setting_autolaunch') === 'true' && !sessionStorage.getItem('autoLaunched')) {
+            // Check for auto-launch - only if not already launched
+            if (autolaunch === true && !sessionStorage.getItem('autoLaunched')) {
                 sessionStorage.setItem('autoLaunched', 'true');
                 
-                // Get the base URL without any hash or query params
-                const baseUrl = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/index.html');
+                // Get the base URL and construct index.html path
+                const origin = window.location.origin;
+                const pathParts = window.location.pathname.split('/');
+                pathParts.pop(); // Remove current file
+                const basePath = pathParts.join('/');
+                const indexUrl = origin + basePath + '/index.html';
                 
                 const win = window.open("about:blank", "_blank");
                 if (win) {
@@ -448,15 +496,22 @@
                             </style>
                         </head>
                         <body>
-                            <iframe src="${baseUrl}" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
+                            <iframe src="${indexUrl}" referrerpolicy="no-referrer" allow="fullscreen"></iframe>
                         </body>
                         </html>
                     `);
                     win.document.close();
-                    window.location.replace("https://www.google.com");
+                    
+                    // Replace current page with Google
+                    setTimeout(() => {
+                        window.location.replace("https://www.google.com");
+                    }, 100);
                 }
             }
-        });
+        }
+
+        // Initialize on load
+        applyStoredSettings();
 
         const canvas = document.getElementById('particles-canvas');
         const ctx = canvas.getContext('2d');
