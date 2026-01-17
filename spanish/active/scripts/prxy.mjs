@@ -1,6 +1,6 @@
 import { registerSW } from "./spanish/active/prxy/register-sw.mjs";
 import * as BareMux from "./spanish/active/prxy/baremux/index.mjs";
-import { getFavicon, rAlert } from "./utils.mjs";
+import { getFavicon, rAlert } from "./spanish/active/scripts/utils.mjs";
 
 const connection = new BareMux.BareMuxConnection("./spanish/active/prxy/baremux/worker.js");
 
