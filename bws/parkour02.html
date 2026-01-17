@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>
+      Unity Web Player | Parkore02
+    </title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
+    <link rel="stylesheet" href="TemplateData/style.css" />
+  </head>
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width="960" height="600" tabindex="-1">
+      </canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo">
+        </div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full">
+          </div>
+        </div>
+      </div>
+      <div id="unity-warning">
+      </div>
+    </div>
+    <script>
+      var canvas = document.querySelector(&#34;#unity-canvas&#34;);
+
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type==&#39;error&#39;.
+      // If type==&#39;warning&#39;, a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        var warningBanner = document.querySelector(&#34;#unity-warning&#34;);
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? &#39;block&#39; : &#39;none&#39;;
+        }
+        var div = document.createElement(&#39;div&#39;);
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == &#39;error&#39;) div.style = &#39;background: red; padding: 10px;&#39;;
+        else {
+          if (type == &#39;warning&#39;) div.style = &#39;background: yellow; padding: 10px;&#39;;
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = &#34;Build&#34;;
+      var loaderUrl = buildUrl + &#34;/Parkor024.loader.js&#34;;
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + &#34;/Parkor024.data&#34;,
+        frameworkUrl: buildUrl + &#34;/Parkor024.framework.js&#34;,
+        codeUrl: buildUrl + &#34;/Parkor024.wasm&#34;,
+        streamingAssetsUrl: &#34;StreamingAssets&#34;,
+        companyName: &#34;DefaultCompany&#34;,
+        productName: &#34;Parkore02&#34;,
+        productVersion: &#34;1.0&#34;,
+        showBanner: unityShowBanner,
+      };
+
+      // By default, Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      // If you would like all file writes inside Unity Application.persistentDataPath
+      // directory to automatically persist so that the contents are remembered when
+      // the user revisits the site the next time, uncomment the following line:
+      // config.autoSyncPersistentDataPath = true;
+      // This autosyncing is currently not the default behavior to avoid regressing
+      // existing user projects that might rely on the earlier manual
+      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
+      // expected to change.
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        // Mobile device style: fill the whole browser client area with the game canvas:
+
+        var meta = document.createElement(&#39;meta&#39;);
+        meta.name = &#39;viewport&#39;;
+        meta.content = &#39;width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes&#39;;
+        document.getElementsByTagName(&#39;head&#39;)[0].appendChild(meta);
+        document.querySelector(&#34;#unity-container&#34;).className = &#34;unity-mobile&#34;;
+        canvas.className = &#34;unity-mobile&#34;;
+
+        // To lower canvas resolution on mobile devices to gain some
+        // performance, uncomment the following line:
+        // config.devicePixelRatio = 1;
+
+
+      } else {
+        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
+        canvas.style.width = &#34;960px&#34;;
+        canvas.style.height = &#34;600px&#34;;
+      }
+
+      document.querySelector(&#34;#unity-loading-bar&#34;).style.display = &#34;block&#34;;
+
+      var script = document.createElement(&#34;script&#34;);
+      script.src = loaderUrl;
+      script.onload = () =&gt; {
+        createUnityInstance(canvas, config, (progress) =&gt; {
+          document.querySelector(&#34;#unity-progress-bar-full&#34;).style.width = 100 * progress + &#34;%&#34;;
+              }).then((unityInstance) =&gt; {
+                document.querySelector(&#34;#unity-loading-bar&#34;).style.display = &#34;none&#34;;
+
+              }).catch((message) =&gt; {
+                alert(message);
+              });
+            };
+
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>

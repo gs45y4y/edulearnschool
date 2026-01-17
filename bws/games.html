@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <title>
+      Burning Water Studios
+    </title>
+    <meta charset="UTF8" />
+    <link rel="icon" type="image/png" href="/.netlify/images?url=_astro%2Fbwslogo.DgyTaovH.png&amp;fm=png&amp;w=378&amp;h=378&amp;dpl=6969b5264813766c10f33da3" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+    <meta name="keywords" content="Gamedev studio burning water burning-water-since-2025 bws" />
+    <style>
+      :root{--bg-color:#333;--secondary-contrast:#407080;--contrast-color:#00BFFF;--main-color:#FFA600;--secondary-color:#FF5500}*{margin:0;padding:0;box-sizing:border-box;font-family:Courier New,Courier,monospace}body{background-image:url(/assets/firebg.png);background-size:auto;background-position:bottom;background-repeat:no-repeat}.fire{background-color:var(--secondary-contrast);background-position-y:center;background-size:cover;color:var(--main-color)}.water{background-color:var(--bg-color)}footer{background-image:radial-gradient(#fff,#0000,#0000)}.index-people{display:flex;gap:10%;justify-content:center}.pfp{border-radius:100%;width:128px}.container{font-family:Arial,sans-serif;height:100vh;display:flex;justify-content:center;align-items:center;flex-direction:column}.content{text-align:center;display:block;margin:0 20px 20px;padding:30px;border-radius:8px;box-shadow:0 4px 6px #0000001a;height:auto}.content h1{font-size:4rem;margin-bottom:20px}nav ul{border-radius:50px;margin:10px 100px;background-color:var(--main-color);list-style-type:none;display:flex;justify-content:center;gap:40px}nav ul li{margin:15px 0}nav ul li a{color:var(--secondary-contrast);text-decoration:none;font-size:18px}nav ul li a:hover{color:var(--contrast-color)}footer{position:relative;width:100%;padding:20px 0;text-align:center}.fab{padding:10px 10px 10px 9px;font-size:30px;width:50px!important;text-decoration:none;border-radius:30px}.fab:hover{opacity:.7}.fa-youtube{background:#960000;color:#fff}.fa-discord{background:#7289da;color:#fff}.fa-itch-io{background:#ff2449;color:#fff}#gamecontainer{height:100%;border:none;width:100%;aspect-ratio:16 / 9;padding:0;border:2px}#gamediv{display:none;overflow:scroll;padding:0}.catalog-item{margin:5px;padding:10px;border-radius:5px;width:100%;display:flex;justify-content:center;cursor:pointer;gap:20px}.game-entryinfo{max-width:60%;display:grid;place-items:center}
+    </style>
+  </head>
+  <body class="water">
+    <nav>
+      <ul>
+        <li>
+          <a href="/">          Home
+</a>
+        </li>
+        <li>
+          <a href="/games/">          Our Projects
+</a>
+        </li>
+        <li>
+          <a href="/contact/">          Contact Us
+</a>
+        </li>
+      </ul>
+    </nav>
+    <div class="fire content" id="gamediv">
+      <iframe id="gamecontainer" allow="autoplay; camera; focus-without-user-activation *;" scrolling="no">
+      </iframe>
+      <div id="gamecontrols">
+      </div>
+    </div>
+    <main id="catalog" class="fire content">
+      <h1>
+        Burning Water Projects
+      </h1>
+      <div onclick="randomgame()" class="catalog-item water">
+        Pick One For Me
+      </div>
+      <div id="actualGameEntries">
+        <div class="catalog-item game-entry water" onclick="var gamecontainer = document.getElementById(&#34;gamecontainer&#34;);
+        gamecontainer.src = &#34;./totallyaccuratearmorsim/index.html&#34;;
+        document.getElementById(&#34;gamediv&#34;).style.display = &#34;block&#34;;
+        document.getElementById(&#34;gamediv&#34;).scrollIntoView();">
+          <img src="./totallyaccuratearmorsim/LogoTAAS.png" width="25%" />
+          <div class="game-entryinfo">
+            <h2>
+              Totally Accurate Armor Simulator
+            </h2>
+            <b>            Playable Here
+</b>
+            <p style="word-break:keep-all;">
+              A physics based battle simulator!
+            </p>
+          </div>
+        </div>
+        <div class="catalog-item game-entry water" onclick="var gamecontainer = document.getElementById(&#34;gamecontainer&#34;);
+        gamecontainer.src = &#34;./parkour02/index.html&#34;;
+        document.getElementById(&#34;gamediv&#34;).style.display = &#34;block&#34;;
+        document.getElementById(&#34;gamediv&#34;).scrollIntoView();">
+          <img src="./parkour02/Parkor02Logo.png" width="25%" />
+          <div class="game-entryinfo">
+            <h2>
+              Parkour02
+            </h2>
+            <b>            Playable Here
+</b>
+            <p style="word-break:keep-all;">
+              Parkour rage game, very hard.
+            </p>
+          </div>
+        </div>
+        <div class="catalog-item game-entry water" onclick="var gamecontainer = document.getElementById(&#34;gamecontainer&#34;);
+        gamecontainer.src = &#34;./fightingame/index.html&#34;;
+        document.getElementById(&#34;gamediv&#34;).style.display = &#34;block&#34;;
+        document.getElementById(&#34;gamediv&#34;).scrollIntoView();">
+          <div class="game-entryinfo">
+            <h2>
+              Otqzkg&#39;s New fighting game
+            </h2>
+            <b>            Playable Here
+</b>
+            <p style="word-break:keep-all;">
+              A platformer/metroidvania game! (He&#39;s working on a name for the game.)
+            </p>
+          </div>
+        </div>
+        <div class="catalog-item game-entry water" onclick="window.open(&#34;https://www.youtube.com/watch?v=dQw4w9WgXcQ&#34;, &#39;_blank&#39;).focus();">
+          <div class="game-entryinfo">
+            <h2>
+              The best game
+            </h2>
+            <b>            Click to view game listing
+</b>
+            <p style="word-break:keep-all;">
+              The best game that burning water has ever made
+            </p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      function randomgame() {
+            var gameListings = document.getElementById(&#34;actualGameEntries&#34;)?.children
+            if (gameListings) {
+                var i = Math.floor(Math.random() * (gameListings.length - 0)) + 0;
+                gameListings[i].onclick();
+            }
+        }
+    </script>
+    <footer>
+      <a class="fab fa-youtube" aria-label="Youtube Link" href="https://www.youtube.com/@burning-water-since-2025" target="_blank"></a>
+      <a class="fab fa-discord" aria-label="Discord Link" href="https://discord.com/invite/Eumx5ubugv" target="_blank"></a>
+      <a class="fab fa-itch-io" aria-label="Itch Link" href="https://burning-water-studios.itch.io/" target="_blank"></a>
+      <br />
+      <p>
+        ©Burning Water Studios 2025?
+      </p>
+      <p>
+        No AI.
+      </p>
+    </footer>
+  </body>
+</html>
