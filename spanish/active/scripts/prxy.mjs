@@ -1,8 +1,8 @@
-import { registerSW } from "./spanish/active/prxy/register-sw.mjs";
-import * as BareMux from "./spanish/active/prxy/baremux/index.mjs";
+import { registerSW } from "./active/prxy/register-sw.mjs";
+import * as BareMux from "./active/prxy/baremux/index.mjs";
 import { getFavicon, rAlert } from "./spanish/active/scripts/utils.mjs";
 
-const connection = new BareMux.BareMuxConnection("./spanish/active/prxy/baremux/worker.js");
+const connection = new BareMux.BareMuxConnection("./active/prxy/baremux/worker.js");
 
 export function search(input, template) {
   try {
@@ -28,14 +28,14 @@ export async function getUV(input) {
 
   let url = search(input, "https://html.duckduckgo.com/html?t=h_&q=%s");
 
-  let wispUrl = "wss://wisp.rhw.one/";
-  if ((await connection.getTransport()) !== "./spanish/active/prxy/epoxy/index.mjs") {
-    await connection.setTransport("./spanish/active/prxy/epoxy/index.mjs", [
+  let wispUrl = "wss://spanishislife.bostoncareercounselor.com/wisp/";
+  if ((await connection.getTransport()) !== "./active/prxy/epoxy/index.mjs") {
+    await connection.setTransport("./active/prxy/epoxy/index.mjs", [
       { wisp: wispUrl },
     ]);
   }
-  if ((await connection.getTransport()) !== "./spanish/active/prxy/libcurl/libcurl.mjs") {
-    await connection.setTransport("./spanish/active/prxy/libcurl/libcurl.mjs", [
+  if ((await connection.getTransport()) !== "./active/prxy/libcurl/libcurl.mjs") {
+    await connection.setTransport("./active/prxy/libcurl/libcurl.mjs", [
       { wisp: wispUrl },
     ]);
   }
