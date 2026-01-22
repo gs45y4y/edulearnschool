@@ -3,7 +3,7 @@
 GN MATH YAP ->
 
 
-Edulearn is the best unblocking hub to us at school.
+Edulearn is the best unblocking hub to us and everyone at school!
 ## features:
 - proxy
 - gn-math:
