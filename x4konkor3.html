@@ -1,0 +1,401 @@
+
+<!DOCTYPE html>
+<-- If  you can see this, Jayesh20 has a CRUSH on Livienne -->
+<html>
+
+<head>
+	<title>My Grades - Google Classroom</title>
+	<link rel="icon"
+		href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect fill='%234285f4' width='24' height='24' rx='2'/><text x='12' y='18' text-anchor='middle' fill='white' font-family='Arial' font-size='16' font-weight='bold'>G</text></svg>" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+	<style>
+		:root {
+			--void: #0b0c10;
+			--gold-dim: #8a6a28;
+			--gold-bright: #ffdb7d;
+			--godhome-bg: #2b2012;
+			--text-glow: 0 0 10px rgba(255, 219, 125, 0.6);
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			background: radial-gradient(circle at top center, #5e4a18 0%, #2b2012 40%, #050505 100%);
+			color: #dcdcdc;
+			font-family: 'Cinzel', serif;
+			min-height: 100vh;
+			overflow-x: hidden;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		#particles-canvas {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 0;
+			pointer-events: none;
+			opacity: 0.6;
+		}
+
+		.header-logo {
+			margin-top: 3rem;
+			text-align: center;
+			z-index: 2;
+			position: relative;
+		}
+
+		h1 {
+			font-size: 3.5rem;
+			color: #fff;
+			text-shadow: 0 0 20px #ffdb7d, 0 0 40px #ffa500;
+			font-weight: 400;
+			letter-spacing: 2px;
+			text-transform: uppercase;
+			border-bottom: 2px solid transparent;
+			border-image: linear-gradient(to right, transparent, #ffdb7d, transparent) 1;
+			padding-bottom: 10px;
+			margin-bottom: 20px;
+		}
+
+		.container {
+			width: 100%;
+			max-width: 1000px;
+			z-index: 2;
+			padding: 2rem;
+		}
+
+		.main-grid {
+			display: flex;
+			gap: 2rem;
+			align-items: flex-start;
+			margin-bottom: 1rem;
+		}
+
+		.cloak-section {
+			flex: 0 0 250px;
+			text-align: center;
+		}
+
+		.launch-section {
+			flex: 1;
+			text-align: center;
+		}
+
+		.btn-row-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+			gap: 12px;
+			width: 100%;
+			margin-top: 10px;
+		}
+
+		button {
+			background: rgba(94, 74, 24, 0.15);
+			border: 1px solid rgba(138, 106, 40, 0.4);
+			color: #af9660;
+			font-family: 'Cinzel', serif;
+			font-size: 0.85rem;
+			cursor: pointer;
+			padding: 15px 10px;
+			transition: all 0.3s ease;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			border-radius: 2px;
+		}
+
+		button:hover {
+			color: #fff;
+			border-color: #ffdb7d;
+			background: rgba(94, 74, 24, 0.3);
+			text-shadow: 0 0 10px #ffdb7d;
+			transform: translateY(-2px);
+		}
+
+		.section.full-width {
+			width: 100%;
+			margin-top: 1rem;
+			text-align: center;
+		}
+
+		.divider {
+			height: 1px;
+			background: linear-gradient(90deg, transparent, #8a6a28, transparent);
+			margin: 20px 0;
+			width: 100%;
+		}
+
+		h2 {
+			color: #af9660;
+			font-size: 1.1rem;
+			letter-spacing: 3px;
+			margin-bottom: 1.5rem;
+			text-transform: uppercase;
+		}
+
+		.input-group {
+			display: flex;
+			justify-content: center;
+			gap: 10px;
+			position: relative;
+		}
+
+		input,
+		select {
+			background: rgba(0, 0, 0, 0.4);
+			border: 1px solid #5e4a18;
+			color: #ffdb7d;
+			padding: 10px 20px;
+			font-family: 'Cinzel', serif;
+			font-size: 1rem;
+			outline: none;
+			transition: 0.3s;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+			width: 100%;
+		}
+
+		input:focus,
+		select:focus {
+			border-color: #ffdb7d;
+			box-shadow: 0 0 15px rgba(255, 219, 125, 0.2);
+		}
+
+		.btn-launch {
+			border: 1px solid #5e4a18;
+			background: rgba(94, 74, 24, 0.2);
+			margin-top: 15px;
+			color: #af9660;
+			width: auto;
+			padding: 10px 45px;
+		}
+
+		.icon-container {
+			position: fixed;
+			top: 2rem;
+			right: 2rem;
+			display: flex;
+			gap: 1rem;
+			z-index: 100;
+		}
+
+		.settings-icon,
+		.info-icon {
+			width: 45px;
+			height: 45px;
+			border: 1px solid #5e4a18;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: 0.3s;
+			background: rgba(0, 0, 0, 0.5);
+			cursor: pointer;
+		}
+
+		.settings-icon svg,
+		.info-icon svg {
+			fill: #8a6a28;
+			transition: 0.3s;
+		}
+
+		.settings-icon:hover,
+		.info-icon:hover {
+			border-color: #ffdb7d;
+			transform: rotate(180deg);
+		}
+
+		.settings-icon:hover svg,
+		.info-icon:hover svg {
+			fill: #ffdb7d;
+		}
+
+		.overlay {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.85);
+			z-index: 1500;
+		}
+
+		.overlay.active {
+			display: block;
+		}
+
+		#notification {
+			position: fixed;
+			bottom: 20px;
+			left: 50%;
+			transform: translateX(-50%);
+			background: #2b2012;
+			border: 1px solid #ffdb7d;
+			color: #ffdb7d;
+			padding: 10px 20px;
+			display: none;
+			z-index: 3000;
+		}
+
+		@media (max-width: 850px) {
+			.main-grid {
+				flex-direction: column;
+			}
+
+			.cloak-section {
+				flex: none;
+				width: 100%;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<canvas id="particles-canvas"></canvas>
+	<div class="overlay" onclick="closeAll()"></div>
+	<div id="notification">Link Copied</div>
+
+	<div class="icon-container">
+		<div class="info-icon" onclick="openCredits()" title="Credits">
+			<svg viewBox="0 0 24 24" width="24" height="24">
+				<path
+					d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" />
+			</svg>
+		</div>
+		<div class="settings-icon" onclick="openSettings()" title="Settings">
+			<svg viewBox="0 0 24 24" width="24" height="24">
+				<path
+					d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.11.2-.06.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.04-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z" />
+			</svg>
+		</div>
+	</div>
+
+	<div class="header-logo">
+		<h1>Edulearn | Tools</h1>
+	</div>
+
+	<div class="container">
+		<div class="main-grid">
+			<div class="cloak-section">
+				<h2>Cloak Type</h2>
+				<div class="input-group">
+					<select id="cloakMethod">
+            <option value="aboutblank">about:blank</option>
+            <option value="blob">blob:https</option>
+            <option value="dataurl">data:text</option>
+            <option value="none">No Cloak</option>
+          </select>
+				</div>
+			</div>
+
+			<div class="launch-section">
+				<h2>Quick Launch</h2>
+				<div class="btn-row-grid">
+					<button onclick="_0xLaunch('gn')">GN Math</button>
+					<button onclick="_0xLaunch('sc')">Scramjet</button>
+					<button onclick="_0xLaunch('sp')">UV</button>
+					<button onclick="_0xLaunch('dm')">Desmos AI</button>
+					<button onclick="_0xLaunch('d2')">Desmos Mirror</button>
+					<button onclick="_0xLaunch('bw')">Burning Water</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="divider"></div>
+
+		<div class="section full-width">
+			<h2>Custom URL</h2>
+			<div class="input-group">
+				<input id="urlInput" type="text" placeholder="https://example.com" />
+      </div>
+				<button class="btn-launch" onclick="launchCustom()">Launch Custom Site</button>
+				<p style="margin-top: 25px; color: #8a6a28; font-size: 0.8rem; letter-spacing: 2px;">Edulearn v1.4</p>
+			</div>
+		</div>
+
+		<script>
+			// Obfuscated data storage
+    const _0xObj = {
+      'gn': 'Li9tYXRoL2duLW1hdGguaHRtbA==',
+      'sc': 'Li9zY2llbmNlLw==',
+      'sp': 'Li9zcGFuaXNoL2FjdGl2ZS9pbmRleC5odG1s',
+      'dm': 'aHR0cHM6Ly9kZXNtb3MubGF0',
+      'd2': 'aHR0cHM6Ly9kb3NtZXMuZ2xvYmFsLnNzbC5mYXN0bHkubmV0',
+      'bw': 'Li9id3MvaW5kZXguaHRtbA=='
+    };
+
+   
+    function _0xD(s) { return atob(s); }
+
+
+    const _0xKey = atob('amF5ZXNobG92ZXNsaXZpZW5uZQ==');
+
+    function _0xLaunch(id) {
+      if (_0xObj[id]) {
+        _0xOpen(_0xD(_0xObj[id]), document.getElementById("cloakMethod").value);
+      }
+    }
+
+    function launchCustom() {
+      let u = document.getElementById("urlInput").value.trim();
+      if (!u) return;
+      if (!/^https?:\/\//i.test(u)) u = "https://" + u;
+      _0xOpen(u, document.getElementById("cloakMethod").value);
+    }
+
+    function _0xOpen(u, m) {
+      // Append the security token for Vercel Middleware
+      const sep = u.includes('?') ? '&' : '?';
+      const secureUrl = u + sep + 'token=' + _0xKey;
+
+      if (m === 'aboutblank') {
+        const win = window.open("about:blank", "_blank");
+        if (!win) return alert("Popups blocked.");
+        const ifr = win.document.createElement("iframe");
+        ifr.style = "position:fixed;top:0;left:0;bottom:0;right:0;width:100%;height:100%;border:none;margin:0;padding:0;overflow:hidden;z-index:999999;";
+        ifr.src = secureUrl;
+        win.document.body.appendChild(ifr);
+      } else if (m === 'blob') {
+        const html = `<html><body style='margin:0;height:100vh'><iframe src='${secureUrl}' style='border:0;width:100%;height:100%'></iframe></body></html>`;
+        window.open(URL.createObjectURL(new Blob([html], { type: "text/html" })), "_blank");
+      } else {
+        window.open(secureUrl, "_blank");
+      }
+    }
+
+    // Particle Background Logic
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    const particles = [];
+    for (let i = 0; i < 40; i++) {
+      particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, size: Math.random() * 2 + 0.5, speedY: Math.random() * -0.5 - 0.2, opacity: Math.random() * 0.5 + 0.2 });
+    }
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.fillStyle = `rgba(255, 219, 125, ${p.opacity})`;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+        p.y += p.speedY; if (p.y < 0) p.y = canvas.height;
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    function openSettings() { document.querySelector('.overlay').classList.add('active'); }
+    function openCredits() { document.querySelector('.overlay').classList.add('active'); }
+    function closeAll() { document.querySelector('.overlay').classList.remove('active'); }
+		</script>
+</body>
+
+</html>

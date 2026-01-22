@@ -3,12 +3,12 @@
 
 :root {
     /* Core colors (can be overridden by user settings) */
-    --bg: #0a0a0a;
-    --surface: #0f0f0f;
-    --surface-hover: #1a1a1a;
-    --surface-active: #252525;
-    --border: #1f1f1f;
-    --border-light: #2a2a2a;
+    --bg: #00eeff;
+    --surface: #00c2f7;
+    --surface-hover: #20e29e;
+    --surface-active: #a41e1e;
+    --border: #572def;
+    --border-light: #07a9cd;
 
     /* Text */
     --text: #e4e4e7;

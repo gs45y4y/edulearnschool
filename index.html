@@ -1,12 +1,11 @@
 <!DOCTYPE html>
+<!--Hi Jayesh, We know you have a CRUSH on Livienne. LOLLL-->
 <html lang="en">
   <head>
     <link rel="icon" type="image/favicon" href="favicon.ico">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      EduLearn K-12 | Premier Online Learning Platform
-    </title>
+    <title>EduLearn K-12 | Premier Online Learning Platform</title>
     <link href="styles.css" rel="stylesheet">
   </head>
   <body>
@@ -17,386 +16,275 @@
            <img src="edulearn.png" alt="Edulearn" width="60px" height="auto">
           </div>
           <div class="school-info">
-            <h1>
-              EDULEARN K-12
-            </h1>
-            <p>
-              Your comprehensive online learning platform for students in grades K-12
-            </p>
+            <h1>EDULEARN K-12</h1>
+            <p>Your comprehensive online learning platform for students in grades K-12</p>
           </div>
         </div>
         <div class="header-links">
-          <a href="./pages/district.html">          District
-</a>
-          <a href="./pages/portal.html">          IC Portal
-</a>
-          <a href="./pages/schools.html">          Our Schools
-</a>
-          <a href="./pages/translate.html">          Translate
-</a>
-          <div class="search-icon" onclick="toggleSearch()">
-            ⚲
-          </div>
+          <a href="#" data-page="0">District</a>
+          <a href="#" data-page="1">IC Portal</a>
+          <a href="#" data-page="2">Our Schools</a>
+          <a href="#" data-page="3">Translate</a>
+          <div class="search-icon" onclick="toggleSearch()">⚲</div>
         </div>
       </div>
     </header>
     <nav>
       <div class="nav-content">
-        <a href="./">        Home
-</a>
-        <a href="./pages/info.html">        School Info
-</a>
-        <a href="./pages/library.html">        Library
-</a>
-        <a href="./pages/athletics.html">        Athletics
-</a>
-        <a href="./pages/activities.html">        Student Activities
-</a>
-        <a href="./pages/services.html">        Online Services
-</a>
+        <a href="./">Home</a>
+        <a href="#" data-page="4">School Info</a>
+        <a href="#" data-page="5">Library</a>
+        <a href="#" data-page="6">Athletics</a>
+        <a href="#" data-page="7">Student Activities</a>
+        <a href="#" data-page="8">Online Services</a>
       </div>
     </nav>
     <div class="search-overlay" id="searchOverlay">
-      <span class="close-search" onclick="toggleSearch()">      ×
-</span>
+      <span class="close-search" onclick="toggleSearch()">×</span>
       <div class="search-box">
         <form autocomplete="off" onsubmit="return false;">
           <input type="search" id="searchInput" name="search_prevent_autofill" placeholder="Search for resources, courses, or information..." autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" role="presentation" />
         </form>
-        <button onclick="handleSearch()">
-          Search
-        </button>
+        <button onclick="handleSearch()">Search</button>
       </div>
     </div>
     <div class="iframe-overlay" id="iframeOverlay">
       <div class="iframe-header">
-        <h2>
-          EduLearn K-12 Resources
-        </h2>
-        <button class="close-iframe" onclick="closeIframe()">
-          Close
-        </button>
+        <h2>EduLearn K-12 Resources</h2>
+        <button class="close-iframe" onclick="closeIframe()">Close</button>
       </div>
-      <iframe id="contentFrame" class="iframe-content">
-      </iframe>
+      <iframe id="contentFrame" class="iframe-content"></iframe>
     </div>
     <main>
       <section class="hero">
-        <div class="hero-image">
-        </div>
+        <div class="hero-image"></div>
         <div class="hero-content">
-          <div class="hero-badge">
-            EduLearn
-          </div>
-          <h2 class="hero-title">
-            PREMIER K-12 LEARNING PLATFORM
-          </h2>
+          <div class="hero-badge">EduLearn</div>
+          <h2 class="hero-title">PREMIER K-12 LEARNING PLATFORM</h2>
         </div>
       </section>
       <div class="quicklinks">
         <div class="quicklinks-grid">
           <div class="quicklink-card">
             <div class="quicklink-content">
-              <div class="quicklink-title">
-                CareLine
-              </div>
-              <div class="quicklink-subtitle">
-                Reports
-              </div>
+              <div class="quicklink-title">CareLine</div>
+              <div class="quicklink-subtitle">Reports</div>
             </div>
           </div>
           <div class="quicklink-card">
             <div class="quicklink-content">
-              <div class="quicklink-title">
-                REGISTRATION
-              </div>
-              <div class="quicklink-subtitle">
-                WEBSTORE &amp; FORMS
-              </div>
+              <div class="quicklink-title">REGISTRATION</div>
+              <div class="quicklink-subtitle">WEBSTORE &amp; FORMS</div>
             </div>
           </div>
           <div class="quicklink-card">
             <div class="quicklink-content">
-              <div class="quicklink-title">
-                ABSENCE
-              </div>
-              <div class="quicklink-subtitle">
-                Reporting
-              </div>
+              <div class="quicklink-title">ABSENCE</div>
+              <div class="quicklink-subtitle">Reporting</div>
             </div>
           </div>
           <div class="quicklink-card">
             <div class="quicklink-content">
-              <div class="quicklink-title">
-                QUICKLINKS
-              </div>
-              <div class="quicklink-subtitle">
-                Where can I find...
-              </div>
+              <div class="quicklink-title">QUICKLINKS</div>
+              <div class="quicklink-subtitle">Where can I find...</div>
             </div>
           </div>
           <div class="quicklink-card">
             <div class="quicklink-content">
-              <div class="quicklink-title">
-                COMMUNITY
-              </div>
-              <div class="quicklink-subtitle">
-                For student issues
-              </div>
+              <div class="quicklink-title">COMMUNITY</div>
+              <div class="quicklink-subtitle">For student issues</div>
             </div>
           </div>
           <div class="quicklink-card">
             <div class="quicklink-content">
-              <div class="quicklink-title">
-                CALENDAR
-              </div>
-              <div class="quicklink-subtitle">
-                Sports, booster...
-              </div>
+              <div class="quicklink-title">CALENDAR</div>
+              <div class="quicklink-subtitle">Sports, booster...</div>
             </div>
           </div>
         </div>
       </div>
       <div class="content-section">
-        <h2 class="section-title">
-          Academic Excellence
-        </h2>
+        <h2 class="section-title">Academic Excellence</h2>
         <div class="features-grid">
           <div class="feature-card">
-            <h3>
-              Comprehensive Curriculum
-            </h3>
-            <p>
-              Offering a wide range of courses including AP, honors, and career technical education programs designed to prepare students for college and career success.
-            </p>
+            <h3>Comprehensive Curriculum</h3>
+            <p>Offering a wide range of courses including AP, honors, and career technical education programs designed to prepare students for college and career success.</p>
           </div>
           <div class="feature-card">
-            <h3>
-              Award-Winning Programs
-            </h3>
-            <p>
-              Our academic teams, performing arts, and athletic programs have earned state and national recognition for excellence and achievement.
-            </p>
+            <h3>Award-Winning Programs</h3>
+            <p>Our academic teams, performing arts, and athletic programs have earned state and national recognition for excellence and achievement.</p>
           </div>
           <div class="feature-card">
-            <h3>
-              Dedicated Faculty
-            </h3>
-            <p>
-              Our experienced teachers are committed to providing personalized attention and fostering a supportive learning environment for every student.
-            </p>
+            <h3>Dedicated Faculty</h3>
+            <p>Our experienced teachers are committed to providing personalized attention and fostering a supportive learning environment for every student.</p>
           </div>
           <div class="feature-card">
-            <h3>
-              Modern Technology
-            </h3>
-            <p>
-              State-of-the-art computer labs, digital resources, and innovative learning tools to enhance the educational experience.
-            </p>
+            <h3>Modern Technology</h3>
+            <p>State-of-the-art computer labs, digital resources, and innovative learning tools to enhance the educational experience.</p>
           </div>
           <div class="feature-card">
-            <h3>
-              Student Support Services
-            </h3>
-            <p>
-              Comprehensive counseling, tutoring, and mental health resources to ensure every student has the support they need to thrive.
-            </p>
+            <h3>Student Support Services</h3>
+            <p>Comprehensive counseling, tutoring, and mental health resources to ensure every student has the support they need to thrive.</p>
           </div>
           <div class="feature-card">
-            <h3>
-              College Preparation
-            </h3>
-            <p>
-              Dedicated college counseling, SAT/ACT prep, application assistance, and partnerships with top universities nationwide.
-            </p>
+            <h3>College Preparation</h3>
+            <p>Dedicated college counseling, SAT/ACT prep, application assistance, and partnerships with top universities nationwide.</p>
           </div>
         </div>
       </div>
       <section class="testimonials">
         <div class="testimonials-content">
-          <h2 class="section-title">
-            What Our Community Says
-          </h2>
+          <h2 class="section-title">What Our Community Says</h2>
           <div class="testimonial-grid">
             <div class="testimonial-card">
               <div class="testimonial-header">
-                <div class="avatar">
-                  JM
-                </div>
+                <div class="avatar">JM</div>
                 <div class="testimonial-info">
-                  <h4>
-                    Jennifer Martinez
-                  </h4>
-                  <div class="stars">
-                    ★★★★★
-                  </div>
+                  <h4>Jennifer Martinez</h4>
+                  <div class="stars">★★★★★</div>
                 </div>
               </div>
-              <p class="testimonial-text">
-                &#34;EduLearn has provided my daughter with incredible opportunities. The teachers genuinely care about student success and the academic programs are outstanding.&#34;
-              </p>
+              <p class="testimonial-text">"EduLearn has provided my daughter with incredible opportunities. The teachers genuinely care about student success and the academic programs are outstanding."</p>
             </div>
             <div class="testimonial-card">
               <div class="testimonial-header">
-                <div class="avatar">
-                  RC
-                </div>
+                <div class="avatar">RC</div>
                 <div class="testimonial-info">
-                  <h4>
-                    Robert Chen
-                  </h4>
-                  <div class="stars">
-                    ★★★★★
-                  </div>
+                  <h4>Robert Chen</h4>
+                  <div class="stars">★★★★★</div>
                 </div>
               </div>
-              <p class="testimonial-text">
-                &#34;As a student here, I've been amazed by the variety of clubs, sports, and AP courses available. The school really prepares you for college and beyond.&#34;
-              </p>
+              <p class="testimonial-text">"As a student here, I've been amazed by the variety of clubs, sports, and AP courses available. The school really prepares you for college and beyond."</p>
             </div>
             <div class="testimonial-card">
               <div class="testimonial-header">
-                <div class="avatar">
-                  SP
-                </div>
+                <div class="avatar">SP</div>
                 <div class="testimonial-info">
-                  <h4>
-                    Sarah Patel
-                  </h4>
-                  <div class="stars">
-                    ★★★★★
-                  </div>
+                  <h4>Sarah Patel</h4>
+                  <div class="stars">★★★★★</div>
                 </div>
               </div>
-              <p class="testimonial-text">
-                &#34;The sense of community at EduLearn is remarkable. From the welcoming staff to the engaged parents, everyone works together to support our students.&#34;
-              </p>
+              <p class="testimonial-text">"The sense of community at EduLearn is remarkable. From the welcoming staff to the engaged parents, everyone works together to support our students."</p>
             </div>
             <div class="testimonial-card">
               <div class="testimonial-header">
-                <div class="avatar">
-                  MW
-                </div>
+                <div class="avatar">MW</div>
                 <div class="testimonial-info">
-                  <h4>
-                    Michael Wong
-                  </h4>
-                  <div class="stars">
-                    ★★★★★
-                  </div>
+                  <h4>Michael Wong</h4>
+                  <div class="stars">★★★★★</div>
                 </div>
               </div>
-              <p class="testimonial-text">
-                &#34;The robotics program and STEM opportunities here are exceptional. My son has developed skills and confidence that will serve him throughout his life.&#34;
-              </p>
+              <p class="testimonial-text">"The robotics program and STEM opportunities here are exceptional. My son has developed skills and confidence that will serve him throughout his life."</p>
             </div>
             <div class="testimonial-card">
               <div class="testimonial-header">
-                <div class="avatar">
-                  ET
-                </div>
+                <div class="avatar">ET</div>
                 <div class="testimonial-info">
-                  <h4>
-                    Emily Thompson
-                  </h4>
-                  <div class="stars">
-                    ★★★★★
-                  </div>
+                  <h4>Emily Thompson</h4>
+                  <div class="stars">★★★★★</div>
                 </div>
               </div>
-              <p class="testimonial-text">
-                &#34;The performing arts department is world-class. The productions and concerts showcase the incredible talent of our students and dedication of our teachers.&#34;
-              </p>
+              <p class="testimonial-text">"The performing arts department is world-class. The productions and concerts showcase the incredible talent of our students and dedication of our teachers."</p>
             </div>
             <div class="testimonial-card">
               <div class="testimonial-header">
-                <div class="avatar">
-                  DK
-                </div>
+                <div class="avatar">DK</div>
                 <div class="testimonial-info">
-                  <h4>
-                    David Kim
-                  </h4>
-                  <div class="stars">
-                    ★★★★★
-                  </div>
+                  <h4>David Kim</h4>
+                  <div class="stars">★★★★★</div>
                 </div>
               </div>
-              <p class="testimonial-text">
-                &#34;EduLearn prepared me perfectly for college. The rigorous coursework and supportive environment gave me the skills and confidence I needed to succeed.&#34;
-              </p>
+              <p class="testimonial-text">"EduLearn prepared me perfectly for college. The rigorous coursework and supportive environment gave me the skills and confidence I needed to succeed."</p>
             </div>
           </div>
         </div>
       </section>
     </main>
     <footer>
-      <p>
-        © 2025 EduLearn K-12. All Rights Reserved.
-      </p>
-      <p>
-        Premier Online Learning | Privacy Policy | Terms of Service
-      </p>
+      <p>© 2025 EduLearn K-12. All Rights Reserved.</p>
+      <p>Premier Online Learning | Privacy Policy | Terms of Service</p>
     </footer>
     <script>
+      const _0xp = [
+        'Li9wYWdlcy9kaXN0cmljdC5odG1s',
+        'Li9wYWdlcy9wb3J0YWwuaHRtbA==',
+        'Li9wYWdlcy9zY2hvb2xzLmh0bWw=',
+        'Li9wYWdlcy90cmFuc2xhdGUuaHRtbA==',
+        'Li9wYWdlcy9pbmZvLmh0bWw=',
+        'Li9wYWdlcy9saWJyYXJ5Lmh0bWw=',
+        'Li9wYWdlcy9hdGhsZXRpY3MuaHRtbA==',
+        'Li9wYWdlcy9hY3Rpdml0aWVzLmh0bWw=',
+        'Li9wYWdlcy9zZXJ2aWNlcy5odG1s'
+      ];
+      
+      const _0x4a2b = atob('eDRrb25rb3IzLmh0bWw=');
+      const _0x7f1c = atob('dmliZWNvZGVk');
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('a[data-page]').forEach(link => {
+          const idx = parseInt(link.getAttribute('data-page'));
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = atob(_0xp[idx]);
+          });
+        });
+      });
+      
       function toggleSearch() {
-            const overlay = document.getElementById('searchOverlay');
-            const input = document.getElementById('searchInput');
-            
-            if (overlay.classList.contains('active')) {
-                // Closing - clear and reset
-                input.value = '';
-                input.blur();
-                overlay.classList.remove('active');
-            } else {
-                // Opening - reset name and clear
-                overlay.classList.add('active');
-                input.setAttribute('name', 'search_' + Math.random().toString(36).substring(7));
-                input.setAttribute('autocomplete', 'off');
-                input.value = '';
-                setTimeout(() => input.focus(), 100);
-            }
+        const overlay = document.getElementById('searchOverlay');
+        const input = document.getElementById('searchInput');
+        
+        if (overlay.classList.contains('active')) {
+          input.value = '';
+          input.blur();
+          overlay.classList.remove('active');
+        } else {
+          overlay.classList.add('active');
+          input.setAttribute('name', 'search_' + Math.random().toString(36).substring(7));
+          input.setAttribute('autocomplete', 'off');
+          input.value = '';
+          setTimeout(() => input.focus(), 100);
         }
+      }
 
-        function handleSearch() {
-            const searchInput = document.getElementById('searchInput');
-            const searchTerm = searchInput.value.toLowerCase().trim();
-            
-            if (searchTerm === 'vibecoded') {
-                searchInput.value = '';
-                toggleSearch();
-                openIframe('cloak.html');
-            } else {
-                alert('No results found for &#34;' + searchTerm + '&#34;. Please try a different search term.');
-                searchInput.value = '';
-            }
+      function handleSearch() {
+        const searchInput = document.getElementById('searchInput');
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        
+        if (searchTerm === _0x7f1c) {
+          searchInput.value = '';
+          toggleSearch();
+          openIframe(_0x4a2b);
+        } else {
+          window.location.href = 'https://www.d11.org/search-results?q=' + encodeURIComponent(searchTerm);
         }
+      }
 
-        function openIframe(url) {
-            const overlay = document.getElementById('iframeOverlay');
-            const iframe = document.getElementById('contentFrame');
-            iframe.src = url;
-            overlay.classList.add('active');
+      function openIframe(url) {
+        const overlay = document.getElementById('iframeOverlay');
+        const iframe = document.getElementById('contentFrame');
+        iframe.src = url;
+        overlay.classList.add('active');
+      }
+
+      function closeIframe() {
+        const overlay = document.getElementById('iframeOverlay');
+        const iframe = document.getElementById('contentFrame');
+        overlay.classList.remove('active');
+        iframe.src = '';
+      }
+
+      document.getElementById('searchInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          handleSearch();
         }
+      });
 
-        function closeIframe() {
-            const overlay = document.getElementById('iframeOverlay');
-            const iframe = document.getElementById('contentFrame');
-            overlay.classList.remove('active');
-            iframe.src = '';
+      document.getElementById('searchOverlay').addEventListener('click', function(e) {
+        if (e.target === this) {
+          toggleSearch();
         }
-
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                handleSearch();
-            }
-        });
-
-        document.getElementById('searchOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                toggleSearch();
-            }
-        });
+      });
     </script>
   </body>
 </html>
