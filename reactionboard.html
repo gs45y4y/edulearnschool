@@ -32,34 +32,11 @@
             margin-bottom: 2rem;
         }
 
-        .reaction-section {
-            background: rgba(77, 166, 255, 0.1);
-            border: 3px solid #4da6ff;
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            min-height: 150px;
-        }
-
-        .reaction-section h2 {
-            color: #6fb4e8;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .reaction-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
         .board-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 1.5rem;
+            margin-bottom: 3rem;
         }
 
         .board-item {
@@ -87,6 +64,7 @@
             justify-content: center;
             margin-bottom: 1rem;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .image-container img {
@@ -147,38 +125,122 @@
             font-weight: bold;
         }
 
-        .reaction-item {
-            background: rgba(17, 24, 39, 0.9);
+        .reaction-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .reaction-section {
+            background: rgba(77, 166, 255, 0.1);
             border: 2px solid #4da6ff;
             border-radius: 0.5rem;
             padding: 0.75rem;
+            min-height: 100px;
+        }
+
+        .reaction-section h3 {
+            color: #6fb4e8;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .reaction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .reaction-item {
+            background: rgba(17, 24, 39, 0.9);
+            border: 2px solid #4da6ff;
+            border-radius: 0.25rem;
+            padding: 0.5rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.25rem;
+            cursor: pointer;
+        }
+
+        .reaction-item:hover {
+            transform: scale(1.05);
         }
 
         .reaction-item img {
             width: 100%;
-            height: 120px;
+            height: 60px;
             object-fit: cover;
-            border-radius: 0.5rem;
-            border: 2px solid #6fb4e8;
+            border-radius: 0.25rem;
+            border: 1px solid #6fb4e8;
         }
 
         .reaction-item-title {
             color: #e0f4ff;
-            font-size: 0.875rem;
+            font-size: 0.625rem;
             font-weight: bold;
             text-align: center;
         }
 
         .reaction-badge {
             background: #1a2d4d;
-            padding: 0.25rem 0.5rem;
+            padding: 0.125rem 0.25rem;
             border-radius: 0.25rem;
-            font-size: 0.75rem;
+            font-size: 0.625rem;
             border: 1px solid #6fb4e8;
+        }
+
+        /* Modal/Fullscreen Preview */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            cursor: pointer;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border: 4px solid #4da6ff;
+            border-radius: 0.5rem;
+            box-shadow: 0 0 50px rgba(77, 166, 255, 0.5);
+        }
+
+        .modal-title {
+            position: absolute;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #e0f4ff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 20px #4da6ff;
+            background: rgba(10, 22, 40, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: 2px solid #4da6ff;
+        }
+
+        h2 {
+            color: #6fb4e8;
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem 0;
         }
     </style>
 </head>
@@ -186,100 +248,98 @@
     <div class="container">
         <h1>Reaction Board</h1>
 
-        <!-- Skulled Items Section -->
-        <div class="reaction-section">
-            <h2>💀 Skulled</h2>
-            <div class="reaction-grid" id="skulledGrid">
-                <p class="placeholder-text">No skulled items yet...</p>
-            </div>
-        </div>
-
-        <!-- Sob Items Section -->
-        <div class="reaction-section">
-            <h2>😭 Sob</h2>
-            <div class="reaction-grid" id="sobGrid">
-                <p class="placeholder-text">No sob items yet...</p>
-            </div>
-        </div>
-
-        <!-- Rage Items Section -->
-        <div class="reaction-section">
-            <h2>😡 Rage</h2>
-            <div class="reaction-grid" id="rageGrid">
-                <p class="placeholder-text">No rage items yet...</p>
-            </div>
-        </div>
-
-        <!-- Fire Items Section -->
-        <div class="reaction-section">
-            <h2>🔥 Fire</h2>
-            <div class="reaction-grid" id="fireGrid">
-                <p class="placeholder-text">No fire items yet...</p>
-            </div>
-        </div>
-
-        <!-- 100 Items Section -->
-        <div class="reaction-section">
-            <h2>💯 100</h2>
-            <div class="reaction-grid" id="hundredGrid">
-                <p class="placeholder-text">No 100 items yet...</p>
-            </div>
-        </div>
-
-        <!-- Eyes Items Section -->
-        <div class="reaction-section">
-            <h2>👀 Eyes</h2>
-            <div class="reaction-grid" id="eyesGrid">
-                <p class="placeholder-text">No eyes items yet...</p>
-            </div>
-        </div>
-
-        <!-- Thinking Items Section -->
-        <div class="reaction-section">
-            <h2>🤔 Thinking</h2>
-            <div class="reaction-grid" id="thinkingGrid">
-                <p class="placeholder-text">No thinking items yet...</p>
-            </div>
-        </div>
-
-        <!-- Heart Items Section -->
-        <div class="reaction-section">
-            <h2>❤️ Heart</h2>
-            <div class="reaction-grid" id="heartGrid">
-                <p class="placeholder-text">No heart items yet...</p>
-            </div>
-        </div>
-
-        <!-- Laugh Items Section -->
-        <div class="reaction-section">
-            <h2>😂 Laugh</h2>
-            <div class="reaction-grid" id="laughGrid">
-                <p class="placeholder-text">No laugh items yet...</p>
-            </div>
-        </div>
-
-        <!-- Clown Items Section -->
-        <div class="reaction-section">
-            <h2>🤡 Clown</h2>
-            <div class="reaction-grid" id="clownGrid">
-                <p class="placeholder-text">No clown items yet...</p>
-            </div>
-        </div>
-
-        <h2 style="color: #6fb4e8; font-size: 1.5rem; margin: 2rem 0 1rem 0;">All Items</h2>
         <!-- Board Grid -->
         <div class="board-grid" id="boardGrid"></div>
+
+        <h2>Reactions</h2>
+        <!-- Reaction Sections -->
+        <div class="reaction-sections">
+            <div class="reaction-section">
+                <h3>💀 Skulled</h3>
+                <div class="reaction-grid" id="skulledGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+
+            <div class="reaction-section">
+                <h3>😭 Sob</h3>
+                <div class="reaction-grid" id="sobGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+
+            <div class="reaction-section">
+                <h3>😡 Rage</h3>
+                <div class="reaction-grid" id="rageGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+
+            <div class="reaction-section">
+                <h3>🔥 Fire</h3>
+                <div class="reaction-grid" id="fireGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+
+            <div class="reaction-section">
+                <h3>💯 100</h3>
+                <div class="reaction-grid" id="hundredGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+
+            <div class="reaction-section">
+                <h3>👀 Eyes</h3>
+                <div class="reaction-grid" id="eyesGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+
+            <div class="reaction-section">
+                <h3>🤔 Thinking</h3>
+                <div class="reaction-grid" id="thinkingGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+
+            <div class="reaction-section">
+                <h3>❤️ Heart</h3>
+                <div class="reaction-grid" id="heartGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+
+            <div class="reaction-section">
+                <h3>😂 Laugh</h3>
+                <div class="reaction-grid" id="laughGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+
+            <div class="reaction-section">
+                <h3>🤡 Clown</h3>
+                <div class="reaction-grid" id="clownGrid">
+                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for fullscreen preview -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <div class="modal-title" id="modalTitle"></div>
+        <img class="modal-content" id="modalImage">
     </div>
 
     <script>
         // TO ADD YOUR OWN IMAGES: Just add objects to this array with title and imageUrl
         let items = [
             { id: 1, title: "bro's gay", imageUrl: "./screenshot.png", reactions: {} },
-            { id: 2, title: "67 fish", imageUrl: "https://lh3.googleusercontent.com/chat_attachment/AP1Ws4tXBKKfGfYdYpnnvvUDObxBGNxSVvWZqxzF2njEUTC3NivK-8tg9959d_GlMZ421mvavO04sHd_wdlcIrpLWn7sB3kTH4DAtcczK_Xwc9AxF1snXG2w5fugfy1gunKW97yW_ewTPV32RWlWNcxIfLOWjt-aKuidm_HuDyN728XOAYD98U-UkSly3jo1Rchj6iGu8h04W0Iw8TgJRyZ0QU8JYH7_CJk5GqbkVDiShWXpbBwtp1xFbrsaMSJU8vTZ3X7h4sq5oIEFWjKf-gAjs-cyYIuc67WXxTA3uYGMk45RbPotJC2mB-sPcHiRJAeIoQc=w1366-h599-rw", reactions: {} },
-            { id: 3, title: "bro :sob:", imageUrl: "https://lh3.googleusercontent.com/chat_attachment/AP1Ws4v36zBVZtMwDF0qDnkSHldO7NqNkCFrTXBU6RVxOJTZTx-Sw7GvlolIGQbSUEcVk7BH-Pgq9Ico1sp9IdzsHLm14Kx7rUblsGvKW0ntUXFOqyZXl1vs5DIIF68YHW1y98TE2txAOfWOXhQbTHX657z8aWdCJ-L79I-F1I0UHS3JN_xMeWFK3i2K-3o65G3_3NcWdkvgJHZfXbdcOogRzXgIEVfkaJn9juX1-uqly1aKr1twKddjqug6iNvAWgqPaChHaldRTxmTbILfDTbErsP8X7ZUaFx1wWe4QN4Mg97IJ98NHa8fvbDp6f08h4cvnns=w1366-h599-rw", reactions: {} },
+            { id: 2, title: "67 fish", imageUrl: "https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEXyRABmGh9boX9RQsjV1QW9QOtOOY2506rZpSbWonMOef6AAEXtINyPgyX%2Fy0DDp7CojPqP%2BaUt0r8FlaRO5Obv5mCZzDB4x61citxEHvFsoS9eK1UYp69LsvB111Qc3xWgSqGmOoB8zMYr0Rj4Knit4eukacZdzI3mn%2BxPKCiB%2B%2FVzWDtD1FsGLH6yglBmP89IBQcMI3B5ljKmQByg0PQySWvFm9uAzriXvYkc9FGD0EOjhUGs%2FMEHV0i1QEcM7dansbvP4uNOzMZEwLUO1ARTZsECQQx4CHgiKJIBYMJ9kIMbwCicdCQJzll9%2FmcYlSGMcP451jJzEUUfbBqUnZG24ogULnx8w%2FLIv84lp5F%2FBDucI6KQ3gGVRd%2FkMtHtkaNrBA8Roc2QA9Sx6LDFK51apghSbGCD4K7izj3%2BemGJZxmCQ5w5pcSbxMxuVvh5iTBqLKuZkGo6XJraYfyhsPC8b8Z%2BswaUZCTjTqlgugcgyt2S3T%2FNrnbYLlYupHCz3wH9fxygGk35rfMUd4%2BjNG%2F2q3V6u64gMxF5LOKkhEou0E9wjM8ZzcrlRJw3A0LDfIWxr1%2F1w6jCLWnydk%2B4&allow_caching=true&sz=w1366-h599-rw&auditContext=forDisplay", reactions: {} },
+            { id: 3, title: "bro :sob:", imageUrl: "https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEVKCjYtgoyafnHxFnpIEuUMzvESoL7PTk7u19Jq%2BcQW7fbGIY1L4H%2BPmOkhVE2k%2FxqMJa7VwQBkX1DJesS%2F2l32IG4p0MnsB4Bk8n9X1k3muA04ggK7FTCILNnKzkfe8fd07eqxI4Yys%2B4zz4%2BzbeHnGowg1f7Rfg60XCgpQEk%2BujbkxjoEuKeKGul114z1p9gqleImpPt5wlhRCwqiOahgjLyJEkXFq2Msw7ZeLq3NmDtmUpuosRl0kIjTRmM%2FcBhHDVqWo%2BSFfMKKOxztuoVHLOQbzki4vYv36j5DQB4ant%2F1FJ%2FliR86DYbHqGvTiIdZdPgZI5kUvh8jE9pBoTA8eE42U5eJEbOEk%2FgtJlvk09QQQQPE3vq5ZKoj2HwHPTDi%2F1xVeYbOGQBOARU05zgkxkzd%2BEeLcIImxMsUrHFlPjJh8NDovYhAiFDkqNc%2BZUdMcIaa%2FhnbfnSUlvYjauGPkBr1A7txX6QiUpYzM7lFaGfksTs4D1g1qaurwkiwKvxhaXd%2BYhDMDcbVPYCw2L1RHdnOeE0mg4EX8i8u1f%2FhG0qMXH1QQkycGmuCPf2dLeDmwN0O7GZ%2FHH13skeDMVwqpWd0R5c1vTKKUBhWvwuK7SkyOQ%3D%3D&allow_caching=true&sz=w1366-h599-rw&auditContext=forDisplay", reactions: {} },
             { id: 4, title: "hell nah", imageUrl: "https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEVGYIZ%2FV6b0K6OAezgj61hXR74Dxdckn0z2hzLdfYFsgxrMAGCY76qItxUedPe3VZDdGG5%2FUMiCBgiXA5YVOO25HT%2BXnkvrEyUtllAUHEjiBGaRTuv02XSfs3ctPHJXC3NRMOAMFEHkdgCRKKC7H6NlY%2FwvXTEh36v%2F8iMK%2BRbaPSFjirbn50RwSyxYpJLs9Wg0RURZ4d7GugTAD766dla6ne1j8iPJkkcjhZ4rNBVbtv6Br3Svem6ThzFJPqCWyXYx20evnl31v56k%2BYZsYwLYalFx51QCrDIm0WZmsDHKJoAf%2BXJcelpJe%2FvV4FxIiOo0Xt05Gw8NxLkYRuoYW57dHnkrro6Kq%2F%2FaCrdUg7gLTFiEqXGGqksvNXxdSr4ZsYAONt1bPiixi4Nm%2BnhHVWQlUz%2BqnnAkdkR%2Fxpp6CJUklL10dT7Gx44svmQ4VDNqZzO8sn2wQQWWJWf3nr81VLdK56JzkKxJzIEztHDvCBMBiwZbuv35yN%2F4OXUZdQsC7wTCqII31TenKXfow1TCxukpagaj%2BW3NX0NFQf5tlxdz8TtY8Nr9Q2P2QX5pS3wDWuyUWUU12aX4AdNQFQ%3D%3D&allow_caching=true&sz=w1366-h599-rw&auditContext=forDisplay", reactions: {} },
             { id: 5, title: "holy snitch..", imageUrl: "https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEUxNAnFnW6pSBEDn0i2c3LXj5otNK9xb05woFDJCLMMsZMDlWO%2BSWlknFNGzYMWbmbGsGV19uKD6u1kboh9vbV9sXrGBe500db%2BJ4eC%2FkG3SBix5wKitJVk1ypO9OXDA9wtVa9fNfTPhy%2BNMSoBDafAEyw%2Fh5BI1dzTl3k3VgdJS3Rvze1Evwq3OP8vkTGPCqXr%2F8s0CGq5A4ELzXp4%2F45EtgNZXoXze1Ge2WmU6Q0wEBa4mXs8jCkPljwKjMysZKgpkbjgsXUWsqMhKggwXuYvRf0DBnYzRzA3VQiijZ2QaZThaLm9%2F9SkL5Bm3DWmswGUWMagd3RfMw3Zg6MU6I%2BhgK71pH%2BGXFxIHPhnKqdMTXRdevRE8ObkT9yedVwr0NpYPimuVVEKvh2XykQgFaV8S2vGe3m7heaQKovOEnfUrl4cto3%2Bg3%2BYSxfwBx9s6WSe6o5PdoyRC7vNRcKrOct2Z2bPKBdIheipWUIBkXKCVMYgY9ZDcCbWDdc1yBwgbAASdeW%2FFfWovuRNkktq6Peivz2XIoXxLgAgEOM%2BGv0U6c9Tcp4B9xivnU5whWpzmS%2FJDDr0cMfJ0W8HyfH0&allow_caching=true&sz=w1366-h599-rw&auditContext=forDisplay", reactions: {} }
-            
         ];
 
         const emojis = ['💀', '😭', '😡', '🔥', '💯', '👀', '🤔', '❤️', '😂', '🤡'];
@@ -295,6 +355,21 @@
             '😂': 'laughGrid',
             '🤡': 'clownGrid'
         };
+
+        function openModal(imageUrl, title) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const modalTitle = document.getElementById('modalTitle');
+            
+            modal.classList.add('active');
+            modalImg.src = imageUrl;
+            modalTitle.textContent = title;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
 
         function sortItems() {
             return [...items].sort((a, b) => {
@@ -317,7 +392,7 @@
                 const reactions = item.reactions || {};
                 
                 div.innerHTML = `
-                    <div class="image-container">
+                    <div class="image-container" onclick="event.stopPropagation(); openModal('${item.imageUrl}', '${item.title}')">
                         ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.title}">` : `<div class="placeholder-text">No image</div>`}
                     </div>
                     <div class="item-title">${item.title}</div>
@@ -344,7 +419,7 @@
                 const reactedItems = items.filter(item => item.reactions[emoji]);
                 
                 if (reactedItems.length === 0) {
-                    grid.innerHTML = `<p class="placeholder-text">No ${emoji} items yet...</p>`;
+                    grid.innerHTML = `<p class="placeholder-text" style="font-size: 0.625rem;">None</p>`;
                     return;
                 }
 
@@ -352,6 +427,7 @@
                 reactedItems.forEach(item => {
                     const div = document.createElement('div');
                     div.className = 'reaction-item';
+                    div.onclick = () => openModal(item.imageUrl, item.title);
                     div.innerHTML = `
                         ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.title}">` : ''}
                         <div class="reaction-item-title">${item.title}</div>
