@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graphing Calculator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(to bottom, #0a1628, #1a2d4d);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #e0f4ff;
+            text-shadow: 0 0 20px #4da6ff;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 1024px) {
+            .grid {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+
+        .panel {
+            background: rgba(17, 24, 39, 0.8);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border: 2px solid #4da6ff;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            color: #6fb4e8;
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .calc-display {
+            background: #1f2937;
+            border: 2px solid #4da6ff;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            text-align: right;
+            font-size: 1.5rem;
+            font-family: monospace;
+            color: white;
+            min-height: 4rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .calc-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calc-btn {
+            background: #1a2d4d;
+            color: #e0f4ff;
+            border: 2px solid #6fb4e8;
+            padding: 1rem;
+            border-radius: 0.25rem;
+            font-size: 1.125rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calc-btn:hover {
+            filter: brightness(1.25);
+        }
+
+        .calc-btn.equals {
+            background: #4da6ff;
+        }
+
+        .calc-btn.clear {
+            background: #d64545;
+            border-color: #ff6b6b;
+            grid-column: span 2;
+        }
+
+        .calc-btn.back {
+            grid-column: span 2;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            color: #6fb4e8;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            background: #1f2937;
+            border: 2px solid #4da6ff;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            ring: 2px;
+            ring-color: #4da6ff;
+        }
+
+        .hint {
+            color: #9ca3af;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .error {
+            color: #f87171;
+            font-size: 0.875rem;
+        }
+
+        .range-inputs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .range-inputs {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        canvas {
+            width: 100%;
+            border: 4px solid #4da6ff;
+            border-radius: 0.5rem;
+            display: block;
+        }
+
+        .presets {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .preset-btn {
+            background: #4da6ff;
+            color: #0a1628;
+            border: 2px solid #6fb4e8;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            filter: brightness(1.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Graphing Calculator</h1>
+
+        <div class="grid">
+            <!-- Calculator Panel -->
+            <div class="panel">
+                <h2>Calculator</h2>
+                <div class="calc-display" id="calcDisplay">0</div>
+                <div class="calc-buttons">
+                    <button class="calc-btn" onclick="handleCalc('7')">7</button>
+                    <button class="calc-btn" onclick="handleCalc('8')">8</button>
+                    <button class="calc-btn" onclick="handleCalc('9')">9</button>
+                    <button class="calc-btn" onclick="handleCalc('/')">/</button>
+                    <button class="calc-btn" onclick="handleCalc('4')">4</button>
+                    <button class="calc-btn" onclick="handleCalc('5')">5</button>
+                    <button class="calc-btn" onclick="handleCalc('6')">6</button>
+                    <button class="calc-btn" onclick="handleCalc('*')">*</button>
+                    <button class="calc-btn" onclick="handleCalc('1')">1</button>
+                    <button class="calc-btn" onclick="handleCalc('2')">2</button>
+                    <button class="calc-btn" onclick="handleCalc('3')">3</button>
+                    <button class="calc-btn" onclick="handleCalc('-')">-</button>
+                    <button class="calc-btn" onclick="handleCalc('0')">0</button>
+                    <button class="calc-btn" onclick="handleCalc('.')">.</button>
+                    <button class="calc-btn equals" onclick="handleCalc('=')">=</button>
+                    <button class="calc-btn" onclick="handleCalc('+')">+</button>
+                    <button class="calc-btn clear" onclick="handleCalc('C')">Clear</button>
+                    <button class="calc-btn back" onclick="handleCalc('←')">←</button>
+                    <button class="calc-btn" onclick="handleCalc('(')">(</button>
+                    <button class="calc-btn" onclick="handleCalc(')')">)</button>
+                    <button class="calc-btn" onclick="handleCalc('^')">^</button>
+                    <button class="calc-btn" onclick="handleCalc('sqrt(')">√</button>
+                </div>
+            </div>
+
+            <!-- Graphing Panel -->
+            <div class="panel">
+                <h2>Function Grapher</h2>
+                
+                <div class="input-group">
+                    <label>Function f(x) = </label>
+                    <input type="text" id="expression" value="sin(x)" oninput="drawGraph()">
+                    <div class="hint">Try: sin(x), cos(x), tan(x), x^2, sqrt(x), abs(x), log(x), exp(x)</div>
+                </div>
+
+                <div id="error" class="error" style="display: none;"></div>
+
+                <div class="range-inputs">
+                    <div>
+                        <label>X Min</label>
+                        <input type="number" id="xMin" value="-10" oninput="drawGraph()">
+                    </div>
+                    <div>
+                        <label>X Max</label>
+                        <input type="number" id="xMax" value="10" oninput="drawGraph()">
+                    </div>
+                    <div>
+                        <label>Y Min</label>
+                        <input type="number" id="yMin" value="-10" oninput="drawGraph()">
+                    </div>
+                    <div>
+                        <label>Y Max</label>
+                        <input type="number" id="yMax" value="10" oninput="drawGraph()">
+                    </div>
+                </div>
+
+                <canvas id="graphCanvas" width="800" height="600"></canvas>
+
+                <div class="presets">
+                    <button class="preset-btn" onclick="setExpression('sin(x)')">sin(x)</button>
+                    <button class="preset-btn" onclick="setExpression('cos(x)')">cos(x)</button>
+                    <button class="preset-btn" onclick="setExpression('tan(x)')">tan(x)</button>
+                    <button class="preset-btn" onclick="setExpression('x^2')">x²</button>
+                    <button class="preset-btn" onclick="setExpression('x^3')">x³</button>
+                    <button class="preset-btn" onclick="setExpression('1/x')">1/x</button>
+                    <button class="preset-btn" onclick="setExpression('sqrt(x)')">√x</button>
+                    <button class="preset-btn" onclick="setExpression('exp(x)')">e^x</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let calcExpression = '';
+
+        function handleCalc(value) {
+            const display = document.getElementById('calcDisplay');
+            
+            if (value === 'C') {
+                calcExpression = '';
+                display.textContent = '0';
+            } else if (value === '=') {
+                try {
+                    const result = math.evaluate(calcExpression);
+                    display.textContent = result;
+                    calcExpression = result.toString();
+                } catch (e) {
+                    display.textContent = 'Error';
+                    calcExpression = '';
+                }
+            } else if (value === '←') {
+                calcExpression = calcExpression.slice(0, -1);
+                display.textContent = calcExpression || '0';
+            } else {
+                calcExpression = calcExpression === '0' ? value : calcExpression + value;
+                display.textContent = calcExpression;
+            }
+        }
+
+        function setExpression(expr) {
+            document.getElementById('expression').value = expr;
+            drawGraph();
+        }
+
+        function drawGraph() {
+            const canvas = document.getElementById('graphCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            const expression = document.getElementById('expression').value;
+            const xMin = parseFloat(document.getElementById('xMin').value);
+            const xMax = parseFloat(document.getElementById('xMax').value);
+            const yMin = parseFloat(document.getElementById('yMin').value);
+            const yMax = parseFloat(document.getElementById('yMax').value);
+
+            const errorDiv = document.getElementById('error');
+
+            // Clear canvas
+            ctx.fillStyle = '#0a1628';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw grid
+            ctx.strokeStyle = '#1a2d4d';
+            ctx.lineWidth = 1;
+
+            const xRange = xMax - xMin;
+            const yRange = yMax - yMin;
+
+            for (let i = 0; i <= 10; i++) {
+                const x = (width / 10) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+
+                const y = (height / 10) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+
+            // Draw axes
+            const xAxisY = height - ((-yMin) / yRange) * height;
+            const yAxisX = ((-xMin) / xRange) * width;
+
+            ctx.strokeStyle = '#6fb4e8';
+            ctx.lineWidth = 2;
+
+            if (xAxisY >= 0 && xAxisY <= height) {
+                ctx.beginPath();
+                ctx.moveTo(0, xAxisY);
+                ctx.lineTo(width, xAxisY);
+                ctx.stroke();
+            }
+
+            if (yAxisX >= 0 && yAxisX <= width) {
+                ctx.beginPath();
+                ctx.moveTo(yAxisX, 0);
+                ctx.lineTo(yAxisX, height);
+                ctx.stroke();
+            }
+
+            // Plot function
+            try {
+                ctx.strokeStyle = '#4da6ff';
+                ctx.lineWidth = 3;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#4da6ff';
+                ctx.beginPath();
+
+                let firstPoint = true;
+                const numPoints = width * 2;
+
+                for (let i = 0; i < numPoints; i++) {
+                    const x = xMin + (i / numPoints) * xRange;
+                    
+                    try {
+                        const y = math.evaluate(expression.toLowerCase(), { x });
+                        
+                        if (typeof y === 'number' && isFinite(y)) {
+                            const canvasX = ((x - xMin) / xRange) * width;
+                            const canvasY = height - ((y - yMin) / yRange) * height;
+
+                            if (canvasY >= -100 && canvasY <= height + 100) {
+                                if (firstPoint) {
+                                    ctx.moveTo(canvasX, canvasY);
+                                    firstPoint = false;
+                                } else {
+                                    ctx.lineTo(canvasX, canvasY);
+                                }
+                            } else {
+                                firstPoint = true;
+                            }
+                        } else {
+                            firstPoint = true;
+                        }
+                    } catch (e) {
+                        firstPoint = true;
+                    }
+                }
+
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+                errorDiv.style.display = 'none';
+            } catch (e) {
+                errorDiv.textContent = 'Invalid expression';
+                errorDiv.style.display = 'block';
+            }
+
+            // Draw labels
+            ctx.fillStyle = '#6fb4e8';
+            ctx.font = '12px monospace';
+            ctx.textAlign = 'center';
+            
+            for (let i = 0; i <= 10; i++) {
+                const x = xMin + (xRange / 10) * i;
+                const canvasX = (width / 10) * i;
+                if (Math.abs(x) > 0.01 || x === 0) {
+                    ctx.fillText(x.toFixed(1), canvasX, xAxisY > height - 20 ? height - 5 : xAxisY + 15);
+                }
+            }
+
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 10; i++) {
+                const y = yMin + (yRange / 10) * i;
+                const canvasY = height - (height / 10) * i;
+                if (Math.abs(y) > 0.01 || y === 0) {
+                    ctx.fillText(y.toFixed(1), yAxisX > 35 ? yAxisX - 5 : 30, canvasY + 4);
+                }
+            }
+        }
+
+        // Initial draw
+        drawGraph();
+    </script>
+</body>
+</html>
