@@ -6,14 +6,13 @@
 |_____|                                  
 # NOTICE:
 
-You CAN deploy to Vercel, Netlify, GitHub Pages, Cloudflare Pages,<ul> OR </ul> you can CNAME https://edulearnschool.vercel.app
+You CAN deploy to Vercel, Netlify, GitHub Pages, Cloudflare Pages OR you can CNAME https://edulearnschool.vercel.app
 
 <div align="center">
 
-<img src="https://socialify.git.ci/genizy/EduLearn/image?description=1&descriptionEditable=Premier%20K-12%20Learning%20Hub%20%7C%20Proxy%20%26%20GN-Math&font=Inter&forks=1&issues=1&logo=https%3A%2F%2Fraw.githubusercontent.com%2Fgenizy%2FEduLearn%2Fmain%2Fedulearn.png&name=1&owner=1&pattern=Solid&stargazers=1&theme=Auto" alt="EduLearn" width="640" height="320" />
+<img src="https://github.com/POX-dev/edulearnschool/blob/main/edulearn.png?raw=true" alt="EduLearn" width="640" height="320" />
 
-<a href="" alt="Made with NodeJS"><img src="https://img.shields.io/badge/Made%20with-Node.JS-6DA55F?style=for-the-badge&logo=node.js&logoColor=white"></a> 
-<a href="https://github.com/genizy/EduLearn/graphs/contributors/" alt=""><img src="https://img.shields.io/github/contributors/genizy/EduLearn?style=for-the-badge"></a>
+<p> Made with Html, CSS, and Js <p>
 
 </div>
 
