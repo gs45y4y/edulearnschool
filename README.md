@@ -6,7 +6,7 @@
 |_____|                                  
 # NOTICE:
 
-You CAN deploy to Vercel, Netlify, GitHub Pages, or Cloudflare Pages.
+You CAN deploy to Vercel, Netlify, GitHub Pages, Cloudflare Pages,<ul> OR </ul> you can CNAME https://edulearnschool.vercel.app
 
 <div align="center">
 
