@@ -10,7 +10,7 @@ You CAN deploy to Vercel, Netlify, GitHub Pages, Cloudflare Pages OR you can CNA
 
 <div align="center">
 
-<img src="https://github.com/POX-dev/edulearnschool/blob/main/edulearn.png?raw=true" alt="EduLearn" width="640" height="320" />
+<img src="https://github.com/POX-dev/edulearnschool/blob/main/edulearn.png?raw=true" alt="EduLearn" width="50" height="50" />
 
 <p> Made with Html, CSS, and Js <p>
 
