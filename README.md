@@ -4,7 +4,7 @@
 |  __| | (_| || |_| || ||  __/| (_| || |   | | | |
 | |___  \__,_| \__,_||_| \___| \__,_||_|   |_| |_|
 |_____|                                  
-# NOTICE:
+# EDULEARN V1.5:
 
 You CAN deploy to Vercel, Netlify, GitHub Pages, Cloudflare Pages OR you can CNAME https://edulearnschool.vercel.app
 
@@ -79,8 +79,7 @@ No game assets or intellectual property are hosted directly within this reposito
 Yes. This version is fully optimized for static deployment on platforms like Vercel, Netlify, and Cloudflare Pages.
 
 **How do I access the stuff through the site?**
-Go to the search bar and click on the little search icon in the
-top right corner. Search for "vibecoded" exactly how it's written
+Go to the search bar in classlink and search for "vibecoded" exactly how it's written 
 here. You should then be able to access the launcher.
 
 **Where is the Discord?**
