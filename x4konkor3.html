@@ -1,12 +1,10 @@
-
 <!DOCTYPE html>
-<!-- If  you can see this, Jayesh20 has a CRUSH on Livienne -->
+
 <html>
-<p> If you can read this, Jayesh20 has a big crush on Livienne.</p>
+
 <head>
-	<title>My Grades - Google Classroom</title>
-	<link rel="icon"
-		href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><rect fill='%234285f4' width='24' height='24' rx='2'/><text x='12' y='18' text-anchor='middle' fill='white' font-family='Arial' font-size='16' font-weight='bold'>G</text></svg>" />
+	<title>Edulearn - Activities</title>
+	<link rel="icon" href="./edulearn.png" type="image/png" />
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
@@ -14,10 +12,10 @@
 	<style>
 		:root {
 			--void: #0b0c10;
-			--gold-dim: #8a6a28;
-			--gold-bright: #ffdb7d;
-			--godhome-bg: #2b2012;
-			--text-glow: 0 0 10px rgba(255, 219, 125, 0.6);
+			--blue-dim: #2a5a7a;
+			--blue-bright: #7dd4ff;
+			--lifeblood-bg: #12232b;
+			--text-glow: 0 0 10px rgba(125, 212, 255, 0.6);
 		}
 
 		* {
@@ -27,7 +25,7 @@
 		}
 
 		body {
-			background: radial-gradient(circle at top center, #5e4a18 0%, #2b2012 40%, #050505 100%);
+			background: radial-gradient(circle at top center, #1a4a5e 0%, #12232b 40%, #050505 100%);
 			color: #dcdcdc;
 			font-family: 'Cinzel', serif;
 			min-height: 100vh;
@@ -58,12 +56,12 @@
 		h1 {
 			font-size: 3.5rem;
 			color: #fff;
-			text-shadow: 0 0 20px #ffdb7d, 0 0 40px #ffa500;
+			text-shadow: 0 0 20px #7dd4ff, 0 0 40px #00bfff;
 			font-weight: 400;
 			letter-spacing: 2px;
 			text-transform: uppercase;
 			border-bottom: 2px solid transparent;
-			border-image: linear-gradient(to right, transparent, #ffdb7d, transparent) 1;
+			border-image: linear-gradient(to right, transparent, #7dd4ff, transparent) 1;
 			padding-bottom: 10px;
 			margin-bottom: 20px;
 		}
@@ -101,9 +99,9 @@
 		}
 
 		button {
-			background: rgba(94, 74, 24, 0.15);
-			border: 1px solid rgba(138, 106, 40, 0.4);
-			color: #af9660;
+			background: rgba(26, 74, 94, 0.15);
+			border: 1px solid rgba(42, 90, 122, 0.4);
+			color: #60b6cf;
 			font-family: 'Cinzel', serif;
 			font-size: 0.85rem;
 			cursor: pointer;
@@ -116,9 +114,9 @@
 
 		button:hover {
 			color: #fff;
-			border-color: #ffdb7d;
-			background: rgba(94, 74, 24, 0.3);
-			text-shadow: 0 0 10px #ffdb7d;
+			border-color: #7dd4ff;
+			background: rgba(26, 74, 94, 0.3);
+			text-shadow: 0 0 10px #7dd4ff;
 			transform: translateY(-2px);
 		}
 
@@ -130,13 +128,13 @@
 
 		.divider {
 			height: 1px;
-			background: linear-gradient(90deg, transparent, #8a6a28, transparent);
+			background: linear-gradient(90deg, transparent, #2a5a7a, transparent);
 			margin: 20px 0;
 			width: 100%;
 		}
 
 		h2 {
-			color: #af9660;
+			color: #60b6cf;
 			font-size: 1.1rem;
 			letter-spacing: 3px;
 			margin-bottom: 1.5rem;
@@ -153,8 +151,8 @@
 		input,
 		select {
 			background: rgba(0, 0, 0, 0.4);
-			border: 1px solid #5e4a18;
-			color: #ffdb7d;
+			border: 1px solid #1a4a5e;
+			color: #7dd4ff;
 			padding: 10px 20px;
 			font-family: 'Cinzel', serif;
 			font-size: 1rem;
@@ -166,15 +164,15 @@
 
 		input:focus,
 		select:focus {
-			border-color: #ffdb7d;
-			box-shadow: 0 0 15px rgba(255, 219, 125, 0.2);
+			border-color: #7dd4ff;
+			box-shadow: 0 0 15px rgba(125, 212, 255, 0.2);
 		}
 
 		.btn-launch {
-			border: 1px solid #5e4a18;
-			background: rgba(94, 74, 24, 0.2);
+			border: 1px solid #1a4a5e;
+			background: rgba(26, 74, 94, 0.2);
 			margin-top: 15px;
-			color: #af9660;
+			color: #60b6cf;
 			width: auto;
 			padding: 10px 45px;
 		}
@@ -192,7 +190,7 @@
 		.info-icon {
 			width: 45px;
 			height: 45px;
-			border: 1px solid #5e4a18;
+			border: 1px solid #1a4a5e;
 			border-radius: 50%;
 			display: flex;
 			align-items: center;
@@ -204,19 +202,19 @@
 
 		.settings-icon svg,
 		.info-icon svg {
-			fill: #8a6a28;
+			fill: #2a5a7a;
 			transition: 0.3s;
 		}
 
 		.settings-icon:hover,
 		.info-icon:hover {
-			border-color: #ffdb7d;
+			border-color: #7dd4ff;
 			transform: rotate(180deg);
 		}
 
 		.settings-icon:hover svg,
 		.info-icon:hover svg {
-			fill: #ffdb7d;
+			fill: #7dd4ff;
 		}
 
 		.overlay {
@@ -239,9 +237,9 @@
 			bottom: 20px;
 			left: 50%;
 			transform: translateX(-50%);
-			background: #2b2012;
-			border: 1px solid #ffdb7d;
-			color: #ffdb7d;
+			background: #12232b;
+			border: 1px solid #7dd4ff;
+			color: #7dd4ff;
 			padding: 10px 20px;
 			display: none;
 			z-index: 3000;
@@ -319,7 +317,7 @@
 				<input id="urlInput" type="text" placeholder="https://example.com" />
       </div>
 				<button class="btn-launch" onclick="launchCustom()">Launch Custom Site</button>
-				<p style="margin-top: 25px; color: #8a6a28; font-size: 0.8rem; letter-spacing: 2px;">Edulearn v1.4</p>
+				<p style="margin-top: 25px; color: #2a5a7a; font-size: 0.8rem; letter-spacing: 2px;">Edulearn v1.5</p>
 			</div>
 		</div>
 
@@ -373,7 +371,7 @@
       }
     }
 
-    // Particle Background Logic
+    // Particle Background Logic - Lifeblood cyan particles
     const canvas = document.getElementById('particles-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -384,7 +382,7 @@
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
-        ctx.fillStyle = `rgba(255, 219, 125, ${p.opacity})`;
+        ctx.fillStyle = `rgba(125, 212, 255, ${p.opacity})`;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
         p.y += p.speedY; if (p.y < 0) p.y = canvas.height;
       });
