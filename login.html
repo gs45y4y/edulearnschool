@@ -29,6 +29,8 @@
             width: 100%;
             height: 100%;
             display: none;
+            background: #000; /* Black background to smooth transition */
+            z-index: 9999;
         }
 
         .iframe-container iframe {
@@ -44,41 +46,12 @@
         body.iframe-mode .lp-login-wrapper {
             display: none;
         }
-
-        .close-btn {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            width: 30px;
-            height: 30px;
-            background-color: #096999;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 18px;
-            line-height: 1;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            transition: background-color 0.2s;
-        }
-
-        .close-btn:hover {
-            background-color: #06d2fa;
-        }
-
-        .close-btn.active {
-            display: flex;
-        }
+        
+        /* Removed Close Button CSS */
     </style>
 </head>
 
 <body class="lp-login-body">
-    <button class="close-btn" id="closeBtn" title="Close">X</button>
-    
     <div class="iframe-container" id="iframeContainer">
         <iframe id="contentFrame" src=""></iframe>
     </div>
@@ -144,7 +117,6 @@
         const searchBtn = document.getElementById('searchBtn');
         const iframeContainer = document.getElementById('iframeContainer');
         const contentFrame = document.getElementById('contentFrame');
-        const closeBtn = document.getElementById('closeBtn');
 
         function performSearch() {
             const searchTerm = searchInput.value.trim();
@@ -154,27 +126,31 @@
                 return;
             }
             
-            // DECODING LOGIC: 'dmliZWNvZGVk' decodes to 'vibecoded'
-            // This prevents the plain password from being readable in the source code
+            // Password logic
             if (searchTerm.toLowerCase() === atob('dmliZWNvZGVk')) {
-                
                 contentFrame.src = 'x4konkor3.html';
                 iframeContainer.classList.add('active');
                 document.body.classList.add('iframe-mode');
-                closeBtn.classList.add('active');
             } else {
-                
                 window.location.href = 'https://launchpad.classlink.com/' + encodeURIComponent(searchTerm);
             }
         }
 
-        function closeIframe() {
+        // Logic to close the iframe when OS sends 'shutdown' message
+        function shutdownOS() {
             iframeContainer.classList.remove('active');
             document.body.classList.remove('iframe-mode');
-            closeBtn.classList.remove('active');
-            contentFrame.src = '';
+            contentFrame.src = ''; // Effectively turns off the OS
             searchInput.value = '';
         }
+
+        // Event listener for message from iframe
+        window.addEventListener('message', function(event) {
+            // Check if the message is the shutdown command
+            if (event.data === 'shutdown') {
+                shutdownOS();
+            }
+        });
 
         searchBtn.addEventListener('click', performSearch);
 
@@ -183,9 +159,6 @@
                 performSearch();
             }
         });
-
-        closeBtn.addEventListener('click', closeIframe);
     </script>
 </body>
-
 </html>
