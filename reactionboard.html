@@ -3,8 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reaction Board</title>
+    <title>Collaborative Reaction Board (WIP)</title>
     <style>
+        :root {
+            /* EDULEARN PALETTE */
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: rgba(37, 99, 235, 0.1);
+            --accent: #f59e0b;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,449 +28,484 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(to bottom, #0a1628, #1a2d4d);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             padding: 2rem;
-            color: #e0f4ff;
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        h1 {
+        header {
             text-align: center;
-            color: #e0f4ff;
-            text-shadow: 0 0 20px #4da6ff;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
         }
 
+        h1 {
+            color: var(--primary);
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* --- Main Grid --- */
         .board-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
         }
 
         .board-item {
-            background: rgba(17, 24, 39, 0.8);
-            border: 2px solid #4da6ff;
-            border-radius: 0.75rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             padding: 1rem;
-            transition: all 0.3s;
-            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
         }
 
         .board-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(77, 166, 255, 0.3);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
         }
 
         .image-container {
             width: 100%;
-            height: 200px;
-            background: #1a2d4d;
-            border: 2px solid #6fb4e8;
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            aspect-ratio: 16/9;
+            background: var(--bg);
+            border-radius: calc(var(--radius) - 4px);
             margin-bottom: 1rem;
             overflow: hidden;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border);
         }
 
         .image-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
         }
 
-        .placeholder-text {
-            color: #6fb4e8;
-            font-size: 0.875rem;
-            text-align: center;
-        }
-
-        .item-title {
-            color: #e0f4ff;
-            font-size: 1rem;
-            font-weight: bold;
-            margin-bottom: 0.75rem;
-            text-align: center;
-        }
-
-        .reactions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .reaction-btn {
-            background: #1a2d4d;
-            border: 2px solid #6fb4e8;
-            border-radius: 0.5rem;
-            padding: 0.5rem;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.25rem;
-        }
-
-        .reaction-btn:hover {
-            background: #4da6ff;
-            transform: scale(1.1);
-        }
-
-        .reaction-btn.active {
-            background: #4da6ff;
-            border-color: #6fb4e8;
-        }
-
-        .reaction-count {
-            font-size: 0.75rem;
-            color: #e0f4ff;
-            font-weight: bold;
-        }
-
-        .reaction-sections {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-
-        .reaction-section {
-            background: rgba(77, 166, 255, 0.1);
-            border: 2px solid #4da6ff;
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            min-height: 100px;
-        }
-
-        .reaction-section h3 {
-            color: #6fb4e8;
-            font-size: 1rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        .reaction-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 0.5rem;
-        }
-
-        .reaction-item {
-            background: rgba(17, 24, 39, 0.9);
-            border: 2px solid #4da6ff;
-            border-radius: 0.25rem;
-            padding: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.25rem;
-            cursor: pointer;
-        }
-
-        .reaction-item:hover {
+        .image-container:hover img {
             transform: scale(1.05);
         }
 
-        .reaction-item img {
-            width: 100%;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 0.25rem;
-            border: 1px solid #6fb4e8;
+        .item-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text);
         }
 
-        .reaction-item-title {
-            color: #e0f4ff;
-            font-size: 0.625rem;
-            font-weight: bold;
+        /* --- Simplified Reaction System --- */
+        .reaction-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: auto; /* Push to bottom */
+            position: relative;
+        }
+
+        /* The actual active reaction pills */
+        .reaction-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .reaction-pill:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .reaction-pill.voted {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* The "+" Add Button */
+        .add-reaction-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 30px;
+            border-radius: 20px;
+            border: 1px dashed var(--border); /* Dashed look for 'add' */
+            background: transparent;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-reaction-btn:hover {
+            background: var(--bg);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        /* The Popup Picker */
+        .emoji-picker {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--radius);
+            padding: 0.5rem;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.25rem;
+            width: 200px;
+            z-index: 10;
+            margin-bottom: 0.5rem;
+            animation: popIn 0.2s ease;
+        }
+
+        .picker-option {
+            font-size: 1.25rem;
+            padding: 0.25rem;
+            cursor: pointer;
+            border-radius: 4px;
             text-align: center;
+            background: transparent;
+            border: none;
         }
 
-        .reaction-badge {
-            background: #1a2d4d;
-            padding: 0.125rem 0.25rem;
-            border-radius: 0.25rem;
-            font-size: 0.625rem;
-            border: 1px solid #6fb4e8;
+        .picker-option:hover {
+            background: var(--bg);
+            transform: scale(1.2);
         }
 
-        /* Modal/Fullscreen Preview */
+        /* --- Section Headers --- */
+        h2 {
+            font-size: 1.5rem;
+            color: var(--text);
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        /* --- Summary Cards (Bottom) --- */
+        .reaction-sections {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .reaction-summary-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+        }
+
+        .reaction-summary-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 0.5rem;
+        }
+
+        .mini-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .mini-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .mini-item img {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+
+        .empty-text {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+
+        /* --- Modal --- */
         .modal {
             display: none;
             position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.85); /* Dark slate overlay */
+            backdrop-filter: blur(5px);
             z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            cursor: pointer;
-        }
-
-        .modal.active {
-            display: flex;
             align-items: center;
             justify-content: center;
             padding: 2rem;
         }
 
-        .modal-content {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
-            border: 4px solid #4da6ff;
-            border-radius: 0.5rem;
-            box-shadow: 0 0 50px rgba(77, 166, 255, 0.5);
+        .modal.active {
+            display: flex;
         }
 
-        .modal-title {
-            position: absolute;
-            top: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #e0f4ff;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-shadow: 0 0 20px #4da6ff;
-            background: rgba(10, 22, 40, 0.8);
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            border: 2px solid #4da6ff;
+        .modal-content-wrapper {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
         }
 
-        h2 {
-            color: #6fb4e8;
-            font-size: 1.5rem;
-            margin: 2rem 0 1rem 0;
+        .modal-img {
+            max-width: 100%;
+            max-height: 85vh;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .modal-caption {
+            text-align: center;
+            color: white;
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 1.25rem;
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+
+<div class="container">
+    <header>
         <h1>Reaction Board</h1>
+        <div class="subtitle">Collaborative Feedback System</div>
+    </header>
 
-        <!-- Board Grid -->
-        <div class="board-grid" id="boardGrid"></div>
+    <div class="board-grid" id="boardGrid"></div>
 
-        <h2>Reactions</h2>
-        <!-- Reaction Sections -->
-        <div class="reaction-sections">
-            <div class="reaction-section">
-                <h3>💀 Skulled</h3>
-                <div class="reaction-grid" id="skulledGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
+    <h2>Top Reactions</h2>
+    <div class="reaction-sections" id="summarySection"></div>
+</div>
 
-            <div class="reaction-section">
-                <h3>😭 Sob</h3>
-                <div class="reaction-grid" id="sobGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
-
-            <div class="reaction-section">
-                <h3>😡 Rage</h3>
-                <div class="reaction-grid" id="rageGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
-
-            <div class="reaction-section">
-                <h3>🔥 Fire</h3>
-                <div class="reaction-grid" id="fireGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
-
-            <div class="reaction-section">
-                <h3>💯 100</h3>
-                <div class="reaction-grid" id="hundredGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
-
-            <div class="reaction-section">
-                <h3>👀 Eyes</h3>
-                <div class="reaction-grid" id="eyesGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
-
-            <div class="reaction-section">
-                <h3>🤔 Thinking</h3>
-                <div class="reaction-grid" id="thinkingGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
-
-            <div class="reaction-section">
-                <h3>❤️ Heart</h3>
-                <div class="reaction-grid" id="heartGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
-
-            <div class="reaction-section">
-                <h3>😂 Laugh</h3>
-                <div class="reaction-grid" id="laughGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
-
-            <div class="reaction-section">
-                <h3>🤡 Clown</h3>
-                <div class="reaction-grid" id="clownGrid">
-                    <p class="placeholder-text" style="font-size: 0.625rem;">None</p>
-                </div>
-            </div>
-        </div>
+<div id="imageModal" class="modal" onclick="closeModal()">
+    <div class="modal-content-wrapper" onclick="event.stopPropagation()">
+        <img class="modal-img" id="modalImage">
+        <div class="modal-caption" id="modalTitle"></div>
     </div>
+</div>
 
-    <!-- Modal for fullscreen preview -->
-    <div id="imageModal" class="modal" onclick="closeModal()">
-        <div class="modal-title" id="modalTitle"></div>
-        <img class="modal-content" id="modalImage">
-    </div>
+<script>
+    // Data
+    let items = [
+        { id: 1, title: "Bros gay", imageUrl: "./screenshot.png", reactions: { '🤔': 2 } },
+        { id: 2, title: "Nature Reference", imageUrl: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=800&q=80", reactions: { '❤️': 5, '🔥': 1 } },
+        { id: 3, title: "Error State", imageUrl: "https://images.unsplash.com/photo-1594322436404-5a0526db4d13?auto=format&fit=crop&w=800&q=80", reactions: { '😭': 3 } },
+        { id: 4, title: "Code Snippet", imageUrl: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?auto=format&fit=crop&w=800&q=80", reactions: {} },
+        { id: 5, title: "Logo Concept", imageUrl: "https://images.unsplash.com/photo-1626785774573-4b799314346d?auto=format&fit=crop&w=800&q=80", reactions: { '👀': 4, '💯': 2 } }
+    ];
 
-    <script>
-        // TO ADD YOUR OWN IMAGES: Just add objects to this array with title and imageUrl
-        let items = [
-            { id: 1, title: "bro's gay", imageUrl: "./screenshot.png", reactions: {} },
-            { id: 2, title: "67 fish", imageUrl: "https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEXyRABmGh9boX9RQsjV1QW9QOtOOY2506rZpSbWonMOef6AAEXtINyPgyX%2Fy0DDp7CojPqP%2BaUt0r8FlaRO5Obv5mCZzDB4x61citxEHvFsoS9eK1UYp69LsvB111Qc3xWgSqGmOoB8zMYr0Rj4Knit4eukacZdzI3mn%2BxPKCiB%2B%2FVzWDtD1FsGLH6yglBmP89IBQcMI3B5ljKmQByg0PQySWvFm9uAzriXvYkc9FGD0EOjhUGs%2FMEHV0i1QEcM7dansbvP4uNOzMZEwLUO1ARTZsECQQx4CHgiKJIBYMJ9kIMbwCicdCQJzll9%2FmcYlSGMcP451jJzEUUfbBqUnZG24ogULnx8w%2FLIv84lp5F%2FBDucI6KQ3gGVRd%2FkMtHtkaNrBA8Roc2QA9Sx6LDFK51apghSbGCD4K7izj3%2BemGJZxmCQ5w5pcSbxMxuVvh5iTBqLKuZkGo6XJraYfyhsPC8b8Z%2BswaUZCTjTqlgugcgyt2S3T%2FNrnbYLlYupHCz3wH9fxygGk35rfMUd4%2BjNG%2F2q3V6u64gMxF5LOKkhEou0E9wjM8ZzcrlRJw3A0LDfIWxr1%2F1w6jCLWnydk%2B4&allow_caching=true&sz=w1366-h599-rw&auditContext=forDisplay", reactions: {} },
-            { id: 3, title: "bro :sob:", imageUrl: "https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEVKCjYtgoyafnHxFnpIEuUMzvESoL7PTk7u19Jq%2BcQW7fbGIY1L4H%2BPmOkhVE2k%2FxqMJa7VwQBkX1DJesS%2F2l32IG4p0MnsB4Bk8n9X1k3muA04ggK7FTCILNnKzkfe8fd07eqxI4Yys%2B4zz4%2BzbeHnGowg1f7Rfg60XCgpQEk%2BujbkxjoEuKeKGul114z1p9gqleImpPt5wlhRCwqiOahgjLyJEkXFq2Msw7ZeLq3NmDtmUpuosRl0kIjTRmM%2FcBhHDVqWo%2BSFfMKKOxztuoVHLOQbzki4vYv36j5DQB4ant%2F1FJ%2FliR86DYbHqGvTiIdZdPgZI5kUvh8jE9pBoTA8eE42U5eJEbOEk%2FgtJlvk09QQQQPE3vq5ZKoj2HwHPTDi%2F1xVeYbOGQBOARU05zgkxkzd%2BEeLcIImxMsUrHFlPjJh8NDovYhAiFDkqNc%2BZUdMcIaa%2FhnbfnSUlvYjauGPkBr1A7txX6QiUpYzM7lFaGfksTs4D1g1qaurwkiwKvxhaXd%2BYhDMDcbVPYCw2L1RHdnOeE0mg4EX8i8u1f%2FhG0qMXH1QQkycGmuCPf2dLeDmwN0O7GZ%2FHH13skeDMVwqpWd0R5c1vTKKUBhWvwuK7SkyOQ%3D%3D&allow_caching=true&sz=w1366-h599-rw&auditContext=forDisplay", reactions: {} },
-            { id: 4, title: "hell nah", imageUrl: "https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEVGYIZ%2FV6b0K6OAezgj61hXR74Dxdckn0z2hzLdfYFsgxrMAGCY76qItxUedPe3VZDdGG5%2FUMiCBgiXA5YVOO25HT%2BXnkvrEyUtllAUHEjiBGaRTuv02XSfs3ctPHJXC3NRMOAMFEHkdgCRKKC7H6NlY%2FwvXTEh36v%2F8iMK%2BRbaPSFjirbn50RwSyxYpJLs9Wg0RURZ4d7GugTAD766dla6ne1j8iPJkkcjhZ4rNBVbtv6Br3Svem6ThzFJPqCWyXYx20evnl31v56k%2BYZsYwLYalFx51QCrDIm0WZmsDHKJoAf%2BXJcelpJe%2FvV4FxIiOo0Xt05Gw8NxLkYRuoYW57dHnkrro6Kq%2F%2FaCrdUg7gLTFiEqXGGqksvNXxdSr4ZsYAONt1bPiixi4Nm%2BnhHVWQlUz%2BqnnAkdkR%2Fxpp6CJUklL10dT7Gx44svmQ4VDNqZzO8sn2wQQWWJWf3nr81VLdK56JzkKxJzIEztHDvCBMBiwZbuv35yN%2F4OXUZdQsC7wTCqII31TenKXfow1TCxukpagaj%2BW3NX0NFQf5tlxdz8TtY8Nr9Q2P2QX5pS3wDWuyUWUU12aX4AdNQFQ%3D%3D&allow_caching=true&sz=w1366-h599-rw&auditContext=forDisplay", reactions: {} },
-            { id: 5, title: "holy snitch..", imageUrl: "https://chat.google.com/u/0/api/get_attachment_url?url_type=FIFE_URL&content_type=image%2Fpng&attachment_token=AOo0EEUxNAnFnW6pSBEDn0i2c3LXj5otNK9xb05woFDJCLMMsZMDlWO%2BSWlknFNGzYMWbmbGsGV19uKD6u1kboh9vbV9sXrGBe500db%2BJ4eC%2FkG3SBix5wKitJVk1ypO9OXDA9wtVa9fNfTPhy%2BNMSoBDafAEyw%2Fh5BI1dzTl3k3VgdJS3Rvze1Evwq3OP8vkTGPCqXr%2F8s0CGq5A4ELzXp4%2F45EtgNZXoXze1Ge2WmU6Q0wEBa4mXs8jCkPljwKjMysZKgpkbjgsXUWsqMhKggwXuYvRf0DBnYzRzA3VQiijZ2QaZThaLm9%2F9SkL5Bm3DWmswGUWMagd3RfMw3Zg6MU6I%2BhgK71pH%2BGXFxIHPhnKqdMTXRdevRE8ObkT9yedVwr0NpYPimuVVEKvh2XykQgFaV8S2vGe3m7heaQKovOEnfUrl4cto3%2Bg3%2BYSxfwBx9s6WSe6o5PdoyRC7vNRcKrOct2Z2bPKBdIheipWUIBkXKCVMYgY9ZDcCbWDdc1yBwgbAASdeW%2FFfWovuRNkktq6Peivz2XIoXxLgAgEOM%2BGv0U6c9Tcp4B9xivnU5whWpzmS%2FJDDr0cMfJ0W8HyfH0&allow_caching=true&sz=w1366-h599-rw&auditContext=forDisplay", reactions: {} }
-        ];
+    const emojis = ['👍', '❤️', '😂', '🤔', '🔥', '😭', '👀', '💯', '💀', '🤡'];
+    
+    // State for which picker is open
+    let activePickerId = null;
 
-        const emojis = ['💀', '😭', '😡', '🔥', '💯', '👀', '🤔', '❤️', '😂', '🤡'];
-        const emojiGrids = {
-            '💀': 'skulledGrid',
-            '😭': 'sobGrid',
-            '😡': 'rageGrid',
-            '🔥': 'fireGrid',
-            '💯': 'hundredGrid',
-            '👀': 'eyesGrid',
-            '🤔': 'thinkingGrid',
-            '❤️': 'heartGrid',
-            '😂': 'laughGrid',
-            '🤡': 'clownGrid'
-        };
+    // --- Render Functions ---
 
-        function openModal(imageUrl, title) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            const modalTitle = document.getElementById('modalTitle');
+    function renderBoard() {
+        const boardGrid = document.getElementById('boardGrid');
+        boardGrid.innerHTML = '';
+
+        items.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'board-item';
             
-            modal.classList.add('active');
-            modalImg.src = imageUrl;
-            modalTitle.textContent = title;
-        }
+            // Image
+            const imgHTML = item.imageUrl 
+                ? `<img src="${item.imageUrl}" alt="${item.title}">` 
+                : `<div style="color:var(--text-muted)">No Preview</div>`;
 
-        function closeModal() {
-            const modal = document.getElementById('imageModal');
-            modal.classList.remove('active');
-        }
-
-        function sortItems() {
-            return [...items].sort((a, b) => {
-                const aTotal = Object.values(a.reactions || {}).reduce((sum, count) => sum + count, 0);
-                const bTotal = Object.values(b.reactions || {}).reduce((sum, count) => sum + count, 0);
-                return bTotal - aTotal;
-            });
-        }
-
-        function renderBoard() {
-            const boardGrid = document.getElementById('boardGrid');
-            boardGrid.innerHTML = '';
-
-            const sortedItems = sortItems();
-
-            sortedItems.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'board-item';
-                
-                const reactions = item.reactions || {};
-                
-                div.innerHTML = `
-                    <div class="image-container" onclick="event.stopPropagation(); openModal('${item.imageUrl}', '${item.title}')">
-                        ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.title}">` : `<div class="placeholder-text">No image</div>`}
-                    </div>
-                    <div class="item-title">${item.title}</div>
-                    <div class="reactions">
-                        ${emojis.map(emoji => `
-                            <button class="reaction-btn ${reactions[emoji] ? 'active' : ''}" onclick="toggleReaction(${item.id}, '${emoji}')">
-                                ${emoji}
-                                ${reactions[emoji] ? `<span class="reaction-count">${reactions[emoji]}</span>` : ''}
-                            </button>
-                        `).join('')}
-                    </div>
-                `;
-                
-                boardGrid.appendChild(div);
-            });
-
-            renderReactionSections();
-        }
-
-        function renderReactionSections() {
-            emojis.forEach(emoji => {
-                const gridId = emojiGrids[emoji];
-                const grid = document.getElementById(gridId);
-                const reactedItems = items.filter(item => item.reactions[emoji]);
-                
-                if (reactedItems.length === 0) {
-                    grid.innerHTML = `<p class="placeholder-text" style="font-size: 0.625rem;">None</p>`;
-                    return;
-                }
-
-                grid.innerHTML = '';
-                reactedItems.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'reaction-item';
-                    div.onclick = () => openModal(item.imageUrl, item.title);
-                    div.innerHTML = `
-                        ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.title}">` : ''}
-                        <div class="reaction-item-title">${item.title}</div>
-                        <div class="reaction-badge">${emoji} ${item.reactions[emoji]}</div>
+            // Reactions Logic
+            let reactionsHTML = '';
+            
+            // 1. Render existing reactions as pills
+            Object.keys(item.reactions).forEach(emoji => {
+                const count = item.reactions[emoji];
+                if(count > 0) {
+                    reactionsHTML += `
+                        <button class="reaction-pill voted" onclick="toggleReaction(${item.id}, '${emoji}')">
+                            <span>${emoji}</span>
+                            <span>${count}</span>
+                        </button>
                     `;
-                    grid.appendChild(div);
-                });
+                }
             });
-        }
 
-        function toggleReaction(itemId, emoji) {
-            const item = items.find(i => i.id === itemId);
-            if (!item) return;
-
-            if (!item.reactions) item.reactions = {};
+            // 2. The Add Button & Picker
+            const isPickerOpen = activePickerId === item.id;
             
-            if (item.reactions[emoji]) {
-                item.reactions[emoji]++;
-            } else {
-                item.reactions[emoji] = 1;
-            }
+            reactionsHTML += `
+                <div style="position: relative;">
+                    <button class="add-reaction-btn" onclick="togglePicker(event, ${item.id})" title="Add Reaction">
+                        +
+                    </button>
+                    ${isPickerOpen ? `
+                        <div class="emoji-picker" onclick="event.stopPropagation()">
+                            ${emojis.map(e => `
+                                <button class="picker-option" onclick="addReaction(${item.id}, '${e}')">${e}</button>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
 
+            div.innerHTML = `
+                <div class="image-container" onclick="openModal('${item.imageUrl}', '${item.title}')">
+                    ${imgHTML}
+                </div>
+                <div class="item-title">${item.title}</div>
+                <div class="reaction-bar">
+                    ${reactionsHTML}
+                </div>
+            `;
+            
+            boardGrid.appendChild(div);
+        });
+
+        renderSummaries();
+    }
+
+    function renderSummaries() {
+        const container = document.getElementById('summarySection');
+        container.innerHTML = '';
+
+        emojis.forEach(emoji => {
+            // Find items that have this emoji
+            const relevantItems = items.filter(i => i.reactions && i.reactions[emoji] > 0);
+            
+            if (relevantItems.length === 0) return; // Don't show empty categories
+
+            const card = document.createElement('div');
+            card.className = 'reaction-summary-card';
+            
+            card.innerHTML = `
+                <div class="reaction-summary-header">
+                    <span style="font-size:1.2rem">${emoji}</span>
+                    <span>${relevantItems.length} Items</span>
+                </div>
+                <div class="summary-grid">
+                    ${relevantItems.map(item => `
+                        <div class="mini-item" onclick="openModal('${item.imageUrl}', '${item.title}')" title="${item.title}">
+                            <img src="${item.imageUrl}" alt="preview">
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // --- Interaction Functions ---
+
+    function togglePicker(event, id) {
+        event.stopPropagation();
+        if (activePickerId === id) {
+            activePickerId = null;
+        } else {
+            activePickerId = id;
+        }
+        renderBoard();
+    }
+
+    // Close picker when clicking anywhere else
+    document.addEventListener('click', () => {
+        if (activePickerId !== null) {
+            activePickerId = null;
             renderBoard();
         }
+    });
 
-        // Initial render
+    function addReaction(itemId, emoji) {
+        const item = items.find(i => i.id === itemId);
+        if(!item.reactions) item.reactions = {};
+        
+        if(!item.reactions[emoji]) {
+            item.reactions[emoji] = 0;
+        }
+        item.reactions[emoji]++;
+        
+        activePickerId = null; // Close picker after selecting
         renderBoard();
-    </script>
+    }
+
+    function toggleReaction(itemId, emoji) {
+        const item = items.find(i => i.id === itemId);
+        if(!item.reactions) return;
+
+        if (item.reactions[emoji]) {
+            item.reactions[emoji]++; // Simple increment for demo
+        }
+        renderBoard();
+    }
+
+    function openModal(url, title) {
+        if(!url) return;
+        document.getElementById('imageModal').classList.add('active');
+        document.getElementById('modalImage').src = url;
+        document.getElementById('modalTitle').textContent = title;
+    }
+
+    function closeModal() {
+        document.getElementById('imageModal').classList.remove('active');
+    }
+
+    // Initial Load
+    renderBoard();
+
+</script>
 </body>
 </html>

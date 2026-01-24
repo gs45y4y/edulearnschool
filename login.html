@@ -2,188 +2,190 @@
 <html>
 
 <head>
-	<meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=5, initial-scale=1" />
-	<link rel="apple-touch-icon" sizes="180x180"
-		href="//cdn.classlink.com/production/launchpad/resources/images/favicon/apple-touch-icon.png" />
-	<link rel="icon" type="image/png"
-		href="//cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png" sizes="32x32" />
-	<link rel="icon" type="image/png"
-		href="//cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-16x16.png" sizes="16x16" />
-	<title> Login </title>
-	<link rel="stylesheet" type="text/css" href="//cdn.classlink.com/production/launchpad/css/genericlogin/style.css" />
-	<link href="https://cdn.classlink.com/beta/framework/stylesheets/clsheet.css" rel="stylesheet" />
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
-	<link href="https://cdn.classlink.com/production/public/libraries/fontawesome/css/all.min.css" rel="stylesheet"
-		type="text/css" />
-	<style>
-		body.iframe-mode {
-			margin: 0;
-			padding: 0;
-			overflow: hidden;
-		}
+    <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=5, initial-scale=1" />
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="//cdn.classlink.com/production/launchpad/resources/images/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png"
+        href="//cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png"
+        href="//cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-16x16.png" sizes="16x16" />
+    <title> Login </title>
+    <link rel="stylesheet" type="text/css" href="//cdn.classlink.com/production/launchpad/css/genericlogin/style.css" />
+    <link href="https://cdn.classlink.com/beta/framework/stylesheets/clsheet.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
+    <link href="https://cdn.classlink.com/production/public/libraries/fontawesome/css/all.min.css" rel="stylesheet"
+        type="text/css" />
+    <style>
+        body.iframe-mode {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
 
-		.iframe-container {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			display: none;
-		}
+        .iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
 
-		.iframe-container iframe {
-			width: 100%;
-			height: 100%;
-			border: none;
-		}
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
 
-		.iframe-container.active {
-			display: block;
-		}
+        .iframe-container.active {
+            display: block;
+        }
 
-		body.iframe-mode .lp-login-wrapper {
-			display: none;
-		}
+        body.iframe-mode .lp-login-wrapper {
+            display: none;
+        }
 
-		.close-btn {
-			position: fixed;
-			top: 10px;
-			right: 10px;
-			width: 30px;
-			height: 30px;
-			background-color: #096999;
-			color: white;
-			border: none;
-			border-radius: 50%;
-			cursor: pointer;
-			font-size: 18px;
-			line-height: 1;
-			display: none;
-			align-items: center;
-			justify-content: center;
-			z-index: 10000;
-			box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-			transition: background-color 0.2s;
-		}
+        .close-btn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            background-color: #096999;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: background-color 0.2s;
+        }
 
-		.close-btn:hover {
-			background-color: #06d2fa;
-		}
+        .close-btn:hover {
+            background-color: #06d2fa;
+        }
 
-		.close-btn.active {
-			display: flex;
-		}
-	</style>
+        .close-btn.active {
+            display: flex;
+        }
+    </style>
 </head>
 
 <body class="lp-login-body">
-	<button class="close-btn" id="closeBtn" title="Close">X</button>
-	
-	<div class="iframe-container" id="iframeContainer">
-		<iframe id="contentFrame" src=""></iframe>
-	</div>
+    <button class="close-btn" id="closeBtn" title="Close">X</button>
+    
+    <div class="iframe-container" id="iframeContainer">
+        <iframe id="contentFrame" src=""></iframe>
+    </div>
 
-	<div class="lp-login-wrapper">
-		<div class="lp-login-content">
-			<div class="lp-login-left-bar">
-				<div class="lp-login-top-logo-container">
-					<img src="//cdn.classlink.com/production/launchpad/img/genericlogin/ClassLink-Cloud-White.svg" loading="lazy" alt="EDULEARN Logo" class="lp-login-top-logo-image" />
-					<div class="lp-login-top-logo-text">Login</div>
-				</div>
-				<div class="bg-cloud-container">
-					<img src="//cdn.classlink.com/production/launchpad/img/genericlogin/cloud-bg.svg" loading="lazy" alt="cloud logo" class="bg-cloud-image" />
-				</div>
-			</div>
+    <div class="lp-login-wrapper">
+        <div class="lp-login-content">
+            <div class="lp-login-left-bar">
+                <div class="lp-login-top-logo-container">
+                    <img src="//cdn.classlink.com/production/launchpad/img/genericlogin/ClassLink-Cloud-White.svg" loading="lazy" alt="EDULEARN Logo" class="lp-login-top-logo-image" />
+                    <div class="lp-login-top-logo-text">Login</div>
+                </div>
+                <div class="bg-cloud-container">
+                    <img src="//cdn.classlink.com/production/launchpad/img/genericlogin/cloud-bg.svg" loading="lazy" alt="cloud logo" class="bg-cloud-image" />
+                </div>
+            </div>
 
-			<div class="lp-login-content-main">
-				<div class="lp-login-logo-mobile">
-					<img src="//cdn.classlink.com/production/launchpad/img/genericlogin/ClassLink-Cloud-White.svg" loading="lazy" width="110" alt="EDULEARN Logo" class="lp-login-logo-mobile-image" />
-					<div class="lp-login-logo-mobile-text"> Login </div>
-				</div>
+            <div class="lp-login-content-main">
+                <div class="lp-login-logo-mobile">
+                    <img src="//cdn.classlink.com/production/launchpad/img/genericlogin/ClassLink-Cloud-White.svg" loading="lazy" width="110" alt="EDULEARN Logo" class="lp-login-logo-mobile-image" />
+                    <div class="lp-login-logo-mobile-text"> Login </div>
+                </div>
 
-				<div class="search-box" id="generic_login">
-					<div class="lp-login-form-heading">
-						<div class="lp-login-form-header-text">Find your login page</div>
-					</div>
+                <div class="search-box" id="generic_login">
+                    <div class="lp-login-form-heading">
+                        <div class="lp-login-form-header-text">Find your login page</div>
+                    </div>
 
-					<div class="search-bar">
-						<input type="text" class="search-bar-input" id="searchInput" placeholder="Search for your school or organization" />
-						<i class="far fa-search fa-lg search-icon"></i>
-						<button class="button button-primary" id="searchBtn" style="margin-left: 10px;">Search</button>
-					</div>
+                    <div class="search-bar">
+                        <input type="text" class="search-bar-input" id="searchInput" placeholder="Search for your school or organization" autocomplete="off" />
+                        <i class="far fa-search fa-lg search-icon"></i>
+                        <button class="button button-primary" id="searchBtn" style="margin-left: 10px;">Search</button>
+                    </div>
 
-					<div class="unable-find-sch">
-						Can't find your login page?
-						<button class="btn-login" onclick="window.open('https://launchpad.classlink.com/edulearn','_blank')">
-							<span><i class="fas fa-sign-in"></i></span>
-							<span class="label-text">Login here</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
+                    <div class="unable-find-sch">
+                        Can't find your login page?
+                        <button class="btn-login" onclick="window.open('https://launchpad.classlink.com/edulearn','_blank')">
+                            <span><i class="fas fa-sign-in"></i></span>
+                            <span class="label-text">Login here</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="lp-login-footer">
-			<div class="lp-login-footer-nav-container">
-				<div class="lp-login-footer-logo-container">
-					<img src="//cdn.classlink.com/production/launchpad/img/genericlogin/ClassLink-Cloud-White-OL_DS.svg" loading="lazy" alt="" class="lp-login-footer-logo-container-image" />
-					<div class="lp-login-footer-logo-container-text">© 2026</div>
-				</div>
-				<div class="lp-login-footer-nav-buttons">
-					<a href="https://www.classlink.com/privacy" class="lp-login-footer-link" target="_blank"
-						rel="noopener noreferrer">PRIVACY POLICY</a>
-					<a href="https://www.classlink.com/help" class="lp-login-footer-link" target="_blank"
-						rel="noopener noreferrer">Help</a>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="lp-login-footer">
+            <div class="lp-login-footer-nav-container">
+                <div class="lp-login-footer-logo-container">
+                    <img src="//cdn.classlink.com/production/launchpad/img/genericlogin/ClassLink-Cloud-White-OL_DS.svg" loading="lazy" alt="" class="lp-login-footer-logo-container-image" />
+                    <div class="lp-login-footer-logo-container-text">© 2026</div>
+                </div>
+                <div class="lp-login-footer-nav-buttons">
+                    <a href="https://www.classlink.com/privacy" class="lp-login-footer-link" target="_blank"
+                        rel="noopener noreferrer">PRIVACY POLICY</a>
+                    <a href="https://www.classlink.com/help" class="lp-login-footer-link" target="_blank"
+                        rel="noopener noreferrer">Help</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<script>
-		const searchInput = document.getElementById('searchInput');
-		const searchBtn = document.getElementById('searchBtn');
-		const iframeContainer = document.getElementById('iframeContainer');
-		const contentFrame = document.getElementById('contentFrame');
-		const closeBtn = document.getElementById('closeBtn');
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const iframeContainer = document.getElementById('iframeContainer');
+        const contentFrame = document.getElementById('contentFrame');
+        const closeBtn = document.getElementById('closeBtn');
 
-		function performSearch() {
-			const searchTerm = searchInput.value.trim();
-			
-			if (!searchTerm) {
-				alert('Please enter a search term');
-				return;
-			}
-			
-			if (searchTerm.toLowerCase() === 'vibecoded') {
-				
-				contentFrame.src = 'x4konkor3.html';
-				iframeContainer.classList.add('active');
-				document.body.classList.add('iframe-mode');
-				closeBtn.classList.add('active');
-			} else {
-				
-				window.location.href = 'https://launchpad.classlink.com/' + encodeURIComponent(searchTerm);
-			}
-		}
+        function performSearch() {
+            const searchTerm = searchInput.value.trim();
+            
+            if (!searchTerm) {
+                alert('Please enter a search term');
+                return;
+            }
+            
+            // DECODING LOGIC: 'dmliZWNvZGVk' decodes to 'vibecoded'
+            // This prevents the plain password from being readable in the source code
+            if (searchTerm.toLowerCase() === atob('dmliZWNvZGVk')) {
+                
+                contentFrame.src = 'x4konkor3.html';
+                iframeContainer.classList.add('active');
+                document.body.classList.add('iframe-mode');
+                closeBtn.classList.add('active');
+            } else {
+                
+                window.location.href = 'https://launchpad.classlink.com/' + encodeURIComponent(searchTerm);
+            }
+        }
 
-		function closeIframe() {
-			iframeContainer.classList.remove('active');
-			document.body.classList.remove('iframe-mode');
-			closeBtn.classList.remove('active');
-			contentFrame.src = '';
-			searchInput.value = '';
-		}
+        function closeIframe() {
+            iframeContainer.classList.remove('active');
+            document.body.classList.remove('iframe-mode');
+            closeBtn.classList.remove('active');
+            contentFrame.src = '';
+            searchInput.value = '';
+        }
 
-		searchBtn.addEventListener('click', performSearch);
+        searchBtn.addEventListener('click', performSearch);
 
-		searchInput.addEventListener('keypress', function(e) {
-			if (e.key === 'Enter') {
-				performSearch();
-			}
-		});
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
 
-		closeBtn.addEventListener('click', closeIframe);
-	</script>
+        closeBtn.addEventListener('click', closeIframe);
+    </script>
 </body>
 
 </html>

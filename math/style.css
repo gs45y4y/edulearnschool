@@ -1,65 +1,88 @@
 :root {
-    --primary: #4dd0e1;
-    --primary-hover: #26c6da;
-    --primary-light: rgba(77, 208, 225, 0.1);
-    --primary-lighter: rgba(77, 208, 225, 0.05);
-    --accent: #81d4fa;
-    --accent-light: rgba(129, 212, 250, 0.1);
-    --success: #4db6ac;
-    --warning: #ffb74d;
-    --text: #1a1a1a;
-    --text-muted: #546e7a;
-    --text-light: #78909c;
-    --bg: #0a0e27;
-    --bg-secondary: #141938;
-    --surface: #1a1f3a;
-    --surface-hover: #232947;
-    --border: #2a3f5f;
-    --border-light: #1e2942;
-    --glass: rgba(77, 208, 225, 0.1);
-    --shadow-xs: 0 1px 2px 0 rgb(77 208 225 / 0.05);
-    --shadow-sm: 0 1px 3px 0 rgb(77 208 225 / 0.1), 0 1px 2px -1px rgb(77 208 225 / 0.1);
-    --shadow: 0 4px 6px -1px rgb(77 208 225 / 0.1), 0 2px 4px -2px rgb(77 208 225 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(77 208 225 / 0.15), 0 4px 6px -4px rgb(77 208 225 / 0.15);
-    --shadow-xl: 0 20px 25px -5px rgb(77 208 225 / 0.2), 0 8px 10px -6px rgb(77 208 225 / 0.2);
-    --shadow-glow: 0 0 20px rgba(77, 208, 225, 0.4);
+    /* EDULEARN PALETTE: Light Mode (Default) */
+    --primary: #2563eb; /* Academic Royal Blue */
+    --primary-hover: #1d4ed8; /* Deep Blue */
+    --primary-light: rgba(37, 99, 235, 0.1);
+    --primary-lighter: rgba(37, 99, 235, 0.05);
+    
+    --accent: #f59e0b; /* Achievement Gold/Orange */
+    --accent-light: rgba(245, 158, 11, 0.1);
+    
+    --success: #10b981; /* Emerald Green */
+    --warning: #f59e0b; /* Amber */
+    
+    --text: #1e293b; /* Slate 800 - High Contrast for reading */
+    --text-muted: #64748b; /* Slate 500 */
+    --text-light: #94a3b8; /* Slate 400 */
+    
+    --bg: #f8fafc; /* Very light cool grey/white */
+    --bg-secondary: #f1f5f9; /* Slate 100 */
+    
+    --surface: #ffffff; /* Pure White */
+    --surface-hover: #f1f5f9;
+    
+    --border: #e2e8f0; /* Light border */
+    --border-light: #f1f5f9;
+    
+    --glass: rgba(255, 255, 255, 0.7);
+    
+    /* Shadows - adjusted for light mode depth */
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.06);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+    --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.25);
+    
     --radius: 12px;
     --radius-sm: 8px;
     --radius-lg: 16px;
     --radius-xl: 20px;
-    --gradient-primary: linear-gradient(135deg, #4dd0e1 0%, #26c6da 100%);
-    --gradient-accent: linear-gradient(135deg, #81d4fa 0%, #4fc3f7 100%);
-    --gradient-surface: linear-gradient(135deg, #1a1f3a 0%, #141938 100%);
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+    --gradient-surface: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
 }
 
 .dark-mode {
-    --primary: #4dd0e1;
-    --primary-hover: #80deea;
-    --primary-light: rgba(77, 208, 225, 0.15);
-    --primary-lighter: rgba(77, 208, 225, 0.08);
-    --accent: #81d4fa;
-    --accent-light: rgba(129, 212, 250, 0.15);
-    --success: #4db6ac;
-    --warning: #ffb74d;
-    --text: #b0bec5;
-    --text-muted: #78909c;
-    --text-light: #546e7a;
-    --bg: #050815;
-    --bg-secondary: #0a0e27;
-    --surface: #0f1428;
-    --surface-hover: #1a1f3a;
-    --border: #1e2942;
-    --border-light: #141938;
-    --glass: rgba(77, 208, 225, 0.15);
-    --shadow-xs: 0 1px 2px 0 rgb(77 208 225 / 0.4);
-    --shadow-sm: 0 1px 3px 0 rgb(77 208 225 / 0.5), 0 1px 2px -1px rgb(77 208 225 / 0.5);
-    --shadow: 0 4px 6px -1px rgb(77 208 225 / 0.5), 0 2px 4px -2px rgb(77 208 225 / 0.5);
-    --shadow-lg: 0 10px 15px -3px rgb(77 208 225 / 0.6), 0 4px 6px -4px rgb(77 208 225 / 0.6);
-    --shadow-xl: 0 20px 25px -5px rgb(77 208 225 / 0.7), 0 8px 10px -6px rgb(77 208 225 / 0.7);
-    --shadow-glow: 0 0 20px rgba(77, 208, 225, 0.5);
-    --gradient-primary: linear-gradient(135deg, #4dd0e1 0%, #80deea 100%);
-    --gradient-accent: linear-gradient(135deg, #81d4fa 0%, #4fc3f7 100%);
-    --gradient-surface: linear-gradient(135deg, #0f1428 0%, #1a1f3a 100%);
+    /* EDULEARN PALETTE: Dark Mode */
+    --primary: #3b82f6; /* Lighter Blue for dark bg */
+    --primary-hover: #60a5fa;
+    --primary-light: rgba(59, 130, 246, 0.15);
+    --primary-lighter: rgba(59, 130, 246, 0.08);
+    
+    --accent: #fbbf24; /* Lighter Amber */
+    --accent-light: rgba(251, 191, 36, 0.15);
+    
+    --success: #34d399;
+    --warning: #fbbf24;
+    
+    --text: #e2e8f0; /* Slate 200 */
+    --text-muted: #94a3b8; /* Slate 400 */
+    --text-light: #64748b;
+    
+    --bg: #0f172a; /* Slate 900 (Deep Navy) */
+    --bg-secondary: #1e293b; /* Slate 800 */
+    
+    --surface: #1e293b; /* Slate 800 */
+    --surface-hover: #334155;
+    
+    --border: #334155;
+    --border-light: #1e293b;
+    
+    --glass: rgba(15, 23, 42, 0.7);
+    
+    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.4);
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.5), 0 1px 2px -1px rgb(0 0 0 / 0.5);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5), 0 2px 4px -2px rgb(0 0 0 / 0.5);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.6), 0 4px 6px -4px rgb(0 0 0 / 0.6);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.7), 0 8px 10px -6px rgb(0 0 0 / 0.7);
+    --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+    
+    --gradient-primary: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    --gradient-accent: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+    --gradient-surface: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
 * {
@@ -103,7 +126,7 @@ header {
     font-size: 1.75rem;
     font-weight: 800;
     letter-spacing: -0.02em;
-    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.9) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -119,11 +142,11 @@ header {
 #searchBar {
     flex: 1;
     padding: 0.875rem 1rem;
-    border: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Added slight border for contrast in header */
     border-radius: var(--radius);
-    background: var(--glass);
+    background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
-    color: var(--text);
+    color: white; /* Changed to white for header context */
     font-size: 15px;
     outline: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -131,23 +154,23 @@ header {
 }
 
 #searchBar:focus {
-    background: var(--text);
-    box-shadow: 0 0 0 3px rgba(77, 208, 225, 0.25), var(--shadow);
+    background: white;
+    color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3), var(--shadow);
     transform: translateY(-1px);
-    color: var(--glass);
 }
 
 #searchBar::placeholder {
-    color: var(--text-muted);
+    color: rgba(255, 255, 255, 0.7);
 }
 
 #sortOptions {
     padding: 0.875rem 1rem;
-    border: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius);
-    background: var(--glass);
+    background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
-    color: var(--text-muted);
+    color: white;
     font-size: 15px;
     cursor: pointer;
     outline: none;
@@ -157,19 +180,23 @@ header {
 }
 
 #sortOptions:hover {
-    background: var(--text);
+    background: white;
+    color: var(--primary);
     transform: translateY(-1px);
     box-shadow: var(--shadow);
-    color: var(--glass);
+}
+#sortOptions option {
+    background: var(--surface);
+    color: var(--text);
 }
 
 #filterOptions {
     padding: 0.875rem 1rem;
-    border: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--radius);
-    background: var(--glass);
+    background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(20px);
-    color: var(--text-muted);
+    color: white;
     font-size: 15px;
     cursor: pointer;
     outline: none;
@@ -179,10 +206,14 @@ header {
 }
 
 #filterOptions:hover {
-    background: var(--text);
+    background: white;
+    color: var(--primary);
     transform: translateY(-1px);
     box-shadow: var(--shadow);
-    color: var(--glass);
+}
+#filterOptions option {
+    background: var(--surface);
+    color: var(--text);
 }
 
 .control-buttons {
@@ -289,7 +320,7 @@ main {
 
 .zone-item:hover button {
     color: var(--primary);
-    background: rgba(77, 208, 225, 0.05);
+    background: var(--primary-lighter);
 }
 
 #zoneViewer {
@@ -339,7 +370,7 @@ main {
 
 #zoneAuthor {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     text-decoration: none;
     transition: all 0.2s ease;
     font-weight: 500;
@@ -356,7 +387,7 @@ main {
 }
 
 .zone-controls button {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: white;
     padding: 0.625rem 1rem;
@@ -369,8 +400,8 @@ main {
 }
 
 .zone-controls button:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.6);
     transform: translateY(-1px);
     box-shadow: var(--shadow);
 }
@@ -385,7 +416,7 @@ main {
 #popupOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(15, 23, 42, 0.6); /* Slate overlay */
     backdrop-filter: blur(8px);
     display: none;
     align-items: center;
@@ -445,7 +476,7 @@ main {
 }
 
 #popupClose {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     border: 0;
     color: white;
     font-size: 1.25rem;
@@ -463,7 +494,7 @@ main {
 }
 
 #popupClose:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
     transform: scale(1.1);
 }
 
@@ -490,7 +521,7 @@ main {
 #popupBody input[type="text"]:focus,
 #popupBody input[type="file"]:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(77, 208, 225, 0.1);
+    box-shadow: 0 0 0 3px var(--primary-light);
     transform: translateY(-1px);
 }
 
@@ -600,7 +631,7 @@ footer {
 }
 
 .control-buttons button {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     border: 0;
     color: white;
     cursor: pointer;
@@ -614,7 +645,7 @@ footer {
     backdrop-filter: blur(20px);
 }
 .control-buttons button:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.25);
 }
 .settings-button {
     background: var(--gradient-primary);
@@ -660,7 +691,7 @@ footer {
 }
 
 .info-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
     transform: scale(1.1);
 }
 

@@ -2,22 +2,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
 
 :root {
-    /* Core colors (can be overridden by user settings) */
-    --bg: #210540;
-    --surface: #660bb0;
-    --surface-hover: #660bb0;
-    --surface-active: #660bb0;
-    --border: #572def;
-    --border-light: #07a9cd;
+    /* Core colors - Modern Zinc/Slate Palette */
+    --bg: #09090b;
+    --surface: #18181b;
+    --surface-hover: #27272a;
+    --surface-active: #3f3f46;
+    --border: #27272a;
+    --border-light: #3f3f46;
 
     /* Text */
     --text: #e4e4e7;
-    --text-muted: #71717a;
-    --text-dim: #52525b;
+    --text-muted: #a1a1aa;
+    --text-dim: #71717a;
 
-    /* Accent (customizable) */
+    /* Accent */
     --accent: #ffffff;
-    --accent-dim: rgba(255, 255, 255, 0.8);
+    --accent-dim: rgba(255, 255, 255, 0.6);
     --accent-glow: rgba(255, 255, 255, 0.1);
 
     /* Status colors */
@@ -27,10 +27,10 @@
     --info: #3b82f6;
 
     /* Shadows */
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
 
     /* Spacing */
     --space-xs: 4px;
@@ -129,6 +129,7 @@ html,
 .tab.active {
     background: var(--surface-hover);
     border-color: var(--border-light);
+    border-top: 1px solid var(--text-muted); /* Slight highlight on active tab */
 }
 
 .tab-favicon {
@@ -192,6 +193,7 @@ html,
     gap: 6px;
     padding: 8px;
     background: var(--bg);
+    border-bottom: 1px solid var(--border);
 }
 
 .nav button {
@@ -201,7 +203,7 @@ html,
     width: 36px;
     height: 36px;
     background: var(--surface);
-    border: none;
+    border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--text-muted);
     cursor: pointer;
@@ -212,6 +214,7 @@ html,
 .nav button:hover {
     background: var(--surface-hover);
     color: var(--text);
+    border-color: var(--text-muted);
 }
 
 /* Address Bar Wrapper */
@@ -238,12 +241,13 @@ input.bar {
 }
 
 input.bar:focus {
-    border-color: var(--border-light);
+    border-color: var(--text-muted);
     background: var(--surface-hover);
+    box-shadow: 0 0 0 1px var(--text-muted);
 }
 
 input.bar::placeholder {
-    color: var(--text-muted);
+    color: var(--text-dim);
 }
 
 #home-btn-nav {
@@ -272,12 +276,16 @@ input.bar::placeholder {
 .loading-bar-container {
     height: 2px;
     background: transparent;
+    margin-top: -1px; /* Overlap nav border */
+    position: relative;
+    z-index: 10;
 }
 
 .loading-bar {
     height: 100%;
     width: 0%;
     background: var(--text);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     transition: width 0.2s ease, opacity 0.15s;
 }
 
@@ -293,6 +301,7 @@ input.bar::placeholder {
     height: 100%;
     border: none;
     position: absolute;
+    background: white; /* Default white background for web content */
 }
 
 .iframe-container iframe.hidden {
@@ -325,7 +334,7 @@ input.bar::placeholder {
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba(10, 10, 10, 0.4);
+    background: rgba(9, 9, 11, 0.5); /* Zinc tint */
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     z-index: 10;
@@ -333,11 +342,15 @@ input.bar::placeholder {
 
 .message-content {
     max-width: 400px;
-    padding: 20px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
 }
 
 .message-content h1 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--text);
     margin-bottom: 8px;
@@ -351,7 +364,7 @@ input.bar::placeholder {
 
 .spinner {
     border: 2px solid var(--border);
-    border-top-color: var(--accent);
+    border-top-color: var(--text);
     border-radius: 50%;
     width: 32px;
     height: 32px;
@@ -362,8 +375,8 @@ input.bar::placeholder {
 #skip-btn {
     margin-top: 20px;
     padding: 8px 16px;
-    background: transparent;
-    color: var(--text-muted);
+    background: var(--surface-hover);
+    color: var(--text);
     border: 1px solid var(--border);
     border-radius: 6px;
     cursor: pointer;
@@ -373,8 +386,8 @@ input.bar::placeholder {
 }
 
 #skip-btn:hover {
-    border-color: var(--border-light);
-    color: var(--text);
+    background: var(--surface-active);
+    border-color: var(--text-muted);
 }
 
 
@@ -383,8 +396,8 @@ input.bar::placeholder {
 .tab-spinner {
     width: 14px;
     height: 14px;
-    border: 2px solid var(--border);
-    border-top-color: var(--accent);
+    border: 2px solid var(--text-dim);
+    border-top-color: var(--text);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
     flex-shrink: 0;
@@ -400,7 +413,7 @@ input.bar::placeholder {
 .wisp-settings-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
@@ -418,6 +431,7 @@ input.bar::placeholder {
     border-radius: 12px;
     border: 1px solid var(--border);
     overflow: hidden;
+    box-shadow: var(--shadow-xl);
 }
 
 .settings-header {
@@ -426,6 +440,7 @@ input.bar::placeholder {
     align-items: center;
     padding: 16px 20px;
     border-bottom: 1px solid var(--border);
+    background: var(--bg);
 }
 
 .settings-header h2 {
@@ -465,7 +480,7 @@ input.bar::placeholder {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--text-muted);
+    color: var(--text-dim);
     margin-bottom: 12px;
     font-weight: 600;
 }
@@ -473,7 +488,7 @@ input.bar::placeholder {
 .server-list {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
     margin-bottom: 20px;
 }
 
@@ -490,12 +505,14 @@ input.bar::placeholder {
 }
 
 .wisp-option:hover {
-    border-color: var(--border-light);
+    border-color: var(--text-muted);
+    background: var(--surface-hover);
 }
 
 .wisp-option.active {
-    border-color: var(--accent);
-    background: rgba(59, 130, 246, 0.1);
+    border-color: var(--text);
+    background: var(--surface-active);
+    box-shadow: 0 0 0 1px var(--border);
 }
 
 .wisp-option-header {
@@ -534,11 +551,12 @@ input.bar::placeholder {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--text-muted);
+    background: var(--text-dim);
 }
 
 .status-indicator.status-success {
     background: #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
 }
 
 .status-indicator.status-error {
@@ -565,16 +583,18 @@ input.bar::placeholder {
 }
 
 .custom-input-group input:focus {
-    border-color: var(--accent);
+    border-color: var(--text-muted);
+    box-shadow: 0 0 0 1px var(--border);
 }
 
 .custom-input-group button {
     height: 36px;
     padding: 0 14px;
-    background: var(--accent);
+    background: var(--text);
     border: none;
     border-radius: 6px;
-    color: #fff;
+    color: var(--bg);
+    font-weight: 600;
     cursor: pointer;
     transition: opacity 0.15s;
 }
@@ -588,6 +608,7 @@ input.bar::placeholder {
     border-top: 1px solid var(--border);
     color: var(--text-muted);
     font-size: 12px;
+    background: var(--bg);
 }
 
 .delete-wisp-btn {

@@ -13,23 +13,25 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
     :root {
-      /* Core colors */
-      --bg: #210540;
-      --surface: #401563;
-      --surface-hover: #660bb0;
-      --surface-active: #0af3f3;
-      --border: #0af3f3
-      --border-light: #10a5df;
+      /* Core colors - Modern Zinc/Slate Palette */
+      --bg: #09090b;
+      --surface: #18181b;
+      --surface-hover: #27272a;
+      --surface-active: #3f3f46;
+      
+      /* Borders are now subtle instead of neon */
+      --border: #27272a;
+      --border-light: #3f3f46;
 
       /* Text */
       --text: #e4e4e7;
-      --text-muted: #71717a;
-      --text-dim: #52525b;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
 
-      /* Accent */
+      /* Accent - A clean Indigo/Blue */
       --accent: #ffffff;
-      --accent-dim: rgba(255, 255, 255, 0.8);
-      --accent-glow: rgba(255, 255, 255, 0.1);
+      --accent-dim: rgba(255, 255, 255, 0.6);
+      --accent-glow: rgba(99, 102, 241, 0.15); /* Soft indigo glow */
 
       /* Status colors */
       --success: #22c55e;
@@ -38,10 +40,10 @@
       --info: #3b82f6;
 
       /* Shadows */
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-      --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.6);
+      --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.7);
 
       /* Spacing */
       --space-xs: 4px;
@@ -91,22 +93,24 @@
 
     .clock {
       font-size: 4rem;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: -2px;
       margin-bottom: 8px;
-      color: var(--accent);
+      color: var(--text);
+      text-shadow: 0 0 20px var(--shadow-sm);
     }
 
     .date {
       font-size: 14px;
       color: var(--text-muted);
       margin-bottom: 32px;
+      font-weight: 500;
     }
 
     .search-box {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 12px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -114,10 +118,18 @@
       width: 100%;
       max-width: 500px;
       margin-bottom: 40px;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-box:focus-within {
+      border-color: var(--text-muted);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
     }
 
     .search-box i {
-      color: var(--text-muted);
+      color: var(--text-dim);
       font-size: 14px;
     }
 
@@ -137,13 +149,19 @@
 
     .search-box select {
       background: var(--surface-hover);
-      border: none;
+      border: 1px solid var(--border);
       border-radius: 6px;
       color: var(--text-muted);
       padding: 6px 10px;
       font-size: 12px;
       cursor: pointer;
       outline: none;
+      transition: all 0.2s;
+    }
+    
+    .search-box select:hover {
+      background: var(--surface-active);
+      color: var(--text);
     }
 
     .shortcuts {
@@ -158,32 +176,41 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       text-decoration: none;
       cursor: pointer;
+      group: hover;
     }
 
     .shortcut-icon {
-      width: 52px;
-      height: 52px;
+      width: 56px;
+      height: 56px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.15s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: var(--shadow-sm);
     }
 
     .shortcut:hover .shortcut-icon {
       background: var(--surface-hover);
-      transform: translateY(-2px);
+      border-color: var(--text-muted);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
     }
 
     .shortcut-icon img {
-      width: 22px;
-      height: 22px;
-      filter: brightness(0) invert(0.7);
+      width: 24px;
+      height: 24px;
+      filter: brightness(0) invert(1);
+      opacity: 0.8;
+    }
+
+    .shortcut:hover .shortcut-icon img {
+      opacity: 1;
     }
 
     .shortcut-icon i {
@@ -191,14 +218,20 @@
       color: var(--text-muted);
     }
 
+    .shortcut:hover .shortcut-icon i {
+      color: var(--text);
+    }
+
     .shortcut-label {
-      font-size: 11px;
-      color: var(--text-muted);
+      font-size: 12px;
+      color: var(--text-dim);
       text-align: center;
       max-width: 60px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      transition: color 0.2s;
+      font-weight: 500;
     }
 
     .shortcut:hover .shortcut-label {
@@ -212,12 +245,14 @@
       color: var(--text-dim);
       max-width: 400px;
       text-align: center;
+      line-height: 1.5;
     }
 
     .loader {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.9);
+      background: rgba(9, 9, 11, 0.8);
+      backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -231,8 +266,8 @@
     .spinner {
       width: 32px;
       height: 32px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
+      border: 3px solid var(--surface-hover);
+      border-top-color: var(--text);
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
@@ -255,7 +290,7 @@
 
   <form class="search-box" id="searchForm">
     <i class="fa-solid fa-magnifying-glass"></i>
-    <input type="text" id="searchInput" placeholder="Search the web..." autocomplete="off">
+    <input type="text" id="searchInput" placeholder="Search..." autocomplete="off">
     <select id="engine">
       <option value="https://search.brave.com/search?q=">Brave</option>
       <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>

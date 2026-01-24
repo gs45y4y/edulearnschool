@@ -6,6 +6,37 @@
     <title>Graphing Calculator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            /* Core colors - Modern Zinc Palette */
+            --bg: #09090b;
+            --surface: #18181b;
+            --surface-hover: #27272a;
+            --surface-active: #3f3f46;
+            
+            --border: #27272a;
+            --border-highlight: #3f3f46;
+
+            /* Text */
+            --text: #e4e4e7;
+            --text-muted: #a1a1aa;
+            --text-dim: #71717a;
+
+            /* Accents */
+            --accent: #ffffff;
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            
+            /* Function Colors */
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+
+            /* Shadows */
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,8 +44,9 @@
         }
 
         body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: linear-gradient(to bottom, #0a1628, #1a2d4d);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             padding: 2rem;
         }
@@ -26,10 +58,11 @@
 
         h1 {
             text-align: center;
-            color: #e0f4ff;
-            text-shadow: 0 0 20px #4da6ff;
+            color: var(--text);
+            font-weight: 700;
             font-size: 2.5rem;
             margin-bottom: 2rem;
+            letter-spacing: -0.05em;
         }
 
         .grid {
@@ -45,107 +78,138 @@
         }
 
         .panel {
-            background: rgba(17, 24, 39, 0.8);
-            border-radius: 0.5rem;
+            background: var(--surface);
+            border-radius: 12px;
             padding: 1.5rem;
-            border: 2px solid #4da6ff;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
         }
 
         h2 {
-            color: #6fb4e8;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
+            color: var(--text);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
+        /* Calculator Specifics */
         .calc-display {
-            background: #1f2937;
-            border: 2px solid #4da6ff;
-            border-radius: 0.25rem;
+            background: var(--bg);
+            border: 1px solid var(--border-highlight);
+            border-radius: 8px;
             padding: 1rem;
             text-align: right;
-            font-size: 1.5rem;
-            font-family: monospace;
-            color: white;
-            min-height: 4rem;
-            margin-bottom: 1rem;
+            font-size: 1.75rem;
+            font-family: 'Inter', monospace;
+            font-weight: 500;
+            color: var(--text);
+            min-height: 4.5rem;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: flex-end;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
         .calc-buttons {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .calc-btn {
-            background: #1a2d4d;
-            color: #e0f4ff;
-            border: 2px solid #6fb4e8;
+            background: var(--surface-hover);
+            color: var(--text);
+            border: 1px solid var(--border);
             padding: 1rem;
-            border-radius: 0.25rem;
+            border-radius: 8px;
             font-size: 1.125rem;
-            font-weight: bold;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
         }
 
         .calc-btn:hover {
-            filter: brightness(1.25);
+            background: var(--surface-active);
+            transform: translateY(-1px);
+        }
+
+        .calc-btn:active {
+            transform: translateY(0);
         }
 
         .calc-btn.equals {
-            background: #4da6ff;
+            background: var(--text);
+            color: var(--bg);
+            border-color: var(--text);
+            font-weight: 700;
+        }
+        
+        .calc-btn.equals:hover {
+            background: #d4d4d8;
         }
 
         .calc-btn.clear {
-            background: #d64545;
-            border-color: #ff6b6b;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border-color: rgba(239, 68, 68, 0.2);
             grid-column: span 2;
+        }
+        
+        .calc-btn.clear:hover {
+            background: rgba(239, 68, 68, 0.2);
         }
 
         .calc-btn.back {
             grid-column: span 2;
         }
 
+        /* Graphing Controls */
         .input-group {
             margin-bottom: 1.5rem;
         }
 
         label {
             display: block;
-            color: #6fb4e8;
+            color: var(--text-muted);
             font-size: 0.875rem;
+            font-weight: 500;
             margin-bottom: 0.5rem;
         }
 
         input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 0.5rem 1rem;
-            background: #1f2937;
-            border: 2px solid #4da6ff;
-            border-radius: 0.5rem;
-            color: white;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border-highlight);
+            border-radius: 8px;
+            color: var(--text);
             font-size: 1rem;
+            font-family: 'Inter', monospace;
+            transition: border-color 0.2s;
         }
 
         input:focus {
             outline: none;
-            ring: 2px;
-            ring-color: #4da6ff;
+            border-color: var(--text-muted);
         }
 
         .hint {
-            color: #9ca3af;
+            color: var(--text-dim);
             font-size: 0.75rem;
-            margin-top: 0.25rem;
+            margin-top: 0.5rem;
         }
 
         .error {
-            color: #f87171;
+            color: var(--danger);
             font-size: 0.875rem;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 6px;
         }
 
         .range-inputs {
@@ -163,32 +227,38 @@
 
         canvas {
             width: 100%;
-            border: 4px solid #4da6ff;
-            border-radius: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
             display: block;
+            background: var(--bg);
         }
 
         .presets {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
         }
 
         .preset-btn {
-            background: #4da6ff;
-            color: #0a1628;
-            border: 2px solid #6fb4e8;
-            padding: 0.25rem 0.75rem;
-            border-radius: 0.25rem;
+            background: var(--surface-hover);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
+            font-family: 'Inter', monospace;
         }
 
         .preset-btn:hover {
-            filter: brightness(1.25);
+            background: var(--surface-active);
+            color: var(--text);
+            border-color: var(--text-muted);
         }
     </style>
 </head>
@@ -197,7 +267,6 @@
         <h1>Graphing Calculator</h1>
 
         <div class="grid">
-            <!-- Calculator Panel -->
             <div class="panel">
                 <h2>Calculator</h2>
                 <div class="calc-display" id="calcDisplay">0</div>
@@ -227,7 +296,6 @@
                 </div>
             </div>
 
-            <!-- Graphing Panel -->
             <div class="panel">
                 <h2>Function Grapher</h2>
                 
@@ -320,12 +388,12 @@
 
             const errorDiv = document.getElementById('error');
 
-            // Clear canvas
-            ctx.fillStyle = '#0a1628';
+            // Clear canvas - Background Color
+            ctx.fillStyle = '#09090b'; 
             ctx.fillRect(0, 0, width, height);
 
-            // Draw grid
-            ctx.strokeStyle = '#1a2d4d';
+            // Draw grid - Grid Line Color
+            ctx.strokeStyle = '#27272a';
             ctx.lineWidth = 1;
 
             const xRange = xMax - xMin;
@@ -345,11 +413,11 @@
                 ctx.stroke();
             }
 
-            // Draw axes
+            // Draw axes - Axis Color
             const xAxisY = height - ((-yMin) / yRange) * height;
             const yAxisX = ((-xMin) / xRange) * width;
 
-            ctx.strokeStyle = '#6fb4e8';
+            ctx.strokeStyle = '#52525b';
             ctx.lineWidth = 2;
 
             if (xAxisY >= 0 && xAxisY <= height) {
@@ -368,10 +436,10 @@
 
             // Plot function
             try {
-                ctx.strokeStyle = '#4da6ff';
-                ctx.lineWidth = 3;
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = '#4da6ff';
+                // Function Line Color
+                ctx.strokeStyle = '#3b82f6';
+                ctx.lineWidth = 2.5;
+                ctx.shadowBlur = 0;
                 ctx.beginPath();
 
                 let firstPoint = true;
@@ -406,7 +474,6 @@
                 }
 
                 ctx.stroke();
-                ctx.shadowBlur = 0;
                 errorDiv.style.display = 'none';
             } catch (e) {
                 errorDiv.textContent = 'Invalid expression';
@@ -414,8 +481,8 @@
             }
 
             // Draw labels
-            ctx.fillStyle = '#6fb4e8';
-            ctx.font = '12px monospace';
+            ctx.fillStyle = '#a1a1aa';
+            ctx.font = '12px Inter, monospace';
             ctx.textAlign = 'center';
             
             for (let i = 0; i <= 10; i++) {
