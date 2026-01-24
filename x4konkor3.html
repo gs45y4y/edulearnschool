@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -10,8 +10,9 @@
 		rel="stylesheet" />
 	<style>
 		:root {
-			--accent-color: #7dd4ff;
-			--glass-border: rgba(125, 212, 255, 0.3);
+			--accent-color: #0078d4;
+			/* Default Windows Blue */
+			--glass-border: rgba(0, 120, 212, 0.3);
 			--glass-bg: rgba(255, 255, 255, 0.08);
 			--dock-bg: rgba(10, 20, 30, 0.6);
 			--win-bg: rgba(5, 8, 12, 0.96);
@@ -30,7 +31,8 @@
 		}
 
 		body {
-			background: #050505 url('https://cdn2.steamgriddb.com/hero/06d655f3f1b3146fe366201ff7431d64.png') no-repeat center center fixed;
+			/* Default to Windows 11 Bloom (Official) */
+			background: #050505 url('https://upload.wikimedia.org/wikipedia/commons/a/a4/Windows_11_Bloom_Wallpaper_Dark.jpg') no-repeat center center fixed;
 			background-size: cover;
 			color: var(--text);
 			font-family: 'Inter', sans-serif;
@@ -95,12 +97,12 @@
 			text-align: center;
 			cursor: grab;
 			width: 90px;
-			transition: transform 0.2s, top 0.2s ease-out, left 0.2s ease-out; 
+			transition: transform 0.2s, top 0.2s ease-out, left 0.2s ease-out;
 		}
 
 		.icon:active {
 			cursor: grabbing;
-			transition: none; 
+			transition: none;
 		}
 
 		.icon:hover {
@@ -216,9 +218,17 @@
 			transform: scale(1.1);
 		}
 
-		.close { background: #FF5F57; }
-		.min { background: #FFBD2E; }
-		.max { background: #28C840; }
+		.close {
+			background: #FF5F57;
+		}
+
+		.min {
+			background: #FFBD2E;
+		}
+
+		.max {
+			background: #28C840;
+		}
 
 		.window-body {
 			flex: 1;
@@ -280,46 +290,55 @@
 			color: #333;
 		}
 
-        /* --- Settings Window Styles --- */
-        .settings-container {
-            padding: 20px;
-            color: #fff;
-            background: #111;
-            height: 100%;
-        }
-        .setting-section {
-            margin-bottom: 25px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 15px;
-        }
-        .setting-label {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 14px;
-            color: var(--accent-color);
-            font-weight: 600;
-        }
-        .setting-input {
-            width: 100%;
-            background: #222;
-            border: 1px solid #444;
-            color: #fff;
-            padding: 8px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-        }
-        .color-options {
-            display: flex;
-            gap: 10px;
-        }
-        .color-circle {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        .color-circle.active { border-color: #fff; }
+		/* --- Settings Window Styles --- */
+		.settings-container {
+			padding: 20px;
+			color: #fff;
+			background: #111;
+			height: 100%;
+		}
+
+		.setting-section {
+			margin-bottom: 25px;
+			border-bottom: 1px solid #333;
+			padding-bottom: 15px;
+		}
+
+		.setting-label {
+			display: block;
+			margin-bottom: 10px;
+			font-size: 14px;
+			color: var(--accent-color);
+			font-weight: 600;
+		}
+
+		.setting-input {
+			width: 100%;
+			background: #222;
+			border: 1px solid #444;
+			color: #fff;
+			padding: 8px;
+			border-radius: 6px;
+			margin-bottom: 10px;
+		}
+
+		.color-options {
+			display: flex;
+			gap: 10px;
+			flex-wrap: wrap;
+		}
+
+		.color-circle {
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			cursor: pointer;
+			border: 2px solid transparent;
+		}
+
+		.color-circle.active {
+			border-color: #fff;
+		}
 
 		/* --- TERMINAL --- */
 		.terminal-body {
@@ -396,7 +415,7 @@
 			gap: 15px;
 			transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.4s;
 			min-width: 450px;
-            justify-content: space-between;
+			justify-content: space-between;
 		}
 
 		#taskbar.hidden {
@@ -404,76 +423,79 @@
 			opacity: 0;
 			pointer-events: none;
 		}
-        
-        /* New Taskbar App Section */
-        #taskbar-apps {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0 15px;
-            border-left: 1px solid rgba(255,255,255,0.1);
-            border-right: 1px solid rgba(255,255,255,0.1);
-            height: 100%;
-            flex-grow: 1;
-            justify-content: center;
-        }
 
-        .taskbar-item {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            color: rgba(255,255,255,0.7);
-            cursor: pointer;
-            transition: all 0.2s;
-            position: relative;
-            border: 1px solid transparent;
-        }
+		/* New Taskbar App Section */
+		#taskbar-apps {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 0 15px;
+			border-left: 1px solid rgba(255, 255, 255, 0.1);
+			border-right: 1px solid rgba(255, 255, 255, 0.1);
+			height: 100%;
+			flex-grow: 1;
+			justify-content: center;
+		}
 
-        .taskbar-item:hover {
-            background: rgba(255,255,255,0.15);
-            transform: translateY(-5px);
-            color: #fff;
-        }
+		.taskbar-item {
+			width: 50px;
+			height: 50px;
+			border-radius: 12px;
+			background: rgba(255, 255, 255, 0.05);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 22px;
+			color: rgba(255, 255, 255, 0.7);
+			cursor: pointer;
+			transition: all 0.2s;
+			position: relative;
+			border: 1px solid transparent;
+		}
 
-        .taskbar-item.active {
-            border-bottom: 3px solid var(--accent-color);
-            background: rgba(255,255,255,0.1);
-            color: var(--accent-color);
-        }
-        
-        .taskbar-item.focused {
-             box-shadow: 0 0 10px var(--accent-color);
-             border-color: var(--glass-border);
-        }
+		.taskbar-item:hover {
+			background: rgba(255, 255, 255, 0.15);
+			transform: translateY(-5px);
+			color: #fff;
+		}
 
-        /* Tooltip for taskbar items */
-        .taskbar-item::after {
-            content: attr(data-title);
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-            white-space: nowrap;
-        }
-        .taskbar-item:hover::after { opacity: 1; }
+		.taskbar-item.active {
+			border-bottom: 3px solid var(--accent-color);
+			background: rgba(255, 255, 255, 0.1);
+			color: var(--accent-color);
+		}
 
-        .taskbar-system {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+		.taskbar-item.focused {
+			box-shadow: 0 0 10px var(--accent-color);
+			border-color: var(--glass-border);
+		}
+
+		/* Tooltip for taskbar items */
+		.taskbar-item::after {
+			content: attr(data-title);
+			position: absolute;
+			top: -40px;
+			left: 50%;
+			transform: translateX(-50%);
+			background: rgba(0, 0, 0, 0.8);
+			padding: 5px 10px;
+			border-radius: 6px;
+			font-size: 11px;
+			opacity: 0;
+			pointer-events: none;
+			transition: opacity 0.2s;
+			white-space: nowrap;
+		}
+
+		.taskbar-item:hover::after {
+			opacity: 1;
+		}
+
+		.taskbar-system {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
 
 		#dock-trigger {
 			position: fixed;
@@ -495,7 +517,7 @@
 			border: 1px solid var(--glass-border);
 			color: var(--accent-color);
 			transition: 0.2s;
-            height: 45px;
+			height: 45px;
 		}
 
 		.shield-btn:hover {
@@ -536,7 +558,7 @@
 		body.perf-mode #context-menu,
 		body.perf-mode .shield-btn,
 		body.perf-mode .add-btn,
-        body.perf-mode .taskbar-item {
+		body.perf-mode .taskbar-item {
 			backdrop-filter: none !important;
 			box-shadow: none !important;
 			transition: none !important;
@@ -562,7 +584,7 @@
 			color: var(--accent-color);
 			text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 			padding-left: 5px;
-            cursor: pointer;
+			cursor: pointer;
 		}
 
 		/* --- Music Player Sidebar --- */
@@ -741,14 +763,32 @@
 			animation: bounce 1s infinite ease-in-out;
 		}
 
-		.bar:nth-child(2) { animation-delay: 0.1s; }
-		.bar:nth-child(3) { animation-delay: 0.2s; }
-		.bar:nth-child(4) { animation-delay: 0.3s; }
-		.bar:nth-child(5) { animation-delay: 0.4s; }
+		.bar:nth-child(2) {
+			animation-delay: 0.1s;
+		}
+
+		.bar:nth-child(3) {
+			animation-delay: 0.2s;
+		}
+
+		.bar:nth-child(4) {
+			animation-delay: 0.3s;
+		}
+
+		.bar:nth-child(5) {
+			animation-delay: 0.4s;
+		}
 
 		@keyframes bounce {
-			0%, 100% { height: 10px; }
-			50% { height: 40px; }
+
+			0%,
+			100% {
+				height: 10px;
+			}
+
+			50% {
+				height: 40px;
+			}
 		}
 
 		/* --- Custom Player Controls --- */
@@ -881,18 +921,18 @@
 			cursor: pointer;
 			backdrop-filter: blur(10px);
 			transition: 0.2s;
-            opacity: 1;
+			opacity: 1;
 		}
 
 		#toggle-music:hover {
 			transform: scale(1.1);
 		}
-        
-        #toggle-music.hidden-ui {
-            transform: scale(0);
-            opacity: 0;
-            pointer-events: none;
-        }
+
+		#toggle-music.hidden-ui {
+			transform: scale(0);
+			opacity: 0;
+			pointer-events: none;
+		}
 
 		/* --- Context Menu & Popups --- */
 		#context-menu {
@@ -924,9 +964,17 @@
 			background: rgba(255, 255, 255, 0.1);
 		}
 
-		.ctx-delete i { color: #FF5F57; }
-		.ctx-import i { color: #28C840; }
-        .ctx-newtab i { color: var(--accent-color); }
+		.ctx-delete i {
+			color: #FF5F57;
+		}
+
+		.ctx-import i {
+			color: #28C840;
+		}
+
+		.ctx-newtab i {
+			color: var(--accent-color);
+		}
 
 		.modal-overlay {
 			position: fixed;
@@ -1020,8 +1068,10 @@
 
 		<div style="margin-bottom:5px; font-size:10px; color:#aaa;">Load SoundCloud/Tidal/MP3 URL:</div>
 		<div class="search-container">
-			<input type="text" class="music-search" id="direct-url-input" placeholder="Paste SoundCloud/Tidal/MP3 Link..." onchange="playDirect(this.value)">
-			<button class="search-btn" onclick="playDirect(document.getElementById('direct-url-input').value)"><i class="fa-solid fa-play"></i></button>
+			<input type="text" class="music-search" id="direct-url-input" placeholder="Paste SoundCloud/Tidal/MP3 Link..."
+				onchange="playDirect(this.value)">
+			<button class="search-btn" onclick="playDirect(document.getElementById('direct-url-input').value)"><i
+					class="fa-solid fa-play"></i></button>
 		</div>
 
 		<div id="embed-container"></div>
@@ -1032,95 +1082,92 @@
 			</div>
 
 			<div class="search-container">
-				<input type="text" class="music-search" id="music-search-input" placeholder="Search iTunes Previews..." onkeydown="if(event.key==='Enter') searchMusic()">
+				<input type="text" class="music-search" id="music-search-input" placeholder="Search iTunes Previews..."
+					onkeydown="if(event.key==='Enter') searchMusic()">
 				<button class="search-btn" onclick="searchMusic()"><i class="fa-solid fa-magnifying-glass"></i></button>
 			</div>
 
 			<div class="results-list" id="music-results">
 				<div style="text-align:center; color:#666; font-size:11px; padding:10px;">
 					Search finds 30s previews.<br>Use the top box for full SoundCloud links.
-                </div>
-				</div>
-
-				<div class="now-playing" id="now-playing-text">Not Playing</div>
-
-				<div class="visualizer">
-					<div class="bar"></div>
-					<div class="bar"></div>
-					<div class="bar"></div>
-					<div class="bar"></div>
-					<div class="bar"></div>
-				</div>
-
-				<div class="custom-player-ui">
-					<div class="progress-area">
-						<span id="curr-time">0:00</span>
-						<div class="progress-bar" id="progress-bar" onclick="seekAudio(event)">
-							<div class="progress-fill" id="progress-fill"></div>
-						</div>
-						<span id="dur-time">0:00</span>
-					</div>
-
-					<div class="player-buttons">
-						<button class="p-btn" onclick="skip(-5)"><i class="fa-solid fa-backward"></i></button>
-						<button class="p-btn play-toggle" id="play-pause-btn" onclick="togglePlayState()">
-                    <i class="fa-solid fa-play"></i>
-                </button>
-						<button class="p-btn" onclick="skip(5)"><i class="fa-solid fa-forward"></i></button>
-					</div>
-
-					<div class="volume-area">
-						<i class="fa-solid fa-volume-low" style="font-size:12px; color:#aaa;"></i>
-						<input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.8" oninput="setVolume(this.value)">
-                </div>
-					</div>
-				</div>
-
-				<audio id="os-audio" style="display:none;" crossorigin="anonymous" ontimeupdate="updateProgress()"
-					onended="onAudioEnded()"></audio>
-
-			</div>
-
-			<div id="custom-app-modal" class="modal-overlay">
-				<div class="modal-content">
-					<h3>Create New App</h3>
-					<input type="text" id="app-name-input" placeholder="App Name (e.g., My Game)">
-					<input type="text" id="app-url-input" placeholder="URL (e.g., https://example.com)">
-					<div class="modal-btns">
-						<button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
-						<button class="modal-btn btn-save" onclick="saveCustomApp()">Create App</button>
-					</div>
 				</div>
 			</div>
 
-			<div id="taskbar">
-                <div class="taskbar-system">
-                    </div>
-                
-                <div id="taskbar-apps">
-                    </div>
-                
-                <div class="taskbar-system">
-                    <div class="add-btn" onclick="openSettingsApp()" title="System Settings">
-                        <i class="fa-solid fa-gear"></i>
-                    </div>
-                    <div class="shield-btn" id="perf-btn" onclick="togglePerformanceMode()" title="Toggle Performance Mode">
-                        <i class="fa-solid fa-bolt"></i>
-                    </div>
-                    <div class="add-btn" onclick="openModal()" title="Add Custom App">
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
-                    <div id="clock">12:00 PM</div>
-                </div>
+			<div class="now-playing" id="now-playing-text">Not Playing</div>
+			<div class="visualizer">
+				<div class="bar"></div>
+				<div class="bar"></div>
+				<div class="bar"></div>
+				<div class="bar"></div>
+				<div class="bar"></div>
 			</div>
 
-			<script>
-				// --- On Load Alerts ---
+			<div class="custom-player-ui">
+				<div class="progress-area">
+					<span id="curr-time">0:00</span>
+					<div class="progress-bar" id="progress-bar" onclick="seekAudio(event)">
+						<div class="progress-fill" id="progress-fill"></div>
+					</div>
+					<span id="dur-time">0:00</span>
+				</div>
+				<div class="player-buttons">
+					<button class="p-btn" onclick="skip(-5)"><i class="fa-solid fa-backward"></i></button>
+					<button class="p-btn play-toggle" id="play-pause-btn" onclick="togglePlayState()">
+						<i class="fa-solid fa-play"></i>
+					</button>
+					<button class="p-btn" onclick="skip(5)"><i class="fa-solid fa-forward"></i></button>
+				</div>
+				<div class="volume-area">
+					<i class="fa-solid fa-volume-low" style="font-size:12px; color:#aaa;"></i>
+					<input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.8"
+						oninput="setVolume(this.value)">
+				</div>
+			</div>
+		</div>
+
+		<audio id="os-audio" style="display:none;" crossorigin="anonymous" ontimeupdate="updateProgress()"
+			onended="onAudioEnded()"></audio>
+	</div>
+
+	<div id="custom-app-modal" class="modal-overlay">
+		<div class="modal-content">
+			<h3>Create New App</h3>
+			<input type="text" id="app-name-input" placeholder="App Name (e.g., My Game)">
+			<input type="text" id="app-url-input" placeholder="URL (e.g., https://example.com)">
+			<div class="modal-btns">
+				<button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+				<button class="modal-btn btn-save" onclick="saveCustomApp()">Create App</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="taskbar">
+		<div class="taskbar-system">
+		</div>
+		<div id="taskbar-apps">
+		</div>
+		<div class="taskbar-system">
+			<div class="add-btn" onclick="openSettingsApp()" title="System Settings">
+				<i class="fa-solid fa-gear"></i>
+			</div>
+			<div class="shield-btn" id="perf-btn" onclick="togglePerformanceMode()" title="Toggle Performance Mode">
+				<i class="fa-solid fa-bolt"></i>
+			</div>
+			<div class="add-btn" onclick="openModal()" title="Add Custom App">
+				<i class="fa-solid fa-plus"></i>
+			</div>
+			<div id="clock">12:00 PM</div>
+		</div>
+	</div>
+
+	<script>
+		// --- On Load Alerts ---
     window.addEventListener('load', () => {
         if (!localStorage.getItem('edu_welcome_shown')) {
             alert("Welcome to EdulearnOS.\n\nWe recommend setting your browser zoom to 67% for the best full-desktop experience.");
             localStorage.setItem('edu_welcome_shown', 'true');
         }
+
         setTimeout(() => {
             if(!localStorage.getItem('edu_perf_check')){
                 const userWantsPerf = confirm("System Performance Check:\n\nEnable 'Boost Mode' to reduce animations and improve speed?\n(Recommended for school Chromebooks)");
@@ -1128,7 +1175,7 @@
                 localStorage.setItem('edu_perf_check', 'true');
             }
         }, 500);
-        
+
         // --- LOAD THEME (Colors First, Then Wallpaper) ---
         const savedHex = localStorage.getItem('edu_color_hex');
         const savedRgb = localStorage.getItem('edu_color_rgb');
@@ -1139,7 +1186,7 @@
             document.documentElement.style.setProperty('--glass-border', `rgba(${savedRgb}, 0.3)`);
             currentParticleRGB = savedRgb;
         }
-
+        
         if(savedBg) {
             document.body.style.backgroundImage = `url('${savedBg}')`;
         }
@@ -1147,12 +1194,12 @@
 
     // --- Performance Mode Logic ---
     let isPerfMode = false;
-    let animId = null; 
+    let animId = null;
 
     function togglePerformanceMode(forceVal) {
         const btn = document.getElementById('perf-btn');
         const newState = (forceVal !== undefined) ? forceVal : !isPerfMode;
-        
+
         if (newState) {
             isPerfMode = true;
             document.body.classList.add('perf-mode');
@@ -1169,13 +1216,53 @@
 
     // --- Theme Logic ---
     const themes = [
-        { name: "Lifeblood", primary: "#7dd4ff", rgb: "125, 212, 255", bg: "https://cdn2.steamgriddb.com/hero/06d655f3f1b3146fe366201ff7431d64.png" },
-        { name: "Voidheart", primary: "#d1d1d1", rgb: "200, 200, 200", bg: "https://cdn2.steamgriddb.com/hero_thumb/781ac61bc87f26f5ade393be143d9ace.jpg" },
-        { name: "Grimm", primary: "#ff4d4d", rgb: "255, 50, 50", bg: "https://wallpapercave.com/wp/wp4265395.jpg" },
-		{ name: "Godmaster", primary: "#e6c36a", rgb: "230, 195, 106", bg: "https://e1.pxfuel.com/desktop-wallpaper/361/494/desktop-wallpaper-may-contain-spoilers-title-screens-hollowknight-hollow-knight-gods-glory.jpg" }
-
+        { 
+            name: "Windows 11", 
+            primary: "#0078d4", 
+            rgb: "0, 120, 212", 
+            bg: "https://upload.wikimedia.org/wikipedia/commons/a/a4/Windows_11_Bloom_Wallpaper_Dark.jpg" 
+        },
+        { 
+            name: "Ubuntu", 
+            primary: "#E95420", 
+            rgb: "233, 84, 32", 
+            bg: "https://assets.ubuntu.com/v1/8dd9a661-ubuntu-22.04-wallpaper-plane.png" 
+        },
+        { 
+            name: "Linux Mint", 
+            primary: "#87cf3e", 
+            rgb: "135, 207, 62", 
+            bg: "https://raw.githubusercontent.com/linuxmint/mint-backgrounds-victoria/master/linuxmint/linuxmint.jpg" 
+        },
+        { 
+            name: "ChromeOS", 
+            primary: "#4285F4", 
+            rgb: "66, 133, 244", 
+            bg: "https://upload.wikimedia.org/wikipedia/commons/9/97/Chrome_OS_default_wallpaper_2020.png" 
+        },
+        { 
+            name: "Kali Linux", 
+            primary: "#557CDB", 
+            rgb: "85, 124, 219", 
+            bg: "https://www.kali.org/images/wallpapers/kali-2023-1-1920x1080.jpg" 
+        },
+        { 
+            name: "Fedora", 
+            primary: "#3C6EB4", 
+            rgb: "60, 110, 180", 
+            bg: "https://fedoraproject.org/w/uploads/5/58/Fedora-39-wallpaper-standard.png" 
+        }
     ];
+
     let currentParticleRGB = themes[0].rgb;
+
+    // Helper to select theme by index (avoids quote escaping issues)
+    function selectTheme(index) {
+        if(themes[index]) {
+            const t = themes[index];
+            applyTheme(t.primary, t.rgb, t.bg);
+        }
+    }
 
     function applyTheme(hex, rgb, bgUrl) {
         const root = document.documentElement;
@@ -1185,10 +1272,10 @@
         // Save Colors
         localStorage.setItem('edu_color_hex', hex);
         localStorage.setItem('edu_color_rgb', rgb);
-        
+
         if(bgUrl) {
             document.body.style.backgroundImage = `url('${bgUrl}')`;
-            localStorage.setItem('edu_wallpaper', bgUrl); 
+            localStorage.setItem('edu_wallpaper', bgUrl);
         }
         currentParticleRGB = rgb;
     }
@@ -1197,26 +1284,42 @@
     const canvas = document.getElementById('lifeblood-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-    window.addEventListener('resize', resize); resize();
+
+    const resize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', resize);
+    resize();
 
     class P {
         constructor() { this.reset(); }
         reset() {
-            this.x = Math.random() * canvas.width; this.y = canvas.height + 20;
-            this.s = Math.random() * 2 + 1; this.vy = Math.random() * -0.7 - 0.2;
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height + 20;
+            this.s = Math.random() * 2 + 1;
+            this.vy = Math.random() * -0.7 - 0.2;
             this.o = Math.random() * 0.5 + 0.1;
         }
-        update() { this.y += this.vy; if (this.y < -10) this.reset(); }
-        draw() { ctx.fillStyle = `rgba(${currentParticleRGB}, ${this.o})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); ctx.fill(); }
+        update() {
+            this.y += this.vy;
+            if (this.y < -10) this.reset();
+        }
+        draw() {
+            ctx.fillStyle = `rgba(${currentParticleRGB}, ${this.o})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.s, 0, Math.PI*2);
+            ctx.fill();
+        }
     }
+
     for(let i=0; i<50; i++) particles.push(new P());
-    
-    function anim() { 
-        if(isPerfMode) return; 
-        ctx.clearRect(0,0,canvas.width,canvas.height); 
-        particles.forEach(p=>{p.update();p.draw();}); 
-        animId = requestAnimationFrame(anim); 
+
+    function anim() {
+        if(isPerfMode) return;
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        particles.forEach(p=>{p.update();p.draw();});
+        animId = requestAnimationFrame(anim);
     }
     anim();
 
@@ -1241,40 +1344,42 @@
     const desktop = document.getElementById('desktop');
     let zIndexCounter = 100;
     const openWindows = {};
-    const taskbarItems = {}; 
+    const taskbarItems = {};
     let currentRightClickedAppId = null;
     let currentTaskbarRightClickId = null;
 
     // --- Settings App ---
     function openSettingsApp() {
         if(openWindows['settings']) { focusWindow('settings'); return; }
-        
+
         // Get stored wallpaper
         const currentBg = localStorage.getItem('edu_wallpaper') || '';
+        
+        // Generate Color circles using INDEX to avoid quote escaping issues
+        const themeCircles = themes.map((t, index) => 
+            `<div class="color-circle" style="background:${t.primary}" title="${t.name}" onclick="selectTheme(${index})"></div>`
+        ).join('');
 
         const html = `
-            <div class="settings-container">
-                <div class="setting-section">
-                    <span class="setting-label">Accent Color / Theme</span>
-                    <div class="color-options">
-                        ${themes.map(t => `<div class="color-circle" style="background:${t.primary}" onclick="applyTheme('${t.primary}', '${t.rgb}', '${t.bg}')"></div>`).join('')}
-                    </div>
-                </div>
-                <div class="setting-section">
-                    <span class="setting-label">Wallpaper URL</span>
-                    <input type="text" class="setting-input" id="bg-url-input" 
-                           value="${currentBg}" 
-                           placeholder="Paste image URL..." 
-                           onchange="document.body.style.backgroundImage = 'url(' + this.value + ')'; localStorage.setItem('edu_wallpaper', this.value)">
-                </div>
-                <div class="setting-section">
-                    <span class="setting-label">Window Transparency (Glass Effect)</span>
-                    <input type="checkbox" checked onchange="document.documentElement.style.setProperty('--win-bg', this.checked ? 'rgba(5, 8, 12, 0.96)' : '#0a0f19')"> Enable Blur
-                </div>
-                <div style="font-size:12px; color:#555; text-align:center; margin-top:20px;">
-                    EdulearnOS Ultimate v2.5<br>Built by Google Gemini
+        <div class="settings-container">
+            <div class="setting-section">
+                <span class="setting-label">Accent Color / Theme</span>
+                <div class="color-options">
+                    ${themeCircles}
                 </div>
             </div>
+            <div class="setting-section">
+                <span class="setting-label">Wallpaper URL (Custom)</span>
+                <input type="text" class="setting-input" id="bg-url-input" value="${currentBg}" placeholder="Paste image URL..." onchange="document.body.style.backgroundImage = 'url(' + this.value + ')'; localStorage.setItem('edu_wallpaper', this.value)">
+            </div>
+            <div class="setting-section">
+                <span class="setting-label">Window Transparency (Glass Effect)</span>
+                <input type="checkbox" checked onchange="document.documentElement.style.setProperty('--win-bg', this.checked ? 'rgba(5, 8, 12, 0.96)' : '#0a0f19')"> Enable Blur
+            </div>
+            <div style="font-size:12px; color:#555; text-align:center; margin-top:20px;">
+                EdulearnOS Ultimate v2.5<br>Built by Google Gemini
+            </div>
+        </div>
         `;
         createWindow('settings', 'System Settings', html, 'fa-solid fa-gear');
     }
@@ -1282,693 +1387,648 @@
     // --- Icons Logic ---
     function renderIcons() {
         desktop.innerHTML = '';
-        const startX = 30; const startY = 30; 
-        const gridX = 100; const gridY = 100;
+        const startX = 30;
+        const startY = 30;
+        const gridX = 100;
+        const gridY = 100;
         const maxCols = Math.floor((window.innerWidth - 60) / gridX);
-        
+
         apps.forEach((app, index) => {
             const div = document.createElement('div');
             div.className = 'icon';
             const col = index % maxCols;
             const row = Math.floor(index / maxCols);
-            div.style.left = (startX + (col * gridX)) + 'px';
-            div.style.top = (startY + (row * gridY)) + 'px';
+            div.style.left = (startX + col * gridX) + 'px';
+            div.style.top = (startY + row * gridY) + 'px';
+            div.innerHTML = `<div class="icon-visual"><i class="${app.icon}"></i></div><span>${app.name}</span>`;
             
-            const iconClass = app.icon.startsWith('fa') ? app.icon : 'fa-solid fa-globe';
-            div.innerHTML = `<div class="icon-visual"><i class="${iconClass}"></i></div><span>${app.name}</span>`;
+            // Drag Logic
+            let isDragging = false;
+            let offset = [0,0];
             
-            makeIconDraggable(div, () => { openWindows[app.id] ? focusWindow(app.id) : launch(app); });
-            
-            div.oncontextmenu = (e) => {
-                if (app.isCustom) { e.preventDefault(); showContextMenu(e.clientX, e.clientY, 'desktop-icon', app); }
-            };
+            div.addEventListener('mousedown', (e) => {
+                if(e.button !== 0) return; // Only left click
+                isDragging = true;
+                offset = [
+                    div.offsetLeft - e.clientX,
+                    div.offsetTop - e.clientY
+                ];
+                div.style.zIndex = 1000;
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                div.style.zIndex = ''; 
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    div.style.left = (e.clientX + offset[0]) + 'px';
+                    div.style.top = (e.clientY + offset[1]) + 'px';
+                }
+            });
+
+            // Double Click Open
+            div.addEventListener('dblclick', () => {
+                if(app.isSystem) {
+                    if(app.id === 'term') openTerminal();
+                    if(app.id === 'fs') openFilesApp();
+                } else if (app.isCustom) {
+                    createWindow(app.id, app.name, `<iframe src="${app.url}"></iframe>`, app.icon);
+                } else {
+                    createWindow(app.id, app.name, `<iframe src="${app.url}"></iframe>`, app.icon);
+                }
+            });
+
+            // Context Menu
+            div.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                currentRightClickedAppId = app.id;
+                showContextMenu(e.clientX, e.clientY, app.isCustom);
+            });
+
             desktop.appendChild(div);
         });
     }
-    window.addEventListener('resize', renderIcons); 
     renderIcons();
+    window.addEventListener('resize', renderIcons);
 
-    // --- Dock Hover ---
-    const dockTrigger = document.getElementById('dock-trigger');
-    const taskbar = document.getElementById('taskbar');
-    dockTrigger.addEventListener('mouseenter', () => taskbar.classList.remove('hidden'));
-    taskbar.addEventListener('mouseleave', () => {
-        const hasVisibleMax = Object.values(openWindows).some(w => w.classList.contains('maximized') && !w.classList.contains('minimized'));
-        if (hasVisibleMax) taskbar.classList.add('hidden');
-    });
-
-    // --- Music Player Logic ---
-    const audioPlayer = document.getElementById('os-audio');
-    const playPauseBtn = document.getElementById('play-pause-btn');
-    const progressFill = document.getElementById('progress-fill');
-    const embedContainer = document.getElementById('embed-container');
-    const classicUI = document.getElementById('classic-player-ui');
-    
-    function toggleMusicPlayer() { document.getElementById('music-player').classList.toggle('active'); }
-    
-    function playLofiRadio() {
-        playDirect("https://stream.zeno.fm/99p68g7yfq8uv");
-    }
-
-    function playDirect(url) {
-        if(!url) return;
-        
-        if(url.includes('soundcloud.com')) {
-            loadEmbedPlayer(url, 'sc');
-            return;
-        }
-        
-        if(url.includes('tidal.com')) {
-            loadEmbedPlayer(url, 'tidal');
+    // --- Window System ---
+    function createWindow(id, title, content, iconClass) {
+        if (openWindows[id]) {
+            focusWindow(id);
+            if(openWindows[id].classList.contains('minimized')) {
+                minimizeWindow(id); // restores it
+            }
             return;
         }
 
-        resetToClassicUI();
-        audioPlayer.src = url; 
-        audioPlayer.play();
-        document.getElementById('now-playing-text').innerText = url.includes('zeno') ? "Playing: Live Radio" : "Playing: Custom URL";
-        playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-    }
-
-    function loadEmbedPlayer(url, type) {
-        audioPlayer.pause(); 
-        classicUI.style.display = 'none';
-        embedContainer.style.display = 'block';
-        
-        let embedHTML = '';
-        if (type === 'sc') {
-            embedHTML = `<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" 
-            src="https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%237dd4ff&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>`;
-        } else if (type === 'tidal') {
-            let tidalId = url.split('/').pop();
-            let typeSeg = url.includes('album') ? 'albums' : 'tracks';
-            embedHTML = `<div style="position:relative;padding-bottom:100%;height:0;overflow:hidden;max-width:100%;"><iframe src="https://embed.tidal.com/${typeSeg}/${tidalId}?layout=gridify" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe></div>`;
-        }
-        embedContainer.innerHTML = embedHTML;
-    }
-
-    function resetToClassicUI() {
-        embedContainer.innerHTML = '';
-        embedContainer.style.display = 'none';
-        classicUI.style.display = 'block';
-    }
-
-    function togglePlayState() {
-        if(audioPlayer.paused) {
-            audioPlayer.play();
-            playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-        } else {
-            audioPlayer.pause();
-            playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-        }
-    }
-    
-    function skip(sec) { audioPlayer.currentTime += sec; }
-    function setVolume(val) { audioPlayer.volume = val; }
-    
-    function updateProgress() {
-        if(isNaN(audioPlayer.duration) || !isFinite(audioPlayer.duration)) {
-            progressFill.style.width = '100%';
-            document.getElementById('curr-time').innerText = "LIVE";
-            document.getElementById('dur-time').innerText = "∞";
-            return;
-        }
-        const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-        progressFill.style.width = percent + '%';
-        document.getElementById('curr-time').innerText = formatTime(audioPlayer.currentTime);
-        document.getElementById('dur-time').innerText = formatTime(audioPlayer.duration);
-    }
-    
-    function seekAudio(e) {
-        if(!isFinite(audioPlayer.duration)) return;
-        const bar = document.getElementById('progress-bar');
-        const percent = e.offsetX / bar.clientWidth;
-        audioPlayer.currentTime = percent * audioPlayer.duration;
-    }
-    
-    function formatTime(s) {
-        const min = Math.floor(s / 60);
-        const sec = Math.floor(s % 60);
-        return min + ':' + (sec < 10 ? '0' + sec : sec);
-    }
-    
-    function onAudioEnded() {
-        playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-        progressFill.style.width = '0%';
-    }
-
-    async function searchMusic() {
-        resetToClassicUI();
-        const query = document.getElementById('music-search-input').value;
-        if(!query) return;
-        const list = document.getElementById('music-results');
-        list.innerHTML = '<div style="text-align:center;font-size:12px;">Searching iTunes (Previews)...</div>';
-
-        try {
-            const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&limit=10`);
-            const data = await res.json();
-            list.innerHTML = '';
-            if(data.resultCount === 0) {
-                list.innerHTML = '<div style="text-align:center;font-size:12px;">No results found.</div>';
-                return;
-            }
-            data.results.forEach(track => {
-                const item = document.createElement('div');
-                item.className = 'song-result';
-                item.innerHTML = `
-                    <img src="${track.artworkUrl60}" class="song-img">
-                    <div class="song-info">
-                        <div class="song-name">${track.trackName}</div>
-                        <div class="song-artist">${track.artistName}</div>
-                    </div>
-                `;
-                item.onclick = () => {
-                    audioPlayer.src = track.previewUrl;
-                    audioPlayer.play();
-                    document.getElementById('now-playing-text').innerText = `Preview: ${track.trackName}`;
-                    playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                };
-                list.appendChild(item);
-            });
-        } catch(err) {
-            list.innerHTML = '<div style="text-align:center;font-size:12px;color:#FF5F57">Error fetching songs.</div>';
-        }
-    }
-
-    // --- Context Menu ---
-    const ctxMenu = document.getElementById('context-menu');
-    document.addEventListener('click', () => ctxMenu.style.display = 'none'); 
-
-    function showContextMenu(x, y, type, data) {
-        ctxMenu.innerHTML = '';
-        let hasItems = false;
-        if (type === 'desktop-icon' && data && data.isCustom) {
-            currentRightClickedAppId = data.id;
-            ctxMenu.innerHTML += `<div class="ctx-item ctx-delete" onclick="deleteCustomApp()"><i class="fa-solid fa-trash"></i> Delete App</div>`;
-            hasItems = true;
-        }
-        if (type === 'fs-window') {
-            ctxMenu.innerHTML += `<div class="ctx-item ctx-import" onclick="triggerFileImport()"><i class="fa-solid fa-file-import"></i> Import File</div>`;
-            hasItems = true;
-        }
-        // Taskbar Context Menu (Cloaked Tab)
-        if (type === 'taskbar-item' && data) {
-             const app = apps.find(a => a.id === data);
-             if (app && !app.isSystem) {
-                 currentTaskbarRightClickId = data;
-                 ctxMenu.innerHTML += `<div class="ctx-item ctx-newtab" onclick="openAppCloaked('${app.url}')"><i class="fa-solid fa-user-secret"></i> Open Cloaked (about:blank)</div>`;
-                 hasItems = true;
-             }
-        }
-        
-        if (hasItems) {
-            ctxMenu.style.display = 'block'; ctxMenu.style.left = x + 'px'; ctxMenu.style.top = y + 'px';
-        }
-    }
-
-    // --- CLOAKED OPEN FUNCTION ---
-    function openAppCloaked(url) {
-        if(!url) return;
-        const fullUrl = (url.includes('http') ? url : url + "?token=" + _0xKey);
-        
-        const win = window.open('about:blank', '_blank');
-        if(!win) return alert("Pop-up blocked! Allow pop-ups to use Cloaked Mode.");
-        
-        const iframe = `<iframe style="width:100%;height:100%;border:none;margin:0;padding:0;" src="${fullUrl}"></iframe>`;
-        win.document.write(`<style>body,html{margin:0;padding:0;height:100%;overflow:hidden;background:#000;}</style>${iframe}`);
-        win.document.title = "Classroom"; // Disguise Title
-        win.document.close();
-        
-        ctxMenu.style.display = 'none';
-    }
-
-    function triggerFileImport() { document.getElementById('file-uploader').click(); ctxMenu.style.display = 'none'; }
-
-    function processFileImport(input) {
-        const file = input.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            try {
-                virtualFiles.push({ name: file.name, type: file.type, content: e.target.result, date: new Date().toLocaleDateString() });
-                localStorage.setItem('edu_files', JSON.stringify(virtualFiles));
-                if(openWindows['fs']) openWindows['fs'].querySelector('.window-body').innerHTML = generateFileGridHTML();
-            } catch (err) { alert("Large file imported. Please reopen the Files app to see it."); }
-        };
-        reader.readAsDataURL(file);
-        input.value = ''; 
-    }
-
-    function generateFileGridHTML() {
-        if(virtualFiles.length === 0) return '<div class="file-grid" style="text-align:center;color:#666;display:flex;justify-content:center;align-items:center;">Right-click here to import files.</div>';
-        let html = '<div class="file-grid">';
-        virtualFiles.forEach((f, i) => {
-            let icon = 'fa-file';
-            if(f.type.startsWith('image/')) icon = 'fa-file-image';
-            else if(f.type.startsWith('video/')) icon = 'fa-file-video';
-            html += `<div class="file-item" onclick="openFileViewer(event, ${i})"><i class="fa-solid ${icon} file-icon"></i><div class="file-name">${f.name}</div></div>`;
-        });
-        html += '</div>';
-        return html;
-    }
-
-    function openFileViewer(e, index) {
-        e.stopPropagation();
-        const file = virtualFiles[index];
-        const winId = 'file-view-' + Date.now();
-        let content = '';
-        if (file.type.startsWith('video/')) {
-            content = `<div style="display:flex;justify-content:center;align-items:center;height:100%;background:#000;"><video controls style="max-width:100%; max-height:100%; outline:none;" src="${file.content}"></video></div>`;
-        } else if (file.type.startsWith('image/')) {
-            content = `<div style="display:flex;justify-content:center;align-items:center;height:100%;background:#0f0f0f;"><img src="${file.content}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>`;
-        } else {
-            content = `<iframe src="${file.content}" style="width:100%;height:100%;border:none;background:#fff;"></iframe>`;
-        }
-        createWindow(winId, file.name, content);
-    }
-
-    function deleteCustomApp() {
-        if (!currentRightClickedAppId) return;
-        apps = apps.filter(a => a.id !== currentRightClickedAppId);
-        localStorage.setItem('customApps', JSON.stringify(apps.filter(a => a.isCustom)));
-        renderIcons();
-        ctxMenu.style.display = 'none';
-    }
-
-    // --- TERMINAL LOGIC ---
-    function getTerminalHTML() {
-        return `
-        <div class="terminal-body" onclick="document.getElementById('term-input-field').focus()">
-            <div id="term-output">
-                <div>Welcome to EdulearnOS Terminal v2.0</div>
-                <div style="margin-bottom:10px">Type 'help' for commands.</div>
-            </div>
-            <div class="term-input-line">
-                <span class="term-prompt">user@edulearn:~$</span>
-                <input type="text" id="term-input-field" class="term-input" autocomplete="off" onkeydown="handleTerminalCommand(event, this)">
-            </div>
-        </div>`;
-    }
-
-    function scrollToBottom() {
-        const body = document.querySelector('.terminal-body');
-        if(body) body.scrollTop = body.scrollHeight;
-    }
-
-    async function getNetworkStats() {
-        let isp = 'Private/Unknown';
-        try {
-            const res = await fetch('https://ipapi.co/json/');
-            const data = await res.json();
-            if(data.org) isp = data.org;
-        } catch(e) {}
-
-        let speedMbps = "Checking...";
-        try {
-            let totalMbps = 0;
-            const iterations = 5; // Run 5 tests for better average
-            const sizeInBytes = 1600000; // Wikimedia cat image size
-
-            // Loop for better accuracy
-            for(let i = 0; i < iterations; i++) {
-                const img = new Image();
-                const start = performance.now();
-                const cacheBuster = "?t=" + start + "_" + i;
-                
-                await new Promise((resolve, reject) => {
-                    img.onload = resolve;
-                    img.onerror = reject; // Fail gracefully
-                    img.src = "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg" + cacheBuster;
-                });
-                
-                const end = performance.now();
-                const durationSeconds = (end - start) / 1000;
-                
-                if(durationSeconds > 0) {
-                     const bitsLoaded = sizeInBytes * 8;
-                     const mbps = (bitsLoaded / durationSeconds / 1000000);
-                     totalMbps += mbps;
-                }
-            }
-            
-            const avgMbps = (totalMbps / iterations).toFixed(2);
-            speedMbps = avgMbps + " Mbps";
-        } catch(e) {
-            speedMbps = "Blocked/Err";
-        }
-        
-        const startPing = Date.now();
-        try { await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-cache' }); } catch(e) {} 
-        const latency = Date.now() - startPing;
-
-        return { speed: speedMbps, latency, isp };
-    }
-
-    async function handleTerminalCommand(e, input) {
-        if (e.key === 'Enter') {
-            const cmd = input.value.trim().toLowerCase();
-            const output = document.getElementById('term-output');
-            
-            output.innerHTML += `<div class="term-line"><span class="term-prompt">user@edulearn:~$</span> ${input.value}</div>`;
-            input.value = ''; 
-            scrollToBottom();
-
-            if (cmd === 'help') {
-                output.innerHTML += `
-                <div class="term-line" style="color:#aaa">
-                  ping      - Check network latency
-                  neofetch  - System information (Live Speed Test)
-                  date      - Show current date/time
-                  whoami    - Show current user
-                  reboot    - Restart system
-                  clear     - Clear terminal
-                </div>`;
-            } 
-            else if (cmd === 'date') { output.innerHTML += `<div class="term-line">${new Date().toString()}</div>`; }
-            else if (cmd === 'whoami') { output.innerHTML += `<div class="term-line">user</div>`; }
-            else if (cmd === 'reboot') {
-                output.innerHTML += `<div class="term-line" style="color:var(--term-red)">Rebooting system...</div>`;
-                setTimeout(() => location.reload(), 1000);
-            }
-            else if (cmd === 'ping') {
-                for(let i=0; i<4; i++) {
-                    const start = Date.now();
-                    try { await fetch('https://www.google.com/favicon.ico', { mode: 'no-cors', cache: 'no-cache' }); } catch(e){}
-                    const time = Date.now() - start;
-                    output.innerHTML += `<div class="term-line">Reply from 8.8.8.8: bytes=32 time=${time}ms TTL=118</div>`;
-                    scrollToBottom();
-                    await new Promise(r => setTimeout(r, 1000));
-                }
-            }
-            else if (cmd === 'neofetch' || cmd === './neofetch.sh') {
-                output.innerHTML += `<div class="term-line" style="color:gray">Running Speed Test (Multiple Samples)... Please wait...</div>`;
-                scrollToBottom();
-                const stats = await getNetworkStats();
-                const browser = navigator.userAgent.includes("Chrome") ? "Chrome" : "Firefox";
-                output.lastElementChild.remove();
-                const art = `
-<div class="fetch-grid">
-    <i class="fa-brands fa-linux os-logo-icon"></i>
-    <div style="line-height:1.5; color: #fff;">
-      <span style="color:var(--accent-color); font-weight:bold;">user@edulearn</span><br>
-      -----------------<br>
-      <strong>OS:</strong> EdulearnOS Ultimate<br>
-      <strong>Uptime:</strong> ${Math.floor(performance.now()/60000)} mins<br>
-      <strong>Resolution:</strong> ${window.innerWidth}x${window.innerHeight}<br>
-      <strong>Browser:</strong> ${browser}<br>
-      <span style="color:var(--term-green)"><strong>ISP:</strong> ${stats.isp}</span><br>
-      <span style="color:var(--term-blue)"><strong>Speed:</strong> ${stats.speed}</span><br> 
-      <span style="color:var(--term-red)"><strong>Ping:</strong> ${stats.latency}ms</span><br>
-	  <span style="color:var(--term-yellow)"><strong>Note:</strong> Recheck speed if it looks off</span>
-    </div>
-</div>`;
-                output.innerHTML += art;
-            } 
-            else if (cmd === 'clear') { output.innerHTML = ''; } 
-            else if (cmd !== '') { output.innerHTML += `<div class="term-line">bash: ${cmd}: command not found</div>`; }
-            scrollToBottom();
-        }
-    }
-
-    // --- Window Logic ---
-    function createWindow(id, title, innerHTML, iconClass = 'fa-solid fa-window-maximize') {
         const win = document.createElement('div');
-        win.className = 'window'; win.id = id;
-        win.style.left = '100px'; win.style.top = '40px'; 
-        win.style.height = 'calc(100vh - 140px)'; 
+        win.className = 'window';
+        win.style.left = '100px';
+        win.style.top = '50px';
         win.style.zIndex = ++zIndexCounter;
-        win.dataset.oldPos = JSON.stringify({l: '100px', t: '40px', w: '900px', h: 'calc(100vh - 140px)'});
-        win.innerHTML = `
-            <div class="window-header">
-                <div class="win-controls">
-                    <div class="control close" onclick="closeWin('${id}')"></div>
-                    <div class="control min" onclick="toggleMin('${id}')"></div>
-                    <div class="control max" onclick="toggleMax('${id}')"></div>
-                </div>
-                <span class="win-title">${title}</span>
-                <div style="width:50px"></div>
-            </div>
-            <div class="window-body"><div class="drag-overlay"></div>${innerHTML}</div>
-        `;
-        document.body.appendChild(win);
-        openWindows[id] = win;
         
-        // Add to taskbar
-        addTaskbarItem(id, title, iconClass);
-        focusWindow(id);
+        // Header
+        const header = document.createElement('div');
+        header.className = 'window-header';
+        header.innerHTML = `
+            <div class="win-controls">
+                <div class="control close" onclick="closeWindow('${id}')"></div>
+                <div class="control min" onclick="minimizeWindow('${id}')"></div>
+                <div class="control max" onclick="maximizeWindow('${id}')"></div>
+            </div>
+            <div class="win-title"><i class="${iconClass}" style="margin-right:5px;"></i> ${title}</div>
+            <div style="width:40px;"></div> 
+        `; // Empty div to balance flex
 
-        win.onmousedown = () => focusWindow(id);
-        win.querySelector('.window-header').onmousedown = (e) => startDragWin(e, win);
-        return win;
+        // Body
+        const body = document.createElement('div');
+        body.className = 'window-body';
+        body.innerHTML = content;
+
+        // Drag Overlay (for iframe dragging fix)
+        const dragOverlay = document.createElement('div');
+        dragOverlay.className = 'drag-overlay';
+
+        win.appendChild(header);
+        win.appendChild(dragOverlay);
+        win.appendChild(body);
+        desktop.appendChild(win);
+
+        openWindows[id] = win;
+        addTaskbarItem(id, iconClass, title);
+
+        // Window Dragging Logic
+        let isDrag = false;
+        let startX, startY, initLeft, initTop;
+
+        header.addEventListener('mousedown', (e) => {
+            if(e.target.classList.contains('control')) return;
+            isDrag = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            initLeft = win.offsetLeft;
+            initTop = win.offsetTop;
+            focusWindow(id);
+            dragOverlay.style.display = 'block'; // Capture events over iframe
+            win.classList.remove('maximized', 'snap-left', 'snap-right'); // Un-snap on drag
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDrag) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            win.style.left = (initLeft + dx) + 'px';
+            win.style.top = (initTop + dy) + 'px';
+
+            // Snap Preview Logic
+            const snap = document.getElementById('snap-preview');
+            if (e.clientX < 20) {
+                snap.style.display = 'block';
+                snap.style.width = '50%'; snap.style.height = '100%'; snap.style.top = '0'; snap.style.left = '0';
+            } else if (e.clientX > window.innerWidth - 20) {
+                snap.style.display = 'block';
+                snap.style.width = '50%'; snap.style.height = '100%'; snap.style.top = '0'; snap.style.left = '50%';
+            } else if (e.clientY < 10) {
+                snap.style.display = 'block';
+                snap.style.width = '100%'; snap.style.height = '100%'; snap.style.top = '0'; snap.style.left = '0';
+            } else {
+                snap.style.display = 'none';
+            }
+        });
+
+        window.addEventListener('mouseup', (e) => {
+            if (!isDrag) return;
+            isDrag = false;
+            dragOverlay.style.display = 'none';
+            
+            // Snap Commit
+            const snap = document.getElementById('snap-preview');
+            snap.style.display = 'none';
+            if (e.clientX < 20) win.classList.add('snap-left');
+            else if (e.clientX > window.innerWidth - 20) win.classList.add('snap-right');
+            else if (e.clientY < 10) win.classList.add('maximized');
+        });
+
+        win.addEventListener('mousedown', () => focusWindow(id));
     }
-    
-    // --- Taskbar Management ---
-    function addTaskbarItem(id, title, iconClass) {
+
+    function closeWindow(id) {
+        if (openWindows[id]) {
+            openWindows[id].remove();
+            delete openWindows[id];
+            removeTaskbarItem(id);
+        }
+    }
+
+    function maximizeWindow(id) {
+        const w = openWindows[id];
+        if (w.classList.contains('maximized')) w.classList.remove('maximized');
+        else {
+             w.classList.remove('snap-left', 'snap-right');
+             w.classList.add('maximized');
+        }
+    }
+
+    function minimizeWindow(id) {
+        const w = openWindows[id];
+        if (w.classList.contains('minimized')) {
+            w.classList.remove('minimized');
+            focusWindow(id);
+        } else {
+            w.classList.add('minimized');
+            w.classList.remove('focused'); 
+        }
+    }
+
+    function focusWindow(id) {
+        const w = openWindows[id];
+        if (w) {
+            w.style.zIndex = ++zIndexCounter;
+            // Update Taskbar Focus
+            document.querySelectorAll('.taskbar-item').forEach(el => el.classList.remove('focused'));
+            if(taskbarItems[id]) taskbarItems[id].classList.add('focused');
+        }
+    }
+
+    // --- Taskbar Logic ---
+    function addTaskbarItem(id, icon, title) {
         const bar = document.getElementById('taskbar-apps');
         const item = document.createElement('div');
-        item.className = 'taskbar-item';
-        item.dataset.id = id;
-        item.dataset.title = title;
-        item.innerHTML = `<i class="${iconClass}"></i>`;
-        item.onclick = () => toggleMin(id);
-        item.oncontextmenu = (e) => {
-             e.preventDefault();
-             showContextMenu(e.clientX, e.clientY, 'taskbar-item', id);
+        item.className = 'taskbar-item active focused';
+        item.innerHTML = `<i class="${icon}"></i>`;
+        item.setAttribute('data-title', title);
+        
+        item.onclick = () => {
+            if (openWindows[id].classList.contains('minimized')) minimizeWindow(id);
+            else focusWindow(id);
         };
+
+        // Taskbar Right Click Close
+        item.oncontextmenu = (e) => {
+            e.preventDefault();
+            // Simple remove for now
+            const confirmClose = confirm("Close " + title + "?");
+            if(confirmClose) closeWindow(id);
+        };
+
         bar.appendChild(item);
         taskbarItems[id] = item;
+        checkDockVisibility();
     }
-    
+
     function removeTaskbarItem(id) {
         if(taskbarItems[id]) {
             taskbarItems[id].remove();
             delete taskbarItems[id];
         }
+        checkDockVisibility();
+    }
+
+    // --- Auto Hide Dock Logic ---
+    function checkDockVisibility() {
+        // If any window is maximized or snapped, hide dock unless hovered
+        const hasMax = Object.values(openWindows).some(w => 
+            (w.classList.contains('maximized') || w.classList.contains('snap-left') || w.classList.contains('snap-right')) 
+            && !w.classList.contains('minimized')
+        );
+        
+        const taskbar = document.getElementById('taskbar');
+        const trigger = document.getElementById('dock-trigger');
+        const musicToggle = document.getElementById('toggle-music');
+
+        if (hasMax) {
+            taskbar.classList.add('hidden');
+            musicToggle.classList.add('hidden-ui');
+            // Trigger logic
+            trigger.onmouseenter = () => {
+                taskbar.classList.remove('hidden');
+                musicToggle.classList.remove('hidden-ui');
+            }
+            taskbar.onmouseleave = () => {
+                 taskbar.classList.add('hidden');
+                 musicToggle.classList.add('hidden-ui');
+            }
+        } else {
+            taskbar.classList.remove('hidden');
+            musicToggle.classList.remove('hidden-ui');
+            trigger.onmouseenter = null;
+            taskbar.onmouseleave = null;
+        }
+    }
+
+    // --- Context Menu Logic ---
+    function showContextMenu(x, y, isCustomApp) {
+        const menu = document.getElementById('context-menu');
+        menu.style.display = 'block';
+        menu.style.left = x + 'px';
+        menu.style.top = y + 'px';
+        
+        let html = '';
+        if(isCustomApp) {
+             html += `<div class="ctx-item ctx-delete" onclick="deleteCustomApp()"><i class="fa-solid fa-trash"></i> Delete App</div>`;
+        }
+        html += `<div class="ctx-item ctx-import" onclick="document.getElementById('file-uploader').click()"><i class="fa-solid fa-file-import"></i> Import File</div>`;
+        html += `<div class="ctx-item ctx-newtab" onclick="window.open('https://google.com', '_blank')"><i class="fa-solid fa-up-right-from-square"></i> New Tab</div>`;
+
+        menu.innerHTML = html;
+    }
+
+    window.addEventListener('click', (e) => {
+        if (!e.target.closest('.icon')) {
+            document.getElementById('context-menu').style.display = 'none';
+        }
+    });
+
+    function deleteCustomApp() {
+        if(currentRightClickedAppId) {
+            apps = apps.filter(a => a.id !== currentRightClickedAppId);
+            const customApps = apps.filter(a => a.isCustom);
+            localStorage.setItem('customApps', JSON.stringify(customApps));
+            renderIcons();
+        }
+    }
+
+    // --- Terminal Logic ---
+    function openTerminal() {
+        if(openWindows['term']) { focusWindow('term'); return; }
+        
+        const termContent = `
+            <div class="terminal-body" id="term-body" onclick="document.getElementById('term-input').focus()">
+                <div class="term-line">Welcome to EdulearnOS Terminal v1.0</div>
+                <div class="term-line">Type 'help' for available commands.</div>
+                <div class="term-input-line">
+                    <span class="term-prompt">user@edulearn:~$</span>
+                    <input type="text" class="term-input" id="term-input" autocomplete="off" spellcheck="false" onkeydown="handleTermInput(event)">
+                </div>
+            </div>
+        `;
+        createWindow('term', 'Terminal', termContent, 'fa-solid fa-terminal');
+    }
+
+    function handleTermInput(e) {
+        if (e.key === 'Enter') {
+            const input = e.target;
+            const val = input.value.trim();
+            const body = document.getElementById('term-body');
+            
+            // Move old input to history
+            const oldLine = document.createElement('div');
+            oldLine.className = 'term-line';
+            oldLine.innerHTML = `<span class="term-prompt">user@edulearn:~$</span> ${val}`;
+            body.insertBefore(oldLine, input.parentNode); // insert before current input line
+            
+            input.value = '';
+            
+            // Process Command
+            processCommand(val, body);
+            
+            // Scroll to bottom
+            body.scrollTop = body.scrollHeight;
+        }
+    }
+
+    function processCommand(cmd, container) {
+        const print = (text, isHtml = false) => {
+            const line = document.createElement('div');
+            line.className = 'term-line';
+            if(isHtml) line.innerHTML = text; else line.innerText = text;
+            container.insertBefore(line, container.lastElementChild);
+        };
+
+        const args = cmd.split(' ');
+        const c = args[0].toLowerCase();
+
+        if (c === 'help') {
+            print("Available commands:");
+            print("  help      - Show this help message");
+            print("  clear     - Clear terminal screen");
+            print("  fetch     - Display system information");
+            print("  echo [txt]- Print text to screen");
+            print("  open [id] - Open an app by ID (e.g., open term)");
+            print("  calc      - Open Math Calculator");
+            print("  reboot    - Reload the OS");
+        } else if (c === 'clear') {
+             // Remove all previous siblings of input line
+             while(container.children.length > 1) {
+                 container.removeChild(container.firstChild);
+             }
+        } else if (c === 'echo') {
+            print(args.slice(1).join(' '));
+        } else if (c === 'reboot') {
+            location.reload();
+        } else if (c === 'calc') {
+            createWindow('gn', 'GN Math', `<iframe src="${atob('Li9tYXRoL2duLW1hdGguaHRtbA==')}"></iframe>`, 'fa-solid fa-calculator');
+            print("Launched Calculator.");
+        } else if (c === 'fetch') {
+             const fetchHtml = `
+             <div class="fetch-grid">
+                <i class="fa-brands fa-linux os-logo-icon"></i>
+                <div>
+                    <div><span style="color:#7aa2f7">OS:</span> EdulearnOS x86_64</div>
+                    <div><span style="color:#7aa2f7">Host:</span> Web Browser Engine</div>
+                    <div><span style="color:#7aa2f7">Kernel:</span> JavaScript V8</div>
+                    <div><span style="color:#7aa2f7">Uptime:</span> Forever</div>
+                    <div><span style="color:#7aa2f7">Packages:</span> 9 (npm)</div>
+                    <div><span style="color:#7aa2f7">Shell:</span> term-js</div>
+                    <div><span style="color:#7aa2f7">Resolution:</span> ${window.innerWidth}x${window.innerHeight}</div>
+                    <div><span style="color:#7aa2f7">Theme:</span> ${localStorage.getItem('edu_color_hex') || 'Default Blue'}</div>
+                </div>
+             </div>
+             `;
+             print(fetchHtml, true);
+        } else if (c === 'open') {
+             const appId = args[1];
+             const targetApp = apps.find(a => a.id === appId);
+             if(targetApp) {
+                 if(targetApp.isSystem) {
+                      if(appId === 'term') print("Terminal is already open.");
+                      if(appId === 'fs') openFilesApp();
+                 } else {
+                      createWindow(targetApp.id, targetApp.name, `<iframe src="${targetApp.url}"></iframe>`, targetApp.icon);
+                      print("Opened " + targetApp.name);
+                 }
+             } else {
+                 print("App not found: " + appId);
+             }
+        } else if (c === '') {
+            // do nothing
+        } else {
+            print(`Command not found: ${c}`);
+        }
+    }
+
+    // --- Files App Logic ---
+    function openFilesApp() {
+         if(openWindows['fs']) { focusWindow('fs'); return; }
+
+         const refreshFiles = () => {
+             const grid = document.getElementById('fs-grid');
+             if(!grid) return;
+             grid.innerHTML = '';
+             
+             if(virtualFiles.length === 0) {
+                 grid.innerHTML = '<div style="width:100%; text-align:center; padding:50px; color:#aaa;">No files imported yet.<br>Right-click desktop -> Import File</div>';
+                 return;
+             }
+
+             virtualFiles.forEach((file, idx) => {
+                 const fItem = document.createElement('div');
+                 fItem.className = 'file-item';
+                 fItem.innerHTML = `<i class="fa-solid fa-file-code file-icon"></i><span class="file-name">${file.name}</span>`;
+                 fItem.onclick = () => {
+                     // Open File Content
+                     const viewId = 'file-' + idx;
+                     let contentHtml = '';
+                     if(file.type.startsWith('image')) {
+                         contentHtml = `<img src="${file.content}" style="max-width:100%; max-height:100%;">`;
+                     } else {
+                         contentHtml = `<pre style="padding:10px; color:#333;">${file.name}</pre>`; // Placeholder for text
+                     }
+                     // Since we don't store full content in this demo, just show name
+                     alert("Opening " + file.name);
+                 };
+                 grid.appendChild(fItem);
+             });
+         };
+
+         const content = `
+             <div class="file-grid" id="fs-grid"></div>
+         `;
+         createWindow('fs', 'File Manager', content, 'fa-solid fa-folder-open');
+         setTimeout(refreshFiles, 100);
+    }
+
+    function processFileImport(input) {
+        const file = input.files[0];
+        if(!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+             virtualFiles.push({
+                 name: file.name,
+                 type: file.type,
+                 size: file.size,
+                 content: e.target.result // Data URL
+             });
+             localStorage.setItem('edu_files', JSON.stringify(virtualFiles));
+             alert("File Imported: " + file.name);
+             if(openWindows['fs']) {
+                 closeWindow('fs'); openFilesApp(); // Refresh
+             }
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // --- Music Player Logic ---
+    const audio = document.getElementById('os-audio');
+    const playBtn = document.getElementById('play-pause-btn');
+    const progBar = document.getElementById('progress-bar');
+    const progFill = document.getElementById('progress-fill');
+    const currTimeEl = document.getElementById('curr-time');
+    const durTimeEl = document.getElementById('dur-time');
+    const nowPlayingText = document.getElementById('now-playing-text');
+    const embedContainer = document.getElementById('embed-container');
+    const classicUI = document.getElementById('classic-player-ui');
+
+    function toggleMusicPlayer() {
+        document.getElementById('music-player').classList.toggle('active');
+    }
+
+    function playLofiRadio() {
+        // High quality Lofi Stream
+        const streamUrl = 'https://stream.zeno.fm/0r0xa792kwzuv';
+        loadAudio(streamUrl, 'Lofi Hip Hop Radio', 'Live Stream', 'https://i1.sndcdn.com/artworks-000587635607-ec88t7-t500x500.jpg');
+        embedContainer.style.display = 'none';
+        classicUI.style.display = 'block';
+    }
+
+    function loadAudio(url, title, artist, img) {
+        audio.src = url;
+        audio.play().catch(e => console.log("Autoplay blocked"));
+        nowPlayingText.innerText = title + " - " + artist;
+        updatePlayBtn(true);
+        
+        // Update notification if supported
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: title,
+                artist: artist,
+                artwork: [{ src: img, sizes: '512x512', type: 'image/jpeg' }]
+            });
+        }
+    }
+
+    function togglePlayState() {
+        if (audio.paused) {
+            audio.play();
+            updatePlayBtn(true);
+        } else {
+            audio.pause();
+            updatePlayBtn(false);
+        }
+    }
+
+    function updatePlayBtn(isPlaying) {
+        if(isPlaying) playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+        else playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+    }
+
+    function updateProgress() {
+        if (isNaN(audio.duration)) return;
+        const percent = (audio.currentTime / audio.duration) * 100;
+        progFill.style.width = percent + '%';
+        
+        currTimeEl.innerText = formatTime(audio.currentTime);
+        durTimeEl.innerText = formatTime(audio.duration);
+    }
+
+    function formatTime(s) {
+        if(!s || isNaN(s)) return "0:00";
+        const mins = Math.floor(s / 60);
+        const secs = Math.floor(s % 60);
+        return mins + ":" + (secs < 10 ? '0' : '') + secs;
+    }
+
+    function seekAudio(e) {
+        const width = progBar.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audio.duration;
+        audio.currentTime = (clickX / width) * duration;
+    }
+
+    function setVolume(val) {
+        audio.volume = val;
+    }
+
+    function skip(sec) {
+        audio.currentTime += sec;
     }
     
-    function updateTaskbarActive(id) {
-        // Remove focus from all
-        document.querySelectorAll('.taskbar-item').forEach(el => el.classList.remove('focused', 'active'));
+    function onAudioEnded() {
+        updatePlayBtn(false);
+        progFill.style.width = '0%';
+    }
+
+    // --- Search Music (iTunes API) ---
+    async function searchMusic() {
+        const query = document.getElementById('music-search-input').value;
+        if(!query) return;
+
+        const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(query)}&media=music&limit=5`);
+        const data = await res.json();
         
-        // Add active/focus to current
-        if(taskbarItems[id]) {
-            taskbarItems[id].classList.add('active', 'focused');
-        }
+        const list = document.getElementById('music-results');
+        list.innerHTML = '';
         
-        // Mark others as just active if open
-        Object.keys(openWindows).forEach(winId => {
-            if(winId !== id && taskbarItems[winId]) {
-                 taskbarItems[winId].classList.add('active');
-            }
+        data.results.forEach(song => {
+            const el = document.createElement('div');
+            el.className = 'song-result';
+            el.innerHTML = `
+                <img src="${song.artworkUrl60}" class="song-img">
+                <div class="song-info">
+                    <span class="song-name">${song.trackName}</span>
+                    <span class="song-artist">${song.artistName}</span>
+                </div>
+            `;
+            el.onclick = () => {
+                embedContainer.style.display = 'none';
+                classicUI.style.display = 'block';
+                loadAudio(song.previewUrl, song.trackName, song.artistName, song.artworkUrl100);
+            };
+            list.appendChild(el);
         });
     }
-    
-    function focusWindow(id) {
-        const win = openWindows[id];
-        if(!win) return;
-        
-        // If minimized, restore it first
-        if(win.classList.contains('minimized')) {
-             toggleMin(id);
-             return; 
-        }
-        
-        win.style.zIndex = ++zIndexCounter;
-        updateTaskbarActive(id);
-    }
 
-    function launch(app) {
-        if (openWindows[app.id]) {
-            focusWindow(app.id);
-            return;
-        }
-
-        if (app.id === 'fs') {
-            const win = createWindow(app.id, app.name, generateFileGridHTML(), app.icon);
-            win.querySelector('.window-body').oncontextmenu = (e) => {
-                if(e.target.closest('.file-item')) return;
-                e.preventDefault();
-                showContextMenu(e.clientX, e.clientY, 'fs-window');
-            };
-        } else if (app.id === 'term') {
-            createWindow(app.id, app.name, getTerminalHTML(), app.icon);
-            setTimeout(() => document.getElementById('term-input-field').focus(), 100);
+    // --- Direct Embed (SoundCloud / Tidal Handling) ---
+    function playDirect(url) {
+        if(!url) return;
+        
+        // Simple Iframe Embedder for SC
+        if(url.includes('soundcloud.com')) {
+            const embedUrl = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%230078d4&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true`;
+            embedContainer.innerHTML = `<iframe width="100%" height="150" scrolling="no" frameborder="no" allow="autoplay" src="${embedUrl}"></iframe>`;
+            embedContainer.style.display = 'block';
+            classicUI.style.display = 'none'; // Hide default player to avoid clash
+            audio.pause(); // Stop internal audio
+        } else if (url.endsWith('.mp3')) {
+            embedContainer.style.display = 'none';
+            classicUI.style.display = 'block';
+            loadAudio(url, "Direct Stream", "Unknown", "");
         } else {
-            const fullUrl = (app.url.includes('http') ? app.url : app.url + "?token=" + _0xKey);
-            let icon = app.icon || 'fa-solid fa-globe';
-            createWindow(app.id, app.name, `<iframe src="${fullUrl}"></iframe>`, icon);
+            alert("URL not directly supported. Try a .mp3 link or SoundCloud.");
         }
     }
 
-    // --- SNAP GRID LOGIC ---
-    function makeIconDraggable(elm, clickCallback) {
-        let isDragging = false;
-        let startX, startY, initialLeft, initialTop;
-        const gridX = 100; // Grid Size
-        const gridY = 100;
-        const offset = 30; // Margin
-
-        elm.onmousedown = function(e) {
-            if (e.button === 2) return; 
-            e.preventDefault(); isDragging = false;
-            startX = e.clientX; startY = e.clientY; initialLeft = elm.offsetLeft; initialTop = elm.offsetTop;
-            elm.style.zIndex = 50; 
-            
-            document.onmousemove = function(e) {
-                const dx = e.clientX - startX; const dy = e.clientY - startY;
-                if (Math.abs(dx) > 3 || Math.abs(dy) > 3) isDragging = true;
-                if (isDragging) { elm.style.left = (initialLeft + dx) + "px"; elm.style.top = (initialTop + dy) + "px"; }
-            };
-            
-            document.onmouseup = function() {
-                document.onmousemove = null; document.onmouseup = null; elm.style.zIndex = ""; 
-                if (!isDragging) {
-                    clickCallback();
-                } else {
-                    // SNAP LOGIC
-                    let currentLeft = elm.offsetLeft;
-                    let currentTop = elm.offsetTop;
-                    
-                    // Calculate nearest grid column/row
-                    let col = Math.round((currentLeft - offset) / gridX);
-                    let row = Math.round((currentTop - offset) / gridY);
-                    
-                    // Prevent negative coords
-                    if(col < 0) col = 0;
-                    if(row < 0) row = 0;
-                    
-                    // Apply Snap
-                    elm.style.left = (offset + col * gridX) + "px";
-                    elm.style.top = (offset + row * gridY) + "px";
-                }
-            };
-        };
-    }
-
-    function startDragWin(e, win) {
-        e.preventDefault(); 
-        if(e.target.closest('.control')) return;
-        const taskbar = document.getElementById('taskbar');
-        if (win.classList.contains('maximized') || win.classList.contains('snap-left') || win.classList.contains('snap-right')) {
-             const p = JSON.parse(win.dataset.oldPos);
-             win.classList.remove('maximized', 'snap-left', 'snap-right');
-             win.style.width = p.w; win.style.height = p.h;
-             win.style.left = (e.clientX - 425) + "px"; win.style.top = (e.clientY - 20) + "px";
-             taskbar.classList.remove('hidden');
-        }
-        const overlay = win.querySelector('.drag-overlay'); overlay.style.display = 'block';
-        let startX = e.clientX; let startY = e.clientY; let winLeft = win.offsetLeft; let winTop = win.offsetTop;
-        const snapBox = document.getElementById('snap-preview');
-        function onMouseMove(e) {
-            e.preventDefault();
-            const dx = e.clientX - startX; const dy = e.clientY - startY; const newTop = winTop + dy;
-            win.style.left = (winLeft + dx) + "px"; win.style.top = newTop + "px";
-            if ((newTop + win.offsetHeight) > window.innerHeight - 20) taskbar.classList.add('hidden');
-            else {
-                const hasVisibleMax = Object.values(openWindows).some(w => w !== win && w.classList.contains('maximized') && !w.classList.contains('minimized'));
-                if(!hasVisibleMax) taskbar.classList.remove('hidden');
-            }
-            if (e.clientY < 10) showSnap(0, 0, '100%', '100%');
-            else if (e.clientX < 10) showSnap(0, 0, '50%', '100%');
-            else if (e.clientX > window.innerWidth - 10) showSnap(0, '50%', '50%', '100%');
-            else snapBox.style.display = 'none';
-        }
-        function showSnap(top, left, width, height) {
-            snapBox.style.display = 'block'; snapBox.style.top = typeof top === 'number' ? top + 'px' : top;
-            snapBox.style.left = typeof left === 'number' ? left + 'px' : left; snapBox.style.width = width; snapBox.style.height = height;
-        }
-        function onMouseUp(e) {
-            document.removeEventListener('mousemove', onMouseMove); document.removeEventListener('mouseup', onMouseUp);
-            overlay.style.display = 'none'; snapBox.style.display = 'none';
-            if (e.clientY < 10) { win.classList.add('maximized'); toggleMax(win.id); taskbar.classList.add('hidden'); }
-            else if (e.clientX < 10) { win.classList.add('snap-left'); taskbar.classList.add('hidden'); }
-            else if (e.clientX > window.innerWidth - 10) { win.classList.add('snap-right'); taskbar.classList.add('hidden'); }
-        }
-        document.addEventListener('mousemove', onMouseMove); document.addEventListener('mouseup', onMouseUp);
-    }
-
-    function toggleMax(id) {
-        const win = openWindows[id];
-        const taskbar = document.getElementById('taskbar');
-        const musicIcon = document.getElementById('toggle-music');
-        win.classList.remove('snap-left', 'snap-right');
-        
-        if(!win.classList.contains('maximized')) {
-            // MAXIMIZING
-            win.dataset.oldPos = JSON.stringify({l: win.style.left, t: win.style.top, w: win.style.width, h: win.style.height});
-            win.classList.add('maximized'); 
-            taskbar.classList.add('hidden');
-            musicIcon.classList.add('hidden-ui'); // Hide music icon
-        } else {
-            // RESTORING
-            const p = JSON.parse(win.dataset.oldPos);
-            win.style.left = p.l; win.style.top = p.t; win.style.width = p.w; win.style.height = p.h;
-            win.classList.remove('maximized');
-            
-            // Check if any OTHER windows are maximized
-            const hasVisibleMax = Object.values(openWindows).some(w => w.classList.contains('maximized') && !w.classList.contains('minimized'));
-            if(!hasVisibleMax) {
-                taskbar.classList.remove('hidden');
-                musicIcon.classList.remove('hidden-ui'); // Show music icon
-            }
-        }
-    }
-
-    function toggleMin(id) { 
-        const win = openWindows[id];
-        const item = taskbarItems[id];
-        
-        // If window is currently focused and not minimized, minimize it
-        if (!win.classList.contains('minimized') && win.style.zIndex == zIndexCounter) {
-            win.classList.add('minimized');
-            item.classList.remove('focused');
-             // Show taskbar if it was hidden by max window
-            const hasVisibleMax = Object.values(openWindows).some(w => w.classList.contains('maximized') && !w.classList.contains('minimized'));
-            if(!hasVisibleMax) {
-                document.getElementById('taskbar').classList.remove('hidden');
-                document.getElementById('toggle-music').classList.remove('hidden-ui');
-            }
-            return;
-        }
-
-        // Otherwise restore/focus
-        win.classList.remove('minimized'); 
-        focusWindow(id);
-        
-        if(win.classList.contains('maximized')) {
-            document.getElementById('taskbar').classList.add('hidden');
-            document.getElementById('toggle-music').classList.add('hidden-ui');
-        } else {
-            document.getElementById('taskbar').classList.remove('hidden');
-        }
-    }
-
-    function closeWin(id) { 
-        const win = openWindows[id]; win.remove(); delete openWindows[id]; 
-        removeTaskbarItem(id);
-        const hasVisibleMax = Object.values(openWindows).some(w => w.classList.contains('maximized') && !w.classList.contains('minimized'));
-        if(!hasVisibleMax) {
-            document.getElementById('taskbar').classList.remove('hidden');
-            document.getElementById('toggle-music').classList.remove('hidden-ui');
-        }
-    }
-
+    // --- Modal Logic ---
     const modal = document.getElementById('custom-app-modal');
     function openModal() { modal.style.display = 'flex'; }
     function closeModal() { modal.style.display = 'none'; document.getElementById('app-name-input').value = ''; document.getElementById('app-url-input').value = ''; }
+    
     function saveCustomApp() {
-        const name = document.getElementById('app-name-input').value; let url = document.getElementById('app-url-input').value;
+        const name = document.getElementById('app-name-input').value;
+        let url = document.getElementById('app-url-input').value;
+        
         if (!name || !url) return alert("Please fill in all fields.");
-        if (!url.startsWith('http') && !url.startsWith('/') && !url.startsWith('./')) url = 'https://' + url;
+        
+        if (!url.startsWith('http') && !url.startsWith('/') && !url.startsWith('./')) {
+            url = 'https://' + url;
+        }
+
         apps.push({ id: 'custom-' + Date.now(), name: name, icon: 'fa-solid fa-link', url: url, isCustom: true });
         localStorage.setItem('customApps', JSON.stringify(apps.filter(a => a.isCustom)));
-        renderIcons(); closeModal();
+        renderIcons();
+        closeModal();
     }
 
-    setInterval(() => { 
-        document.getElementById('clock').innerText = new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' });
+    // --- Clock ---
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }, 1000);
-			</script>
+
+	</script>
 </body>
 
 </html>
