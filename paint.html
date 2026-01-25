@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pro Paint - Touch & Pen Support</title>
+    <style>
+        :root {
+            --bg-color: #12141d;
+            --panel-color: #1e2330;
+            --text-color: #dce1f0;
+            --accent-color: #3e8eff;
+            --accent-hover: #5a9eff;
+            --border-color: #2f364a;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none; /* Safari touch fix */
+        }
+
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            overscroll-behavior: none; /* Prevent pull-to-refresh on mobile */
+        }
+
+        /* --- SIDEBAR --- */
+        #toolbar {
+            width: 260px;
+            background-color: var(--panel-color);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-right: 1px solid var(--border-color);
+            box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+            z-index: 10;
+            overflow-y: auto; /* Allow scrolling toolbar on small screens */
+        }
+
+        h2 {
+            margin: 0 0 15px 0;
+            font-size: 20px;
+            text-align: center;
+            color: var(--accent-color);
+            letter-spacing: 1px;
+        }
+
+        /* Controls */
+        .control-group {
+            background: rgba(255,255,255,0.05);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #aab2c7;
+        }
+
+        /* Inputs */
+        input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+            accent-color: var(--accent-color);
+        }
+
+        /* Grid for Tools */
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        button {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: #2a3142;
+            color: var(--text-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            touch-action: manipulation; /* Improves touch response */
+        }
+
+        button:hover {
+            background: #353e52;
+            transform: translateY(-1px);
+        }
+
+        button.active {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(62, 142, 255, 0.4);
+        }
+
+        /* Toggle Switch for Pressure */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #aab2c7;
+            margin-bottom: 5px;
+        }
+        
+        /* Bottom Buttons */
+        .action-btns {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-bottom: 20px;
+        }
+
+        #undo-btn { background: #4a4a5e; }
+        #clear-btn { background: #5e3a3a; border-color: #7a4545; }
+        #save-btn { background: #2d5e38; border-color: #3b7a49; }
+
+        /* --- CANVAS --- */
+        #canvas-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0d0f16;
+            background-image: radial-gradient(#1a1e29 1px, transparent 1px);
+            background-size: 20px 20px;
+            padding: 20px;
+            overflow: hidden; /* Hide scrollbars */
+            touch-action: none; /* KEY: Disables browser zooming/panning on canvas area */
+        }
+
+        canvas {
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.7);
+            touch-action: none; /* Double insurance for touch */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toolbar">
+        <h2>Paint</h2>
+
+        <div class="control-group">
+            <label>Color Picker</label>
+            <input type="color" id="colorPicker" value="#000000">
+        </div>
+
+        <div class="tool-grid">
+            <button id="brushBtn" class="active">Brush</button>
+            <button id="eraserBtn">Eraser</button>
+            <button id="fillBtn">Bucket</button>
+            <button id="pickerBtn">Picker</button>
+        </div>
+
+        <div class="control-group">
+            <label>Size: <span id="sizeValue">10</span>px</label>
+            <input type="range" id="sizeSlider" min="1" max="100" value="10">
+        </div>
+
+        <div class="control-group">
+            <label>Opacity: <span id="opacityValue">100</span>%</label>
+            <input type="range" id="opacitySlider" min="1" max="100" value="100">
+        </div>
+
+        <div class="control-group">
+            <div class="toggle-row">
+                <span>Pen Pressure</span>
+                <input type="checkbox" id="pressureCheck" checked>
+            </div>
+            <label style="margin-top:10px;">Scatter: <span id="scatterValue">0</span></label>
+            <input type="range" id="scatterSlider" min="0" max="50" value="0">
+        </div>
+
+        <div class="action-btns">
+            <button id="undo-btn">Undo (Ctrl+Z)</button>
+            <button id="clear-btn">Clear Canvas</button>
+            <button id="save-btn">Save Image</button>
+        </div>
+    </div>
+
+    <div id="canvas-container">
+        <canvas id="drawingBoard"></canvas>
+    </div>
+
+    <script>
+        // --- CONFIGURATION ---
+        const canvas = document.getElementById('drawingBoard');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const container = document.getElementById('canvas-container');
+
+        // State
+        let isDrawing = false;
+        let lastX = 0, lastY = 0;
+        let brushColor = '#000000';
+        let brushSize = 10;
+        let brushOpacity = 1;
+        let scatterAmount = 0;
+        let currentTool = 'brush'; 
+        let usePressure = true;
+        
+        // Undo History
+        let history = [];
+        let historyStep = -1;
+        const MAX_HISTORY = 20;
+
+        // UI Elements
+        const els = {
+            color: document.getElementById('colorPicker'),
+            size: document.getElementById('sizeSlider'),
+            sizeVal: document.getElementById('sizeValue'),
+            opacity: document.getElementById('opacitySlider'),
+            opacityVal: document.getElementById('opacityValue'),
+            scatter: document.getElementById('scatterSlider'),
+            scatterVal: document.getElementById('scatterValue'),
+            pressure: document.getElementById('pressureCheck'),
+            btns: {
+                brush: document.getElementById('brushBtn'),
+                eraser: document.getElementById('eraserBtn'),
+                fill: document.getElementById('fillBtn'),
+                picker: document.getElementById('pickerBtn'),
+                undo: document.getElementById('undo-btn'),
+                clear: document.getElementById('clear-btn'),
+                save: document.getElementById('save-btn')
+            }
+        };
+
+        // --- SETUP ---
+        function resizeCanvas() {
+            if(historyStep === -1) {
+                // Initial Load
+                canvas.width = container.offsetWidth;
+                canvas.height = container.offsetHeight;
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                saveState();
+            }
+        }
+        window.addEventListener('load', resizeCanvas);
+
+        // --- UNDO SYSTEM ---
+        function saveState() {
+            historyStep++;
+            if (historyStep < history.length) history.length = historyStep;
+            history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+            if (history.length > MAX_HISTORY) {
+                history.shift();
+                historyStep--;
+            }
+        }
+
+        function undo() {
+            if (historyStep > 0) {
+                historyStep--;
+                ctx.putImageData(history[historyStep], 0, 0);
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+                e.preventDefault();
+                undo();
+            }
+        });
+
+        // --- DRAWING LOGIC (POINTER EVENTS) ---
+        // Pointer events handle Mouse, Touch, and Pen uniformly
+        
+        function getPointerPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top,
+                pressure: e.pressure // 0.0 to 1.0 (0.5 for mouse usually)
+            };
+        }
+
+        function handleStart(e) {
+            // Prevent default browser scrolling/zooming gestures
+            if(e.target === canvas) e.preventDefault(); 
+            
+            const pos = getPointerPos(e);
+
+            if (currentTool === 'fill') {
+                floodFill(Math.floor(pos.x), Math.floor(pos.y), hexToRgba(brushColor));
+                saveState();
+                return;
+            }
+
+            if (currentTool === 'picker') {
+                pickColor(pos.x, pos.y);
+                return;
+            }
+
+            isDrawing = true;
+            [lastX, lastY] = [pos.x, pos.y];
+            
+            // Draw initial dot (helps with tap-to-dot)
+            draw(e);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            if(e.target === canvas) e.preventDefault();
+
+            const pos = getPointerPos(e);
+            
+            // Pressure Calculation
+            // If pen is used, pressure is 0-1. If mouse, usually 0.5.
+            // If Pressure Checkbox is off, ignore pressure.
+            let pressureFactor = 1;
+            if (usePressure && e.pointerType === 'pen') {
+                pressureFactor = pos.pressure;
+            }
+
+            // Don't let pressure kill the line entirely
+            if (pressureFactor < 0.1) pressureFactor = 0.1;
+
+            const currentSize = brushSize * pressureFactor;
+
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.lineWidth = currentSize;
+            ctx.globalAlpha = brushOpacity;
+
+            if (currentTool === 'eraser') {
+                ctx.strokeStyle = '#ffffff';
+            } else {
+                ctx.strokeStyle = brushColor;
+            }
+
+            // Scatter Effect
+            if (scatterAmount > 0 && currentTool !== 'eraser') {
+                ctx.fillStyle = brushColor;
+                // Add more dots based on speed/pressure if desired, keeping simple here
+                const density = 5; 
+                for (let i = 0; i < density; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const radius = Math.random() * scatterAmount * pressureFactor; // Scatter spreads less with light pressure
+                    const sx = pos.x + Math.cos(angle) * radius;
+                    const sy = pos.y + Math.sin(angle) * radius;
+                    
+                    ctx.beginPath();
+                    // Dot size also scales with pressure
+                    ctx.arc(sx, sy, (brushSize / 4) * pressureFactor, 0, Math.PI * 2); 
+                    ctx.fill();
+                }
+                [lastX, lastY] = [pos.x, pos.y];
+            } else {
+                // Normal Line
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                // Use Coalesced Events for smoother curves on high-refresh pens if available
+                if (e.getCoalescedEvents) {
+                    for (let coalesced of e.getCoalescedEvents()) {
+                        const cPos = getPointerPos(coalesced);
+                        ctx.lineTo(cPos.x, cPos.y);
+                    }
+                } else {
+                    ctx.lineTo(pos.x, pos.y);
+                }
+                ctx.stroke();
+                [lastX, lastY] = [pos.x, pos.y];
+            }
+        }
+
+        function handleEnd(e) {
+            if (isDrawing) {
+                isDrawing = false;
+                ctx.beginPath();
+                saveState();
+            }
+        }
+
+        // --- TOOLS ---
+        function setTool(tool) {
+            currentTool = tool;
+            Object.values(els.btns).forEach(btn => btn.classList.remove('active'));
+            if(els.btns[tool]) els.btns[tool].classList.add('active');
+
+            if(tool === 'picker') canvas.style.cursor = 'copy';
+            else if(tool === 'fill') canvas.style.cursor = 'cell';
+            else canvas.style.cursor = 'crosshair';
+        }
+
+        function pickColor(x, y) {
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            const hex = "#" + ((1 << 24) + (pixel[0] << 16) + (pixel[1] << 8) + pixel[2]).toString(16).slice(1);
+            brushColor = hex;
+            els.color.value = hex;
+            setTool('brush');
+        }
+
+        function floodFill(startX, startY, fillColor) {
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+            const width = canvas.width;
+            const height = canvas.height;
+            const targetPos = (startY * width + startX) * 4;
+            const tr = data[targetPos], tg = data[targetPos + 1], tb = data[targetPos + 2], ta = data[targetPos + 3];
+
+            if (tr === fillColor[0] && tg === fillColor[1] && tb === fillColor[2] && ta === fillColor[3]) return;
+
+            const stack = [[startX, startY]];
+            while (stack.length) {
+                const [x, y] = stack.pop();
+                const pos = (y * width + x) * 4;
+                if (x < 0 || x >= width || y < 0 || y >= height) continue;
+                if (data[pos] === tr && data[pos+1] === tg && data[pos+2] === tb) {
+                    data[pos] = fillColor[0]; data[pos+1] = fillColor[1]; data[pos+2] = fillColor[2]; data[pos+3] = 255;
+                    stack.push([x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]);
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        function hexToRgba(hex) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return [r, g, b, 255];
+        }
+
+        // --- LISTENERS ---
+        // Use Pointer Events for unified Mouse/Touch/Pen support
+        canvas.addEventListener('pointerdown', handleStart);
+        window.addEventListener('pointermove', draw);
+        window.addEventListener('pointerup', handleEnd);
+        window.addEventListener('pointercancel', handleEnd);
+
+        els.color.addEventListener('input', (e) => brushColor = e.target.value);
+        els.size.addEventListener('input', (e) => { brushSize = e.target.value; els.sizeVal.textContent = brushSize; });
+        els.opacity.addEventListener('input', (e) => { brushOpacity = e.target.value / 100; els.opacityVal.textContent = e.target.value; });
+        els.scatter.addEventListener('input', (e) => { scatterAmount = parseInt(e.target.value); els.scatterVal.textContent = scatterAmount; });
+        els.pressure.addEventListener('change', (e) => usePressure = e.target.checked);
+
+        els.btns.brush.addEventListener('click', () => setTool('brush'));
+        els.btns.eraser.addEventListener('click', () => setTool('eraser'));
+        els.btns.fill.addEventListener('click', () => setTool('fill'));
+        els.btns.picker.addEventListener('click', () => setTool('picker'));
+        els.btns.undo.addEventListener('click', undo);
+        
+        els.btns.clear.addEventListener('click', () => {
+            if(confirm("Clear everything?")) {
+                ctx.fillStyle = "white";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                saveState();
+            }
+        });
+
+        els.btns.save.addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.download = 'art.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+
+    </script>
+</body>
+</html>

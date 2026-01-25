@@ -30,6 +30,10 @@
 			padding: 0;
 			box-sizing: border-box;
 			user-select: none;
+			cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 8 L16 24 M8 16 L24 16' stroke='white' stroke-width='3'/></svg>") 16 16, auto !important;
+        }
+		iframe {
+			cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 8 L16 24 M8 16 L24 16' stroke='white' stroke-width='3'/></svg>") 16 16, auto !important;
 		}
 
 		body {
@@ -40,8 +44,10 @@
 			height: 100vh;
 			overflow: hidden;
 			transition: background-image 0.5s ease-in-out;
-		}
+			
 
+		}
+		
 		/* --- BRANDING --- */
 		#os-brand {
 			position: fixed;
@@ -1174,6 +1180,12 @@
                 { id: 'fs', name: 'My Files', icon: 'fa-solid fa-folder-open', isSystem: true }, 
 				{ id: 'gc', name: 'Graphing', icon: 'fa-solid fa-chart-simple', url: atob('Li9ncmFwaGNhbGMuaHRtbA==') },
 				{ id: 'sp-prod', name: 'Super Productivity', icon: 'fa-solid fa-check-double', url: 'https://app.super-productivity.com' },
+				{ id: 'p', name: 'Paint', icon: 'fa-solid fa-palette', url: atob('Li9wYWludC5odG1s') },
+				{ id: 'mp', name: 'Music', icon: 'fa-solid fa-music', url: atob('Li9tdXNpY3BsYXllci5odG1s') },
+				{ id: 'pe', name: 'Python Runner', icon: 'fa-brands fa-python', url: atob('Li9weXRob25ydW5uZXIuaHRtbA==') },
+				{ id: 'je', name: 'Js Runner', icon: 'fa-brands fa-js', url: atob('Li9qc3J1bm5lci5odG1s') },
+				{ id: 'dc', name: 'Discord', icon: 'fa-brands fa-discord', url: atob('aHR0cHM6Ly9kaXNjb3JkLmdnL0VQbTVxbktrWU4=') },
+				{ id: 'cl', name: 'Changelog', icon: 'fa-solid fa-circle-info', url: atob('Li9pbmZvLmh0bWw=') },
 				// Added Files App
                 ...savedCustomApps
             ];
