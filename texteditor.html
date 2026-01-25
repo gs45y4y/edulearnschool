@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepBlue // Text Studio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&family=Courier+Prime&family=Dancing+Script&family=Fira+Code&family=Inter:wght@400;600&family=Lobster&family=Montserrat&family=Oswald&family=Playfair+Display&family=Roboto+Mono&family=Space+Grotesk&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0f172a;        /* Slate 950 */
+            --panel: #1e293b;     /* Slate 800 */
+            --border: #334155;    /* Slate 700 */
+            --accent: #38bdf8;    /* Sky 400 */
+            --text-main: #f1f5f9;
+            --text-sub: #94a3b8;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* --- TOOLBAR --- */
+        .toolbar {
+            height: 60px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .brand {
+            font-weight: 700;
+            color: var(--accent);
+            margin-right: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Controls */
+        select, .btn {
+            background: var(--bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 6px;
+            outline: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        select:hover, .btn:hover { border-color: var(--accent); }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            font-weight: 600;
+        }
+        .btn-primary:hover { opacity: 0.9; }
+
+        .divider { width: 1px; height: 25px; background: var(--border); margin: 0 5px; }
+
+        /* Font Selector */
+        #fontSelect { width: 180px; }
+
+        /* Font Size Slider */
+        .slider-group {
+            display: flex; align-items: center; gap: 10px;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+        }
+        input[type="range"] { accent-color: var(--accent); cursor: pointer; }
+
+        /* --- EDITOR AREA --- */
+        .editor-wrapper {
+            flex: 1;
+            position: relative;
+            background: var(--bg);
+        }
+
+        textarea {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            color: #e2e8f0;
+            border: none;
+            resize: none;
+            padding: 40px;
+            outline: none;
+            font-size: 16px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+        
+        /* Custom Scrollbar */
+        textarea::-webkit-scrollbar { width: 10px; }
+        textarea::-webkit-scrollbar-track { background: var(--bg); }
+        textarea::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+        textarea::-webkit-scrollbar-thumb:hover { background: var(--text-sub); }
+
+        /* --- STATUS FOOTER --- */
+        .statusbar {
+            height: 35px;
+            background: var(--panel);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            font-family: 'Inter', sans-serif; /* Keep status bar standard font */
+        }
+
+        .stats-group { display: flex; gap: 20px; }
+        .stat-item span { color: var(--text-main); font-weight: 600; }
+
+        /* Notification Toast */
+        .toast {
+            position: absolute;
+            bottom: 50px; right: 20px;
+            background: var(--accent);
+            color: var(--bg);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transform: translateY(100px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .toast.show { transform: translateY(0); }
+
+    </style>
+</head>
+<body>
+
+<div class="toolbar">
+    <div class="brand"><i class="fas fa-pen-nib"></i> Editor</div>
+    
+    <select id="fontSelect" onchange="changeFont()">
+        <optgroup label="Sans Serif">
+            <option value="'Inter', sans-serif">Inter (Default)</option>
+            <option value="'Montserrat', sans-serif">Montserrat</option>
+            <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+            <option value="Arial, sans-serif">Arial</option>
+        </optgroup>
+        <optgroup label="Serif">
+            <option value="'Playfair Display', serif">Playfair Display</option>
+            <option value="'Cinzel', serif">Cinzel (Cinematic)</option>
+            <option value="Georgia, serif">Georgia</option>
+        </optgroup>
+        <optgroup label="Monospace (Code)">
+            <option value="'Fira Code', monospace">Fira Code</option>
+            <option value="'Courier Prime', monospace">Courier Prime</option>
+            <option value="'Roboto Mono', monospace">Roboto Mono</option>
+        </optgroup>
+        <optgroup label="Creative">
+            <option value="'Lobster', cursive">Lobster</option>
+            <option value="'Dancing Script', cursive">Dancing Script</option>
+            <option value="'Oswald', sans-serif">Oswald (Bold)</option>
+        </optgroup>
+    </select>
+
+    <div class="slider-group">
+        <i class="fas fa-text-height"></i>
+        <input type="range" id="sizeSlider" min="12" max="48" value="16" oninput="changeSize()">
+    </div>
+
+    <div class="divider"></div>
+
+    <button class="btn" title="Uppercase" onclick="transformText('upper')">AA</button>
+    <button class="btn" title="Lowercase" onclick="transformText('lower')">aa</button>
+    <button class="btn" title="Clean Spaces" onclick="transformText('clean')"><i class="fas fa-broom"></i></button>
+    
+    <div style="flex:1"></div> <button class="btn" onclick="copyText()"><i class="fas fa-copy"></i> Copy</button>
+    <button class="btn btn-primary" onclick="downloadFile()"><i class="fas fa-save"></i> Save .txt</button>
+</div>
+
+<div class="editor-wrapper">
+    <textarea id="editor" placeholder="Start typing your masterpiece..." spellcheck="false"></textarea>
+    <div class="toast" id="toast">File Saved!</div>
+</div>
+
+<div class="statusbar">
+    <div class="stats-group">
+        <div class="stat-item">Words: <span id="wordCount">0</span></div>
+        <div class="stat-item">Chars: <span id="charCount">0</span></div>
+        <div class="stat-item">Reading Time: <span id="readTime">0 min</span></div>
+    </div>
+    <div id="saveStatus">Autosave ready</div>
+</div>
+
+<script>
+    const editor = document.getElementById('editor');
+    const wordCountDisplay = document.getElementById('wordCount');
+    const charCountDisplay = document.getElementById('charCount');
+    const readTimeDisplay = document.getElementById('readTime');
+    const statusMsg = document.getElementById('saveStatus');
+
+    // 1. Initialization: Load from LocalStorage
+    window.onload = () => {
+        const savedText = localStorage.getItem('deepblue_draft');
+        if (savedText) {
+            editor.value = savedText;
+            updateStats();
+        }
+    };
+
+    // 2. Statistics & Autosave Logic
+    editor.addEventListener('input', () => {
+        updateStats();
+        // Autosave to local storage
+        localStorage.setItem('deepblue_draft', editor.value);
+        statusMsg.innerText = "Saved locally";
+        setTimeout(() => statusMsg.innerText = "Ready", 1000);
+    });
+
+    function updateStats() {
+        const text = editor.value;
+        const charCount = text.length;
+        
+        // Better word counting (handles multiple spaces/newlines)
+        const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+        
+        // Approx reading time (200 words per minute)
+        const readTime = Math.ceil(wordCount / 200);
+
+        charCountDisplay.innerText = charCount;
+        wordCountDisplay.innerText = wordCount;
+        readTimeDisplay.innerText = readTime + " min";
+    }
+
+    // 3. Toolbar Functions
+    function changeFont() {
+        const font = document.getElementById('fontSelect').value;
+        editor.style.fontFamily = font;
+    }
+
+    function changeSize() {
+        const size = document.getElementById('sizeSlider').value;
+        editor.style.fontSize = size + 'px';
+    }
+
+    // 4. Misc Tools
+    function transformText(type) {
+        const start = editor.selectionStart;
+        const end = editor.selectionEnd;
+        const text = editor.value;
+        
+        // If selection exists, modify selection. Otherwise modify all.
+        const selectedText = text.substring(start, end) || text;
+        let newText = "";
+
+        if (type === 'upper') newText = selectedText.toUpperCase();
+        if (type === 'lower') newText = selectedText.toLowerCase();
+        if (type === 'clean') newText = selectedText.replace(/\s+/g, ' ').trim();
+
+        if (start !== end) {
+            // Replace selection
+            editor.setRangeText(newText);
+        } else {
+            // Replace all
+            editor.value = newText;
+        }
+        // Trigger stats update
+        updateStats();
+    }
+
+    function copyText() {
+        editor.select();
+        document.execCommand('copy');
+        showToast("Copied to Clipboard");
+        // Deselect
+        window.getSelection().removeAllRanges();
+    }
+
+    // 5. Save as .txt
+    function downloadFile() {
+        const text = editor.value;
+        if (!text) {
+            showToast("Nothing to save!");
+            return;
+        }
+
+        const blob = new Blob([text], { type: "text/plain" });
+        const anchor = document.createElement("a");
+        
+        // Generate timestamp for filename
+        const date = new Date();
+        const filename = `note_${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}.txt`;
+        
+        anchor.href = URL.createObjectURL(blob);
+        anchor.download = filename;
+        anchor.click();
+        
+        URL.revokeObjectURL(anchor.href);
+        showToast("File Downloaded");
+    }
+
+    // Helper: Toast Notification
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+</script>
+</body>
+</html>
