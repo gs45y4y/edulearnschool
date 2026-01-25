@@ -31,7 +31,8 @@
 			box-sizing: border-box;
 			user-select: none;
 			cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 8 L16 24 M8 16 L24 16' stroke='white' stroke-width='3'/></svg>") 16 16, auto !important;
-        }
+		}
+
 		iframe {
 			cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 8 L16 24 M8 16 L24 16' stroke='white' stroke-width='3'/></svg>") 16 16, auto !important;
 		}
@@ -44,10 +45,10 @@
 			height: 100vh;
 			overflow: hidden;
 			transition: background-image 0.5s ease-in-out;
-			
+
 
 		}
-		
+
 		/* --- BRANDING --- */
 		#os-brand {
 			position: fixed;
@@ -1319,8 +1320,8 @@
                     
                     // Add context menu for apps
                     div.addEventListener('contextmenu', (e) => {
-                         // Optional: could add specific app context menu here
-                         e.stopPropagation();
+                        e.stopPropagation();
+                        showContextMenu(e, 'app', app);
                     });
 
                     desktop.appendChild(div);
@@ -1670,9 +1671,6 @@
                 
                 let html = '';
                 if (type === 'desktop') {
-                    if(payload && payload.isCustom) {
-                        html += `<div class="ctx-item" onclick="deleteCustomApp()"><i class="fa-solid fa-trash" style="color:#FF5F57"></i> Delete App</div>`;
-                    }
                     html += `<div class="ctx-item" onclick="document.getElementById('file-uploader').click()"><i class="fa-solid fa-file-import" style="color:#28C840"></i> Import File</div>`;
                     html += `<div class="ctx-item" onclick="window.open('https://google.com', '_blank')"><i class="fa-solid fa-up-right-from-square" style="color:var(--accent-color)"></i> New Tab</div>`;
                 } else if (type === 'taskbar') {
@@ -1684,6 +1682,14 @@
                 } else if (type === 'files') {
                     // Fix: Add import button to file context menu
                     html += `<div class="ctx-item" onclick="document.getElementById('file-uploader').click()"><i class="fa-solid fa-file-import" style="color:#28C840"></i> Import File</div>`;
+                } else if (type === 'app') {
+                    // Add "Open" option
+                    html += `<div class="ctx-item" onclick="createWindow('${payload.id}', '${payload.name}', '<iframe src=\\'${payload.url}\\'></iframe>', '${payload.icon}')"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open</div>`;
+                    
+                    // If it's a custom app, add "Delete" option
+                    if (payload.isCustom) {
+                        html += `<div class="ctx-item" onclick="deleteCustomApp('${payload.id}')"><i class="fa-solid fa-trash" style="color:#FF5F57"></i> Delete App</div>`;
+                    }
                 }
                 menu.innerHTML = html;
             }
@@ -1861,6 +1867,21 @@
                 localStorage.setItem('customApps', JSON.stringify(apps.filter(a => a.isCustom)));
                 renderIcons();
                 closeModal();
+            }
+
+            function deleteCustomApp(id) {
+                if(!confirm("Are you sure you want to delete this app?")) return;
+
+                // Remove from the running apps list
+                apps = apps.filter(a => a.id !== id);
+
+                // Update LocalStorage
+                const customAppsOnly = apps.filter(a => a.isCustom);
+                localStorage.setItem('customApps', JSON.stringify(customAppsOnly));
+
+                // Re-render desktop and close menu
+                renderIcons();
+                document.getElementById('context-menu').style.display = 'none';
             }
 
 		</script>
