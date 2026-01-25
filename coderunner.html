@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>DeepBlue // Multi-Lang Runner</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+
+	<style>
+		:root {
+			--bg: #0f172a;
+			/* Slate 950 */
+			--panel: #1e293b;
+			/* Slate 800 */
+			--border: #334155;
+			/* Slate 700 */
+			--accent: #3b82f6;
+			/* Blue 500 */
+			--text-main: #f1f5f9;
+			--text-sub: #94a3b8;
+			--code-font: 'Consolas', 'Monaco', monospace;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			background-color: var(--bg);
+			color: var(--text-main);
+			font-family: 'Segoe UI', system-ui, sans-serif;
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
+
+		/* --- TOOLBAR --- */
+		.toolbar {
+			height: 60px;
+			background: var(--panel);
+			border-bottom: 1px solid var(--border);
+			display: flex;
+			align-items: center;
+			padding: 0 20px;
+			gap: 15px;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+			z-index: 10;
+		}
+
+		.brand {
+			font-weight: 800;
+			font-size: 1.1rem;
+			letter-spacing: -0.5px;
+			color: var(--text-main);
+			margin-right: 10px;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.brand span {
+			color: var(--accent);
+		}
+
+		/* Instructions Label */
+		.instructions {
+			font-size: 0.85rem;
+			color: var(--text-sub);
+			border-left: 1px solid var(--border);
+			padding-left: 15px;
+		}
+
+		/* Language Select */
+		.lang-select {
+			background: var(--bg);
+			color: white;
+			border: 1px solid var(--border);
+			padding: 8px 12px;
+			border-radius: 6px;
+			outline: none;
+			cursor: pointer;
+			font-family: inherit;
+			min-width: 160px;
+		}
+
+		.lang-select:hover {
+			border-color: var(--accent);
+		}
+
+		/* Actions */
+		.btn-run {
+			background: var(--accent);
+			color: white;
+			border: none;
+			padding: 8px 20px;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: 0.2s;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-weight: 600;
+			margin-left: auto;
+		}
+
+		.btn-run:hover {
+			background: #2563eb;
+		}
+
+		.btn-run.disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+			background: var(--panel);
+		}
+
+		/* Python Status */
+		.status-indicator {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			font-size: 0.8rem;
+			color: var(--text-sub);
+		}
+
+		.dot {
+			width: 8px;
+			height: 8px;
+			background: #ef4444;
+			border-radius: 50%;
+		}
+
+		.dot.ready {
+			background: #22c55e;
+			box-shadow: 0 0 8px #22c55e;
+		}
+
+		.dot.loading {
+			background: #eab308;
+			animation: pulse 1s infinite;
+		}
+
+		/* --- LAYOUT --- */
+		.workspace {
+			flex: 1;
+			display: flex;
+			overflow: hidden;
+		}
+
+		.editor-pane {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			border-right: 1px solid var(--border);
+		}
+
+		.pane-header {
+			padding: 8px 15px;
+			font-size: 0.75rem;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			background: rgba(0, 0, 0, 0.2);
+			color: var(--text-sub);
+			border-bottom: 1px solid var(--border);
+		}
+
+		textarea {
+			flex: 1;
+			background: var(--bg);
+			color: #e2e8f0;
+			border: none;
+			resize: none;
+			padding: 20px;
+			font-family: var(--code-font);
+			font-size: 14px;
+			line-height: 1.6;
+			outline: none;
+		}
+
+		.output-pane {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+			background: #0b1120;
+		}
+
+		#console {
+			flex: 1;
+			padding: 20px;
+			overflow-y: auto;
+			font-family: var(--code-font);
+			font-size: 13px;
+		}
+
+		#previewFrame {
+			flex: 1;
+			border: none;
+			background: white;
+			display: none;
+		}
+
+		/* Logs */
+		.log {
+			margin-bottom: 4px;
+			word-wrap: break-word;
+		}
+
+		.log-out {
+			color: var(--text-main);
+		}
+
+		.log-err {
+			color: #f87171;
+			background: rgba(248, 113, 113, 0.1);
+			padding: 2px 5px;
+		}
+
+		.log-sys {
+			color: var(--accent);
+			font-style: italic;
+			margin-top: 10px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+			padding-top: 5px;
+		}
+
+		@keyframes pulse {
+			0% {
+				opacity: 0.5;
+			}
+
+			50% {
+				opacity: 1;
+			}
+
+			100% {
+				opacity: 0.5;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="toolbar">
+		<div class="brand"><i class="fas fa-code"></i> Code<span>Runner</span></div>
+
+		<select class="lang-select" id="langSelect" onchange="switchLang()">
+        <option value="" disabled selected>Select Language...</option>
+        <option value="js">JavaScript (Node Style)</option>
+        <option value="py">Python 3.11 </option>
+        <option value="html">HTML5</option>
+    </select>
+
+		<div class="instructions">
+			Select a language to load the runtime environment.
+		</div>
+
+		<div class="status-indicator" id="pyStatus" style="display:none">
+			<div class="dot loading" id="pyDot"></div>
+			<span id="pyText">Loading Python...</span>
+		</div>
+
+		<button class="btn-run disabled" id="runBtn" onclick="runCode()">
+        <i class="fas fa-play"></i> Run Code
+    </button>
+	</div>
+
+	<div class="workspace">
+		<div class="editor-pane">
+			<div class="pane-header">Code Editor</div>
+			<textarea id="editor" spellcheck="false" placeholder="Please select a language from the toolbar to begin..."></textarea>
+		</div>
+
+		<div class="output-pane">
+			<div class="pane-header">Console / Output</div>
+			<div id="console"></div>
+			<iframe id="previewFrame"></iframe>
+		</div>
+	</div>
+
+	<script>
+		const editor = document.getElementById('editor');
+    const consoleDiv = document.getElementById('console');
+    const previewFrame = document.getElementById('previewFrame');
+    const langSelect = document.getElementById('langSelect');
+    const runBtn = document.getElementById('runBtn');
+    
+    let pyodide = null;
+    let isPyReady = false;
+
+    // Code Presets
+    const TEMPLATES = {
+        welcome: `/* WELCOME TO POLY-RUN
+   ===================
+   This is a client-side multi-language code runner.
+   
+   1. Select a language from the dropdown above.
+   2. The environment (Python/JS) will load instantly.
+   3. Press "Run Code" to execute.
+
+   Privacy Note: Code runs locally in your browser. 
+   Nothing is sent to a server.
+*/`,
+        js: `// JavaScript Playground
+console.log("JS Runtime Active");
+
+const users = [
+    { name: "Alice", role: "Dev" },
+    { name: "Bob", role: "Designer" }
+];
+
+users.forEach(u => {
+    console.log(\`User: \${u.name} | Role: \${u.role}\`);
+});`,
+
+        py: `# Python 3.11 Environment
+import sys
+
+print("Python Runtime Active")
+print(f"Version: {sys.version}")
+print("-" * 30)
+
+def greet(name):
+    return f"Hello, {name}!"
+
+print(greet("Developer"))`,
+
+        html: `<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #eff6ff; }
+        h1 { color: #2563eb; }
+        p { color: #475569; }
+        button { padding: 10px 20px; background: #2563eb; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <h1>HTML Preview</h1>
+    <p>This renders directly in the iframe below.</p>
+    <button onclick="alert('JavaScript inside HTML works too!')">Test Interaction</button>
+</body>
+</html>`
+    };
+
+    // Load Welcome Message
+    window.onload = () => {
+        editor.value = TEMPLATES.welcome;
+    };
+
+    // Switch Language Logic
+    async function switchLang() {
+        const lang = langSelect.value;
+        if (!lang) return;
+
+        // 1. Update Editor Content
+        editor.value = TEMPLATES[lang];
+        
+        // 2. Reset UI
+        consoleDiv.style.display = 'block';
+        previewFrame.style.display = 'none';
+        consoleDiv.innerHTML = '';
+        document.getElementById('pyStatus').style.display = 'none';
+        runBtn.classList.remove('disabled');
+
+        // 3. Logic per language
+        if (lang === 'py') {
+            document.getElementById('pyStatus').style.display = 'flex';
+            if (!pyodide) {
+                runBtn.classList.add('disabled'); // Disable until loaded
+                initPython();
+            } else if (!isPyReady) {
+                runBtn.classList.add('disabled');
+            }
+        } 
+        else if (lang === 'html') {
+            consoleDiv.style.display = 'none';
+            previewFrame.style.display = 'block';
+            runCode(); // Auto-render HTML
+        }
+    }
+
+    // Python Loader
+    async function initPython() {
+        if (pyodide) return;
+        try {
+            log("Initializing Python Engine...", "sys");
+            pyodide = await loadPyodide({
+                stdout: (t) => log(t, "out"),
+                stderr: (t) => log(t, "err")
+            });
+            isPyReady = true;
+            document.getElementById('pyDot').className = "dot ready";
+            document.getElementById('pyText').innerText = "Python Ready";
+            runBtn.classList.remove('disabled');
+            log("Python Loaded Successfully.", "sys");
+        } catch (err) {
+            log("Error loading Python: " + err, "err");
+            document.getElementById('pyDot').style.background = "red";
+            document.getElementById('pyText').innerText = "Load Failed";
+        }
+    }
+
+    // Runner Engine
+    async function runCode() {
+        if (runBtn.classList.contains('disabled')) return;
+        
+        const lang = langSelect.value;
+        const code = editor.value;
+
+        if (lang !== 'html') consoleDiv.innerHTML = '';
+
+        try {
+            if (lang === 'js') {
+                executeJS(code);
+            } else if (lang === 'py') {
+                await pyodide.runPythonAsync(code);
+            } else if (lang === 'html') {
+                renderHTML(code);
+            }
+        } catch (err) {
+            log(err.toString(), "err");
+        }
+    }
+
+    // JS Execution Wrapper
+    function executeJS(code) {
+        const originalLog = console.log;
+        const originalErr = console.error;
+        console.log = (...args) => log(args.join(' '), "out");
+        console.error = (...args) => log(args.join(' '), "err");
+        try {
+            eval(code);
+        } catch (e) {
+            log(e, "err");
+        } finally {
+            console.log = originalLog;
+            console.error = originalErr;
+        }
+    }
+
+    // HTML Renderer
+    function renderHTML(code) {
+        const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+        doc.open();
+        doc.write(code);
+        doc.close();
+    }
+
+    // Logger Utility
+    function log(msg, type) {
+        const div = document.createElement('div');
+        div.className = `log log-${type}`;
+        div.innerText = msg;
+        consoleDiv.appendChild(div);
+        consoleDiv.scrollTop = consoleDiv.scrollHeight;
+    }
+	</script>
+</body>
+
+</html>
