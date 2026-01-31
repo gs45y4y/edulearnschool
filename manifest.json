@@ -1,0 +1,28 @@
+{
+  "name": "EduLearn Platform",
+  "short_name": "EduLearn",
+  "description": "Your access to online courses and learning materials.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2196F3",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./edulearn.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./edulearn.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "./edulearn.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
