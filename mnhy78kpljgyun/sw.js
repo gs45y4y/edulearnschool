@@ -71,7 +71,7 @@ self.addEventListener("fetch", (event) => {
     // Apply blocklist only to user requests
     if (isBlocked(url)) {
         console.warn("Blocked request to:", url);
-        event.respondWith(new Response("Blocked by service worker | Stop SK1DDING / G00NING ", { status: 403 }));
+        event.respondWith(new Response("Blocked by service worker", { status: 403 }));
         return;
     }
 
@@ -119,7 +119,7 @@ scramjet.addEventListener("request", async (e) => {
     // Apply blocklist to Scramjet requests too
     if (isBlocked(e.url)) {
         console.warn("Scramjet blocked request to:", e.url);
-        e.response = new Response("Blocked by service worker", { status: 403 });
+        e.response = new Response("Blocked by service worker | Stop SK1DDINg / G00NING, and go touch some 🌿", { status: 403 });
         return;
     }
 
