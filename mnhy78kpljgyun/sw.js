@@ -22,17 +22,16 @@ const BLOCKED_KEYWORDS = [
     'educational.sbs',
     'educational.cyou',
     'educational.cfd',
-    'farhan.com',
-    'r34.com',
-    'porn.com',
+    'farhan',
+    'r34',
+    'porn',
     'pornhub.com',
-    'jayeshbetter.com',
+    'jayesh better',
     'xvideos.com',
     'slushy.com',
     'onlyfans.com',
     'xxx',
-    'livienneporn.com',
-    'legofornite.com'
+    'livienne porn'
     
     
     
