@@ -18,6 +18,8 @@
 			/* Slate 700 */
 			--accent: #3b82f6;
 			/* Blue 500 */
+			--accent-sec: #8b5cf6;
+			/* Purple 500 */
 			--text-main: #f1f5f9;
 			--text-sub: #94a3b8;
 			--code-font: 'Consolas', 'Monaco', monospace;
@@ -92,6 +94,12 @@
 		}
 
 		/* Actions */
+		.btn-group {
+			margin-left: auto;
+			display: flex;
+			gap: 10px;
+		}
+
 		.btn-run {
 			background: var(--accent);
 			color: white;
@@ -104,11 +112,19 @@
 			align-items: center;
 			gap: 8px;
 			font-weight: 600;
-			margin-left: auto;
 		}
 
 		.btn-run:hover {
 			background: #2563eb;
+		}
+
+		/* Specific style for the new tab button */
+		.btn-tab {
+			background: var(--accent-sec);
+		}
+
+		.btn-tab:hover {
+			background: #7c3aed;
 		}
 
 		.btn-run.disabled {
@@ -248,11 +264,11 @@
 		<div class="brand"><i class="fas fa-code"></i> Code<span>Runner</span></div>
 
 		<select class="lang-select" id="langSelect" onchange="switchLang()">
-        <option value="" disabled selected>Select Language...</option>
-        <option value="js">JavaScript (Node Style)</option>
-        <option value="py">Python 3.11 </option>
-        <option value="html">HTML5</option>
-    </select>
+            <option value="" disabled selected>Select Language...</option>
+            <option value="js">JavaScript (Node Style)</option>
+            <option value="py">Python 3.11 </option>
+            <option value="html">HTML5</option>
+        </select>
 
 		<div class="instructions">
 			Select a language to load the runtime environment.
@@ -263,9 +279,15 @@
 			<span id="pyText">Loading Python...</span>
 		</div>
 
-		<button class="btn-run disabled" id="runBtn" onclick="runCode()">
-        <i class="fas fa-play"></i> Run Code
-    </button>
+		<div class="btn-group">
+			<button class="btn-run btn-tab" id="newTabBtn" onclick="openNewTab()" style="display:none">
+                <i class="fas fa-external-link-alt"></i> Open New Tab
+            </button>
+
+			<button class="btn-run disabled" id="runBtn" onclick="runCode()">
+                <i class="fas fa-play"></i> Run Code
+            </button>
+		</div>
 	</div>
 
 	<div class="workspace">
@@ -283,17 +305,18 @@
 
 	<script>
 		const editor = document.getElementById('editor');
-    const consoleDiv = document.getElementById('console');
-    const previewFrame = document.getElementById('previewFrame');
-    const langSelect = document.getElementById('langSelect');
-    const runBtn = document.getElementById('runBtn');
-    
-    let pyodide = null;
-    let isPyReady = false;
+        const consoleDiv = document.getElementById('console');
+        const previewFrame = document.getElementById('previewFrame');
+        const langSelect = document.getElementById('langSelect');
+        const runBtn = document.getElementById('runBtn');
+        const newTabBtn = document.getElementById('newTabBtn'); // Ref to new button
+        
+        let pyodide = null;
+        let isPyReady = false;
 
-    // Code Presets
-    const TEMPLATES = {
-        welcome: `/* WELCOME TO POLY-RUN
+        // Code Presets
+        const TEMPLATES = {
+            welcome: `/* WELCOME TO POLY-RUN
    ===================
    This is a client-side multi-language code runner.
    
@@ -304,7 +327,7 @@
    Privacy Note: Code runs locally in your browser. 
    Nothing is sent to a server.
 */`,
-        js: `// JavaScript Playground
+            js: `// JavaScript Playground
 console.log("JS Runtime Active");
 
 const users = [
@@ -316,7 +339,7 @@ users.forEach(u => {
     console.log(\`User: \${u.name} | Role: \${u.role}\`);
 });`,
 
-        py: `# Python 3.11 Environment
+            py: `# Python 3.11 Environment
 import sys
 
 print("Python Runtime Active")
@@ -328,7 +351,7 @@ def greet(name):
 
 print(greet("Developer"))`,
 
-        html: `<!DOCTYPE html>
+            html: `<!DOCTYPE html>
 <html>
 <head>
     <style>
@@ -345,120 +368,143 @@ print(greet("Developer"))`,
     <button onclick="alert('JavaScript inside HTML works too!')">Test Interaction</button>
 </body>
 </html>`
-    };
+        };
 
-    // Load Welcome Message
-    window.onload = () => {
-        editor.value = TEMPLATES.welcome;
-    };
+        // Load Welcome Message
+        window.onload = () => {
+            editor.value = TEMPLATES.welcome;
+        };
 
-    // Switch Language Logic
-    async function switchLang() {
-        const lang = langSelect.value;
-        if (!lang) return;
+        // Switch Language Logic
+        async function switchLang() {
+            const lang = langSelect.value;
+            if (!lang) return;
 
-        // 1. Update Editor Content
-        editor.value = TEMPLATES[lang];
-        
-        // 2. Reset UI
-        consoleDiv.style.display = 'block';
-        previewFrame.style.display = 'none';
-        consoleDiv.innerHTML = '';
-        document.getElementById('pyStatus').style.display = 'none';
-        runBtn.classList.remove('disabled');
-
-        // 3. Logic per language
-        if (lang === 'py') {
-            document.getElementById('pyStatus').style.display = 'flex';
-            if (!pyodide) {
-                runBtn.classList.add('disabled'); // Disable until loaded
-                initPython();
-            } else if (!isPyReady) {
-                runBtn.classList.add('disabled');
-            }
-        } 
-        else if (lang === 'html') {
-            consoleDiv.style.display = 'none';
-            previewFrame.style.display = 'block';
-            runCode(); // Auto-render HTML
-        }
-    }
-
-    // Python Loader
-    async function initPython() {
-        if (pyodide) return;
-        try {
-            log("Initializing Python Engine...", "sys");
-            pyodide = await loadPyodide({
-                stdout: (t) => log(t, "out"),
-                stderr: (t) => log(t, "err")
-            });
-            isPyReady = true;
-            document.getElementById('pyDot').className = "dot ready";
-            document.getElementById('pyText').innerText = "Python Ready";
+            // 1. Update Editor Content
+            editor.value = TEMPLATES[lang];
+            
+            // 2. Reset UI
+            consoleDiv.style.display = 'block';
+            previewFrame.style.display = 'none';
+            consoleDiv.innerHTML = '';
+            document.getElementById('pyStatus').style.display = 'none';
             runBtn.classList.remove('disabled');
-            log("Python Loaded Successfully.", "sys");
-        } catch (err) {
-            log("Error loading Python: " + err, "err");
-            document.getElementById('pyDot').style.background = "red";
-            document.getElementById('pyText').innerText = "Load Failed";
-        }
-    }
 
-    // Runner Engine
-    async function runCode() {
-        if (runBtn.classList.contains('disabled')) return;
-        
-        const lang = langSelect.value;
-        const code = editor.value;
-
-        if (lang !== 'html') consoleDiv.innerHTML = '';
-
-        try {
-            if (lang === 'js') {
-                executeJS(code);
-            } else if (lang === 'py') {
-                await pyodide.runPythonAsync(code);
-            } else if (lang === 'html') {
-                renderHTML(code);
+            // 3. Handle specific button visibility
+            if (lang === 'html') {
+                newTabBtn.style.display = 'flex'; // Show new tab button
+            } else {
+                newTabBtn.style.display = 'none'; // Hide it for others
             }
-        } catch (err) {
-            log(err.toString(), "err");
+
+            // 4. Logic per language
+            if (lang === 'py') {
+                document.getElementById('pyStatus').style.display = 'flex';
+                if (!pyodide) {
+                    runBtn.classList.add('disabled'); // Disable until loaded
+                    initPython();
+                } else if (!isPyReady) {
+                    runBtn.classList.add('disabled');
+                }
+            } 
+            else if (lang === 'html') {
+                consoleDiv.style.display = 'none';
+                previewFrame.style.display = 'block';
+                runCode(); // Auto-render HTML
+            }
         }
-    }
 
-    // JS Execution Wrapper
-    function executeJS(code) {
-        const originalLog = console.log;
-        const originalErr = console.error;
-        console.log = (...args) => log(args.join(' '), "out");
-        console.error = (...args) => log(args.join(' '), "err");
-        try {
-            eval(code);
-        } catch (e) {
-            log(e, "err");
-        } finally {
-            console.log = originalLog;
-            console.error = originalErr;
+        // Open in New Tab Logic
+        function openNewTab() {
+            const code = editor.value;
+            // open() creates a new window/tab (browser preference)
+            const win = window.open();
+            
+            if (win) {
+                // Write the editor content directly to the new document
+                win.document.open();
+                win.document.write(code);
+                win.document.close();
+            } else {
+                alert('Popup blocked! Please allow popups for this site to open the new tab.');
+            }
         }
-    }
 
-    // HTML Renderer
-    function renderHTML(code) {
-        const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
-        doc.open();
-        doc.write(code);
-        doc.close();
-    }
+        // Python Loader
+        async function initPython() {
+            if (pyodide) return;
+            try {
+                log("Initializing Python Engine...", "sys");
+                pyodide = await loadPyodide({
+                    stdout: (t) => log(t, "out"),
+                    stderr: (t) => log(t, "err")
+                });
+                isPyReady = true;
+                document.getElementById('pyDot').className = "dot ready";
+                document.getElementById('pyText').innerText = "Python Ready";
+                runBtn.classList.remove('disabled');
+                log("Python Loaded Successfully.", "sys");
+            } catch (err) {
+                log("Error loading Python: " + err, "err");
+                document.getElementById('pyDot').style.background = "red";
+                document.getElementById('pyText').innerText = "Load Failed";
+            }
+        }
 
-    // Logger Utility
-    function log(msg, type) {
-        const div = document.createElement('div');
-        div.className = `log log-${type}`;
-        div.innerText = msg;
-        consoleDiv.appendChild(div);
-        consoleDiv.scrollTop = consoleDiv.scrollHeight;
-    }
+        // Runner Engine
+        async function runCode() {
+            if (runBtn.classList.contains('disabled')) return;
+            
+            const lang = langSelect.value;
+            const code = editor.value;
+
+            if (lang !== 'html') consoleDiv.innerHTML = '';
+
+            try {
+                if (lang === 'js') {
+                    executeJS(code);
+                } else if (lang === 'py') {
+                    await pyodide.runPythonAsync(code);
+                } else if (lang === 'html') {
+                    renderHTML(code);
+                }
+            } catch (err) {
+                log(err.toString(), "err");
+            }
+        }
+
+        // JS Execution Wrapper
+        function executeJS(code) {
+            const originalLog = console.log;
+            const originalErr = console.error;
+            console.log = (...args) => log(args.join(' '), "out");
+            console.error = (...args) => log(args.join(' '), "err");
+            try {
+                eval(code);
+            } catch (e) {
+                log(e, "err");
+            } finally {
+                console.log = originalLog;
+                console.error = originalErr;
+            }
+        }
+
+        // HTML Renderer
+        function renderHTML(code) {
+            const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+            doc.open();
+            doc.write(code);
+            doc.close();
+        }
+
+        // Logger Utility
+        function log(msg, type) {
+            const div = document.createElement('div');
+            div.className = `log log-${type}`;
+            div.innerText = msg;
+            consoleDiv.appendChild(div);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
 	</script>
 </body>
 
