@@ -68,7 +68,7 @@ self.addEventListener("fetch", (event) => {
     // Apply blocklist only to user requests
     if (isBlocked(url)) {
         console.warn("Blocked request to:", url);
-        event.respondWith(new Response("Blocked by service worker", { status: 403 }));
+        event.respondWith(new Response("Blocked by service worker | Stop SK1DDING / G00NING ", { status: 403 }));
         return;
     }
 
