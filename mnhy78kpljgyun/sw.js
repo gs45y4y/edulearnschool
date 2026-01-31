@@ -28,8 +28,9 @@ const BLOCKED_DOMAINS = [
     "educational.cyou",
     "educational.cfd",
     "educational.sbs",
-    "pornhub.com",
-    "xvideos.com"
+    "xvideos.com",
+    "legofornite.com",
+    "pornhub.com"
 ];
 
 const BLOCKED_KEYWORDS = [
@@ -39,15 +40,22 @@ const BLOCKED_KEYWORDS = [
     "xxx"
 ];
 
+// Only block **user-requested URLs**, ignore proxy scripts or Scramjet itself
 function isBlocked(url) {
     try {
         const u = new URL(url);
+
+        // Ignore requests to our proxy scripts / service worker paths
+        if (u.pathname.startsWith(basePath)) return false;
+
+        // Block forbidden domains
         if (BLOCKED_DOMAINS.includes(u.hostname)) return true;
+
+        // Block forbidden keywords in URL
         const lcUrl = url.toLowerCase();
         return BLOCKED_KEYWORDS.some(keyword => lcUrl.includes(keyword));
     } catch {
-        // Block invalid URLs just in case
-        return true;
+        return false; // don't block invalid URLs blindly
     }
 }
 
@@ -57,6 +65,7 @@ function isBlocked(url) {
 self.addEventListener("fetch", (event) => {
     const url = event.request.url;
 
+    // Apply blocklist only to user requests
     if (isBlocked(url)) {
         console.warn("Blocked request to:", url);
         event.respondWith(new Response("Blocked by service worker", { status: 403 }));
@@ -104,7 +113,7 @@ setTimeout(() => {
 // Scramjet request handler
 // --------------------
 scramjet.addEventListener("request", async (e) => {
-    // Blocklist for Scramjet requests too
+    // Apply blocklist to Scramjet requests too
     if (isBlocked(e.url)) {
         console.warn("Scramjet blocked request to:", e.url);
         e.response = new Response("Blocked by service worker", { status: 403 });
