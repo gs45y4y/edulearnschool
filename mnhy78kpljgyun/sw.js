@@ -30,7 +30,10 @@ const BLOCKED_DOMAINS = [
     "educational.sbs",
     "xvideos.com",
     "legofornite.com",
-    "pornhub.com"
+    "pornhub.com",
+    "edulearn-school.global.ssl.fastly.net",
+    "besteducational.global.ssl.fastly.net",
+    "global.ssl.fastly.net"
 ];
 
 const BLOCKED_KEYWORDS = [
