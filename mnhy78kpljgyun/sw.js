@@ -4,33 +4,24 @@
 // Any URL containing these words will be blocked immediately.
 
 const BANNED_KEYWORDS = [
-  'Jayesh',
-  'jayesh',
-  'jayesh20',
-  'porn',
-  'pornhub',
   'edulearnschool.vercel.app',
-  'view-page-source',
   'view-page-source.com',
   'educational.sbs',
   'educational.cyou',
   'educational.cfd',
-  'farhan',
-  'r34',
-  'porn',
   'pornhub.com',
-  'jayesh better',
+  'jayesh.com',
   'xvideos.com',
   'slushy.com',
   'onlyfans.com',
-  'xxx',
-  'livienne porn',
-  'xxxpornxxx',
-  'lego fornite xbox',
-  'lego fortnite',
-  'nudes',
+  'xxx.com',
+  'livienneporn.com',
+  'xxxpornxxx.com',
+  'fortnite.com',
+  'legofortnite.com',
+  'nudes.com',
   'celebrityporn.com',
-  'black nigg'
+  
 
 
     
