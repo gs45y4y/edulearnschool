@@ -87,3 +87,5 @@ Yes. It is designed as a learning hub and unblocking tool in school environments
 - **genizy/breadbb** – GN-Math developer  
 - **RHW** – Scramjet-static integration  
 - **Albie** – Main domain buyer
+*If we missed you in the credits, feel free to contact vibec3der at `fernproxys3@proton.me`*
+**Send all DMCA's to Genizy (GN-math owner) because all of the games are imported from there**
