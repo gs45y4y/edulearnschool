@@ -4,6 +4,11 @@ let zoneFrame = document.getElementById('zoneFrame');
 const searchBar = document.getElementById('searchBar');
 const sortOptions = document.getElementById('sortOptions');
 const filterOptions = document.getElementById('filterOptions');
+
+// --- SETTINGS STATE: Default OFF (False) for performance ---
+// Only becomes true if user specifically set it to 'true' in localStorage
+let showImages = localStorage.getItem('edulearn_images') === 'true';
+
 // https://www.jsdelivr.com/tools/purge
 const zonesurls = [
     "https://cdn.jsdelivr.net/%67%68/%67%6e%2d%6d%61%74%68/%61%73%73%65%74%73@%6d%61%69%6e/%7a%6f%6e%65%73%2e%6a%73%6f%6e",
@@ -17,12 +22,27 @@ const htmlURL = "https://cdn.jsdelivr.net/gh/gn-math/html@main";
 let zones = [];
 let popularityData = {};
 const featuredContainer = document.getElementById('featuredZones');
+
 function toTitleCase(str) {
   return str.replace(
     /\w\S*/g,
     text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()
   );
 }
+
+// --- NEW TOGGLE FUNCTION ---
+function toggleImages() {
+    showImages = !showImages;
+    localStorage.setItem('edulearn_images', showImages);
+    
+    // Clear featured container to force re-render in sortZones
+    featuredContainer.innerHTML = ""; 
+    sortZones(); 
+    
+    // Re-trigger settings click to update the button text
+    document.getElementById('settings').click();
+}
+
 async function listZones() {
     try {
       let sharesponse;
@@ -81,7 +101,7 @@ async function listZones() {
                             popup.style.boxShadow = "0px 0px 10px rgba(0,0,0,0.1)";
                             popup.style.fontFamily = "Arial, sans-serif";
                             
-                            popup.innerHTML = `Play more games at <a href="https://gn-math.github.io" target="_blank" style="color:#004085; font-weight:bold;">https://gn-math.github.io</a>!`;
+                            popup.innerHTML = `Play more games at <a href="https://edulearnschool.vercel.app" target="_blank" style="color:#004085; font-weight:bold;">https://gn-math.github.io</a>!`;
                             
                             const closeBtn = document.createElement("button");
                             closeBtn.innerText = "?";
@@ -137,6 +157,7 @@ async function listZones() {
         container.innerHTML = `Error loading zones: ${error}`;
     }
 }
+
 async function fetchPopularity() {
     try {
         const response = await fetch("https://data.jsdelivr.com/v1/stats/packages/gh/gn-math/html@main/files?period=year");
@@ -163,6 +184,8 @@ function sortZones() {
         zones.sort((a, b) => (popularityData[b.id] || 0) - (popularityData[a.id] || 0));
     }
     zones.sort((a, b) => (a.id === -1 ? -1 : b.id === -1 ? 1 : 0));
+    
+    // Logic updated: If showImages was toggled, we force cleared innerHTML, so this runs
     if (featuredContainer.innerHTML === "") {
         const featured = zones.filter(z => z.featured);
         displayFeaturedZones(featured);
@@ -176,12 +199,19 @@ function displayFeaturedZones(featuredZones) {
         const zoneItem = document.createElement("div");
         zoneItem.className = "zone-item";
         zoneItem.onclick = () => openZone(file);
-        const img = document.createElement("img");
-        img.dataset.src = file.cover.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-        img.alt = file.name;
-        img.loading = "lazy";
-        img.className = "lazy-zone-img";
-        zoneItem.appendChild(img);
+        
+        // --- OPTIMIZATION: Only render img if enabled ---
+        if (showImages) {
+            const img = document.createElement("img");
+            img.dataset.src = file.cover.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
+            img.alt = file.name;
+            img.loading = "lazy";
+            img.className = "lazy-zone-img";
+            zoneItem.appendChild(img);
+        } else {
+            zoneItem.classList.add('text-only');
+        }
+
         const button = document.createElement("button");
         button.textContent = file.name;
         button.onclick = (event) => {
@@ -191,43 +221,55 @@ function displayFeaturedZones(featuredZones) {
         zoneItem.appendChild(button);
         featuredContainer.appendChild(zoneItem);
     });
+    
     if (featuredContainer.innerHTML === "") {
         featuredContainer.innerHTML = "No featured zones found.";
     } else {
         document.getElementById("allZonesSummary").textContent = `Featured Zones (${featuredZones.length})`;
     }
 
-    const lazyImages = document.querySelectorAll('#featuredZones img.lazy-zone-img');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !zoneViewer.hidden) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove("lazy-zone-img");
-                observer.unobserve(img);
-            }
+    // Only attach observer if we have images
+    if (showImages) {
+        const lazyImages = document.querySelectorAll('#featuredZones img.lazy-zone-img');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !zoneViewer.hidden) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove("lazy-zone-img");
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: "100px", 
+            threshold: 0.1
         });
-    }, {
-        rootMargin: "100px", 
-        threshold: 0.1
-    });
 
-    lazyImages.forEach(img => {
-        imageObserver.observe(img);
-    });
+        lazyImages.forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
 }
+
 function displayZones(zones) {
     container.innerHTML = "";
     zones.forEach((file, index) => {
         const zoneItem = document.createElement("div");
         zoneItem.className = "zone-item";
         zoneItem.onclick = () => openZone(file);
-        const img = document.createElement("img");
-        img.dataset.src = file.cover.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
-        img.alt = file.name;
-        img.loading = "lazy";
-        img.className = "lazy-zone-img";
-        zoneItem.appendChild(img);
+        
+        // --- OPTIMIZATION: Only render img if enabled ---
+        if (showImages) {
+            const img = document.createElement("img");
+            img.dataset.src = file.cover.replace("{COVER_URL}", coverURL).replace("{HTML_URL}", htmlURL);
+            img.alt = file.name;
+            img.loading = "lazy";
+            img.className = "lazy-zone-img";
+            zoneItem.appendChild(img);
+        } else {
+            zoneItem.classList.add('text-only');
+        }
+
         const button = document.createElement("button");
         button.textContent = file.name;
         button.onclick = (event) => {
@@ -237,30 +279,34 @@ function displayZones(zones) {
         zoneItem.appendChild(button);
         container.appendChild(zoneItem);   
     });
+    
     if (container.innerHTML === "") {
         container.innerHTML = "No zones found.";
     } else {
         document.getElementById("allSummary").textContent = `All Zones (${zones.length})`;
     }
 
-    const lazyImages = document.querySelectorAll('img.lazy-zone-img');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !zoneViewer.hidden) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove("lazy-zone-img");
-                observer.unobserve(img);
-            }
+    // Only attach observer if we have images
+    if (showImages) {
+        const lazyImages = document.querySelectorAll('img.lazy-zone-img');
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !zoneViewer.hidden) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove("lazy-zone-img");
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: "100px", 
+            threshold: 0.1
         });
-    }, {
-        rootMargin: "100px", 
-        threshold: 0.1
-    });
 
-    lazyImages.forEach(img => {
-        imageObserver.observe(img);
-    });
+        lazyImages.forEach(img => {
+            imageObserver.observe(img);
+        });
+    }
 }
 
 function filterZones2() {
@@ -610,8 +656,16 @@ const settings = document.getElementById('settings');
 settings.addEventListener('click', () => {
     document.getElementById('popupTitle').textContent = "Settings";
     const popupBody = document.getElementById('popupBody');
+    
+    const imageStatus = showImages ? "ON (Click to Disable)" : "OFF (Click to Enable)";
+    const btnColor = showImages ? 'var(--primary)' : 'var(--text-muted)'; // Uses CSS variables
+
     popupBody.innerHTML = `
     <button class="settings-button" onclick="darkMode()">Toggle Dark Mode</button>
+    <br><br>
+    <button class="settings-button" onclick="toggleImages()" style="background: ${btnColor}">
+        Images: ${imageStatus}
+    </button>
     <br><br>
     <button class="settings-button" onclick="tabCloak()">Tab Cloak</button>
     <br>
@@ -636,10 +690,10 @@ function loadPrivacy() {
     popupBody.innerHTML = `
         <div style="max-height: 60vh; overflow-y: auto;">
             <h2>PRIVACY POLICY</h2>
-            <p>Last updated April 17, 2025</p>
-            <p>This Privacy Notice for gn-math ("we," "us," or "our"), describes how and why we might access, collect, store, use, and/or share ("process") your personal information when you use our services ("Services"), including when you:</p>
+            <p>Last updated Jan 31, 2026</p>
+            <p>This Privacy Notice for Edulearn ("we," "us," or "our"), describes how and why we might access, collect, store, use, and/or share ("process") your personal information when you use our services ("Services"), including when you:</p>
             <ul>
-                <li>Visit our website at <a href="https://gn-math.github.io">https://gn-math.github.io</a>, or any website of ours that links to this Privacy Notice</li>
+                <li>Visit our website at <a href="https://edulearnschool.vercel.app">https://edulearnschool.vercel.app</a>, or any website of ours that links to this Privacy Notice</li>
                 <li>Engage with us in other related ways, including any sales, marketing, or events</li>
             </ul>
             <p>Questions or concerns? Reading this Privacy Notice will help you understand your privacy rights and choices. We are responsible for making decisions about how your personal information is processed. If you do not agree with our policies and practices, please do not use our Services. If you still have any questions or concerns, please contact us at <a href="https://discord.gg/NAFw4ykZ7n">https://discord.gg/NAFw4ykZ7n</a>.</p>
@@ -679,14 +733,14 @@ function loadDMCA() {
             </p>
             <ol>
                 <li>
-                    <a href="https://discord.gg/D4c9VFYWyU" target="_blank" rel="noopener noreferrer">
+                    <a href="https://discord.gg/EPm5qnKkYN" target="_blank" rel="noopener noreferrer">
                         Join the Discord
-                    </a> and DM <strong>breadbb</strong> or ping me in a public channel 
+                    </a> and DM <strong>hackercat</strong> or ping me in a public channel 
                     <strong>[INSTANT RESPONSE]</strong>
                 </li>
                 <li>
                     Email me at 
-                    <a href="mailto:gn.math.business@gmail.com">gn.math.business@gmail.com</a> 
+                    <a href="mailto:fernproxys3@proton.me">fernproxys3@proton.me</a> 
                     with the subject starting with <code>!DMCA</code>.
                     <strong>[DELAYED RESPONSE]</strong>
                 </li>

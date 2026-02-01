@@ -10,7 +10,7 @@
             --bg-overlay: rgba(0, 0, 0, 0.6);
             --modal-bg: #0f172a;      /* Slate 900 */
             --border: #334155;        /* Slate 700 */
-            --accent: #3b82f6;        /* Blue 500 */
+            --accent: #007AFF;        /* iOS Blue */
             --text-main: #f8fafc;
             --text-sub: #94a3b8;
         }
@@ -20,8 +20,9 @@
         body {
             margin: 0;
             height: 100vh;
-            /* Simulates looking at a desktop behind the popup */
-            background: linear-gradient(135deg, #1e293b, #0f172a); 
+            /* Ocean Wave background to match the new theme */
+            background: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2000&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
             font-family: 'Inter', -apple-system, sans-serif;
             display: flex;
             align-items: center;
@@ -29,19 +30,31 @@
             overflow: hidden;
             
             /* The Cool Cursor */
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewport="0 0 24 24" fill="%233b82f6"><path d="M5.5 3.21l12.32 12.32-4.52 1.13 3.97 6.88-2.6 1.5-3.97-6.88-3.48 3.48L5.5 3.21z"/></svg>'), auto;
+            cursor: default;
+        }
+        
+        /* Dark overlay for readability */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+            z-index: -1;
         }
 
         /* --- THE POP-UP --- */
         .modal {
-            width: 380px;
-            background: var(--modal-bg);
+            width: 400px;
+            background: rgba(15, 23, 42, 0.85); /* Glassy dark modal */
+            backdrop-filter: blur(20px);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             padding: 0;
             position: relative;
             animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: center;
         }
 
         .modal-header {
@@ -54,7 +67,7 @@
         }
 
         .modal-title {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: var(--text-main);
             display: flex;
@@ -63,20 +76,22 @@
         }
         
         .version-tag {
-            background: rgba(59, 130, 246, 0.2);
-            color: var(--accent);
-            font-size: 0.7rem;
-            padding: 2px 8px;
+            background: rgba(0, 122, 255, 0.2);
+            color: #60a5fa;
+            font-size: 0.75rem;
+            padding: 4px 10px;
             border-radius: 12px;
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            border: 1px solid rgba(0, 122, 255, 0.3);
+            font-weight: 500;
         }
 
         .close-icon {
             color: var(--text-sub);
             cursor: pointer;
             transition: 0.2s;
+            font-size: 1.2rem;
         }
-        .close-icon:hover { color: #fff; }
+        .close-icon:hover { color: #fff; transform: scale(1.1); }
 
         /* --- THE LIST --- */
         .feature-list {
@@ -95,21 +110,22 @@
         }
         
         .list-item:last-child { border-bottom: none; }
-        .list-item:hover { background: rgba(255,255,255,0.03); }
+        .list-item:hover { background: rgba(255,255,255,0.05); }
 
         .icon-box {
-            width: 36px; height: 36px;
-            border-radius: 10px;
-            background: rgba(30, 41, 59, 0.5);
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            background: rgba(30, 41, 59, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 1.1rem;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .item-content { flex: 1; }
-        .item-title { font-size: 0.9rem; font-weight: 500; color: var(--text-main); margin-bottom: 2px; }
-        .item-desc { font-size: 0.8rem; color: var(--text-sub); }
+        .item-title { font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin-bottom: 3px; }
+        .item-desc { font-size: 0.85rem; color: var(--text-sub); line-height: 1.3; }
 
         /* --- FOOTER --- */
         .modal-footer {
@@ -117,25 +133,28 @@
             background: rgba(0,0,0,0.2);
             text-align: right;
             border-top: 1px solid var(--border);
+            border-radius: 0 0 20px 20px;
         }
 
         .btn-dismiss {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-sub);
-            padding: 8px 16px;
-            border-radius: 6px;
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
+            font-weight: 500;
             transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
         }
         .btn-dismiss:hover {
-            border-color: var(--text-main);
-            color: var(--text-main);
+            background: #0062cc;
+            transform: translateY(-1px);
         }
 
         @keyframes popIn {
-            from { opacity: 0; transform: scale(0.9) translateY(10px); }
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
     </style>
@@ -145,68 +164,59 @@
 <div class="modal">
     <div class="modal-header">
         <div class="modal-title">
-            EdulearnOS <span class="version-tag">v2.0.5</span>
+            What's New <span class="version-tag">V3.0.0 BETA</span>
         </div>
         <i class="fas fa-times close-icon" onclick="closeModal()"></i>
     </div>
 
     <ul class="feature-list">
         <li class="list-item">
-            <div class="icon-box" style="color: #a78bfa"><i class="fas fa-image"></i></div>
+            <div class="icon-box" style="color: #60a5fa"><i class="fas fa-water"></i></div>
             <div class="item-content">
-                <div class="item-title"> More Wallpapers</div>
-                <div class="item-desc">Backgrounds & Themes</div>
+                <div class="item-title">Ocean Glass UI</div>
+                <div class="item-desc">Brand new iOS-style frosted glass theme with dynamic ocean wallpaper.</div>
             </div>
         </li>
 
         <li class="list-item">
-            <div class="icon-box" style="color: #f472b6"><i class="fas fa-palette"></i></div>
+            <div class="icon-box" style="color: #34d399"><i class="fas fa-tachometer-alt"></i></div>
             <div class="item-content">
-                <div class="item-title">Studio Paint</div>
-                <div class="item-desc">fun</div>
+                <div class="item-title">Performance Mode</div>
+                <div class="item-desc">New toggle in Settings to disable game images for faster loading on slow devices.</div>
             </div>
         </li>
 
         <li class="list-item">
-            <div class="icon-box" style="color: #34d399"><i class="fas fa-music"></i></div>
+            <div class="icon-box" style="color: #fbbf24"><i class="fas fa-bolt"></i></div>
             <div class="item-content">
-                <div class="item-title">Music</div>
-                <div class="item-desc">Listen to some lo-fi beats. </div>
+                <div class="item-title">Zero Lag Scrolling</div>
+                <div class="item-desc">Optimized CSS blur effects to hit smooth 60fps even on Chromebooks.</div>
             </div>
         </li>
 
         <li class="list-item">
-            <div class="icon-box" style="color: #60a5fa"><i class="fas fa-code"></i></div>
+            <div class="icon-box" style="color: #f472b6"><i class="fas fa-tools"></i></div>
             <div class="item-content">
-                <div class="item-title">Runners</div>
-                <div class="item-desc">Python & JS runners</div>
-            </div>
-        </li>
-        
-        <li class="list-item">
-            <div class="icon-box" style="color: #fbbf24"><i class="fas fa-mouse-pointer"></i></div>
-            <div class="item-content">
-                <div class="item-title">Even more stuff</div>
-                <div class="item-desc">Check it out! </div>
+                <div class="item-title">System Fixes</div>
+                <div class="item-desc">Fixed broken settings buttons, search filters, and loading bars.</div>
             </div>
         </li>
     </ul>
 
     <div class="modal-footer">
-        <button class="btn-dismiss" onclick="closeModal()">Dismiss</button>
+        <button class="btn-dismiss" onclick="closeModal()">Got it</button>
     </div>
 </div>
 
 <script>
     function closeModal() {
         const modal = document.querySelector('.modal');
+        modal.style.transition = 'all 0.3s ease';
         modal.style.opacity = '0';
-        modal.style.transform = 'scale(0.9)';
+        modal.style.transform = 'scale(0.95) translateY(10px)';
         setTimeout(() => {
-            // In a real OS, this would close the window. 
-            // Here we just hide the body content for effect.
-            document.body.style.display = 'none';
-        }, 200);
+            document.body.style.display = 'none'; // Closes "window" in this demo context
+        }, 300);
     }
 </script>
 

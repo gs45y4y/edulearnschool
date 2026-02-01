@@ -1,101 +1,88 @@
-<!-- _____      _         _                           
-|  ___|  __| | _   _ | |  ___   __ _  _ __  _ __  
-| |__   / _` || | | || | / _ \ / _` || '__|| '_ \ 
-|  __| | (_| || |_| || ||  __/| (_| || |   | | | |
-| |___  \__,_| \__,_||_| \___| \__,_||_|   |_| |_|
-|_____|           
--->
-# EDULEARN V2.0.67:
+# edulearnOS 3.0.0 (Beta Channel)
 
-You CAN deploy to Vercel, Netlify, GitHub Pages, Cloudflare Pages OR you can CNAME https://edulearnschool.vercel.app
+![EdulearnOS with the "Wave"  wallpaper](./imgs/example.png)
 
-<div align="center">
-
-<img src="https://github.com/POX-dev/edulearnschool/blob/main/edulearn.png?raw=true" alt="EduLearn" width="50" height="50" />
-
-<p> Made with Html, CSS, and Js <p>
-
-</div>
-
-<div align="center">
-    <h2>Get Started</h2>
-    To get started, press one of the buttons below to deploy EduLearn
-    <br>
-    <br>
-    <a href="https://vercel.com/new/clone?repository-url=https://github.com/POX-dev/edulearnschool"><img height="30px" src="https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a>
-    <a href="https://app.netlify.com/start/deploy?repository=https://github.com/POX-dev/edulearnschool"><img height="30px" src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white"></a>
-    <a href="https://dash.cloudflare.com/pages/new"><img height="30px" src="https://img.shields.io/badge/Cloudflare_Pages-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white"></a>
-    <a href="https://github.com/POX-dev/edulearnschool/settings/pages"><img height="30px" src="https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=GitHub&logoColor=white"></a>
-    <br>
-    <br>
-    Or
-    <br>
-    <br>
-    <a href="#manual-deployment"><img src="https://img.shields.io/badge/terminal-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white" alt="Terminal"></img></a>
-</div>
-
-## Discord Server
-
-[![Discord invite](https://invidget.switchblade.xyz/EPm5qnKkYN?theme=dark)](https://discord.gg/EPm5qnKkYN)
+*EdulearnOS with the "Wave" wallpaper*
 
 ---
 
-## Overview
+## What's New in 3.0.0 Beta
 
-- [Features](#features)
-- [To GitHub](#to-github)
-- [FAQ](#faq)
-- [Credits](#credits)
+- **Revamped interface:** Modern glassy, iPhone-style UI for faster navigation.
+- **Glassy search & shortcuts:** Non-laggy, visually appealing layout.
+- **Updated tools page:** Auto-loads all tools with a clean grid.
+- **Image gallery:** Browse images in `./imgs/` with modal previews.
+- **Performance improvements:** Optimized for static hosts like Vercel, Netlify, and GitHub Pages.
+- **Security reminder:** Copy URLs carefully; mispelling passwords may redirect to a warning page for IT spy prevention.
+
+---
+
+## Deployment Options
+
+You can deploy edulearnOS on multiple static hosting platforms:
+
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/new/clone?repository-url=https://github.com/POX-dev/edulearnschool)  
+[![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://app.netlify.com/start/deploy?repository=https://github.com/POX-dev/edulearnschool)  
+[![Cloudflare Pages](https://img.shields.io/badge/Cloudflare_Pages-F38020?style=for-the-badge&logo=Cloudflare&logoColor=white)](https://dash.cloudflare.com/pages/new)  
+[![GitHub Pages](https://img.shields.io/badge/GitHub_Pages-222222?style=for-the-badge&logo=GitHub&logoColor=white)](https://github.com/POX-dev/edulearnschool/settings/pages)
+
+Or deploy manually via terminal:  
+[![Terminal](https://img.shields.io/badge/terminal-%23121011.svg?style=for-the-badge&logo=gnu-bash&logoColor=white)](#manual-deployment)
+
+---
+
+## Discord Server
+
+Join our community for support, updates, and discussions:  
+[![Discord invite](https://invidget.switchblade.xyz/EPm5qnKkYN?theme=dark)](https://discord.gg/EPm5qnKkYN)
 
 ---
 
 ## Features
 
-**EduLearn** is the best unblocking hub for students, featuring:
+**EdulearnOS** is a fast, unblocking hub for students, featuring:
 
-* **Proxy:** High-speed unblocking for unrestricted access.
-* **GN-Math:** A massive library of specialized content, including:
-    * YouTube mobile ports (Bowmasters, Magic Tiles 3, Flappy Dunk, Hill Climb Racing, etc.)
-    * Drive Mad (Poki Version - 200 levels)
-    * 3D Titles (Cheese Chompers 3D, Bad Parenting)
-    * Horror & Classics (All FNAFs, A Bite at Freddy's, Bendy and the Ink Machine)
-    * Modern Hits (Buckshot Roulette, That's Not My Neighbor, Class of '09, Webfishing)
-    * Retro & PC Ports (Half-Life, Quake III, Speedstars Steam Ver.)
-    * Multiplayer & Indie (R.E.P.O. 1-world, Ultrakill, People Playground, Do Not Take This Cat Home)
-* **Custom Software:** Specialized tools to fetch and integrate almost any title.
-* **Static Site:** Optimized for lightning-fast deployment on static hosts.
+- **Proxy:** High-speed unblocking for unrestricted access.  
+- **GN-Math Library:**  
+  - YouTube mobile ports (Bowmasters, Magic Tiles 3, Flappy Dunk, Hill Climb Racing, etc.)  
+  - Drive Mad (Poki Version – 200 levels)  
+  - 3D titles (Cheese Chompers 3D, Bad Parenting)  
+  - Horror & Classics (All FNAFs, Bendy and the Ink Machine)  
+  - Modern hits, Retro & PC ports, Multiplayer & Indie games  
+- **Custom Software:** Tools for fetching and integrating almost any title.  
+- **Static Site Optimized:** Fully optimized for static hosts, minimal lag.  
 
 ---
 
-## To GitHub
+## Usage
 
-**PLEASE DO NOT DMCA THIS REPOSITORY.**
-No game assets or intellectual property are hosted directly within this repository. All game files found here are original code and configurations developed by **genizy/breadbb**.
+1. **Search:** Use the search bar to find content.  
+2. **Shortcuts:** Add custom shortcuts for your favorite sites or tools.  
+3. **Tools Page:** Access the system tools page to launch utilities.  
+4. **Image Gallery:** Browse and view images in `./imgs/`.  
+
+> ⚠️ **Warning:** Make sure not to misspell the password. You may be redirected to a warning page to prevent IT spies.
 
 ---
 
 ## FAQ
 
-**Can I deploy to static hosts?**
-Yes. This version is fully optimized for static deployment on platforms like Vercel, Netlify, and Cloudflare Pages.
+**Can I deploy to static hosts?**  
+Yes! Fully optimized for Vercel, Netlify, GitHub Pages, and Cloudflare Pages.
 
-**How do I access the stuff through the site?**
-Go to the search bar in classlink and search for "vibecoded" exactly how it's written 
-here. You should then be able to access the launcher.
+**How do I access launcher content?**  
+Search for "vibecoded" exactly as written in Classlink.
 
-**Where is the Discord?**
-You can join our community for updates, support, and links [here](https://discord.gg/EPm5qnKkYN).
-
-**Is this for school use?**
-Yes, EduLearn is designed as a premier learning hub and unblocking tool for school environments.
+**Is edulearnOS safe for school?**  
+Yes. It is designed as a learning hub and unblocking tool in school environments.
 
 ---
 
 ## Credits
 
-* **Neo** - Lead Developers & Creators
-* **Claude, Chatgpt, Gemini, etc** - Stupid AI we had to use
-* **Conall Sadako** - Main site fixer
-* **genizy/breadbb**  - Gn-math developer
-* **RHW** - Scramjet-static
-* **Albie** - Main domain buyer
+- **Neo** – Lead Developer & Creator  
+- **Claude, ChatGPT, Gemini, etc.** – AI assistance  
+- **Conall Sadako** – Main site fixer  
+- **genizy/breadbb** – GN-Math developer  
+- **RHW** – Scramjet-static integration  
+- **Albie** – Main domain buyer

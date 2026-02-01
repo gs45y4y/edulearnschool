@@ -32,7 +32,7 @@ const BLOCKED_DOMAINS = [
     "legofornite.com",
     "pornhub.com",
     "edulearn-school.global.ssl.fastly.net",
-    "besteducational.global.ssl.fastly.net",
+    "besteducation.global.ssl.fastly.net",
     "global.ssl.fastly.net"
 ];
 

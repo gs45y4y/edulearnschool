@@ -1,13 +1,13 @@
 {
-  "name": "gn-math",
-  "short_name": "gnmath",
+  "name": "Edulearn | Games",
+  "short_name": "Edulearn|Games",
   "start_url": "./math/",
   "display": "standalone",
   "background_color": "#fb2651",
   "theme_color": "#fb2651",
   "icons": [
     {
-      "src": "./math/favicon.png",
+      "src": "./edulearn.png",
       "sizes": "1024x1024",
       "type": "image/png"
     }
