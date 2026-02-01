@@ -43,7 +43,7 @@ Join our community for support, updates, and discussions:
 
 **EdulearnOS** is a fast, unblocking hub for students, featuring:
 
-- **Proxy:** High-speed unblocking for unrestricted access.  
+- **Dual Web Proxies - Scramjet and Ultraviolet:** High-speed unblocking for unrestricted access.  
 - **GN-Math Library:**  
   - YouTube mobile ports (Bowmasters, Magic Tiles 3, Flappy Dunk, Hill Climb Racing, etc.)  
   - Drive Mad (Poki Version – 200 levels)  
