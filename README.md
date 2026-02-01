@@ -1,4 +1,4 @@
-# edulearnOS 3.0.0 (Beta Channel)
+# EdulearnOS 3.1.0 (Beta Channel)
 
 ![EdulearnOS with the "Wave"  wallpaper](./imgs/example.png)
 
@@ -8,6 +8,7 @@
 
 ## What's New in 3.0.0 Beta
 
+- **ULTRAVIOLET STATIC:** Web proxy for bypassing internet censorship, fast
 - **Revamped interface:** Modern glassy, iPhone-style UI for faster navigation.
 - **Glassy search & shortcuts:** Non-laggy, visually appealing layout.
 - **Updated tools page:** Auto-loads all tools with a clean grid.
