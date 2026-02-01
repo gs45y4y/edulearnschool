@@ -8,7 +8,7 @@
 
 ## What's New in 3.0.0 Beta
 
-- **ULTRAVIOLET STATIC:** Web proxy for bypassing internet censorship, fast
+- **ULTRAVIOLET STATIC:** Web proxy for bypassing internet censorship, fast.
 - **Revamped interface:** Modern glassy, iPhone-style UI for faster navigation.
 - **Glassy search & shortcuts:** Non-laggy, visually appealing layout.
 - **Updated tools page:** Auto-loads all tools with a clean grid.
