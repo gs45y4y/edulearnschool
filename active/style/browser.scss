@@ -5,7 +5,7 @@
 }
 
 .hover-focus1:hover:not(.selectedTab) {
-    background-color: rgba(26, 26, 26, 0.15) !important;
+    background-color: rgba(80, 180, 200, 0.18) !important;
 }
 
 .hover-focus2 {
@@ -13,7 +13,7 @@
 }
 
 .hover-focus2:hover:not(.selectedTab) {
-    background-color: rgba(40, 40, 40, 0.25) !important;
+    background-color: rgba(60, 160, 190, 0.28) !important;
 }
 
 .sidebar-container {
@@ -42,8 +42,8 @@
 }
 
 .sidebar-container header.closed {
-    background: #13101f;
-    border: rgba(31, 31, 31, 0.5) 1px solid;
+    background: rgba(10, 25, 40, 0.75);
+    border: rgba(120, 200, 230, 0.25) 1px solid;
     position: fixed;
 }
 
@@ -67,7 +67,7 @@
     background-color: transparent;
     border: none;
     outline: none;
-    color: white;
+    color: #eaf7ff;
     font: inherit;
     font-weight: 500;
     cursor: pointer;
@@ -82,8 +82,8 @@
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    background: #464141;
-    color: rgba(255, 255, 255, 0.834);
+    background: rgba(20, 60, 80, 0.9);
+    color: rgba(220, 245, 255, 0.95);
     visibility: hidden;
     opacity: 0;
     transition: 0.15s ease;
@@ -99,7 +99,7 @@
 
 .logo-name {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(210, 240, 255, 0.85);
     font-weight: 600;
 }
 
@@ -119,14 +119,14 @@
 
 .sidebar-container header .page-data #url-form {
     padding: 1rem 0;
-    border-bottom: 0.5px solid rgba(247, 205, 205, 0.156);
+    border-bottom: 0.5px solid rgba(120, 200, 230, 0.25);
 }
 
 .sidebar-container header .page-data #url-form input {
-    background-color: rgba(226, 226, 226, 0.15);
+    background-color: rgba(180, 230, 255, 0.18);
     border: none;
     outline: none;
-    color: inherit;
+    color: #eaf7ff;
     font: inherit;
     padding: 0.5rem;
     box-sizing: border-box;
@@ -139,10 +139,10 @@
     width: 100%;
     margin-top: 1rem;
     border-radius: 6px;
-    background-color: rgba(226, 226, 226, 0.15);
+    background-color: rgba(180, 230, 255, 0.18);
     border: none;
     outline: none;
-    color: inherit;
+    color: #eaf7ff;
     font: inherit;
     padding: 0.5rem;
     display: flex;
@@ -156,27 +156,13 @@
 }
 
 @keyframes slide-in-from-top {
-    0% {
-        transform: translateY(-150%);
-        opacity: 0;
-    }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    0% { transform: translateY(-150%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes slide-out-from-bottom {
-    0% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-150%);
-        opacity: 0;
-    }
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-150%); opacity: 0; }
 }
 
 .r-alert {
@@ -185,13 +171,13 @@
     right: 20px;
     width: auto;
     padding: 8px;
-    background-color: #1b1b1b;
-    border: 1px solid #2c2c2c;
+    background-color: rgba(15, 40, 60, 0.85);
+    border: 1px solid rgba(120, 200, 230, 0.25);
     border-radius: 6px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
     transition: transform 0.15s ease;
     z-index: 1000;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(220, 245, 255, 0.95);
 }
 
 .r-alert p {
@@ -216,7 +202,7 @@ header #tab-list .tab-item {
     gap: 0.5rem;
     width: 95%;
     border-radius: 6px;
-    background: rgba(226, 226, 226, 0);
+    background: rgba(180, 230, 255, 0);
     justify-content: flex-start;
     align-items: center;
     cursor: pointer;
@@ -224,7 +210,7 @@ header #tab-list .tab-item {
     outline: none;
     padding: 0.5rem;
     font: inherit;
-    color: inherit;
+    color: #eaf7ff;
     font-weight: 500;
     animation: slide-in-from-top 0.15s ease;
 }
@@ -235,7 +221,7 @@ header #tab-list .tab-item img {
 
 header #tab-list .tab-item span {
     font: inherit;
-    color: inherit;
+    color: #eaf7ff;
     font-weight: 400;
     white-space: nowrap;
     overflow: hidden;
@@ -255,12 +241,12 @@ header #tab-list .tab-item .close {
     display: flex;
     justify-content: center;
     align-items: center;
-    aspect-ratio: 1/1;
+    aspect-ratio: 1 / 1;
     transition: 0.15s ease;
 }
 
 header #tab-list .tab-item .close:hover {
-    background-color: rgba(226, 226, 226, 0.17);
+    background-color: rgba(180, 230, 255, 0.25);
 }
 
 header #tab-list .tab-item .close .close-icon {
@@ -271,37 +257,22 @@ header #tab-list .tab-item .close .close-icon {
 }
 
 header #tab-list .tab-item.selectedTab {
-    background: rgba(226, 226, 226, 0.25);
+    background: rgba(120, 200, 230, 0.35);
 }
 
 header #tab-list .tab-item:hover .close-icon {
-    color: rgb(220, 220, 220);
+    color: #c8f3ff;
 }
 
 @keyframes slide-in-from-top {
-    0% {
-        transform: translateY(-25%);
-        opacity: 0;
-    }
-
-    100% {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    0% { transform: translateY(-25%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes slide-out-from-bottom {
-    0% {
-        transform: translateY(0);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateY(-25%);
-        opacity: 0;
-    }
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-25%); opacity: 0; }
 }
-
 
 #tab-view {
     width: 80vw;
@@ -322,7 +293,7 @@ header #tab-list .tab-item:hover .close-icon {
 #tab-view .tab-frame {
     height: 97%;
     width: 98%;
-    background-color: white;
+    background-color: #f4fbff;
     border-radius: 8px;
     border: none;
     outline: none;
@@ -337,8 +308,8 @@ header #tab-list .tab-item:hover .close-icon {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    color: white;
+    background-color: rgba(5, 15, 25, 0.95);
+    color: #eaf7ff;
     text-align: center;
     padding: none;
     z-index: 2000;
@@ -362,7 +333,7 @@ header #tab-list .tab-item:hover .close-icon {
     left: 0;
     width: calc(20vw + 10px);
     height: calc(100% - 48px);
-    background-color: #000000;
+    background-color: rgba(8, 25, 40, 0.9);
     transform: translateX(-100%);
     transition: 0.15s ease;
     z-index: 1000;
@@ -375,18 +346,18 @@ header #tab-list .tab-item:hover .close-icon {
 }
 
 .option {
-    color: white;
+    color: #eaf7ff;
     margin-bottom: 5px;
     cursor: pointer;
     padding: 0.5rem;
-    background: rgba(226, 226, 226, 0.15);
+    background: rgba(180, 230, 255, 0.18);
     transition: 0.15s ease;
     border-radius: 6px;
     width: 95%;
 }
 
 .option:hover {
-    background: rgba(226, 226, 226, 0.17);
+    background: rgba(180, 230, 255, 0.28);
 }
 
 ::-webkit-scrollbar {

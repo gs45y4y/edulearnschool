@@ -13,7 +13,7 @@ h1 {
 }
 
 nav {
-  background: #1e1e1e;
+  background: rgba(10, 30, 45, 0.85);
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -37,13 +37,13 @@ a {
 button {
   display: inline-block;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(230, 246, 255, 0.85);
   font-size: 1.2em;
   padding: 12px 22px;
-  border: 2px solid #3a3a3a;
+  border: 2px solid rgba(120, 200, 230, 0.35);
   border-radius: 5px;
   transition: 0.25s;
-  background: rgba(35, 35, 35);
+  background: rgba(15, 40, 60, 0.85);
 }
 
 button:hover {
@@ -80,6 +80,7 @@ button:hover {
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: $accent-dark;
 }
@@ -96,7 +97,7 @@ button:hover {
 .greenCircle {
   height: 15px;
   width: 15px;
-  background-color: lightgreen;
+  background-color: #5ff0c8;
   border-radius: 100%;
 }
 
@@ -111,7 +112,7 @@ button:hover {
 }
 
 .accent {
-  color: #ed1c24;
+  color: #3fc4e8;
 }
 
 footer {
@@ -119,7 +120,7 @@ footer {
   bottom: 0;
   left: 0;
   width: 100%;
-  color: #ffffff;
+  color: #eaf7ff;
   text-align: center;
   padding: 4px 0;
 }
@@ -136,6 +137,6 @@ footer {
 .gridContainer .item {
   padding: 10px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.01);
+  background: rgba(180, 230, 255, 0.08);
   backdrop-filter: blur(10px);
 }
