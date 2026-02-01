@@ -13,7 +13,7 @@
 - **Glassy search & shortcuts:** Non-laggy, visually appealing layout.
 - **Updated tools page:** Auto-loads all tools with a clean grid.
 - **Image gallery:** Browse images in `./imgs/` with modal previews.
-- **Performance improvements:** Optimized for static hosts like Vercel, Netlify, and GitHub Pages.
+- **Performance improvements:** Optimized for static hosts like Vercel, Netlify, & GitHub Pages.
 - **Security reminder:** Copy URLs carefully; mispelling passwords may redirect to a warning page for IT spy prevention.
 
 ---
@@ -43,7 +43,7 @@ Join our community for support, updates, and discussions:
 
 **EdulearnOS** is a fast, unblocking hub for students, featuring:
 
-- **Dual Web Proxies - Scramjet and Ultraviolet:** High-speed unblocking for unrestricted access.  
+- **Dual Web Proxies - Scramjet & Ultraviolet:** High-speed unblocking for unrestricted access.  
 - **GN-Math Library:**  
   - YouTube mobile ports (Bowmasters, Magic Tiles 3, Flappy Dunk, Hill Climb Racing, etc.)  
   - Drive Mad (Poki Version – 200 levels)  
