@@ -432,16 +432,49 @@
         }
 
         function renderTerminal() { return `<div class="internal-app" style="background:#0c0c0c; font-family: 'Consolas', monospace;" onclick="document.getElementById('term-input').focus()"><div class="terminal-output" id="term-output">EdulearnOS Terminal [v4.1]<br>(c) 2026 Edulearn Systems.<br>Type 'help' for commands.<br><br></div><div class="terminal-input-line"><span class="terminal-prompt">root@edulearn:~#</span><input type="text" id="term-input" autocomplete="off" onkeydown="handleTerm(event)"></div></div>`; }
-        window.handleTerm = function(e) {
+       window.handleTerm = function(e) {
             if (e.key === 'Enter') {
-                e.preventDefault(); const val = e.target.value.trim(); const output = document.getElementById('term-output');
+                e.preventDefault(); 
+                const val = e.target.value.trim(); 
+                const output = document.getElementById('term-output');
+                
+                // Echo the command to the screen
                 output.innerHTML += `<div style="margin-top:5px"><span style="color:var(--accent)">root@edulearn:~#</span> ${val}</div>`;
-                const parts = val.split(' '); const cmd = parts[0]; const args = parts.slice(1);
-                if(cmd === 'help') output.innerHTML += `<div>Commands: help, clear, ls, date</div>`;
-                else if(cmd === 'clear') output.innerHTML = '';
-                else if(cmd === 'date') output.innerHTML += `<div>${new Date().toString()}</div>`;
-                else if(val !== '') output.innerHTML += `<div style="color:#ff5f56">bash: ${cmd}: command not found</div>`;
-                e.target.value = ''; document.querySelector('.internal-app').scrollTop = document.querySelector('.internal-app').scrollHeight;
+                
+                const parts = val.split(' '); 
+                const cmd = parts[0]; 
+                
+                if(cmd === 'help') {
+                    output.innerHTML += `<div>Commands: help, clear, ls, date</div>`;
+                }
+                else if(cmd === 'clear') {
+                    output.innerHTML = '';
+                }
+                // --- FIX STARTS HERE ---
+                else if(cmd === 'ls') {
+                    // Fetch the files created via the context menu
+                    const storedFiles = JSON.parse(localStorage.getItem('edulearn_files')) || {};
+                    const fileNames = Object.keys(storedFiles);
+                    
+                    if (fileNames.length > 0) {
+                        // Join file names with spaces and display them
+                        output.innerHTML += `<div style="color: #4a90e2; font-weight: bold;">${fileNames.join('&nbsp;&nbsp;&nbsp;')}</div>`;
+                    } else {
+                        output.innerHTML += `<div style="color: #888;">(directory empty)</div>`;
+                    }
+                }
+                // --- FIX ENDS HERE ---
+                else if(cmd === 'date') {
+                    output.innerHTML += `<div>${new Date().toString()}</div>`;
+                }
+                else if(val !== '') {
+                    output.innerHTML += `<div style="color:#ff5f56">bash: ${cmd}: command not found</div>`;
+                }
+                
+                // Clear input and scroll to bottom
+                e.target.value = ''; 
+                const terminalApp = e.target.closest('.internal-app');
+                if(terminalApp) terminalApp.scrollTop = terminalApp.scrollHeight;
             }
         }
     </script>
