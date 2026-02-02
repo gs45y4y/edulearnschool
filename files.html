@@ -86,22 +86,46 @@
         let currentFolderId = 'root';
 
         function init() {
-            // LOAD USER FILES
+            // LOAD USER FILES AND EDITS
             const stored = JSON.parse(localStorage.getItem('edulearn_files')) || {};
             
-            // Inject stored files into "Documents" folder by default
-            Object.keys(stored).forEach(key => {
-                const fileId = 'user_' + key.replace(/\./g, '_');
-                fileSystem[fileId] = stored[key];
-                
-                // Add to Documents folder
-                if(!fileSystem['docs'].children.includes(fileId)) {
-                    fileSystem['docs'].children.push(fileId);
+            // Merge stored files into the file system
+            Object.keys(stored).forEach(id => {
+                if (fileSystem[id]) {
+                    // Overwrite existing system file (e.g. edits to todo_list.txt)
+                    fileSystem[id] = stored[id];
+                } else {
+                    // Add new file
+                    fileSystem[id] = stored[id];
+                    // If the file doesn't have a valid parent path in current logic, default to docs
+                    const parentID = stored[id].parent || 'docs';
+                    if (fileSystem[parentID] && !fileSystem[parentID].children.includes(id)) {
+                        fileSystem[parentID].children.push(id);
+                    }
                 }
             });
 
             navigate('root');
         }
+
+        // Global save function to be called from the text editor window
+        window.saveFile = function(id, content) {
+            if (fileSystem[id]) {
+                // Update memory
+                fileSystem[id].content = content;
+                
+                // Update LocalStorage
+                const currentStorage = JSON.parse(localStorage.getItem('edulearn_files')) || {};
+                currentStorage[id] = fileSystem[id];
+                localStorage.setItem('edulearn_files', JSON.stringify(currentStorage));
+                
+                // Optional: Update status bar temporarily to show save status
+                const sb = document.getElementById('status-count');
+                const originalText = sb.innerText;
+                sb.innerText = "Saved...";
+                setTimeout(() => sb.innerText = originalText, 1000);
+            }
+        };
 
         function navigate(folderId) {
             if (!fileSystem[folderId]) return;
@@ -147,8 +171,23 @@
             if (item.type === 'folder' || item.type === 'root') { navigate(id); return; }
             if (window.parent && window.parent.openWindow) {
                 let contentHTML = ''; let winTitle = item.name;
+                
                 if (item.name.endsWith('.txt')) {
-                    contentHTML = `<div style="height:100%; display:flex; flex-direction:column;"><textarea style="flex:1; background:#1e1e1e; color:#eee; border:none; padding:15px; font-family:monospace; resize:none; outline:none;">${item.content}</textarea></div>`;
+                    // MAGIC FIX: We add an oninput event that searches for THIS iframe and calls saveFile
+                    // This works because both the Window (Parent) and Iframe (Files) share the same document context domain
+                    const saveLogic = `
+                        const iframes = document.querySelectorAll('iframe');
+                        for(let i=0; i<iframes.length; i++) {
+                            if(iframes[i].contentWindow.saveFile) {
+                                iframes[i].contentWindow.saveFile('${id}', this.value);
+                            }
+                        }
+                    `.replace(/\s+/g, ' '); // compress string
+
+                    contentHTML = `<div style="height:100%; display:flex; flex-direction:column;">
+                        <textarea style="flex:1; background:#1e1e1e; color:#eee; border:none; padding:15px; font-family:monospace; resize:none; outline:none;" 
+                        oninput="${saveLogic}">${item.content}</textarea>
+                    </div>`;
                     winTitle = 'Notepad - ' + item.name;
                 } else if (item.name.endsWith('.jpg') || item.name.endsWith('.png')) {
                     contentHTML = `<div style="height:100%; background:#000; display:flex; align-items:center; justify-content:center; overflow:hidden;"><img src="${item.content}" style="max-width:100%; max-height:100%;"></div>`;
