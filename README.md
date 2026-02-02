@@ -88,3 +88,5 @@ Join our community for support, updates, and discussions:
 *If we missed you in the credits, feel free to contact vibec3der at `fernproxys3@proton.me`*
 
 **DISCLAIMER:** Send all DMCA requests to **Genizy** (GN-math owner) as the game library is imported directly from their repository.
+---
+## Upvote Us on [UBGHUB](https://ubghub.org/?site=EdulearnOS)
