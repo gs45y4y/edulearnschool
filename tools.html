@@ -1,204 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>System Tools</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-  <script src="../config.js"></script>
-  <script src="../scripts/settings.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        :root {
+            --bg-app: #0f172a;
+            --glass-panel: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-hover: rgba(255, 255, 255, 0.12);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --danger: #ef4444;
+            --success: #22c55e;
+            
+            --font-ui: 'Inter', sans-serif;
+        }
 
-    :root {
-      --bg: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80') no-repeat center/cover;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-      /* Glass surfaces */
-      --glass: rgba(255, 255, 255, 0.1);
-      --glass-hover: rgba(255, 255, 255, 0.15);
-      --glass-border: rgba(255, 255, 255, 0.2);
-      --glass-highlight: rgba(255, 255, 255, 0.05);
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 25%);
+        }
 
-      /* Text */
-      --text: #f5f5f7;
-      --text-muted: #c1c1c1;
-      --text-dim: #9a9a9a;
+        /* --- HEADER --- */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 600px;
+        }
 
-      /* Shadow */
-      --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        .title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-      /* Radius */
-      --radius: 18px;
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
 
-      /* Font */
-      --font: 'Inter', system-ui, -apple-system, sans-serif;
-    }
+        /* --- SEARCH --- */
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.2s;
+            font-family: var(--font-ui);
+        }
 
-    body {
-      font-family: var(--font);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 60px 20px;
-      background: var(--bg);
-      background-size: cover;
-      background-position: center;
-      color: var(--text);
-    }
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+        }
 
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    }
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
 
-    .title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
+        /* --- GRID --- */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
 
-    .subtitle {
-      color: var(--text-dim);
-      font-size: 14px;
-    }
+        .tool-card {
+            background: var(--glass-panel);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
 
-    /* ================= TOOLS GRID ================= */
-    .tools-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 18px;
-      max-width: 700px;
-      width: 100%;
-    }
+        .tool-card:hover {
+            transform: translateY(-2px);
+            background: var(--glass-hover);
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
+        }
 
-    .tool-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-top-color: var(--glass-highlight);
-      border-radius: var(--radius);
-      padding: 24px 16px;
-      cursor: pointer;
-      text-decoration: none;
-      box-shadow: var(--shadow);
-      transition: transform 0.15s ease, background 0.2s ease;
-      color: var(--text);
-      user-select: none;
-    }
+        .tool-card:active {
+            transform: scale(0.98);
+        }
 
-    .tool-card:hover {
-      background: var(--glass-hover);
-      transform: translateY(-3px);
-    }
+        .icon-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--accent);
+            border: 1px solid var(--glass-border);
+        }
 
-    .tool-icon {
-      font-size: 32px;
-      margin-bottom: 4px;
-    }
+        .tool-info {
+            flex: 1;
+        }
 
-    .tool-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-    }
+        .tool-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
 
-    .tool-desc {
-      font-size: 11px;
-      color: var(--text-dim);
-      text-align: center;
-    }
+        .tool-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
 
-    /* ================= LOADER ================= */
-    .loader {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-    }
+        .copy-hint {
+            opacity: 0;
+            position: absolute;
+            right: 20px;
+            background: var(--accent);
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: 0.2s;
+            transform: translateX(10px);
+        }
 
-    .loader.show {
-      display: flex;
-    }
+        .tool-card:hover .copy-hint {
+            opacity: 1;
+            transform: translateX(0);
+        }
 
-    .spinner {
-      width: 32px;
-      height: 32px;
-      border: 3px solid rgba(255, 255, 255, 0.25);
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
+        /* --- TOAST --- */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+            z-index: 100;
+        }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-  </style>
+        .toast {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            backdrop-filter: blur(10px);
+        }
+
+        .toast i { color: var(--success); }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+
+    </style>
 </head>
-
 <body>
-  <div class="loader" id="loader">
-    <div class="spinner"></div>
-  </div>
 
-  <div class="header">
-    <div class="title">System Tools</div>
-    <div class="subtitle">Click a tool to copy its URL</div>
-  </div>
-
-  <div class="tools-grid">
-    <div class="tool-card" data-url="https://sh1mmer.me">
-      <i class="fa-solid fa-microchip tool-icon"></i>
-      <span class="tool-name">Sh1mmer</span>
-      <span class="tool-desc">Enrollment modification</span>
+    <div class="header">
+        <div class="title">System Tools</div>
+        <div class="subtitle">Click any card to copy the tool URL to your clipboard.</div>
+        
+        <div class="search-container">
+            <i class="fa-solid fa-search search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Find a utility...">
+        </div>
     </div>
 
-    <div class="tool-card" data-url="https://extprint3r.github.io/">
-      <i class="fa-solid fa-print tool-icon"></i>
-      <span class="tool-name">ExtPrint3r</span>
-      <span class="tool-desc">Extension manipulation</span>
-    </div>
+    <div class="tools-grid" id="toolsGrid">
+        </div>
 
-    <div class="tool-card" data-url="https://vibec3der.github.io/chromeos-versioner">
-      <i class="fa-solid fa-code-branch tool-icon"></i>
-      <span class="tool-name">Versioner</span>
-      <span class="tool-desc">View ChromeOS version</span>
-    </div>
+    <div class="toast-container" id="toastContainer"></div>
 
-    <div class="tool-card" data-url="https://chessisfornerds.netlify.app">
-      <i class="fa-solid fa-circle-info tool-icon"></i>
-      <span class="tool-name">Old Bypasses</span>
-      <span class="tool-desc">Some old extension bypasses</span>
-    </div>
-  </div>
+    <script>
+        // Tool Data Configuration
+        const tools = [
+            {
+                name: "Sh1mmer",
+                desc: "Enrollment modification utility",
+                url: "https://sh1mmer.me",
+                icon: "fa-microchip"
+            },
+            {
+                name: "ExtPrint3r",
+                desc: "Extension manipulation & management",
+                url: "https://extprint3r.github.io/",
+                icon: "fa-puzzle-piece"
+            },
+            {
+                name: "Versioner",
+                desc: "Check ChromeOS version details",
+                url: "https://vibec3der.github.io/chromeos-versioner",
+                icon: "fa-code-branch"
+            },
+            {
+                name: "Old Bypasses",
+                desc: "Legacy unblocking methods collection",
+                url: "https://chessisfornerds.netlify.app",
+                icon: "fa-ghost"
+            },
+            {
+                name: "Ingot",
+                desc: "Bookmarklet execution simplified",
+                url: "https://ingot.k12.lol",
+                icon: "fa-terminal"
+            }
+        ];
 
-  <script>
-    // Copy to clipboard instead of opening browser
-    document.querySelectorAll('.tool-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const url = card.dataset.url;
-        navigator.clipboard.writeText(url).then(() => {
-          alert(`URL copied to clipboard:\n${url}\n\nOpen your browser and paste it there.`);
+        const grid = document.getElementById('toolsGrid');
+        const searchInput = document.getElementById('searchInput');
+
+        // Render Cards
+        function renderTools(filter = "") {
+            grid.innerHTML = "";
+            const filtered = tools.filter(t => 
+                t.name.toLowerCase().includes(filter.toLowerCase()) || 
+                t.desc.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No tools found matching "${filter}"</div>`;
+                return;
+            }
+
+            filtered.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                card.onclick = () => copyToClipboard(tool.url, tool.name);
+                
+                card.innerHTML = `
+                    <div class="icon-box">
+                        <i class="fa-solid ${tool.icon}"></i>
+                    </div>
+                    <div class="tool-info">
+                        <div class="tool-name">${tool.name}</div>
+                        <div class="tool-desc">${tool.desc}</div>
+                    </div>
+                    <div class="copy-hint">COPY</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Copy Logic
+        async function copyToClipboard(text, name) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast(`Copied URL for ${name}`);
+            } catch (err) {
+                showToast('Failed to copy', true);
+            }
+        }
+
+        // Toast Notification
+        function showToast(msg, isError = false) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            const icon = isError ? 'fa-circle-xmark' : 'fa-circle-check';
+            const color = isError ? 'var(--danger)' : 'var(--success)';
+            
+            toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color}"></i> ${msg}`;
+            
+            container.appendChild(toast);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Search Listener
+        searchInput.addEventListener('input', (e) => {
+            renderTools(e.target.value);
         });
-      });
-    });
-  </script>
+
+        // Initial Load
+        renderTools();
+    </script>
 </body>
 </html>

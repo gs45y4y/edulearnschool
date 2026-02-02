@@ -1,26 +1,25 @@
-# EdulearnOS 3.1.0 (Beta Channel)
+# EdulearnOS 4.0.0 (Beta Channel)
 
-![EdulearnOS with the "Wave"  wallpaper](./imgs/example.png)
+![EdulearnOS V4 Interface](./imgs/example.png)
 
-*EdulearnOS with the "Wave" wallpaper*
+*EdulearnOS 4.0 - The Glass Update*
 
 ---
 
-## What's New in 3.0.0 Beta
+## What's New in 4.0.0 Beta
 
-- **ULTRAVIOLET STATIC:** Web proxy for bypassing internet censorship, fast.
-- **Revamped interface:** Modern glassy, iPhone-style UI for faster navigation.
-- **Glassy search & shortcuts:** Non-laggy, visually appealing layout.
-- **Updated tools page:** Auto-loads all tools with a clean grid.
-- **Image gallery:** Browse images in `./imgs/` with modal previews.
-- **Performance improvements:** Optimized for static hosts like Vercel, Netlify, & GitHub Pages.
-- **Security reminder:** Copy URLs carefully; mispelling passwords may redirect to a warning page for IT spy prevention.
+- **UI Overhaul:** A complete shift to a modern, "Glassmorphism" aesthetic across the entire OS.
+- **Scientific Graphing Calculator:** A fully featured calculator with neon plotting, scientific keypad, and complex function support.
+- **"Only Lofi-Tunes":** Integrated music player with Jamendo API support and background play.
+- **Gallery V2:** Now includes file search, modal viewing, file counting, and download support.
+- **Ultraviolet & Scramjet:** Dual proxy support for unblocking static content lightning fast.
+- **Security:** Enhanced "IT Spy" prevention redirect systems.
 
 ---
 
 ## Deployment Options
 
-You can deploy edulearnOS on multiple static hosting platforms:
+You can deploy EdulearnOS on multiple static hosting platforms:
 
 [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/new/clone?repository-url=https://github.com/POX-dev/edulearnschool)  
 [![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://app.netlify.com/start/deploy?repository=https://github.com/POX-dev/edulearnschool)  
@@ -43,49 +42,49 @@ Join our community for support, updates, and discussions:
 
 **EdulearnOS** is a fast, unblocking hub for students, featuring:
 
-- **Dual Web Proxies - Scramjet & Ultraviolet:** High-speed unblocking for unrestricted access.  
-- **GN-Math Library:**  
-  - YouTube mobile ports (Bowmasters, Magic Tiles 3, Flappy Dunk, Hill Climb Racing, etc.)  
+- **Dual Web Proxies:** - **Ultraviolet:** Best for media and complex sites.
+  - **Scramjet:** Lightweight and fast for static browsing.
+- **Productivity Suite:**
+  - **Graphing Calculator:** Plot `sin(x)`, `x^2`, and more with a sci-fi interface.
+  - **Image Gallery:** Organize and view local assets with instant search.
+- **GN-Math Library:** - YouTube mobile ports (Bowmasters, Magic Tiles 3, Flappy Dunk, Hill Climb Racing)  
   - Drive Mad (Poki Version – 200 levels)  
-  - 3D titles (Cheese Chompers 3D, Bad Parenting)  
-  - Horror & Classics (All FNAFs, Bendy and the Ink Machine)  
-  - Modern hits, Retro & PC ports, Multiplayer & Indie games  
-- **Custom Software:** Tools for fetching and integrating almost any title.  
-- **Static Site Optimized:** Fully optimized for static hosts, minimal lag.  
+  - Horror & Classics (FNAF Series, Bendy)  
+  - Modern hits & Retro PC ports.
+- **Static Site Optimized:** Zero backend required—runs on purely static hosts.  
 
 ---
 
 ## Usage
 
-1. **Search:** Use the search bar to find content.  
-2. **Shortcuts:** Add custom shortcuts for your favorite sites or tools.  
-3. **Tools Page:** Access the system tools page to launch utilities.  
-4. **Image Gallery:** Browse and view images in `./imgs/`.  
+1. **Launcher:** Search for "vibecoded" exactly as written in Classlink to access the launcher.
+2. **Music:** Open "Only Lofi-Tunes" for background study music (Note: For full functionality, use the player inside Ultraviolet).
+3. **Graphing:** Use the calculator for math homework—supports full algebraic expressions.
+4. **Gallery:** Drop images into `./imgs/` and they will appear in the glass UI gallery.
 
-> ⚠️ **Warning:** Make sure not to misspell the password. You may be redirected to a warning page to prevent IT spies.
+> ⚠️ **Warning:** Make sure not to misspell the password. You may be redirected to a warning page to prevent IT spies from logging access.
 
 ---
 
 ## FAQ
 
-**Can I deploy to static hosts?**  
-Yes! Fully optimized for Vercel, Netlify, GitHub Pages, and Cloudflare Pages.
+**Can I deploy to static hosts?** Yes! Fully optimized for Vercel, Netlify, GitHub Pages, and Cloudflare Pages.
 
-**How do I access launcher content?**  
-Search for "vibecoded" exactly as written in Classlink.
+**Why does the music player show an alert?** Some school networks block audio APIs on static sites. We recommend running the music player through the Ultraviolet proxy for the best experience.
 
-**Is edulearnOS safe for school?**  
-Yes. It is designed as a learning hub and unblocking tool in school environments.
+**Is EdulearnOS safe for school?** Yes. It is designed as a learning hub and unblocking tool in school environments.
 
 ---
 
 ## Credits
 
 - **Neo** – Lead Developer & Creator  
-- **Claude, ChatGPT, Gemini, etc.** – AI assistance  
-- **Conall Sadako** – Main site fixer  
-- **genizy/breadbb** – GN-Math developer  
-- **RHW** – Scramjet-static integration  
-- **Albie** – Main domain buyer
+- **Claude, ChatGPT, Gemini** – AI Assistance & Refactoring
+- **Conall Sadako** – Main Site Fixer  
+- **genizy/breadbb** – GN-Math Library Developer  
+- **RHW** – Scramjet-static Integration  
+- **Albie** – Main Domain Provider
+
 *If we missed you in the credits, feel free to contact vibec3der at `fernproxys3@proton.me`*
-**Send all DMCA's to Genizy (GN-math owner) because all of the games are imported from there**
+
+**DISCLAIMER:** Send all DMCA requests to **Genizy** (GN-math owner) as the game library is imported directly from their repository.

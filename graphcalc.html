@@ -5,506 +5,487 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graphing Calculator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.11.0/math.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600&display=swap');
 
         :root {
-            /* Core colors - Modern Zinc Palette */
-            --bg: #09090b;
-            --surface: #18181b;
-            --surface-hover: #27272a;
-            --surface-active: #3f3f46;
+            --bg-app: #0f172a;
+            --glass-panel: rgba(30, 41, 59, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
             
-            --border: #27272a;
-            --border-highlight: #3f3f46;
-
-            /* Text */
-            --text: #e4e4e7;
-            --text-muted: #a1a1aa;
-            --text-dim: #71717a;
-
-            /* Accents */
-            --accent: #ffffff;
-            --accent-blue: #3b82f6;
-            --accent-blue-hover: #2563eb;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.3);
             
-            /* Function Colors */
-            --danger: #ef4444;
-            --danger-hover: #dc2626;
-
-            /* Shadows */
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --btn-num: rgba(255, 255, 255, 0.05);
+            --btn-op: rgba(56, 189, 248, 0.15);
+            --btn-action: rgba(248, 113, 113, 0.15);
+            
+            --font-ui: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            padding: 2rem;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            font-family: var(--font-ui);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(56, 189, 248, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--text);
-            font-weight: 700;
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            letter-spacing: -0.05em;
-        }
-
-        .grid {
+        /* --- LAYOUT --- */
+        .app-container {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
+            grid-template-columns: 320px 1fr;
+            height: 100%;
+            gap: 1px;
+            background: var(--glass-border); /* Separator line */
         }
 
-        @media (min-width: 1024px) {
-            .grid {
-                grid-template-columns: 1fr 2fr;
-            }
+        /* --- SIDEBAR: CALCULATOR --- */
+        .sidebar {
+            background: var(--bg-app);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+            z-index: 10;
         }
 
-        .panel {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-        }
-
-        h2 {
-            color: var(--text);
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
+        .calc-header {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        /* Calculator Specifics */
-        .calc-display {
-            background: var(--bg);
-            border: 1px solid var(--border-highlight);
-            border-radius: 8px;
-            padding: 1rem;
+        .display-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--glass-border);
             text-align: right;
-            font-size: 1.75rem;
-            font-family: 'Inter', monospace;
-            font-weight: 500;
-            color: var(--text);
-            min-height: 4.5rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        .calc-buttons {
+        .calc-display {
+            font-family: var(--font-mono);
+            font-size: 2rem;
+            color: var(--text-main);
+            word-wrap: break-word;
+            min-height: 40px;
+        }
+
+        .calc-preview {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            min-height: 1rem;
+            margin-top: 5px;
+        }
+
+        .keypad {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 0.75rem;
+            gap: 10px;
+            flex: 1;
         }
 
-        .calc-btn {
-            background: var(--surface-hover);
-            color: var(--text);
-            border: 1px solid var(--border);
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 1.125rem;
-            font-weight: 500;
+        .btn {
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.15s;
+            color: var(--text-main);
+            background: var(--btn-num);
+            font-family: var(--font-ui);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .calc-btn:hover {
-            background: var(--surface-active);
-            transform: translateY(-1px);
+        .btn:hover { filter: brightness(1.3); transform: translateY(-1px); }
+        .btn:active { transform: scale(0.95); }
+
+        .btn.op { color: #60a5fa; background: var(--btn-op); }
+        .btn.ac { color: #f87171; background: var(--btn-action); }
+        .btn.eq { 
+            background: var(--accent); 
+            color: #000; 
+            grid-column: span 2;
+            box-shadow: 0 0 15px var(--accent-glow);
         }
 
-        .calc-btn:active {
-            transform: translateY(0);
+        /* --- MAIN: GRAPH --- */
+        .main-content {
+            background: #050505;
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
-        .calc-btn.equals {
-            background: var(--text);
-            color: var(--bg);
-            border-color: var(--text);
-            font-weight: 700;
+        .graph-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 300px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 5;
+            transition: opacity 0.3s;
+        }
+
+        .control-row { margin-bottom: 12px; }
+        .control-row label { display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+        
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0 10px;
         }
         
-        .calc-btn.equals:hover {
-            background: #d4d4d8;
-        }
-
-        .calc-btn.clear {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            border-color: rgba(239, 68, 68, 0.2);
-            grid-column: span 2;
-        }
-        
-        .calc-btn.clear:hover {
-            background: rgba(239, 68, 68, 0.2);
-        }
-
-        .calc-btn.back {
-            grid-column: span 2;
-        }
-
-        /* Graphing Controls */
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
+        .fx-badge {
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 0.9rem;
         }
 
         input[type="text"], input[type="number"] {
             width: 100%;
-            padding: 0.75rem 1rem;
-            background: var(--bg);
-            border: 1px solid var(--border-highlight);
-            border-radius: 8px;
-            color: var(--text);
-            font-size: 1rem;
-            font-family: 'Inter', monospace;
-            transition: border-color 0.2s;
-        }
-
-        input:focus {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 10px 0;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
             outline: none;
-            border-color: var(--text-muted);
         }
 
-        .hint {
-            color: var(--text-dim);
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-        }
-
-        .error {
-            color: var(--danger);
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            background: rgba(239, 68, 68, 0.1);
-            border-radius: 6px;
-        }
-
-        .range-inputs {
+        .range-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
-        @media (min-width: 768px) {
-            .range-inputs {
-                grid-template-columns: repeat(4, 1fr);
-            }
+        .preset-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--glass-border);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: var(--font-mono);
+        }
+        .tag:hover { background: var(--accent); color: black; border-color: var(--accent); }
+
+        #error-msg {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 5px;
+            min-height: 1.2em;
         }
 
         canvas {
             width: 100%;
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            height: 100%;
             display: block;
-            background: var(--bg);
         }
 
-        .presets {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .preset-btn {
-            background: var(--surface-hover);
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Inter', monospace;
-        }
-
-        .preset-btn:hover {
-            background: var(--surface-active);
-            color: var(--text);
-            border-color: var(--text-muted);
+        /* Responsive */
+        @media (max-width: 768px) {
+            .app-container { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+            .sidebar { box-shadow: 0 -10px 30px rgba(0,0,0,0.3); order: 2; }
+            .main-content { order: 1; }
+            .graph-controls { width: calc(100% - 40px); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Graphing Calculator</h1>
 
-        <div class="grid">
-            <div class="panel">
-                <h2>Calculator</h2>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="calc-header"><i class="fa-solid fa-calculator"></i> Scientific</div>
+            
+            <div class="display-container">
+                <div class="calc-preview" id="calcPreview"></div>
                 <div class="calc-display" id="calcDisplay">0</div>
-                <div class="calc-buttons">
-                    <button class="calc-btn" onclick="handleCalc('7')">7</button>
-                    <button class="calc-btn" onclick="handleCalc('8')">8</button>
-                    <button class="calc-btn" onclick="handleCalc('9')">9</button>
-                    <button class="calc-btn" onclick="handleCalc('/')">/</button>
-                    <button class="calc-btn" onclick="handleCalc('4')">4</button>
-                    <button class="calc-btn" onclick="handleCalc('5')">5</button>
-                    <button class="calc-btn" onclick="handleCalc('6')">6</button>
-                    <button class="calc-btn" onclick="handleCalc('*')">*</button>
-                    <button class="calc-btn" onclick="handleCalc('1')">1</button>
-                    <button class="calc-btn" onclick="handleCalc('2')">2</button>
-                    <button class="calc-btn" onclick="handleCalc('3')">3</button>
-                    <button class="calc-btn" onclick="handleCalc('-')">-</button>
-                    <button class="calc-btn" onclick="handleCalc('0')">0</button>
-                    <button class="calc-btn" onclick="handleCalc('.')">.</button>
-                    <button class="calc-btn" onclick="handleCalc('(')">(</button>
-                    <button class="calc-btn" onclick="handleCalc('+')">+</button>
-                    <button class="calc-btn clear" onclick="handleCalc('C')">Clear</button>
-                    <button class="calc-btn back" onclick="handleCalc('←')">←</button>
-                    <button class="calc-btn" onclick="handleCalc(')')">)</button>
-                    <button class="calc-btn" onclick="handleCalc('^')">^</button>
-                    <button class="calc-btn" onclick="handleCalc('sqrt(')">√</button>
-                    <button class="calc-btn equals" onclick="handleCalc('=')" style="grid-column: span 3;">=</button>
-                </div>
             </div>
 
-            <div class="panel">
-                <h2>Function Grapher</h2>
+            <div class="keypad">
+                <button class="btn ac" onclick="handleCalc('C')">AC</button>
+                <button class="btn op" onclick="handleCalc('(')">(</button>
+                <button class="btn op" onclick="handleCalc(')')">)</button>
+                <button class="btn op" onclick="handleCalc('/')">÷</button>
                 
-                <div class="input-group">
-                    <label>Function f(x) = </label>
-                    <input type="text" id="expression" value="sin(x)" oninput="drawGraph()">
-                    <div class="hint">Try: sin(x), cos(x), tan(x), x^2, sqrt(x), abs(x), log(x), exp(x)</div>
+                <button class="btn op" onclick="handleCalc('sin(')">sin</button>
+                <button class="btn op" onclick="handleCalc('cos(')">cos</button>
+                <button class="btn op" onclick="handleCalc('tan(')">tan</button>
+                <button class="btn op" onclick="handleCalc('*')">×</button>
+
+                <button class="btn" onclick="handleCalc('7')">7</button>
+                <button class="btn" onclick="handleCalc('8')">8</button>
+                <button class="btn" onclick="handleCalc('9')">9</button>
+                <button class="btn op" onclick="handleCalc('-')">−</button>
+
+                <button class="btn" onclick="handleCalc('4')">4</button>
+                <button class="btn" onclick="handleCalc('5')">5</button>
+                <button class="btn" onclick="handleCalc('6')">6</button>
+                <button class="btn op" onclick="handleCalc('+')">+</button>
+
+                <button class="btn" onclick="handleCalc('1')">1</button>
+                <button class="btn" onclick="handleCalc('2')">2</button>
+                <button class="btn" onclick="handleCalc('3')">3</button>
+                <button class="btn op" onclick="handleCalc('^')">^</button>
+
+                <button class="btn" onclick="handleCalc('0')">0</button>
+                <button class="btn" onclick="handleCalc('.')">.</button>
+                <button class="btn eq" onclick="handleCalc('=')">=</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="graph-controls">
+                <div class="control-row">
+                    <label>FUNCTION</label>
+                    <div class="input-wrapper">
+                        <span class="fx-badge">f(x)=</span>
+                        <input type="text" id="expression" value="sin(x) * x" oninput="drawGraph()" autocomplete="off">
+                    </div>
+                    <div id="error-msg"></div>
                 </div>
 
-                <div id="error" class="error" style="display: none;"></div>
-
-                <div class="range-inputs">
-                    <div>
-                        <label>X Min</label>
-                        <input type="number" id="xMin" value="-10" oninput="drawGraph()">
+                <div class="range-grid">
+                    <div class="control-row">
+                        <label>X-AXIS RANGE</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="xRange" value="10" oninput="drawGraph()">
+                        </div>
                     </div>
-                    <div>
-                        <label>X Max</label>
-                        <input type="number" id="xMax" value="10" oninput="drawGraph()">
-                    </div>
-                    <div>
-                        <label>Y Min</label>
-                        <input type="number" id="yMin" value="-10" oninput="drawGraph()">
-                    </div>
-                    <div>
-                        <label>Y Max</label>
-                        <input type="number" id="yMax" value="10" oninput="drawGraph()">
+                    <div class="control-row">
+                        <label>Y-AXIS RANGE</label>
+                        <div class="input-wrapper">
+                            <input type="number" id="yRange" value="10" oninput="drawGraph()">
+                        </div>
                     </div>
                 </div>
 
-                <canvas id="graphCanvas" width="800" height="600"></canvas>
-
-                <div class="presets">
-                    <button class="preset-btn" onclick="setExpression('sin(x)')">sin(x)</button>
-                    <button class="preset-btn" onclick="setExpression('cos(x)')">cos(x)</button>
-                    <button class="preset-btn" onclick="setExpression('tan(x)')">tan(x)</button>
-                    <button class="preset-btn" onclick="setExpression('x^2')">x²</button>
-                    <button class="preset-btn" onclick="setExpression('x^3')">x³</button>
-                    <button class="preset-btn" onclick="setExpression('1/x')">1/x</button>
-                    <button class="preset-btn" onclick="setExpression('sqrt(x)')">√x</button>
-                    <button class="preset-btn" onclick="setExpression('exp(x)')">e^x</button>
+                <div class="preset-tags">
+                    <div class="tag" onclick="setExpression('sin(x)')">sin</div>
+                    <div class="tag" onclick="setExpression('cos(x)')">cos</div>
+                    <div class="tag" onclick="setExpression('x^2')">x²</div>
+                    <div class="tag" onclick="setExpression('1/x')">1/x</div>
+                    <div class="tag" onclick="setExpression('sqrt(x)')">√x</div>
+                    <div class="tag" onclick="setExpression('log(x)')">log</div>
                 </div>
             </div>
+
+            <canvas id="graphCanvas"></canvas>
         </div>
     </div>
 
     <script>
+        // --- CALCULATOR LOGIC ---
         let calcExpression = '';
-
-        function handleCalc(value) {
+        
+        function handleCalc(val) {
             const display = document.getElementById('calcDisplay');
-            
-            if (value === 'C') {
+            const preview = document.getElementById('calcPreview');
+
+            if (val === 'C') {
                 calcExpression = '';
-                display.textContent = '0';
-            } else if (value === '=') {
+                display.innerText = '0';
+                preview.innerText = '';
+            } else if (val === '=') {
                 try {
+                    // Safe evaluation
                     const result = math.evaluate(calcExpression);
-                    display.textContent = result;
-                    calcExpression = result.toString();
+                    preview.innerText = calcExpression + ' =';
+                    
+                    // Format output (limit decimals)
+                    const formatted = parseFloat(result.toFixed(8)); 
+                    display.innerText = formatted;
+                    calcExpression = formatted.toString();
                 } catch (e) {
-                    display.textContent = 'Error';
-                    calcExpression = '';
+                    display.innerText = "Error";
+                    calcExpression = "";
                 }
-            } else if (value === '←') {
-                calcExpression = calcExpression.slice(0, -1);
-                display.textContent = calcExpression || '0';
             } else {
-                calcExpression = calcExpression === '0' ? value : calcExpression + value;
-                display.textContent = calcExpression;
+                if (calcExpression === '' && val !== '.') {
+                    calcExpression = val;
+                } else {
+                    calcExpression += val;
+                }
+                display.innerText = calcExpression;
             }
         }
 
-        function setExpression(expr) {
-            document.getElementById('expression').value = expr;
+        // --- GRAPHING LOGIC ---
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        let resizeTimeout;
+
+        function setExpression(exp) {
+            document.getElementById('expression').value = exp;
             drawGraph();
         }
 
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            drawGraph();
+        }
+
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(resizeCanvas, 100);
+        });
+
         function drawGraph() {
-            const canvas = document.getElementById('graphCanvas');
-            const ctx = canvas.getContext('2d');
             const width = canvas.width;
             const height = canvas.height;
+            const exprStr = document.getElementById('expression').value;
+            const errorMsg = document.getElementById('error-msg');
+            
+            // Get Ranges
+            const xR = parseFloat(document.getElementById('xRange').value) || 10;
+            const yR = parseFloat(document.getElementById('yRange').value) || 10;
+            
+            const xMin = -xR, xMax = xR;
+            const yMin = -yR, yMax = yR;
 
-            const expression = document.getElementById('expression').value;
-            const xMin = parseFloat(document.getElementById('xMin').value);
-            const xMax = parseFloat(document.getElementById('xMax').value);
-            const yMin = parseFloat(document.getElementById('yMin').value);
-            const yMax = parseFloat(document.getElementById('yMax').value);
-
-            const errorDiv = document.getElementById('error');
-
-            // Clear canvas - Background Color
-            ctx.fillStyle = '#09090b'; 
+            // Clear styling
+            ctx.fillStyle = "#050505";
             ctx.fillRect(0, 0, width, height);
 
-            // Draw grid - Grid Line Color
-            ctx.strokeStyle = '#27272a';
+            // Calculate scale
+            const xScale = width / (xMax - xMin);
+            const yScale = height / (yMax - yMin);
+            
+            // Center points
+            const cx = -xMin * xScale;
+            const cy = yMax * yScale;
+
+            // --- DRAW GRID ---
             ctx.lineWidth = 1;
+            ctx.strokeStyle = "rgba(56, 189, 248, 0.1)"; // Subtle blue grid
 
-            const xRange = xMax - xMin;
-            const yRange = yMax - yMin;
-
-            for (let i = 0; i <= 10; i++) {
-                const x = (width / 10) * i;
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, height);
-                ctx.stroke();
-
-                const y = (height / 10) * i;
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(width, y);
-                ctx.stroke();
+            ctx.beginPath();
+            // Vertical grid lines
+            for (let i = Math.ceil(xMin); i <= Math.floor(xMax); i++) {
+                const x = cx + i * xScale;
+                ctx.moveTo(x, 0); ctx.lineTo(x, height);
             }
+            // Horizontal grid lines
+            for (let i = Math.ceil(yMin); i <= Math.floor(yMax); i++) {
+                const y = cy - i * yScale;
+                ctx.moveTo(0, y); ctx.lineTo(width, y);
+            }
+            ctx.stroke();
 
-            // Draw axes - Axis Color
-            const xAxisY = height - ((-yMin) / yRange) * height;
-            const yAxisX = ((-xMin) / xRange) * width;
-
-            ctx.strokeStyle = '#52525b';
+            // --- DRAW AXES ---
             ctx.lineWidth = 2;
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+            ctx.beginPath();
+            // Y Axis
+            ctx.moveTo(cx, 0); ctx.lineTo(cx, height);
+            // X Axis
+            ctx.moveTo(0, cy); ctx.lineTo(width, cy);
+            ctx.stroke();
 
-            if (xAxisY >= 0 && xAxisY <= height) {
-                ctx.beginPath();
-                ctx.moveTo(0, xAxisY);
-                ctx.lineTo(width, xAxisY);
-                ctx.stroke();
-            }
+            // --- DRAW FUNCTION ---
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "#38bdf8"; // Neon Blue
+            ctx.shadowColor = "#38bdf8";
+            ctx.shadowBlur = 10;
+            ctx.lineJoin = "round";
 
-            if (yAxisX >= 0 && yAxisX <= width) {
-                ctx.beginPath();
-                ctx.moveTo(yAxisX, 0);
-                ctx.lineTo(yAxisX, height);
-                ctx.stroke();
-            }
+            ctx.beginPath();
+            let firstPoint = true;
 
-            // Plot function
+            // Density of points (higher = smoother)
+            const step = (xMax - xMin) / width; 
+
             try {
-                // Function Line Color
-                ctx.strokeStyle = '#3b82f6';
-                ctx.lineWidth = 2.5;
-                ctx.shadowBlur = 0;
-                ctx.beginPath();
+                for (let x = xMin; x <= xMax; x += step) {
+                    // Evaluate math
+                    const scope = { x: x };
+                    const y = math.evaluate(exprStr, scope);
 
-                let firstPoint = true;
-                const numPoints = width * 2;
-
-                for (let i = 0; i < numPoints; i++) {
-                    const x = xMin + (i / numPoints) * xRange;
-                    
-                    try {
-                        const y = math.evaluate(expression.toLowerCase(), { x });
-                        
-                        if (typeof y === 'number' && isFinite(y)) {
-                            const canvasX = ((x - xMin) / xRange) * width;
-                            const canvasY = height - ((y - yMin) / yRange) * height;
-
-                            if (canvasY >= -100 && canvasY <= height + 100) {
-                                if (firstPoint) {
-                                    ctx.moveTo(canvasX, canvasY);
-                                    firstPoint = false;
-                                } else {
-                                    ctx.lineTo(canvasX, canvasY);
-                                }
-                            } else {
-                                firstPoint = true;
-                            }
-                        } else {
-                            firstPoint = true;
-                        }
-                    } catch (e) {
+                    if (isNaN(y) || !isFinite(y)) {
                         firstPoint = true;
+                        continue;
+                    }
+
+                    const canvasX = cx + x * xScale;
+                    const canvasY = cy - y * yScale;
+
+                    // Avoid drawing massive vertical lines for asymptotes (like tan(x))
+                    if (canvasY < -height || canvasY > height * 2) {
+                        firstPoint = true;
+                        continue;
+                    }
+
+                    if (firstPoint) {
+                        ctx.moveTo(canvasX, canvasY);
+                        firstPoint = false;
+                    } else {
+                        // Check for huge jumps (asymptote detection)
+                        const prevX = cx + (x - step) * xScale;
+                        const prevYScope = math.evaluate(exprStr, { x: x - step });
+                        const prevY = cy - prevYScope * yScale;
+                        
+                        if (Math.abs(canvasY - prevY) > height) {
+                            ctx.moveTo(canvasX, canvasY);
+                        } else {
+                            ctx.lineTo(canvasX, canvasY);
+                        }
                     }
                 }
-
                 ctx.stroke();
-                errorDiv.style.display = 'none';
-            } catch (e) {
-                errorDiv.textContent = 'Invalid expression';
-                errorDiv.style.display = 'block';
-            }
-
-            // Draw labels
-            ctx.fillStyle = '#a1a1aa';
-            ctx.font = '12px Inter, monospace';
-            ctx.textAlign = 'center';
-            
-            for (let i = 0; i <= 10; i++) {
-                const x = xMin + (xRange / 10) * i;
-                const canvasX = (width / 10) * i;
-                if (Math.abs(x) > 0.01 || x === 0) {
-                    ctx.fillText(x.toFixed(1), canvasX, xAxisY > height - 20 ? height - 5 : xAxisY + 15);
-                }
-            }
-
-            ctx.textAlign = 'right';
-            for (let i = 0; i <= 10; i++) {
-                const y = yMin + (yRange / 10) * i;
-                const canvasY = height - (height / 10) * i;
-                if (Math.abs(y) > 0.01 || y === 0) {
-                    ctx.fillText(y.toFixed(1), yAxisX > 35 ? yAxisX - 5 : 30, canvasY + 4);
-                }
+                ctx.shadowBlur = 0; // Reset glow for next frame
+                errorMsg.innerText = "";
+            } catch (err) {
+                errorMsg.innerText = "Invalid syntax";
             }
         }
 
-        // Initial draw
-        drawGraph();
+        // Init
+        resizeCanvas();
     </script>
 </body>
 </html>

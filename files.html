@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Files</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --bg-dark: #1e1e1e; --bg-sidebar: #252525; --header-bg: #2f2f2f; --text-main: #e0e0e0; --text-dim: #aaa; --accent: #5e97f6; --border: #333; --hover: rgba(255, 255, 255, 0.08); --selection: rgba(94, 151, 246, 0.3); }
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; background-color: var(--bg-dark); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; }
+        #toolbar { height: 48px; background: var(--header-bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 15px; gap: 15px; }
+        .nav-btn { color: var(--text-main); font-size: 14px; padding: 8px; border-radius: 4px; cursor: pointer; transition: 0.2s; }
+        .nav-btn:hover { background: var(--hover); }
+        #breadcrumbs-container { flex: 1; background: #1a1a1a; border: 1px solid var(--border); border-radius: 4px; height: 32px; display: flex; align-items: center; padding: 0 10px; font-size: 13px; }
+        .crumb { display: flex; align-items: center; cursor: pointer; padding: 0 4px; border-radius: 2px; }
+        .crumb:hover { background: var(--hover); }
+        .crumb:after { content: '\f054'; font-family: "Font Awesome 6 Free"; font-weight: 900; font-size: 10px; color: var(--text-dim); margin-left: 8px; }
+        .crumb:last-child:after { content: ''; }
+        .crumb i { margin-right: 6px; color: var(--accent); }
+        #search-box { width: 200px; height: 32px; background: #1a1a1a; border: 1px solid var(--border); border-radius: 4px; color: white; padding: 0 10px; outline: none; font-size: 13px; }
+        #layout { display: flex; flex: 1; overflow: hidden; }
+        #sidebar { width: 200px; background: var(--bg-sidebar); border-right: 1px solid var(--border); padding: 10px 0; display: flex; flex-direction: column; }
+        .sidebar-item { padding: 8px 15px; font-size: 14px; cursor: pointer; display: flex; align-items: center; color: var(--text-main); margin: 2px 10px; border-radius: 4px; }
+        .sidebar-item:hover { background: var(--hover); }
+        .sidebar-item.active { background: var(--selection); color: #fff; }
+        .sidebar-item i { width: 25px; color: var(--text-dim); text-align: center; }
+        .sidebar-item.active i { color: var(--accent); }
+        .sidebar-divider { height: 1px; background: var(--border); margin: 10px 15px; }
+        #file-area { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-wrap: wrap; align-content: flex-start; gap: 10px; }
+        .file-item { width: 100px; height: 110px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 10px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; transition: background 0.1s; }
+        .file-item:hover { background: var(--hover); }
+        .file-item.selected { background: var(--selection); border-color: rgba(94, 151, 246, 0.4); }
+        .file-icon { font-size: 42px; margin-bottom: 10px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3)); }
+        .file-name { font-size: 12px; text-align: center; word-break: break-word; line-height: 1.3em; max-height: 2.6em; overflow: hidden; }
+        .icon-folder { color: #f8d775; } .icon-txt { color: #b0b0b0; } .icon-img { color: #b493e6; } .icon-code { color: #5e97f6; } .icon-pdf { color: #ff5f56; } .icon-audio { color: #27c93f; }
+        #statusbar { height: 28px; background: var(--bg-sidebar); border-top: 1px solid var(--border); display: flex; align-items: center; padding: 0 15px; font-size: 12px; color: var(--text-dim); }
+    </style>
+</head>
+<body>
+    <div id="toolbar">
+        <div class="nav-btn" onclick="goUp()"><i class="fa-solid fa-arrow-up"></i></div>
+        <div id="breadcrumbs-container"></div>
+        <input type="text" id="search-box" placeholder="Search Files" onkeyup="handleSearch()">
+    </div>
+    <div id="layout">
+        <div id="sidebar">
+            <div class="sidebar-item active" id="sb-root" onclick="navigate('root')"><i class="fa-solid fa-hard-drive"></i> This PC</div>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-item" id="sb-desktop" onclick="navigate('desktop')"><i class="fa-solid fa-desktop"></i> Desktop</div>
+            <div class="sidebar-item" id="sb-docs" onclick="navigate('docs')"><i class="fa-solid fa-file-lines"></i> Documents</div>
+            <div class="sidebar-item" id="sb-downloads" onclick="navigate('downloads')"><i class="fa-solid fa-download"></i> Downloads</div>
+            <div class="sidebar-item" id="sb-pics" onclick="navigate('pics')"><i class="fa-solid fa-image"></i> Pictures</div>
+            <div class="sidebar-item" id="sb-music" onclick="navigate('music')"><i class="fa-solid fa-music"></i> Music</div>
+        </div>
+        <div id="file-area" onclick="deselectAll(event)"></div>
+    </div>
+    <div id="statusbar"><span id="status-count">0 items</span></div>
+
+    <script>
+        // Default System
+        const baseFileSystem = {
+            'root': { name: 'This PC', type: 'root', children: ['desktop', 'docs', 'downloads', 'pics', 'music', 'sys_drive'] },
+            'sys_drive': { name: 'Local Disk (C:)', type: 'folder', parent: 'root', children: ['sys_win', 'sys_prog'] },
+            'sys_win': { name: 'Windows', type: 'folder', parent: 'sys_drive', children: [] },
+            'sys_prog': { name: 'Program Files', type: 'folder', parent: 'sys_drive', children: [] },
+            'desktop': { name: 'Desktop', type: 'folder', parent: 'root', children: ['file_notes', 'shortcut_game'] },
+            'docs': { name: 'Documents', type: 'folder', parent: 'root', children: ['folder_homework', 'file_essay'] },
+            'downloads': { name: 'Downloads', type: 'folder', parent: 'root', children: ['installer_chrome', 'img_meme'] },
+            'pics': { name: 'Pictures', type: 'folder', parent: 'root', children: ['img_vacation', 'img_cat'] },
+            'music': { name: 'Music', type: 'folder', parent: 'root', children: ['song_lofi'] },
+            'folder_homework': { name: 'Homework', type: 'folder', parent: 'docs', children: ['file_math', 'file_history'] },
+            'file_notes': { name: 'todo_list.txt', type: 'file', icon: 'fa-regular fa-file-lines', color: 'icon-txt', content: '1. Code EdulearnOS V4\n2. Fix Files App\n3. Study for Math test' },
+            'shortcut_game': { name: 'Minecraft.exe', type: 'file', icon: 'fa-brands fa-windows', color: 'icon-code', content: 'https://willard.fun/minekhan' },
+            'file_essay': { name: 'English_Essay_Final.txt', type: 'file', icon: 'fa-solid fa-file-lines', color: 'icon-txt', content: 'The Industrial Revolution...' },
+            'installer_chrome': { name: 'chrome_setup.exe', type: 'file', icon: 'fa-solid fa-box-archive', color: 'icon-code', content: 'https://www.google.com/search?q=chrome' },
+            'img_meme': { name: 'funny_cat.png', type: 'file', icon: 'fa-regular fa-image', color: 'icon-img', content: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=600' },
+            'img_vacation': { name: 'Iceland_Trip.jpg', type: 'file', icon: 'fa-regular fa-image', color: 'icon-img', content: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=600' },
+            'img_cat': { name: 'MyCat.jpg', type: 'file', icon: 'fa-regular fa-image', color: 'icon-img', content: 'https://images.unsplash.com/photo-1573865526739-10659fec78a5?w=600' },
+            'song_lofi': { name: 'Chill_Beats.mp3', type: 'file', icon: 'fa-solid fa-music', color: 'icon-audio', content: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+            'file_math': { name: 'Algebra_HW.txt', type: 'file', icon: 'fa-solid fa-file-pdf', color: 'icon-pdf', content: 'Solve for X: 2x+4=12' },
+            'file_history': { name: 'History_Notes.txt', type: 'file', icon: 'fa-regular fa-file-lines', color: 'icon-txt', content: 'George Washington was the first president.' }
+        };
+
+        let fileSystem = { ...baseFileSystem };
+        let currentFolderId = 'root';
+
+        function init() {
+            // LOAD USER FILES
+            const stored = JSON.parse(localStorage.getItem('edulearn_files')) || {};
+            
+            // Inject stored files into "Documents" folder by default
+            Object.keys(stored).forEach(key => {
+                const fileId = 'user_' + key.replace(/\./g, '_');
+                fileSystem[fileId] = stored[key];
+                
+                // Add to Documents folder
+                if(!fileSystem['docs'].children.includes(fileId)) {
+                    fileSystem['docs'].children.push(fileId);
+                }
+            });
+
+            navigate('root');
+        }
+
+        function navigate(folderId) {
+            if (!fileSystem[folderId]) return;
+            currentFolderId = folderId;
+            render(folderId);
+            updateBreadcrumbs(folderId);
+            updateSidebar(folderId);
+        }
+
+        function render(folderId) {
+            const container = document.getElementById('file-area');
+            container.innerHTML = '';
+            const folder = fileSystem[folderId];
+            const children = folder.children || [];
+            document.getElementById('status-count').innerText = `${children.length} items`;
+
+            if(children.length === 0) {
+                container.innerHTML = '<div style="width:100%; text-align:center; color:#555; margin-top:50px;">This folder is empty.</div>';
+                return;
+            }
+
+            children.forEach(childId => {
+                const item = fileSystem[childId];
+                if (!item) return;
+                const el = document.createElement('div');
+                el.className = 'file-item';
+                el.setAttribute('data-id', childId);
+                el.onclick = (e) => { e.stopPropagation(); selectItem(el); };
+                el.ondblclick = (e) => { e.stopPropagation(); openItem(childId, item); };
+                let iconClass = item.icon || 'fa-solid fa-folder';
+                let colorClass = item.color || 'icon-folder';
+                if (item.type === 'folder' && !item.icon) { iconClass = 'fa-solid fa-folder'; colorClass = 'icon-folder'; }
+
+                el.innerHTML = `<i class="${iconClass} file-icon ${colorClass}"></i><span class="file-name">${item.name}</span>`;
+                container.appendChild(el);
+            });
+        }
+
+        function selectItem(element) { document.querySelectorAll('.file-item').forEach(el => el.classList.remove('selected')); element.classList.add('selected'); }
+        function deselectAll(e) { if (e.target.id === 'file-area') document.querySelectorAll('.file-item').forEach(el => el.classList.remove('selected')); }
+
+        function openItem(id, item) {
+            if (item.type === 'folder' || item.type === 'root') { navigate(id); return; }
+            if (window.parent && window.parent.openWindow) {
+                let contentHTML = ''; let winTitle = item.name;
+                if (item.name.endsWith('.txt')) {
+                    contentHTML = `<div style="height:100%; display:flex; flex-direction:column;"><textarea style="flex:1; background:#1e1e1e; color:#eee; border:none; padding:15px; font-family:monospace; resize:none; outline:none;">${item.content}</textarea></div>`;
+                    winTitle = 'Notepad - ' + item.name;
+                } else if (item.name.endsWith('.jpg') || item.name.endsWith('.png')) {
+                    contentHTML = `<div style="height:100%; background:#000; display:flex; align-items:center; justify-content:center; overflow:hidden;"><img src="${item.content}" style="max-width:100%; max-height:100%;"></div>`;
+                    winTitle = 'Photos - ' + item.name;
+                } else if (item.name.endsWith('.mp3')) {
+                    contentHTML = `<div style="height:100%; background:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white;"><i class="fa-solid fa-music" style="font-size:60px; color:var(--accent); margin-bottom:20px;"></i><div>${item.name}</div><audio controls autoplay style="width:80%;"><source src="${item.content}" type="audio/mpeg"></audio></div>`;
+                    winTitle = 'Media Player';
+                } else if (item.name.endsWith('.exe')) {
+                    contentHTML = `<iframe src="${item.content}" style="width:100%; height:100%; border:none;"></iframe>`;
+                }
+                window.parent.openWindow({ name: winTitle, icon: item.icon }, contentHTML);
+            }
+        }
+
+        function goUp() { const curr = fileSystem[currentFolderId]; if (curr && curr.parent) navigate(curr.parent); }
+        function updateBreadcrumbs(folderId) {
+            const bc = document.getElementById('breadcrumbs-container'); bc.innerHTML = '';
+            let path = []; let curr = folderId;
+            while(curr) { if(fileSystem[curr]) { path.unshift({ id: curr, name: fileSystem[curr].name }); curr = fileSystem[curr].parent; } else break; }
+            path.forEach(p => { const crumb = document.createElement('div'); crumb.className = 'crumb'; if (p.id === 'root') crumb.innerHTML = `<i class="fa-solid fa-computer"></i>`; else crumb.innerText = p.name; crumb.onclick = () => navigate(p.id); bc.appendChild(crumb); });
+        }
+        function updateSidebar(activeId) {
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            const sbMap = { 'root': 'sb-root', 'desktop': 'sb-desktop', 'docs': 'sb-docs', 'downloads': 'sb-downloads', 'pics': 'sb-pics', 'music': 'sb-music' };
+            if(sbMap[activeId]) { const el = document.getElementById(sbMap[activeId]); if(el) el.classList.add('active'); }
+        }
+        function handleSearch() {
+            const query = document.getElementById('search-box').value.toLowerCase();
+            document.querySelectorAll('.file-item').forEach(item => { const name = item.querySelector('.file-name').innerText.toLowerCase(); item.style.display = name.includes(query) ? 'flex' : 'none'; });
+        }
+        init();
+    </script>
+</body>
+</html>

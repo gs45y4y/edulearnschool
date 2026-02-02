@@ -1,1249 +1,449 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-	<meta charset="UTF-8">
-	<title>EdulearnOS | Activities</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<link
-		href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;900&family=Fira+Code:wght@400;700&display=swap"
-		rel="stylesheet" />
-	<style>
-		/* --- CORE VARIABLES --- */
-		:root {
-			--accent-color: #0078d4;
-			--glass-border: rgba(0, 120, 212, 0.3);
-			--glass-bg: rgba(255, 255, 255, 0.08);
-			--dock-bg: rgba(10, 20, 30, 0.6);
-			--win-bg: rgba(5, 8, 12, 0.96);
-			--text: #ffffff;
-			--term-bg: #1a1b26;
-			--term-green: #9ece6a;
-			--term-blue: #7aa2f7;
-			--term-red: #f7768e;
-			--term-yellow: #e0af68;
-		}
-
-		/* --- GLOBAL RESET --- */
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-			user-select: none;
-			cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 8 L16 24 M8 16 L24 16' stroke='white' stroke-width='3'/></svg>") 16 16, auto !important;
-		}
-
-		iframe {
-			cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 8 L16 24 M8 16 L24 16' stroke='white' stroke-width='3'/></svg>") 16 16, auto !important;
-		}
-
-		body {
-			background: #050505 url('https://blogs.windows.com/wp-content/uploads/sites/2/2021/10/Windows-11-Bloom-Screensaver-Dark-scaled.jpg') no-repeat center center fixed;
-			background-size: cover;
-			color: var(--text);
-			font-family: 'Inter', sans-serif;
-			height: 100vh;
-			overflow: hidden;
-			transition: background-image 0.5s ease-in-out;
-		}
-
-		/* --- LOCK SCREEN --- */
-		#lock-screen {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgba(0, 0, 0, 0.6);
-			backdrop-filter: blur(20px);
-			z-index: 99999;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			color: white;
-			transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.6s;
-		}
-
-		#lock-screen.hidden {
-			transform: translateY(-100%);
-			opacity: 0;
-			pointer-events: none;
-		}
-
-		#lock-time {
-			font-size: 90px;
-			font-weight: 600;
-			letter-spacing: -2px;
-			text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-		}
-
-		#lock-date {
-			font-size: 26px;
-			margin-top: -10px;
-			font-weight: 300;
-			text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-		}
-
-		.lock-msg {
-			margin-top: 60px;
-			font-size: 14px;
-			opacity: 0.8;
-			animation: pulse 2s infinite;
-			letter-spacing: 1px;
-			text-transform: uppercase;
-		}
-
-		@keyframes pulse {
-			0% {
-				opacity: 0.4;
-			}
-
-			50% {
-				opacity: 1;
-			}
-
-			100% {
-				opacity: 0.4;
-			}
-		}
-
-		/* --- NOTIFICATIONS (TOASTS) --- */
-		#toast-container {
-			position: fixed;
-			bottom: 100px;
-			right: 20px;
-			display: flex;
-			flex-direction: column;
-			gap: 10px;
-			z-index: 10000;
-			pointer-events: none;
-		}
-
-		.toast {
-			background: rgba(20, 25, 35, 0.85);
-			border-left: 4px solid var(--accent-color);
-			padding: 15px 20px;
-			border-radius: 8px;
-			color: #fff;
-			font-size: 13px;
-			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-			backdrop-filter: blur(15px);
-			min-width: 250px;
-			animation: slideIn 0.3s ease-out forwards;
-			pointer-events: auto;
-			display: flex;
-			align-items: center;
-			gap: 12px;
-			border: 1px solid var(--glass-border);
-		}
-
-		@keyframes slideIn {
-			from {
-				transform: translateX(100%);
-				opacity: 0;
-			}
-
-			to {
-				transform: translateX(0);
-				opacity: 1;
-			}
-		}
-
-		@keyframes slideOut {
-			from {
-				transform: translateX(0);
-				opacity: 1;
-			}
-
-			to {
-				transform: translateX(100%);
-				opacity: 0;
-			}
-		}
-
-		/* --- BRANDING --- */
-		#os-brand {
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			font-size: 10vw;
-			font-weight: 900;
-			color: rgba(255, 255, 255, 0.95);
-			text-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px var(--accent-color);
-			z-index: 0;
-			pointer-events: none;
-			text-transform: uppercase;
-			letter-spacing: -0.02em;
-			white-space: nowrap;
-			transition: text-shadow 0.5s ease;
-		}
-
-		#lifeblood-canvas {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 1;
-			pointer-events: none;
-		}
-
-		#snap-preview {
-			position: fixed;
-			background: rgba(125, 212, 255, 0.15);
-			border: 2px dashed var(--accent-color);
-			border-radius: 20px;
-			z-index: 5;
-			display: none;
-			pointer-events: none;
-			transition: all 0.2s cubic-bezier(0.2, 0, 0.2, 1);
-		}
-
-		#desktop {
-			position: relative;
-			z-index: 2;
-			width: 100%;
-			height: 100vh;
-			padding: 20px;
-		}
-
-		/* --- ICONS --- */
-		.icon {
-			position: absolute;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			text-align: center;
-			cursor: grab;
-			width: 90px;
-			transition: transform 0.2s, top 0.2s ease-out, left 0.2s ease-out;
-		}
-
-		.icon.is-dragging {
-			transition: none;
-			cursor: grabbing;
-			z-index: 9999;
-		}
-
-		.icon:hover {
-			transform: scale(1.1);
-			z-index: 100;
-		}
-
-		.icon-visual {
-			width: 60px;
-			height: 60px;
-			margin-bottom: 8px;
-			background: var(--glass-bg);
-			border: 1px solid var(--glass-border);
-			border-radius: 16px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 26px;
-			backdrop-filter: blur(15px);
-			box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-			color: var(--accent-color);
-			transition: color 0.3s, border-color 0.3s;
-		}
-
-		.icon span {
-			font-size: 11px;
-			text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
-			background: rgba(0, 0, 0, 0.3);
-			padding: 2px 6px;
-			border-radius: 8px;
-		}
-
-		/* --- WINDOW SYSTEM --- */
-		.window {
-			position: absolute;
-			width: 900px;
-			height: calc(100vh - 140px);
-			background: var(--win-bg);
-			backdrop-filter: blur(40px);
-			border: 1px solid var(--glass-border);
-			border-radius: 20px;
-			display: flex;
-			flex-direction: column;
-			box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-			z-index: 100;
-			overflow: hidden;
-			transition: width 0.3s, height 0.3s, transform 0.3s, border-color 0.3s, opacity 0.3s;
-		}
-
-		.window.maximized {
-			width: 100% !important;
-			height: 100% !important;
-			top: 0 !important;
-			left: 0 !important;
-			border-radius: 0;
-		}
-
-		.window.snap-left {
-			width: 50% !important;
-			height: 100% !important;
-			top: 0 !important;
-			left: 0 !important;
-			border-radius: 0;
-		}
-
-		.window.snap-right {
-			width: 50% !important;
-			height: 100% !important;
-			top: 0 !important;
-			left: 50% !important;
-			border-radius: 0;
-		}
-
-		.window.minimized {
-			transform: scale(0.8) translateY(100px);
-			opacity: 0;
-			pointer-events: none;
-		}
-
-		.window-header {
-			padding: 12px 18px;
-			background: rgba(255, 255, 255, 0.05);
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			cursor: default;
-			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-		}
-
-		.win-title {
-			font-size: 13px;
-			color: var(--accent-color);
-			flex-grow: 1;
-			text-align: center;
-			pointer-events: none;
-		}
-
-		.win-controls {
-			display: flex;
-			gap: 8px;
-		}
-
-		.control {
-			width: 12px;
-			height: 12px;
-			border-radius: 50%;
-			cursor: pointer;
-			transition: 0.2s;
-		}
-
-		.control:hover {
-			filter: brightness(1.2);
-			transform: scale(1.1);
-		}
-
-		.close {
-			background: #FF5F57;
-		}
-
-		.min {
-			background: #FFBD2E;
-		}
-
-		.max {
-			background: #28C840;
-		}
-
-		.window-body {
-			flex: 1;
-			background: #fff;
-			position: relative;
-			overflow: auto;
-		}
-
-		.window-body iframe {
-			width: 100%;
-			height: 100%;
-			border: none;
-		}
-
-		.drag-overlay {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			display: none;
-			z-index: 5;
-		}
-
-		/* --- SETTINGS APP --- */
-		.settings-container {
-			padding: 20px;
-			color: #fff;
-			background: #111;
-			height: 100%;
-			overflow-y: auto;
-		}
-
-		.setting-section {
-			margin-bottom: 25px;
-			border-bottom: 1px solid #333;
-			padding-bottom: 15px;
-		}
-
-		.setting-label {
-			display: block;
-			margin-bottom: 10px;
-			font-size: 14px;
-			color: var(--accent-color);
-			font-weight: 600;
-		}
-
-		.color-options {
-			display: flex;
-			gap: 10px;
-			flex-wrap: wrap;
-		}
-
-		.color-circle {
-			width: 35px;
-			height: 35px;
-			border-radius: 50%;
-			cursor: pointer;
-			border: 2px solid transparent;
-			transition: transform 0.2s;
-		}
-
-		.color-circle:hover {
-			transform: scale(1.1);
-			border-color: #fff;
-		}
-
-		.wallpaper-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-			gap: 12px;
-			margin-top: 10px;
-		}
-
-		.wallpaper-option {
-			height: 80px;
-			border-radius: 10px;
-			background-size: cover;
-			background-position: center;
-			cursor: pointer;
-			border: 2px solid rgba(255, 255, 255, 0.1);
-			transition: all 0.2s;
-			position: relative;
-		}
-
-		.wallpaper-option:hover {
-			transform: scale(1.05);
-			border-color: var(--accent-color);
-			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-		}
-
-		.wallpaper-name {
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			background: rgba(0, 0, 0, 0.7);
-			color: #fff;
-			font-size: 9px;
-			padding: 4px;
-			text-align: center;
-			border-bottom-left-radius: 8px;
-			border-bottom-right-radius: 8px;
-		}
-
-		/* --- TERMINAL --- */
-		.terminal-body {
-			background-color: var(--term-bg);
-			color: #c0caf5;
-			font-family: 'Fira Code', 'Courier New', monospace !important;
-			padding: 20px;
-			height: 100%;
-			overflow-y: auto;
-			font-size: 14px;
-			text-align: left;
-			line-height: 1.5;
-		}
-
-		.term-line {
-			margin-bottom: 2px;
-			white-space: pre-wrap;
-			font-family: inherit;
-		}
-
-		.term-prompt {
-			color: var(--term-blue);
-			font-weight: bold;
-			margin-right: 8px;
-		}
-
-		.term-input {
-			background: transparent;
-			border: none;
-			color: #fff;
-			font-family: inherit;
-			font-size: 14px;
-			outline: none;
-			flex: 1;
-			caret-color: var(--term-green);
-		}
-
-		.fetch-grid {
-			display: flex;
-			gap: 30px;
-			align-items: flex-start;
-			padding: 15px;
-			margin-top: 10px;
-			margin-bottom: 15px;
-		}
-
-		.os-logo-icon {
-			font-size: 100px;
-			color: var(--accent-color);
-			filter: drop-shadow(0 0 15px rgba(125, 212, 255, 0.3));
-			margin-top: 10px;
-		}
-
-		.fetch-info {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-		}
-
-		.fetch-info div {
-			margin-bottom: 4px;
-		}
-
-		.acc {
-			color: var(--term-blue);
-			font-weight: bold;
-			margin-right: 5px;
-		}
-
-		/* --- FILES --- */
-		.file-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-			gap: 15px;
-			padding: 20px;
-			min-height: 100%;
-		}
-
-		.file-item {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			text-align: center;
-			cursor: pointer;
-			padding: 10px;
-			border-radius: 10px;
-			transition: 0.2s;
-			color: #333;
-		}
-
-		.file-item:hover {
-			background: rgba(0, 0, 0, 0.05);
-		}
-
-		.file-icon {
-			font-size: 40px;
-			margin-bottom: 8px;
-			color: var(--accent-color);
-		}
-
-		.file-name {
-			font-size: 12px;
-			word-break: break-all;
-			color: #333;
-		}
-
-		/* --- DOCK / TASKBAR --- */
-		#taskbar {
-			position: fixed;
-			bottom: 20px;
-			left: 50%;
-			transform: translateX(-50%);
-			height: 70px;
-			background: var(--dock-bg);
-			backdrop-filter: blur(35px);
-			border: 1px solid var(--glass-border);
-			border-radius: 22px;
-			display: flex;
-			align-items: center;
-			padding: 0 15px;
-			z-index: 9000;
-			gap: 15px;
-			transition: transform 0.4s cubic-bezier(0.2, 0, 0.2, 1), opacity 0.4s;
-			min-width: 450px;
-			justify-content: space-between;
-		}
-
-		#taskbar.hidden {
-			transform: translate(-50%, 150%);
-			opacity: 0;
-			pointer-events: none;
-			z-index: 0 !important;
-		}
-
-		#dock-trigger {
-			position: fixed;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			height: 15px;
-			z-index: 9999;
-			background: transparent;
-		}
-
-		#taskbar-apps {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			padding: 0 15px;
-			border-left: 1px solid rgba(255, 255, 255, 0.1);
-			border-right: 1px solid rgba(255, 255, 255, 0.1);
-			height: 100%;
-			flex-grow: 1;
-			justify-content: center;
-		}
-
-		.taskbar-item {
-			width: 50px;
-			height: 50px;
-			border-radius: 12px;
-			background: rgba(255, 255, 255, 0.05);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 22px;
-			color: rgba(255, 255, 255, 0.7);
-			cursor: pointer;
-			transition: all 0.2s;
-			position: relative;
-			border: 1px solid transparent;
-		}
-
-		.taskbar-item:hover {
-			background: rgba(255, 255, 255, 0.15);
-			transform: translateY(-5px);
-			color: #fff;
-		}
-
-		.taskbar-item.active {
-			border-bottom: 3px solid var(--accent-color);
-			background: rgba(255, 255, 255, 0.1);
-			color: var(--accent-color);
-		}
-
-		.taskbar-item.focused {
-			box-shadow: 0 0 10px var(--accent-color);
-			border-color: var(--glass-border);
-		}
-
-		/* SYSTEM TRAY */
-		.taskbar-system {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-		}
-
-		.shield-btn,
-		.add-btn {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background: rgba(255, 255, 255, 0.1);
-			border-radius: 15px;
-			cursor: pointer;
-			border: 1px solid var(--glass-border);
-			color: var(--accent-color);
-			transition: 0.2s;
-			height: 45px;
-		}
-
-		.shield-btn {
-			gap: 12px;
-			padding: 8px 18px;
-		}
-
-		.add-btn {
-			width: 45px;
-			font-size: 18px;
-			border-radius: 50%;
-		}
-
-		.shield-btn:hover,
-		.add-btn:hover {
-			background: rgba(255, 255, 255, 0.2);
-			transform: scale(1.05);
-		}
-
-		#sys-tray {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			padding-left: 10px;
-		}
-
-		.tray-icon {
-			font-size: 14px;
-			color: #fff;
-			width: 20px;
-			text-align: center;
-		}
-
-		#clock {
-			font-size: 16px;
-			font-weight: 500;
-			color: var(--accent-color);
-			text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-			padding-left: 5px;
-			cursor: pointer;
-		}
-
-		/* --- PERFORMANCE MODE --- */
-		body.perf-mode .window,
-		body.perf-mode #taskbar,
-		body.perf-mode .icon-visual,
-		body.perf-mode #music-player,
-		body.perf-mode #context-menu,
-		body.perf-mode #app-launcher {
-			backdrop-filter: none !important;
-			box-shadow: none !important;
-			transition: none !important;
-		}
-
-		body.perf-mode .window {
-			background: rgba(10, 15, 25, 1);
-			border: 1px solid #333;
-		}
-
-		body.perf-mode #taskbar {
-			background: rgba(10, 20, 30, 0.95);
-			border: 1px solid #444;
-		}
-
-		.perf-active .shield-btn i {
-			color: #ffd700 !important;
-		}
-
-		/* --- MUSIC PLAYER --- */
-		#music-player {
-			position: fixed;
-			top: 100px;
-			right: 20px;
-			width: 320px;
-			background: rgba(10, 15, 25, 0.9);
-			backdrop-filter: blur(25px);
-			border: 1px solid var(--glass-border);
-			border-radius: 20px;
-			padding: 20px;
-			z-index: 8000;
-			color: #fff;
-			transition: transform 0.3s ease;
-			transform: translateX(360px);
-			display: flex;
-			flex-direction: column;
-			max-height: 80vh;
-		}
-
-		#music-player.active {
-			transform: translateX(0);
-		}
-
-		.music-header {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			margin-bottom: 15px;
-		}
-
-		.music-title {
-			font-weight: 700;
-			color: var(--accent-color);
-		}
-
-		.music-close {
-			cursor: pointer;
-			color: #FF5F57;
-		}
-
-		.search-container {
-			display: flex;
-			gap: 5px;
-			margin-bottom: 15px;
-		}
-
-		.music-search {
-			flex: 1;
-			background: rgba(255, 255, 255, 0.1);
-			border: 1px solid rgba(255, 255, 255, 0.2);
-			padding: 8px 12px;
-			border-radius: 10px;
-			color: #fff;
-			outline: none;
-			font-size: 12px;
-		}
-
-		.search-btn {
-			background: var(--accent-color);
-			border: none;
-			border-radius: 8px;
-			width: 35px;
-			cursor: pointer;
-			color: #000;
-		}
-
-		.radio-btn {
-			width: 100%;
-			background: rgba(255, 255, 255, 0.1);
-			border: 1px solid rgba(255, 255, 255, 0.2);
-			color: #fff;
-			padding: 8px;
-			border-radius: 10px;
-			margin-bottom: 15px;
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 8px;
-			font-size: 12px;
-			transition: 0.2s;
-		}
-
-		.results-list {
-			flex: 1;
-			overflow-y: auto;
-			margin-bottom: 15px;
-			display: flex;
-			flex-direction: column;
-			gap: 8px;
-			max-height: 150px;
-		}
-
-		.song-result {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			padding: 8px;
-			background: rgba(255, 255, 255, 0.05);
-			border-radius: 8px;
-			cursor: pointer;
-		}
-
-		.song-img {
-			width: 35px;
-			height: 35px;
-			border-radius: 4px;
-			background: #333;
-			object-fit: cover;
-		}
-
-		.song-name {
-			font-size: 12px;
-			font-weight: bold;
-			white-space: nowrap;
-			overflow: hidden;
-			text-overflow: ellipsis;
-		}
-
-		.song-artist {
-			font-size: 10px;
-			color: #aaa;
-		}
-
-		.custom-player-ui {
-			background: rgba(255, 255, 255, 0.05);
-			padding: 15px;
-			border-radius: 12px;
-			display: flex;
-			flex-direction: column;
-			gap: 10px;
-			border: 1px solid rgba(255, 255, 255, 0.1);
-		}
-
-		.progress-area {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			font-size: 10px;
-			color: #aaa;
-		}
-
-		.progress-bar {
-			flex: 1;
-			height: 4px;
-			background: rgba(255, 255, 255, 0.2);
-			border-radius: 2px;
-			cursor: pointer;
-			position: relative;
-		}
-
-		.progress-fill {
-			width: 0%;
-			height: 100%;
-			background: var(--accent-color);
-			border-radius: 2px;
-		}
-
-		.player-buttons {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 20px;
-		}
-
-		.p-btn {
-			background: none;
-			border: none;
-			color: #fff;
-			cursor: pointer;
-			font-size: 16px;
-			transition: 0.2s;
-		}
-
-		.play-toggle {
-			width: 35px;
-			height: 35px;
-			border-radius: 50%;
-			background: var(--accent-color);
-			color: #000;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 14px;
-		}
-
-		.vol-slider {
-			-webkit-appearance: none;
-			width: 100%;
-			height: 3px;
-			background: rgba(255, 255, 255, 0.2);
-			border-radius: 2px;
-			outline: none;
-			margin-top: 5px;
-		}
-
-		.vol-slider::-webkit-slider-thumb {
-			-webkit-appearance: none;
-			width: 10px;
-			height: 10px;
-			border-radius: 50%;
-			background: var(--accent-color);
-			cursor: pointer;
-		}
-
-		#toggle-music {
-			position: fixed;
-			bottom: 100px;
-			right: 20px;
-			width: 50px;
-			height: 50px;
-			background: var(--dock-bg);
-			border: 1px solid var(--glass-border);
-			border-radius: 50%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			color: var(--accent-color);
-			z-index: 7000;
-			cursor: pointer;
-			backdrop-filter: blur(10px);
-			transition: 0.2s;
-			opacity: 1;
-		}
-
-		#toggle-music.hidden-ui {
-			transform: scale(0);
-			opacity: 0;
-			pointer-events: none;
-		}
-
-		/* --- CONTEXT MENU & MODALS --- */
-		#context-menu {
-			position: fixed;
-			z-index: 20000;
-			display: none;
-			background: rgba(15, 20, 30, 0.95);
-			backdrop-filter: blur(10px);
-			border: 1px solid var(--glass-border);
-			border-radius: 10px;
-			padding: 5px;
-			min-width: 150px;
-			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-		}
-
-		.ctx-item {
-			padding: 10px 15px;
-			color: #fff;
-			font-size: 13px;
-			cursor: pointer;
-			border-radius: 6px;
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			transition: 0.2s;
-		}
-
-		.ctx-item:hover {
-			background: rgba(255, 255, 255, 0.1);
-		}
-
-		.modal-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgba(0, 0, 0, 0.75);
-			backdrop-filter: blur(8px);
-			z-index: 10000;
-			display: none;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.modal-content {
-			width: 400px;
-			background: #0f151c;
-			border: 1px solid var(--glass-border);
-			border-radius: 20px;
-			padding: 30px;
-			display: flex;
-			flex-direction: column;
-			gap: 15px;
-			box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-		}
-
-		.modal-content h3 {
-			color: var(--accent-color);
-			margin-bottom: 5px;
-		}
-
-		.modal-content input {
-			background: rgba(255, 255, 255, 0.1);
-			border: 1px solid rgba(255, 255, 255, 0.2);
-			padding: 12px;
-			border-radius: 10px;
-			color: #fff;
-			outline: none;
-			font-family: inherit;
-		}
-
-		.modal-btns {
-			display: flex;
-			gap: 10px;
-			justify-content: flex-end;
-			margin-top: 10px;
-		}
-
-		.modal-btn {
-			padding: 8px 16px;
-			border-radius: 8px;
-			border: none;
-			cursor: pointer;
-			font-weight: 600;
-		}
-
-		.btn-cancel {
-			background: rgba(255, 255, 255, 0.1);
-			color: #fff;
-		}
-
-		.btn-save {
-			background: var(--accent-color);
-			color: #000;
-		}
-
-		/* --- SIDE LAUNCHER --- */
-		#app-launcher {
-			position: fixed;
-			top: 0;
-			left: 0;
-			bottom: 0;
-			width: 350px;
-			background: rgba(10, 15, 25, 0.85);
-			border-right: 1px solid var(--glass-border);
-			backdrop-filter: blur(40px);
-			z-index: 15000;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			transform: translateX(-100%);
-			transition: transform 0.3s cubic-bezier(0.2, 0, 0.2, 1);
-			padding-top: 40px;
-		}
-
-		#app-launcher.active {
-			transform: translateX(0);
-		}
-
-		.launcher-search {
-			width: 85%;
-			padding: 12px;
-			background: rgba(255, 255, 255, 0.05);
-			border: 1px solid var(--glass-border);
-			border-radius: 12px;
-			color: white;
-			font-size: 14px;
-			outline: none;
-			margin-bottom: 30px;
-			text-align: left;
-		}
-
-		.launcher-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-			gap: 20px;
-			width: 90%;
-			padding: 10px;
-			overflow-y: auto;
-		}
-
-		.launcher-icon {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			cursor: pointer;
-			transition: transform 0.2s;
-			text-align: center;
-		}
-
-		.launcher-icon:hover {
-			transform: scale(1.05);
-		}
-
-		.launcher-icon-vis {
-			width: 50px;
-			height: 50px;
-			background: var(--glass-bg);
-			border: 1px solid var(--glass-border);
-			border-radius: 12px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 22px;
-			color: var(--accent-color);
-			margin-bottom: 5px;
-			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-		}
-
-		.launcher-icon span {
-			font-size: 11px;
-			text-shadow: 0 0 5px black;
-		}
-
-		#launcher-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgba(0, 0, 0, 0.4);
-			z-index: 14999;
-			display: none;
-		}
-
-		#launcher-overlay.active {
-			display: block;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edulearnschool | Activities</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS REMAINS THE SAME AS BEFORE --- */
+        :root {
+            --bg-dark: #121212;
+            --bg-light: #1e1e1e;
+            --window-bg: #252525;
+            --window-header: #2f2f2f;
+            --text-main: #e0e0e0;
+            --accent: #5e97f6;
+            --taskbar-bg: rgba(18, 18, 18, 0.95);
+            --taskbar-height: 52px;
+            --border-color: #333;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; overflow: hidden;
+            background-color: var(--bg-dark); background-size: cover; background-position: center;
+            color: var(--text-main); transition: background-image 0.5s ease;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%235e97f6" stroke="white" stroke-width="2" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>') 1 1, auto;
+        }
+
+        .wp-iceland { background-image: url('https://www.usnews.com/object/image/00000162-f3a3-d0d5-a57f-fbf33c300000/3-vestrahorn-iceland.jpg?update-time=1745871301820&size=responsive970'); }
+        .wp-rainier { background-image: url('https://www.usnews.com/object/image/00000162-f3a3-d0d5-a57f-fbf3af9b0000/20-mount-rainier-national-park.jpg?update-time=1745872131347&size=responsive970'); }
+        .wp-windows { background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'); }
+        .wp-chrome { background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop'); }
+        .wp-linux { background-image: url('https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=2574&auto=format&fit=crop'); }
+
+        #watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 80px; font-weight: bold; color: rgba(255, 255, 255, 0.4); text-shadow: 0 0 20px rgba(0,0,0,0.5); pointer-events: none; user-select: none; text-align: center; z-index: 0; }
+        #watermark span.ver { color: rgba(94, 151, 246, 0.8); font-size: 0.5em; vertical-align: super; }
+
+        #desktop { height: calc(100vh - var(--taskbar-height)); width: 100%; padding: 20px; display: flex; flex-direction: column; flex-wrap: wrap; align-content: flex-start; gap: 20px; position: relative; z-index: 1; }
+        .app-icon { width: 85px; height: 95px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; transition: background 0.2s; text-align: center; }
+        .app-icon:hover { background-color: rgba(255, 255, 255, 0.08); }
+        .app-icon i { font-size: 36px; color: #ffffff; margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
+        .app-icon span { font-size: 13px; text-shadow: 0 1px 4px rgba(0,0,0,0.9); color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; font-weight: 500; }
+
+        #taskbar { position: absolute; bottom: 0; width: 100%; height: var(--taskbar-height); background: var(--taskbar-bg); backdrop-filter: blur(15px); display: flex; align-items: center; padding: 0 10px; border-top: 1px solid #444; z-index: 9999; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); }
+        #start-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 15px; cursor: pointer; transition: background 0.2s; background: rgba(255,255,255,0.05); }
+        #start-btn:hover { background: rgba(255,255,255,0.15); }
+        #start-btn i { font-size: 20px; color: white; }
+        #taskbar-apps { display: flex; align-items: center; gap: 6px; }
+        .taskbar-item { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 6px; cursor: pointer; transition: all 0.2s; position: relative; }
+        .taskbar-item:hover { background: rgba(255,255,255,0.1); }
+        .taskbar-item.active { background: rgba(255,255,255,0.15); border-bottom: 3px solid var(--accent); }
+        .taskbar-item i { color: white; font-size: 20px; }
+        .shield-btn { color: #4a90e2; }
+        
+        .taskbar-close { position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; background-color: #ff5f56; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 10px; color: white; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .taskbar-item:hover .taskbar-close { display: flex; }
+        .taskbar-close:hover { background-color: #ff3b30; transform: scale(1.1); }
+
+        #clock { margin-left: auto; color: #ddd; font-size: 14px; padding: 0 20px; font-weight: 500; cursor: pointer; height: 100%; display: flex; align-items: center; transition: background 0.2s; border-radius: 4px; }
+        #clock:hover { background: rgba(255,255,255,0.1); color: white; }
+
+        /* CALENDAR */
+        #calendar-popup { position: absolute; bottom: 60px; right: 10px; width: 320px; background: #252525; border: 1px solid #444; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; flex-direction: column; z-index: 10000; padding: 15px; animation: slideUp 0.2s ease-out; }
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .cal-title { font-size: 16px; font-weight: bold; color: white; }
+        .cal-nav { background: transparent; border: none; color: #aaa; cursor: pointer; font-size: 14px; padding: 5px 10px; transition: 0.2s; }
+        .cal-nav:hover { color: white; background: rgba(255,255,255,0.1); border-radius: 4px; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; font-size: 13px; }
+        .cal-day-name { color: #888; font-weight: 600; font-size: 12px; margin-bottom: 5px; }
+        .cal-day { width: 36px; height: 36px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; color: #ccc; border: 1px solid transparent; position: relative; }
+        .cal-day:hover { background: rgba(255,255,255,0.1); color: white; }
+        .cal-day.today { background: var(--accent); color: white; font-weight: bold; }
+        .cal-day.selected { border-color: var(--accent); background: rgba(94, 151, 246, 0.2); }
+        .cal-day.has-event::after { content: ''; position: absolute; bottom: 4px; width: 4px; height: 4px; background-color: #00d2ff; border-radius: 50%; }
+        .cal-footer { margin-top: 15px; padding-top: 10px; border-top: 1px solid #333; display: none; flex-direction: column; gap: 8px; }
+        .cal-footer.active { display: flex; }
+        .cal-event-input { background: #1a1a1a; border: 1px solid #444; padding: 8px; color: white; border-radius: 4px; outline: none; width: 100%; font-size: 13px; }
+        .cal-event-btn { background: var(--accent); color: white; border: none; padding: 6px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        .cal-event-display { font-size: 12px; color: #aaa; margin-bottom: 5px; font-style: italic; }
+
+        /* TOAST */
+        #notification-toast { position: absolute; top: 20px; right: -300px; width: 280px; background: #252525; border-left: 4px solid var(--accent); border-radius: 4px; padding: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 20000; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; }
+        #notification-toast.show { right: 20px; }
+        .toast-title { font-weight: bold; color: white; margin-bottom: 5px; font-size: 14px; }
+        .toast-msg { color: #ccc; font-size: 13px; }
+
+        /* START MENU */
+        #start-menu { position: absolute; bottom: 60px; left: 10px; width: 320px; height: 450px; background: #252525; border: 1px solid #444; border-radius: 8px; display: none; flex-direction: column; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding: 15px; }
+        #start-search { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #1e1e1e; color: white; margin-bottom: 10px; outline: none; }
+        #start-list { flex: 1; overflow-y: auto; }
+        .start-item { display: flex; align-items: center; padding: 8px; cursor: pointer; border-radius: 4px; }
+        .start-item:hover { background: var(--accent); color: white; }
+        .start-item i { width: 30px; text-align: center; margin-right: 10px; }
+
+        /* WINDOWS */
+        .window { position: absolute; background: var(--window-bg); border: 1px solid var(--border-color); border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column; min-width: 300px; min-height: 200px; resize: both; overflow: hidden; opacity: 0; animation: fadeIn 0.2s forwards; }
+        .no-transition { transition: none !important; }
+        @keyframes fadeIn { to { opacity: 1; } }
+        .window-header { height: 40px; background: var(--window-header); display: flex; align-items: center; justify-content: space-between; padding: 0 12px; cursor: default; user-select: none; border-bottom: 1px solid var(--border-color); }
+        .window-title { font-size: 14px; font-weight: 500; color: #eee; display: flex; align-items: center; }
+        .window-controls { display: flex; gap: 8px; }
+        .window-controls div { width: 13px; height: 13px; border-radius: 50%; cursor: pointer; transition: transform 0.1s; }
+        .window-controls div:hover { filter: brightness(1.2); }
+        .win-max { background: #27c93f; } .win-min { background: #ffbd2e; } .win-close { background: #ff5f56; }
+        .window-content { flex: 1; position: relative; background: var(--bg-light); }
+        iframe { width: 100%; height: 100%; border: none; background: white; }
+
+        .internal-app { padding: 20px; color: #ccc; height: 100%; overflow-y: auto; font-family: monospace; }
+        .terminal-output { font-family: 'Consolas', monospace; font-size: 14px; color: #ddd; }
+        .terminal-input-line { display: flex; margin-top: 10px; }
+        .terminal-prompt { color: var(--accent); margin-right: 10px; font-weight: bold; }
+        #term-input { background: transparent; border: none; color: white; flex: 1; outline: none; font-family: monospace; font-size: 14px; }
+
+        /* CONTEXT MENU */
+        #context-menu { position: absolute; background: #252525; border: 1px solid #444; border-radius: 8px; width: 180px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; padding: 5px 0; }
+        .ctx-item { padding: 10px 15px; font-size: 13px; cursor: pointer; color: #eee; display: flex; align-items: center; }
+        .ctx-item i { width: 20px; margin-right: 5px; color: #888; }
+        .ctx-item:hover { background: var(--accent); color: white; }
+        .ctx-header { padding: 8px 15px; font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #333; margin-bottom: 5px; cursor: default; }
+
+        #snap-overlay { position: absolute; background: rgba(94, 151, 246, 0.15); border: 2px solid rgba(94, 151, 246, 0.5); z-index: 500; pointer-events: none; display: none; border-radius: 10px; }
+    </style>
 </head>
+<body class="wp-iceland">
 
-<body>
-	<div id="lock-screen" onclick="toggleLockScreen()">
-		<div id="lock-time">12:00</div>
-		<div id="lock-date">Monday, January 1</div>
-		<div class="lock-msg">Click or Press any key to Unlock</div>
-	</div>
+    <div id="watermark">EdulearnOS <span class="ver">V4 Beta</span></div>
+    <div id="desktop"></div>
+    <div id="snap-overlay"></div>
 
-	<div id="toast-container"></div>
+    <div id="notification-toast">
+        <div class="toast-title"><i class="fa-regular fa-bell"></i> Reminder</div>
+        <div class="toast-msg" id="toast-message">Event Details Here</div>
+    </div>
 
-	<div id="os-brand">EdulearnOS</div>
-	<canvas id="lifeblood-canvas"></canvas>
-	<div id="snap-preview"></div>
-	<div id="dock-trigger"></div>
-	<div id="desktop"></div>
+    <div id="calendar-popup">
+        <div class="cal-header">
+            <button class="cal-nav" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+            <div class="cal-title" id="cal-month-year">Month Year</div>
+            <button class="cal-nav" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-footer" id="cal-footer">
+            <div class="cal-event-display" id="cal-event-display">No events for this day.</div>
+            <input type="text" id="cal-input" class="cal-event-input" placeholder="Add event...">
+            <button class="cal-event-btn" onclick="saveEvent()">Save Event</button>
+        </div>
+    </div>
 
-	<input type="file" id="file-uploader" style="display: none;" onchange="processFileImport(this)">
-	<div id="context-menu"></div>
-	<div id="launcher-overlay" onclick="toggleLauncher(false)"></div>
-	<div id="app-launcher">
-		<input type="text" class="launcher-search" id="launcher-search-input" placeholder="Search apps..." oninput="filterLauncher(this.value)">
-		<div class="launcher-grid" id="launcher-grid"></div>
-	</div>
-	<div id="toggle-music" onclick="toggleMusicPlayer()"><i class="fa-solid fa-music"></i></div>
+    <div id="start-menu">
+        <input type="text" id="start-search" placeholder="Search apps..." onkeyup="filterApps()">
+        <div id="start-list"></div>
+    </div>
 
-	<div id="music-player">
-		<div class="music-header">
-			<span class="music-title">SonicBar</span><i class="fa-solid fa-times music-close" onclick="toggleMusicPlayer()"></i>
-		</div>
-		<div style="margin-bottom:5px; font-size:10px; color:#aaa;">Load SoundCloud/Tidal/MP3 URL:</div>
-		<div class="search-container">
-			<input type="text" class="music-search" id="direct-url-input" placeholder="Paste URL..." onchange="playDirect(this.value)"><button class="search-btn" onclick="playDirect(document.getElementById('direct-url-input').value)"><i class="fa-solid fa-play"></i></button>
-		</div>
-		<div id="embed-container" style="display:none;"></div>
-		<div id="classic-player-ui">
-			<div class="radio-btn" onclick="playLofiRadio()"><i class="fa-solid fa-radio"></i> Start Lofi Radio</div>
-			<div class="search-container">
-				<input type="text" class="music-search" id="music-search-input" placeholder="Search iTunes..." onkeydown="if(event.key==='Enter') searchMusic()"><button class="search-btn" onclick="searchMusic()"><i class="fa-solid fa-magnifying-glass"></i></button>
-			</div>
-			<div class="results-list" id="music-results"></div>
-			<div class="now-playing" id="now-playing-text">Not Playing</div>
-			<div class="custom-player-ui">
-				<div class="progress-area"><span id="curr-time">0:00</span>
-					<div class="progress-bar" id="progress-bar" onclick="seekAudio(event)">
-						<div class="progress-fill" id="progress-fill"></div>
-					</div><span id="dur-time">0:00</span></div>
-				<div class="player-buttons">
-					<button class="p-btn" onclick="skip(-5)"><i class="fa-solid fa-backward"></i></button><button class="p-btn play-toggle" id="play-pause-btn" onclick="togglePlayState()"><i class="fa-solid fa-play"></i></button><button class="p-btn" onclick="skip(5)"><i class="fa-solid fa-forward"></i></button>
-				</div>
-				<input type="range" class="vol-slider" min="0" max="1" step="0.05" value="0.8" oninput="setVolume(this.value)">
+    <div id="context-menu">
+        <div class="ctx-header">General</div>
+        <div class="ctx-item" onclick="createNewFile()"><i class="fa-solid fa-file-circle-plus"></i> New Text File</div>
+        <div class="ctx-header">Backgrounds</div>
+        <div class="ctx-item" onclick="setWallpaper('wp-iceland')"><i class="fa-solid fa-water"></i> Vestrahorn</div>
+        <div class="ctx-item" onclick="setWallpaper('wp-rainier')"><i class="fa-solid fa-mountain"></i> Mt. Rainier</div>
+        <div class="ctx-item" onclick="setWallpaper('wp-windows')"><i class="fa-brands fa-windows"></i> Windows</div>
+        <div class="ctx-item" onclick="setWallpaper('wp-chrome')"><i class="fa-brands fa-chrome"></i> ChromeOS</div>
+        <div class="ctx-item" onclick="setWallpaper('wp-linux')"><i class="fa-brands fa-linux"></i> Linux</div>
+        <div class="ctx-header">System</div>
+        <div class="ctx-item" onclick="location.reload()"><i class="fa-solid fa-power-off"></i> Restart</div>
+    </div>
+
+    <div id="taskbar">
+        <div id="start-btn" onclick="toggleStartMenu()"><i class="fa-solid fa-circle-dot"></i></div>
+        <div id="taskbar-apps">
+            <div class="taskbar-item shield-btn" onclick="openShield()" title="Open Safe Browser">
+                <i class="fa-solid fa-shield-halved"></i>
             </div>
-			</div>
-			<audio id="os-audio" style="display:none;" crossorigin="anonymous" ontimeupdate="updateProgress()"
-				onended="onAudioEnded()"></audio>
-		</div>
+        </div>
+        <div id="clock" onclick="toggleCalendar()">12:00 PM</div>
+    </div>
 
-		<div id="custom-app-modal" class="modal-overlay">
-			<div class="modal-content">
-				<h3>Create New App</h3>
-				<input type="text" id="app-name-input" placeholder="App Name (e.g., My Game)">
-				<input type="text" id="app-url-input" placeholder="URL (e.g., https://example.com)">
-				<div class="modal-btns">
-					<button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button><button class="modal-btn btn-save" onclick="saveCustomApp()">Create App</button>
-				</div>
-			</div>
-		</div>
+    <script>
+        // CONFIG
+        let apps = [
+            { id: 'sc', name: 'Scramjet', icon: 'fa-solid fa-globe', url: atob('Li9tbmh5NzhrcGxqZ3l1bi8=') },
+            { id: 'uv', name: 'Ultraviolet', icon: 'fa-solid fa-globe', url: atob('Li9hY3RpdmUv') },
+            { id: 'gn', name: 'Games', icon: 'fa-solid fa-gamepad', url: atob('Li9tYXRoL2duLW1hdGguaHRtbA==') },
+            { id: 'term', name: 'Terminal', icon: 'fa-solid fa-terminal', isSystem: true },
+            { id: 'e2e', name: 'E2EV2', icon: 'fa-solid fa-lock', url: atob('Li9lMmV2Mi5odG1s') },
+            { id: 'dm', name: 'Dosmes AI', icon: 'fa-solid fa-chart-line', url: atob('aHR0cHM6Ly9kZXNtb3MubGF0') },
+            { id: 'fs', name: 'Files', icon: 'fa-solid fa-folder', url: atob('Li9maWxlcy5odG1s') }, 
+            { id: 'gc', name: 'Graphing', icon: 'fa-solid fa-chart-simple', url: atob('Li9ncmFwaGNhbGMuaHRtbA==') },
+            { id: 'p', name: 'Paint', icon: 'fa-solid fa-palette', url: atob('Li9wYWludC5odG1s') },
+            { id: 'mp', name: 'Music', icon: 'fa-solid fa-music', url: atob('Li9tdXNpY3BsYXllci5odG1s') },
+            { id: 'te', name: 'Text Editor', icon: 'fa-solid fa-file-lines', url: atob('Li90ZXh0ZWRpdG9yLmh0bWw=') },
+            { id: 'cr', name: 'Code Runner', icon: 'fa-solid fa-code', url: atob('Li9jb2RlcnVubmVyLmh0bWw=') },
+            { id: 'dc', name: 'Discord Server', icon: 'fa-brands fa-discord', url: atob('aHR0cHM6Ly9kaXNjb3JkLmdnL0VQbTVxbktrWU4=') },
+            { id: 'cl', name: 'Changelog', icon: 'fa-solid fa-circle-info', url: atob('Li9pbmZvLmh0bWw=') },
+            { id: 'tools', name: 'Tools', icon: 'fa-solid fa-wrench', url: atob('Li90b29scy5odG1s') },
+            { id: 'imgs', name: 'Images', icon: 'fa-solid fa-camera', url: atob('Li9pbWFnZXMuaHRtbA==') },
+			{ id: 'c', name: 'Credits', icon: 'fa-regular fa-circle-question', url: atob('Li9jcmVkaXRzLmh0bWw=') }
+        ];
 
-		<div id="taskbar">
-			<div class="taskbar-system">
-				<div class="add-btn" onclick="toggleLauncher(true)" title="App Launcher (Win Key)">
-					<i class="fa-solid fa-bars"></i></div>
-			</div>
-			<div id="taskbar-apps"></div>
-			<div class="taskbar-system">
-				<div id="sys-tray">
-					<i class="fa-solid fa-wifi tray-icon" title="Connected"></i>
-					<div style="display:flex;align-items:center;" title="Battery">
-						<i class="fa-solid fa-battery-three-quarters tray-icon" id="battery-icon"></i></div>
-				</div>
-				<div class="add-btn" onclick="openSettingsApp()" title="System Settings">
-					<i class="fa-solid fa-gear"></i></div>
-				<div class="shield-btn" id="perf-btn" onclick="togglePerformanceMode()" title="Toggle Performance Mode">
-					<i class="fa-solid fa-bolt"></i></div>
-				<div class="add-btn" onclick="openModal()" title="Add Custom App"><i class="fa-solid fa-plus"></i></div>
-				<div id="clock" onclick="togglePerformanceMode()">12:00</div>
-			</div>
-		</div>
+        let zIndexCounter = 100;
+        let virtualDisk = {}; 
 
-		<script>
-const _0xe801ce=_0x126c,_0x4c58c9=_0x8eac;(function(_0xb15b36,_0x371196){const _0x5bb384=_0x8eac,_0x13097=_0x126c,_0x2f90f4=_0xb15b36();while(!![]){try{const _0x2cec5f=-parseInt(_0x13097(0x285))/0x1*(parseInt(_0x5bb384(0x29e,'YO[Z'))/0x2)+parseInt(_0x5bb384(0x1d8,'P#qa'))/0x3*(parseInt(_0x5bb384(0x3c3,'YO[Z'))/0x4)+-parseInt(_0x13097(0x306))/0x5*(parseInt(_0x13097(0x2bb))/0x6)+-parseInt(_0x13097(0x2af))/0x7*(parseInt(_0x13097(0x1b6))/0x8)+parseInt(_0x13097(0x2ff))/0x9+parseInt(_0x5bb384(0x339,'zoL9'))/0xa*(-parseInt(_0x5bb384(0x2f3,'^UdS'))/0xb)+parseInt(_0x13097(0x3ec))/0xc;if(_0x2cec5f===_0x371196)break;else _0x2f90f4['push'](_0x2f90f4['shift']());}catch(_0xec33f3){_0x2f90f4['push'](_0x2f90f4['shift']());}}}(_0x35a2,0xc971d));let virtualFiles=[];try{virtualFiles=JSON[_0x4c58c9(0x303,'B!nb')](localStorage[_0xe801ce(0x20e)](_0x4c58c9(0x1b0,'hX9w')))||[];}catch(_0xde77f5){}const colors=[{'name':_0x4c58c9(0x38f,'!bk)'),'hex':_0xe801ce(0x21e),'rgb':_0x4c58c9(0x1f3,'e@@%')},{'name':_0xe801ce(0x2b3),'hex':_0x4c58c9(0x3ee,'!bk)'),'rgb':_0xe801ce(0x19e)},{'name':_0x4c58c9(0x256,'OkyH'),'hex':_0xe801ce(0x1dd),'rgb':_0x4c58c9(0x308,'CivT')},{'name':_0x4c58c9(0x1c2,'cD%E'),'hex':_0x4c58c9(0x1ca,'95C7'),'rgb':_0x4c58c9(0x39f,'95C7')},{'name':_0x4c58c9(0x20d,'vl2M'),'hex':'#557CDB','rgb':_0x4c58c9(0x209,'iaBu')},{'name':_0xe801ce(0x25f),'hex':_0x4c58c9(0x1cf,'e@@%'),'rgb':_0xe801ce(0x28c)},{'name':_0xe801ce(0x192),'hex':_0xe801ce(0x3e2),'rgb':_0x4c58c9(0x2ad,'95C7')},{'name':_0x4c58c9(0x1d9,'w(cL'),'hex':_0x4c58c9(0x319,'Gf(7'),'rgb':'224,\x20175,\x20104'},{'name':'Purple','hex':'#bb9af7','rgb':_0x4c58c9(0x26e,'%XZu')},{'name':_0xe801ce(0x25d),'hex':_0xe801ce(0x31b),'rgb':_0x4c58c9(0x3d8,']QID')}],wallpapers=[{'name':_0xe801ce(0x242),'url':_0x4c58c9(0x1a0,'zoL9'),'colorIndex':0x0},{'name':_0x4c58c9(0x398,'g(4v'),'url':_0x4c58c9(0x3ca,'iASN'),'colorIndex':0x1},{'name':'Linux\x20Mint\x20Victoria','url':_0x4c58c9(0x2aa,'TD@R'),'colorIndex':0x2},{'name':_0x4c58c9(0x3c1,'fS@^'),'url':_0xe801ce(0x35f),'colorIndex':0x3},{'name':_0xe801ce(0x3d3),'url':_0x4c58c9(0x293,'hX9w'),'colorIndex':0x4},{'name':_0xe801ce(0x32c),'url':_0xe801ce(0x2ca),'colorIndex':0x5},{'name':_0xe801ce(0x32e),'url':'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1000&auto=format&fit=crop','colorIndex':0x6},{'name':_0x4c58c9(0x36b,'95C7'),'url':_0xe801ce(0x197),'colorIndex':0x7},{'name':_0xe801ce(0x236),'url':_0xe801ce(0x2f1),'colorIndex':0x8},{'name':_0xe801ce(0x2c8),'url':_0xe801ce(0x24a),'colorIndex':0x9}];let isPerfMode=![],animId,openWindows={},currentParticleRGB=_0xe801ce(0x2d9);const savedColorIdx=localStorage[_0x4c58c9(0x1af,'YO[Z')](_0x4c58c9(0x382,'u^$l'));if(savedColorIdx!==null)setAccentColor(parseInt(savedColorIdx));const savedWall=localStorage[_0x4c58c9(0x215,'!bk)')]('edu_wallpaper');if(savedWall)document[_0x4c58c9(0x237,'dU20')][_0x4c58c9(0x254,'(%l8')]['backgroundImage']=_0x4c58c9(0x3e8,'N[[K')+savedWall+'\x27)';const savedCustomApps=JSON['parse'](localStorage[_0x4c58c9(0x3c5,'ZtvH')](_0x4c58c9(0x26b,'wX[$')))||[];function setAccentColor(_0x293909){const _0x1635fb=_0x4c58c9,_0x394f39=_0xe801ce,_0x343a31=(function(){let _0x38372e=!![];return function(_0x3bfdd0,_0x285f5b){const _0x123aa4=_0x38372e?function(){const _0x1e38ed=_0x8eac;if(_0x285f5b){const _0x1abaea=_0x285f5b[_0x1e38ed(0x2cd,'a8SL')](_0x3bfdd0,arguments);return _0x285f5b=null,_0x1abaea;}}:function(){};return _0x38372e=![],_0x123aa4;};}()),_0x488dc1=_0x343a31(this,function(){const _0x11f53a=_0x126c,_0x2f16d8=_0x8eac,_0x5058fe=function(){const _0x339404=_0x8eac;let _0x3b2107;try{_0x3b2107=Function(_0x339404(0x1ae,'FbMF')+_0x339404(0x247,'9ZO&')+');')();}catch(_0x4eaf87){_0x3b2107=window;}return _0x3b2107;},_0x1cd48d=_0x5058fe(),_0x91d069=_0x1cd48d[_0x2f16d8(0x33e,'Gf(7')]=_0x1cd48d[_0x11f53a(0x263)]||{},_0x7b64f3=[_0x11f53a(0x332),_0x11f53a(0x364),_0x2f16d8(0x381,'(%l8'),'error',_0x11f53a(0x383),'table','trace'];for(let _0x2f3125=0x0;_0x2f3125<_0x7b64f3[_0x11f53a(0x355)];_0x2f3125++){const _0x23cc5d=_0x343a31[_0x2f16d8(0x3b8,'CivT')][_0x2f16d8(0x28e,'ZTlm')][_0x2f16d8(0x334,'N[[K')](_0x343a31),_0x402c2b=_0x7b64f3[_0x2f3125],_0x5e919b=_0x91d069[_0x402c2b]||_0x23cc5d;_0x23cc5d[_0x11f53a(0x3cb)]=_0x343a31[_0x11f53a(0x2d5)](_0x343a31),_0x23cc5d[_0x11f53a(0x23d)]=_0x5e919b[_0x2f16d8(0x2a8,'aNuW')][_0x11f53a(0x2d5)](_0x5e919b),_0x91d069[_0x402c2b]=_0x23cc5d;}});_0x488dc1();const _0x13a633=colors[_0x293909];document[_0x394f39(0x1ff)][_0x394f39(0x36a)]['setProperty'](_0x394f39(0x3cf),_0x13a633['hex']),document[_0x394f39(0x1ff)][_0x1635fb(0x2b5,'Gf(7')]['setProperty'](_0x394f39(0x1bf),'rgba('+_0x13a633['rgb']+_0x1635fb(0x2e1,'w(cL')),currentParticleRGB=_0x13a633[_0x1635fb(0x229,'w(cL')],localStorage['setItem']('edu_color_idx',_0x293909),localStorage['setItem']('edu_color_hex',_0x13a633['hex']);}function setWallpaper(_0x2455bd){const _0x39b115=_0x4c58c9,_0x52d846=_0xe801ce;if(wallpapers[_0x2455bd]){const _0x1c5c4f=wallpapers[_0x2455bd];document['body'][_0x52d846(0x36a)][_0x52d846(0x199)]=_0x39b115(0x3d4,'e@@%')+_0x1c5c4f[_0x52d846(0x2d0)]+'\x27)',localStorage['setItem'](_0x52d846(0x18f),_0x1c5c4f[_0x39b115(0x24f,'xo(v')]);if(_0x1c5c4f[_0x52d846(0x295)]!==undefined&&colors[_0x1c5c4f[_0x39b115(0x21f,'DDO2')]])setAccentColor(_0x1c5c4f[_0x39b115(0x362,'u^$l')]);}}function togglePerformanceMode(_0x5184e7){const _0xae7a33=_0x4c58c9,_0xf0b73d=_0xe801ce,_0x2b1ec6=document[_0xf0b73d(0x37a)](_0xf0b73d(0x385)),_0x1213e1=_0x5184e7!==undefined?_0x5184e7:!isPerfMode;_0x1213e1?(isPerfMode=!![],document[_0xae7a33(0x278,'p^dD')][_0xf0b73d(0x1b8)][_0xf0b73d(0x3d6)]('perf-mode'),_0x2b1ec6['classList']['add'](_0xf0b73d(0x273)),cancelAnimationFrame(animId),ctx[_0xf0b73d(0x1df)](0x0,0x0,canvas['width'],canvas[_0xae7a33(0x1d4,'!bk)')]),showToast('Performance\x20Mode\x20Enabled')):(isPerfMode=![],document[_0xae7a33(0x345,'xo(v')][_0xf0b73d(0x1b8)][_0xf0b73d(0x360)]('perf-mode'),_0x2b1ec6['classList'][_0xae7a33(0x1b3,'CUha')]('perf-active'),anim(),showToast(_0xf0b73d(0x3d0)));}function showToast(_0x37e672,_0x394d8a=_0xe801ce(0x340)){const _0x59d89c=_0xe801ce,_0x4ed49c=_0x4c58c9,_0x33dfeb=document[_0x4ed49c(0x218,'H*rE')]('toast-container'),_0x58e256=document[_0x59d89c(0x2b9)](_0x4ed49c(0x18b,'dU20'));_0x58e256['className']='toast',_0x58e256[_0x4ed49c(0x3c9,'B!nb')]=_0x59d89c(0x208)+_0x394d8a+_0x4ed49c(0x36c,'CivT')+_0x37e672+_0x59d89c(0x22b),_0x33dfeb[_0x4ed49c(0x250,'S^5m')](_0x58e256),setTimeout(()=>{const _0x131f41=_0x59d89c,_0x48ddc2=_0x4ed49c;_0x58e256[_0x48ddc2(0x3cd,'!bk)')][_0x48ddc2(0x2d6,'hX9w')]=_0x131f41(0x259),setTimeout(()=>_0x58e256['remove'](),0x12c);},0xbb8);}function toggleLockScreen(_0x1e04a8){const _0x4aa6c0=_0xe801ce,_0x131bd5=_0x4c58c9,_0x500e0f=document[_0x131bd5(0x1b1,'N[[K')](_0x4aa6c0(0x2d4));if(_0x1e04a8===undefined)_0x1e04a8=_0x500e0f[_0x131bd5(0x2d3,'S^5m')]['contains'](_0x131bd5(0x1bd,'g(4v'));_0x1e04a8?_0x500e0f[_0x4aa6c0(0x1b8)][_0x131bd5(0x2b6,'zoL9')](_0x4aa6c0(0x330)):_0x500e0f[_0x4aa6c0(0x1b8)][_0x131bd5(0x374,'R2H@')]('hidden');}document[_0xe801ce(0x1e2)]('keydown',_0xd2b420=>{const _0x5e8ae3=_0x4c58c9,_0x1372b3=_0xe801ce;(_0xd2b420[_0x1372b3(0x1f7)]==='l'||_0xd2b420[_0x5e8ae3(0x3e5,'S^5m')]==='L')&&(_0xd2b420[_0x5e8ae3(0x2c9,'p^dD')]||_0xd2b420['ctrlKey'])&&(_0xd2b420['preventDefault'](),toggleLockScreen(!![]));const _0x500370=document['getElementById'](_0x1372b3(0x2d4));!_0x500370[_0x1372b3(0x1b8)][_0x1372b3(0x213)](_0x1372b3(0x330))&&!_0xd2b420[_0x5e8ae3(0x203,'a8SL')]&&!_0xd2b420[_0x1372b3(0x21b)]&&toggleLockScreen(![]);});const canvas=document['getElementById'](_0xe801ce(0x3a1)),ctx=canvas[_0xe801ce(0x3b2)]('2d');let particles=[];const resize=()=>{const _0x25ed30=_0x4c58c9;canvas[_0x25ed30(0x18d,'0kGG')]=window['innerWidth'],canvas[_0x25ed30(0x1cd,'w(cL')]=window[_0x25ed30(0x3ae,'CivT')];};window[_0xe801ce(0x1e2)](_0xe801ce(0x38b),resize),resize();class P{constructor(){this['reset']();}[_0xe801ce(0x1d0)](){const _0x10adf2=_0x4c58c9,_0x2522dd=_0xe801ce;this['x']=Math[_0x2522dd(0x395)]()*canvas['width'],this['y']=canvas['height']+0x14,this['s']=Math[_0x10adf2(0x2cb,'R2H@')]()*0x2+0x1,this['vy']=Math[_0x2522dd(0x395)]()*-0.7-0.2,this['o']=Math[_0x2522dd(0x395)]()*0.5+0.1;}[_0x4c58c9(0x29d,'DDO2')](){const _0x5dbc9e=_0xe801ce;this['y']+=this['vy'];if(this['y']<-0xa)this[_0x5dbc9e(0x1d0)]();}[_0xe801ce(0x1f9)](){const _0x2ae66e=_0x4c58c9;ctx[_0x2ae66e(0x29b,'YO[Z')]='rgba('+currentParticleRGB+',\x20'+this['o']+')',ctx[_0x2ae66e(0x1bc,'0kGG')](),ctx[_0x2ae66e(0x3b4,'N[[K')](this['x'],this['y'],this['s'],0x0,Math['PI']*0x2),ctx['fill']();}}for(let i=0x0;i<0x32;i++)particles[_0x4c58c9(0x241,'ZtvH')](new P());function anim(){const _0x500306=_0xe801ce,_0x4bc863=_0x4c58c9;if(isPerfMode)return;ctx[_0x4bc863(0x2a6,'0kGG')](0x0,0x0,canvas[_0x500306(0x388)],canvas['height']),particles[_0x500306(0x1fe)](_0x223b56=>{const _0x4944f8=_0x500306,_0x270c59=_0x4bc863;_0x223b56[_0x270c59(0x37e,'wX[$')](),_0x223b56[_0x4944f8(0x1f9)]();}),animId=requestAnimationFrame(anim);}anim();let apps=[{'id':'sc','name':_0xe801ce(0x3dc),'icon':'fa-solid\x20fa-globe','url':atob(_0xe801ce(0x27d))},{'id':'uv','name':'Ultraviolet','icon':_0xe801ce(0x267),'url':atob(_0xe801ce(0x302))},{'id':'gn','name':_0xe801ce(0x1e1),'icon':'fa-solid\x20fa-gamepad','url':atob(_0x4c58c9(0x232,'0kGG'))},{'id':'term','name':'Terminal','icon':'fa-solid\x20fa-terminal','isSystem':!![]},{'id':_0xe801ce(0x1ee),'name':'E2EV2','icon':'fa-solid\x20fa-lock','url':atob(_0x4c58c9(0x3e9,'g(4v'))},{'id':'dm','name':_0x4c58c9(0x2f5,']QID'),'icon':_0x4c58c9(0x338,'B!nb'),'url':atob(_0x4c58c9(0x2be,'s8Ph'))},{'id':'fs','name':_0xe801ce(0x368),'icon':_0xe801ce(0x304),'isSystem':!![]},{'id':'gc','name':'Graphing','icon':'fa-solid\x20fa-chart-simple','url':atob(_0x4c58c9(0x19d,'!bk)'))},{'id':'sp-prod','name':'Super\x20Productivity','icon':_0x4c58c9(0x3e1,'Gf(7'),'url':_0xe801ce(0x1d5)},{'id':'p','name':'Paint','icon':_0x4c58c9(0x1c7,'XGko'),'url':atob('Li9wYWludC5odG1s')},{'id':'p8','name':_0x4c58c9(0x37b,'XGko'),'icon':_0x4c58c9(0x1a9,'9ZO&'),'url':atob(_0xe801ce(0x30c))},{'id':'mp','name':_0xe801ce(0x2a1),'icon':_0xe801ce(0x2f0),'url':atob('Li9tdXNpY3BsYXllci5odG1s')},{'id':'te','name':_0xe801ce(0x2bd),'icon':'fa-solid\x20fa-file-lines','url':atob(_0xe801ce(0x1fd))},{'id':'cr','name':_0xe801ce(0x28d),'icon':_0x4c58c9(0x2c2,'R2H@'),'url':atob(_0x4c58c9(0x2b0,'DDO2'))},{'id':'dc','name':'Discord','icon':'fa-brands\x20fa-discord','url':atob(_0x4c58c9(0x284,'ZTlm'))},{'id':'cl','name':_0x4c58c9(0x3e6,'iaBu'),'icon':'fa-solid\x20fa-circle-info','url':atob('Li9pbmZvLmh0bWw=')},{'id':_0xe801ce(0x33f),'name':'Tools','icon':_0xe801ce(0x2c6),'url':atob(_0x4c58c9(0x309,'fS@^'))},{'id':_0xe801ce(0x248),'name':_0xe801ce(0x313),'icon':_0xe801ce(0x2ea),'url':atob(_0x4c58c9(0x2cf,'wX[$'))},...savedCustomApps];const desktop=document[_0xe801ce(0x37a)](_0xe801ce(0x271));let draggedIcon=null,dragOffset=[0x0,0x0],originalIconPos={'left':0x0,'top':0x0};function renderIcons(){const _0x177ba3=_0xe801ce,_0x15398d=_0x4c58c9;desktop[_0x15398d(0x18c,'P#qa')]='';const _0x25335e=0x1e,_0x5e8cad=0x1e,_0x10008a=0x64,_0xe50189=0x64,_0x24f23b=Math[_0x15398d(0x214,'N9j9')]((window[_0x15398d(0x23f,'B!nb')]-0x50)/_0xe50189);apps[_0x177ba3(0x1fe)]((_0x58bdeb,_0x470bca)=>{const _0x1f5b8e=_0x177ba3,_0x563f96=_0x15398d,_0xfbd61b=document[_0x563f96(0x1a4,'YO[Z')](_0x1f5b8e(0x222));_0xfbd61b[_0x563f96(0x2ed,'ZTlm')]=_0x563f96(0x3bb,'w(cL');const _0x3c8da1=_0x470bca%_0x24f23b,_0x650b74=Math['floor'](_0x470bca/_0x24f23b);_0xfbd61b[_0x563f96(0x35a,'a8SL')][_0x1f5b8e(0x1a3)]=_0x25335e+_0x650b74*_0x10008a+'px',_0xfbd61b['style'][_0x563f96(0x25c,'WxBS')]=_0x5e8cad+_0x3c8da1*_0xe50189+'px',_0xfbd61b[_0x1f5b8e(0x3de)]=_0x563f96(0x3d5,'cD%E')+_0x58bdeb[_0x563f96(0x29f,'p^dD')]+_0x563f96(0x265,'F[AN')+_0x58bdeb[_0x563f96(0x2c0,'WxBS')]+_0x1f5b8e(0x22b),_0xfbd61b[_0x563f96(0x2fd,'95C7')]('mousedown',_0x456f28=>{const _0x3c2b61=_0x1f5b8e,_0x3403b7=_0x563f96;if(_0x456f28['button']!==0x0)return;draggedIcon=_0xfbd61b,originalIconPos={'left':_0xfbd61b[_0x3403b7(0x33d,'cD%E')]['left'],'top':_0xfbd61b[_0x3c2b61(0x36a)][_0x3403b7(0x3eb,'(%l8')]},dragOffset=[_0xfbd61b[_0x3c2b61(0x1d1)]-_0x456f28['clientX'],_0xfbd61b[_0x3403b7(0x2dd,'N9j9')]-_0x456f28[_0x3403b7(0x3bf,'vl2M')]],_0xfbd61b[_0x3c2b61(0x1b8)][_0x3c2b61(0x3d6)](_0x3c2b61(0x3a0));}),_0xfbd61b[_0x563f96(0x25a,'e@@%')](_0x563f96(0x391,'(%l8'),()=>launchApp(_0x58bdeb)),_0xfbd61b[_0x1f5b8e(0x1e2)](_0x1f5b8e(0x3ed),_0x2d9e0b=>{_0x2d9e0b['stopPropagation'](),showContextMenu(_0x2d9e0b,'app',_0x58bdeb);}),desktop[_0x1f5b8e(0x2c3)](_0xfbd61b);}),populateLauncher();}function launchApp(_0xa878c0){const _0x23c0d0=_0x4c58c9,_0x279510=_0xe801ce,_0x5c19c7=Object[_0x279510(0x1f5)](openWindows)[_0x279510(0x240)](_0x1cb4b4=>openWindows[_0x1cb4b4]['appId']===_0xa878c0['id']);if(_0x5c19c7){focusWindow(_0x5c19c7);return;}if(_0xa878c0[_0x23c0d0(0x2ec,'!!#U')]){if(_0xa878c0['id']===_0x23c0d0(0x3a7,'B!nb'))openTerminal();if(_0xa878c0['id']==='fs')openFilesApp();}else createWindow(_0xa878c0['id'],_0xa878c0[_0x23c0d0(0x275,'N9j9')],_0x23c0d0(0x227,'vl2M')+_0xa878c0[_0x23c0d0(0x289,'R2H@')]+'\x22></iframe>',_0xa878c0[_0x279510(0x323)]);showToast(_0xa878c0['name']+_0x23c0d0(0x1fa,'u^$l'));}document[_0x4c58c9(0x326,'!bk)')](_0x4c58c9(0x35e,'w(cL'),_0x210f17=>{const _0x1e86a9=_0xe801ce,_0x4eb011=_0x4c58c9;draggedIcon&&(draggedIcon['style'][_0x4eb011(0x347,'B!nb')]=_0x210f17['clientX']+dragOffset[0x0]+'px',draggedIcon[_0x1e86a9(0x36a)]['top']=_0x210f17['clientY']+dragOffset[0x1]+'px');}),document['addEventListener'](_0x4c58c9(0x230,'iASN'),()=>{const _0x5a6aca=_0xe801ce,_0x35a7f3=_0x4c58c9;if(draggedIcon){const _0x37303d=draggedIcon;draggedIcon=null,_0x37303d[_0x35a7f3(0x261,']QID')]['remove'](_0x35a7f3(0x29c,'CUha'));const _0x29149d=0x64,_0x37ea3a=0x64,_0x159b22=parseInt(_0x37303d[_0x5a6aca(0x36a)][_0x5a6aca(0x1a3)]),_0x4027c7=parseInt(_0x37303d[_0x5a6aca(0x36a)][_0x5a6aca(0x331)]),_0x5dcb53=Math[_0x35a7f3(0x333,'(%l8')]((_0x159b22-0x1e)/_0x29149d),_0x2f0673=Math['round']((_0x4027c7-0x1e)/_0x37ea3a),_0x514d4b=Math['max'](0x1e,0x1e+_0x5dcb53*_0x29149d),_0x1306a4=Math['max'](0x1e,0x1e+_0x2f0673*_0x37ea3a);let _0x171f84=![];document[_0x5a6aca(0x1ef)](_0x5a6aca(0x387))[_0x5a6aca(0x1fe)](_0x5b3311=>{const _0x480033=_0x5a6aca,_0x5ba535=_0x35a7f3;if(_0x5b3311===_0x37303d)return;if(Math['abs'](parseInt(_0x5b3311[_0x5ba535(0x3af,'xo(v')]['left'])-_0x514d4b)<0x5&&Math[_0x5ba535(0x30b,'0kGG')](parseInt(_0x5b3311[_0x5ba535(0x1db,'P#qa')][_0x480033(0x331)])-_0x1306a4)<0x5)_0x171f84=!![];}),_0x171f84?(_0x37303d[_0x5a6aca(0x36a)][_0x5a6aca(0x1a3)]=originalIconPos[_0x35a7f3(0x1f6,'N9j9')],_0x37303d[_0x35a7f3(0x1e9,'N9j9')]['top']=originalIconPos[_0x5a6aca(0x331)]):(_0x37303d[_0x5a6aca(0x36a)][_0x35a7f3(0x19a,'XGko')]=_0x514d4b+'px',_0x37303d['style'][_0x35a7f3(0x34d,'a8SL')]=_0x1306a4+'px');}});let zIndexCounter=0x64,draggedWin=null,winDragOff=[0x0,0x0];const preview=document[_0x4c58c9(0x2ae,'TD@R')](_0xe801ce(0x3be));function createWindow(_0x35e887,_0x2850ae,_0xa4d78c,_0xf89ad3){const _0x197bd0=_0x4c58c9,_0x407fd8=_0xe801ce,_0x57ccbe=_0x407fd8(0x1ba)+_0x35e887;if(document['getElementById'](_0x57ccbe)){focusWindow(_0x57ccbe);return;}const _0x586efd=document[_0x197bd0(0x367,'(%l8')](_0x407fd8(0x222));_0x586efd[_0x197bd0(0x37d,'dU20')]='window',_0x586efd['id']=_0x57ccbe,_0x586efd[_0x197bd0(0x324,'wX[$')]['left']=0x64+Object['keys'](openWindows)[_0x407fd8(0x355)]*0x1e+'px',_0x586efd[_0x197bd0(0x373,'FbMF')][_0x197bd0(0x3bc,'hX9w')]=0x32+Object[_0x407fd8(0x1f5)](openWindows)[_0x407fd8(0x355)]*0x1e+'px',_0x586efd[_0x197bd0(0x324,'wX[$')][_0x407fd8(0x21c)]=++zIndexCounter,_0x586efd[_0x407fd8(0x3de)]=_0x197bd0(0x2c5,'WxBS')+_0x57ccbe+_0x197bd0(0x317,'!!#U')+_0x57ccbe+_0x197bd0(0x349,'ZtvH')+_0x57ccbe+_0x197bd0(0x312,'WxBS')+_0x57ccbe+'\x27)\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22control\x20max\x22\x20onclick=\x22toggleMaximize(\x27'+_0x57ccbe+_0x197bd0(0x1ec,'B!nb')+_0x2850ae+_0x407fd8(0x358)+_0xa4d78c+_0x407fd8(0x3e3)+_0x57ccbe+_0x407fd8(0x336),document['body'][_0x407fd8(0x2c3)](_0x586efd),openWindows[_0x57ccbe]={'id':_0x57ccbe,'appId':_0x35e887,'title':_0x2850ae,'icon':_0xf89ad3,'minimized':![],'maximized':![]},addToTaskbar(_0x57ccbe,_0x2850ae,_0xf89ad3,_0x35e887),focusWindow(_0x57ccbe),_0x586efd['addEventListener']('mousedown',()=>focusWindow(_0x57ccbe));}function closeWindow(_0x22648a){const _0x59e0c4=_0x4c58c9,_0x550047=_0xe801ce,_0x500a57=document['getElementById'](_0x22648a);_0x500a57&&(_0x500a57[_0x550047(0x36a)][_0x550047(0x260)]='0',_0x500a57[_0x550047(0x36a)][_0x550047(0x2b4)]=_0x59e0c4(0x2f2,'S^5m'),setTimeout(()=>_0x500a57['remove'](),0xc8)),delete openWindows[_0x22648a],removeFromTaskbar(_0x22648a);}function minimizeWindow(_0x47d941){const _0x3553c9=_0x4c58c9,_0x2d6cf7=_0xe801ce,_0x5e36e9=document[_0x2d6cf7(0x37a)](_0x47d941);_0x5e36e9&&(_0x5e36e9['classList'][_0x3553c9(0x201,'ZTlm')]('minimized'),openWindows[_0x47d941][_0x3553c9(0x3d1,'!bk)')]=!![],updateTaskbarState(_0x47d941));}function toggleMaximize(_0x5cf7fc){const _0x2b6a97=_0x4c58c9,_0x2fd771=_0xe801ce,_0x481013=document[_0x2fd771(0x37a)](_0x5cf7fc);if(!_0x481013)return;openWindows[_0x5cf7fc][_0x2fd771(0x394)]?(_0x481013[_0x2fd771(0x1b8)][_0x2b6a97(0x1a5,'u^$l')](_0x2fd771(0x394)),openWindows[_0x5cf7fc][_0x2fd771(0x394)]=![]):(_0x481013[_0x2fd771(0x1b8)][_0x2b6a97(0x357,'FbMF')]('maximized'),openWindows[_0x5cf7fc][_0x2b6a97(0x2a2,'aNuW')]=!![]);}function focusWindow(_0x18620e){const _0x5bdcc5=_0x4c58c9,_0x3cc24a=_0xe801ce,_0x5a4ea6=document[_0x3cc24a(0x37a)](_0x18620e);if(!_0x5a4ea6)return;openWindows[_0x18620e]['minimized']&&(_0x5a4ea6[_0x5bdcc5(0x32a,'9ZO&')][_0x3cc24a(0x360)](_0x5bdcc5(0x2ac,'p^dD')),openWindows[_0x18620e][_0x3cc24a(0x3dd)]=![],updateTaskbarState(_0x18620e));_0x5a4ea6[_0x5bdcc5(0x282,'WxBS')][_0x5bdcc5(0x233,'CUha')]=++zIndexCounter,document[_0x5bdcc5(0x377,'cD%E')](_0x3cc24a(0x3c2))['forEach'](_0xfab7a7=>_0xfab7a7['classList'][_0x3cc24a(0x360)](_0x3cc24a(0x30d)));const _0x53082c=document[_0x3cc24a(0x37a)](_0x3cc24a(0x21a)+_0x18620e);if(_0x53082c)_0x53082c['classList']['add'](_0x3cc24a(0x30d));}function startWinDrag(_0x301a4a,_0x30f871){const _0xc437d8=_0x4c58c9,_0x253191=_0xe801ce;if(_0x301a4a[_0x253191(0x1b7)][_0x253191(0x1e3)](_0x253191(0x354)))return;const _0x493a15=document[_0xc437d8(0x1b1,'N[[K')](_0x30f871);draggedWin=_0x493a15,winDragOff=[_0x301a4a[_0x253191(0x270)]-_0x493a15[_0xc437d8(0x36e,'YO[Z')],_0x301a4a[_0xc437d8(0x212,'0kGG')]-_0x493a15['offsetTop']],_0x493a15[_0x253191(0x1eb)](_0x253191(0x32f))[_0x253191(0x36a)][_0x253191(0x292)]=_0xc437d8(0x310,'ZTlm'),focusWindow(_0x30f871),document[_0xc437d8(0x3f5,'9ZO&')][_0x253191(0x36a)][_0x253191(0x341)]='move';}document[_0xe801ce(0x1e2)](_0xe801ce(0x28b),_0x3c29cd=>{const _0x5e6c0a=_0x4c58c9,_0x4f945c=_0xe801ce;if(draggedWin){if(_0x3c29cd['clientX']<0x14)preview[_0x4f945c(0x36a)]['display']=_0x5e6c0a(0x2c1,'i&KO'),preview[_0x4f945c(0x36a)]['top']='0',preview['style'][_0x4f945c(0x1a3)]='0',preview[_0x5e6c0a(0x33c,'H*rE')][_0x5e6c0a(0x35d,'aNuW')]=_0x5e6c0a(0x3b0,'(%l8'),preview['style'][_0x5e6c0a(0x2a4,'g(4v')]=_0x5e6c0a(0x1cb,'CUha'),preview[_0x5e6c0a(0x25e,'YO[Z')][_0x5e6c0a(0x1c8,'CUha')]=_0x4f945c(0x2e9);else{if(_0x3c29cd['clientX']>window[_0x5e6c0a(0x264,'u^$l')]-0x14)preview['style']['display']=_0x4f945c(0x3df),preview[_0x4f945c(0x36a)][_0x5e6c0a(0x348,'FbMF')]='0',preview[_0x5e6c0a(0x276,'e@@%')]['left']='50%',preview[_0x5e6c0a(0x3af,'xo(v')]['width']='50%',preview[_0x5e6c0a(0x22c,'N[[K')][_0x4f945c(0x2cc)]='100%',preview[_0x5e6c0a(0x2ba,'B!nb')][_0x4f945c(0x290)]=_0x4f945c(0x224);else _0x3c29cd['clientY']<0x14?(preview['style'][_0x4f945c(0x292)]='block',preview[_0x4f945c(0x36a)][_0x4f945c(0x331)]='0',preview[_0x4f945c(0x36a)]['left']='0',preview[_0x5e6c0a(0x39e,'CivT')][_0x5e6c0a(0x39a,'CUha')]=_0x4f945c(0x35c),preview[_0x5e6c0a(0x1b5,'hX9w')][_0x5e6c0a(0x3ce,'WxBS')]=_0x4f945c(0x35c),preview[_0x4f945c(0x36a)][_0x4f945c(0x290)]='0'):preview[_0x5e6c0a(0x324,'wX[$')][_0x4f945c(0x292)]=_0x4f945c(0x234);}let _0x4ee746=_0x3c29cd[_0x4f945c(0x270)]-winDragOff[0x0],_0x156b0b=_0x3c29cd['clientY']-winDragOff[0x1];draggedWin[_0x4f945c(0x36a)][_0x4f945c(0x1a3)]=_0x4ee746+'px',draggedWin[_0x5e6c0a(0x1b5,'hX9w')][_0x4f945c(0x331)]=_0x156b0b+'px',draggedWin[_0x5e6c0a(0x31c,'H*rE')][_0x5e6c0a(0x1a8,'vl2M')](_0x4f945c(0x394))&&(draggedWin[_0x5e6c0a(0x34c,'Gf(7')][_0x5e6c0a(0x252,'iaBu')]('maximized'),openWindows[draggedWin['id']][_0x4f945c(0x394)]=![]);}}),document[_0xe801ce(0x1e2)](_0xe801ce(0x3aa),_0x4a6c2c=>{const _0xeae886=_0xe801ce,_0x525a1f=_0x4c58c9;if(draggedWin){draggedWin['querySelector'](_0x525a1f(0x235,'(%l8'))[_0x525a1f(0x254,'(%l8')][_0x525a1f(0x2b8,'hX9w')]='none';if(_0x4a6c2c[_0x525a1f(0x26c,'^UdS')]<0x14)draggedWin['classList']['add'](_0xeae886(0x1dc));else{if(_0x4a6c2c[_0x525a1f(0x3b9,'ZtvH')]>window[_0x525a1f(0x264,'u^$l')]-0x14)draggedWin[_0xeae886(0x1b8)]['add'](_0x525a1f(0x2fa,'WxBS'));else _0x4a6c2c[_0x525a1f(0x328,'H*rE')]<0x14&&(draggedWin['classList']['add'](_0x525a1f(0x2e7,'F[AN')),openWindows[draggedWin['id']][_0x525a1f(0x1f2,'zoL9')]=!![]);}draggedWin=null,preview[_0xeae886(0x36a)]['display']='none',document['body'][_0x525a1f(0x276,'e@@%')][_0x525a1f(0x31f,'CivT')]=_0x525a1f(0x2e8,'cD%E');}});function addToTaskbar(_0x13d9c5,_0x52bb86,_0x42ff01,_0x211f3a){const _0x3300e4=_0x4c58c9,_0x32ecd8=_0xe801ce;if(document[_0x32ecd8(0x37a)]('tb-'+_0x13d9c5))return;const _0x134c04=document[_0x32ecd8(0x37a)](_0x3300e4(0x322,'zoL9')),_0x28d9fd=document[_0x32ecd8(0x2b9)](_0x32ecd8(0x222));_0x28d9fd[_0x32ecd8(0x27a)]=_0x32ecd8(0x194),_0x28d9fd['id']='tb-'+_0x13d9c5,_0x28d9fd[_0x3300e4(0x206,'a8SL')]=_0x3300e4(0x315,'p^dD')+_0x42ff01+_0x3300e4(0x210,'F[AN'),_0x28d9fd[_0x3300e4(0x1fc,'YO[Z')]=_0x52bb86,_0x28d9fd[_0x32ecd8(0x350)]=()=>{const _0x2a4c3d=_0x32ecd8,_0x7327bf=_0x3300e4,_0x28155a=document[_0x7327bf(0x218,'H*rE')](_0x13d9c5);if(_0x28155a['classList'][_0x7327bf(0x1a8,'vl2M')](_0x2a4c3d(0x3dd)))focusWindow(_0x13d9c5);else{if(_0x28155a['style'][_0x2a4c3d(0x21c)]==zIndexCounter)minimizeWindow(_0x13d9c5);else focusWindow(_0x13d9c5);}},_0x28d9fd[_0x32ecd8(0x1e2)](_0x3300e4(0x3a8,'H*rE'),_0x1594d2=>{const _0x4f2ea1=_0x3300e4,_0x53bcee=_0x32ecd8;_0x1594d2[_0x53bcee(0x2f8)](),showContextMenu(_0x1594d2,_0x4f2ea1(0x1ac,'FbMF'),_0x13d9c5);}),_0x134c04[_0x3300e4(0x3e0,'B!nb')](_0x28d9fd);}function removeFromTaskbar(_0x5e6fee){const _0x56c15b=_0x4c58c9,_0x3cb2d9=_0xe801ce,_0x28c2ac=document[_0x3cb2d9(0x37a)](_0x56c15b(0x202,'fS@^')+_0x5e6fee);if(_0x28c2ac)_0x28c2ac['remove']();}function updateTaskbarState(_0xfcc444){const _0x470cba=_0x4c58c9,_0x5880b7=_0xe801ce,_0x43f845=document['getElementById'](_0x5880b7(0x21a)+_0xfcc444);if(openWindows[_0xfcc444][_0x5880b7(0x3dd)])_0x43f845[_0x5880b7(0x1b8)][_0x470cba(0x363,'vl2M')](_0x5880b7(0x30d));}document[_0xe801ce(0x37a)](_0x4c58c9(0x2de,'!!#U'))[_0xe801ce(0x1e2)](_0xe801ce(0x243),()=>document[_0x4c58c9(0x30e,'w(cL')](_0xe801ce(0x3c0))['classList']['remove'](_0x4c58c9(0x2a0,'XGko')));const ctxMenu=document[_0xe801ce(0x37a)](_0xe801ce(0x281));document[_0x4c58c9(0x2c4,'WxBS')](_0x4c58c9(0x1e4,'TD@R'),_0x1db5e7=>{const _0x3bc200=_0xe801ce;if(_0x1db5e7[_0x3bc200(0x1b7)][_0x3bc200(0x1e3)](_0x3bc200(0x34e))||_0x1db5e7['target'][_0x3bc200(0x1e3)](_0x3bc200(0x2d1)))return;_0x1db5e7['preventDefault'](),showContextMenu(_0x1db5e7,'desktop');}),document[_0xe801ce(0x1e2)]('click',()=>ctxMenu['style'][_0xe801ce(0x292)]=_0xe801ce(0x234));function showContextMenu(_0x572b48,_0x232197,_0x147cbe){const _0x4a5246=_0xe801ce,_0x27d199=_0x4c58c9;let _0xe93418='';if(_0x232197===_0x27d199(0x283,'a8SL'))_0xe93418=_0x4a5246(0x37f);else{if(_0x232197===_0x4a5246(0x3cc)){_0xe93418=_0x27d199(0x2ee,'OkyH')+_0x147cbe['id']+_0x4a5246(0x318);if(_0x147cbe[_0x4a5246(0x2d0)])_0xe93418+=_0x4a5246(0x396)+_0x147cbe['url']+'\x27)\x22><i\x20class=\x22fa-solid\x20fa-mask\x22></i>\x20Open\x20in\x20about:blank</div>';if(_0x147cbe['isCustom'])_0xe93418+=_0x4a5246(0x217)+_0x147cbe['id']+_0x4a5246(0x1e8);}else{if(_0x232197===_0x4a5246(0x3c0)){const _0x4ff7f6=openWindows[_0x147cbe],_0x2fd9e5=apps['find'](_0x52ace5=>_0x52ace5['id']===_0x4ff7f6['appId']);_0xe93418=_0x4a5246(0x193)+_0x147cbe+_0x27d199(0x1de,'cD%E')+(!_0x4ff7f6[_0x4a5246(0x3dd)]?_0x4a5246(0x2e4)+_0x147cbe+_0x4a5246(0x392):_0x27d199(0x1ce,'H*rE')+_0x147cbe+_0x4a5246(0x26a))+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',_0x2fd9e5&&_0x2fd9e5['url']&&(_0xe93418+=_0x4a5246(0x396)+_0x2fd9e5[_0x4a5246(0x2d0)]+'\x27)\x22><i\x20class=\x22fa-solid\x20fa-mask\x22></i>\x20Open\x20in\x20about:blank</div>');}}}ctxMenu['innerHTML']=_0xe93418,ctxMenu[_0x27d199(0x301,'82m!')]['display']='block';const _0x265a43=ctxMenu[_0x27d199(0x38a,'DDO2')],_0x240423=ctxMenu[_0x27d199(0x307,'9ZO&')];ctxMenu[_0x27d199(0x1db,'P#qa')][_0x27d199(0x2fb,'CivT')]=(_0x572b48[_0x27d199(0x196,'!bk)')]+_0x265a43>window[_0x27d199(0x22e,']QID')]?_0x572b48[_0x27d199(0x1da,'YMfy')]-_0x265a43:_0x572b48['clientX'])+'px',ctxMenu[_0x27d199(0x1db,'P#qa')][_0x4a5246(0x331)]=(_0x572b48[_0x4a5246(0x198)]+_0x240423>window['innerHeight']?_0x572b48[_0x4a5246(0x198)]-_0x240423:_0x572b48[_0x27d199(0x3d9,'82m!')])+'px';}function openInAboutBlank(_0x512be1){const _0x119851=_0xe801ce,_0x27484f=_0x4c58c9;if(!_0x512be1)return;const _0xf394fe=window[_0x27484f(0x3f1,'dU20')]('about:blank',_0x119851(0x1e0));if(_0xf394fe){const _0x34bc6e=_0x27484f(0x372,'CivT')+_0x512be1+_0x27484f(0x366,'N9j9');_0xf394fe[_0x119851(0x298)][_0x119851(0x34f)](_0x34bc6e),_0xf394fe['document'][_0x27484f(0x2db,'OkyH')]();}}function openTerminal(){const _0x3f46ea=_0x4c58c9,_0x74a450=_0xe801ce;if(document[_0x74a450(0x37a)]('win-term')){focusWindow('win-term');return;}const _0x266523='<div\x20class=\x22terminal-body\x22\x20id=\x22term-body\x22\x20onclick=\x22document.getElementById(\x27term-input\x27).focus()\x22><div\x20class=\x22term-line\x22>Welcome\x20to\x20EdulearnOS\x20v1.0.0</div><div\x20class=\x22term-line\x22>Type\x20\x27help\x27\x20for\x20available\x20commands.</div><br><div\x20class=\x22term-line\x22\x20id=\x22term-output\x22></div><div\x20style=\x22display:flex;\x22><span\x20class=\x22term-prompt\x22>user@edulearnos:~$</span><input\x20type=\x22text\x22\x20class=\x22term-input\x22\x20id=\x22term-input\x22\x20autocomplete=\x22off\x22\x20onkeydown=\x22handleTerm(event)\x22></div></div>';createWindow('term',_0x3f46ea(0x38d,'iaBu'),_0x266523,_0x74a450(0x2f6)),setTimeout(()=>document[_0x74a450(0x37a)](_0x74a450(0x2fe))['focus'](),0x64);}function handleTerm(_0xc6a7a7){const _0x5f231e=_0x4c58c9,_0x436578=_0xe801ce;if(_0xc6a7a7[_0x436578(0x1f7)]===_0x436578(0x223)){const _0x4c1f07=_0xc6a7a7[_0x436578(0x1b7)],_0x1f2886=_0x4c1f07['value']['trim'](),_0x5b1523=_0x4c1f07['closest'](_0x436578(0x3f7)),_0x4808c5=document[_0x436578(0x2b9)](_0x436578(0x222));_0x4808c5[_0x436578(0x27a)]='term-line',_0x4808c5[_0x436578(0x3de)]=_0x436578(0x25b)+_0x1f2886,_0x5b1523['insertBefore'](_0x4808c5,_0x4c1f07[_0x436578(0x3a2)]),processCommand(_0x1f2886,_0x5b1523),_0x4c1f07['value']='',_0x5b1523[_0x5f231e(0x311,'u^$l')]=_0x5b1523[_0x436578(0x2eb)];}}function processCommand(_0xd5d5af,_0x362f50){const _0x2adb67=_0xe801ce,_0x3b9047=_0x4c58c9,_0x3ae17b=_0xd5d5af[_0x3b9047(0x3e4,'ZtvH')]('\x20'),_0x346552=_0x3ae17b[0x0][_0x3b9047(0x1aa,'dU20')]();let _0x16e5d3='';if(_0x346552===_0x3b9047(0x3f3,'iASN'))_0x16e5d3=_0x2adb67(0x2f9);else{if(_0x346552===_0x3b9047(0x26f,'ZtvH'))return _0x362f50[_0x3b9047(0x37c,']QID')]=_0x3b9047(0x272,'DDO2');else{if(_0x346552==='ls')_0x16e5d3=apps[_0x3b9047(0x3b3,'xo(v')](_0xa8b78d=>_0xa8b78d[_0x3b9047(0x1d2,'cD%E')])[_0x2adb67(0x2ce)]('\x20\x20');else{if(_0x346552===_0x2adb67(0x205))_0x16e5d3=new Date()['toString']();else{if(_0x346552===_0x2adb67(0x266))location['reload']();else{if(_0x346552==='neofetch')_0x16e5d3=_0x2adb67(0x2b2)+apps[_0x3b9047(0x2e5,'vl2M')]+_0x3b9047(0x249,'DDO2');else{if(_0x346552===_0x2adb67(0x1fb)){const _0x593136=_0x3ae17b[_0x3b9047(0x351,'ZtvH')](0x1)[_0x3b9047(0x3a4,'S^5m')]('\x20')[_0x2adb67(0x33a)](),_0x259a35=apps[_0x3b9047(0x297,'iASN')](_0x24174a=>_0x24174a['name'][_0x2adb67(0x33a)]()===_0x593136);if(_0x259a35)launchApp(_0x259a35),_0x16e5d3='Opening\x20'+_0x259a35[_0x3b9047(0x24d,'hX9w')]+_0x2adb67(0x2e2);else _0x16e5d3=_0x2adb67(0x39c);}else{if(_0x346552)_0x16e5d3=_0x346552+_0x2adb67(0x253);}}}}}}}if(_0x16e5d3){const _0x57478d=document[_0x2adb67(0x2b9)](_0x3b9047(0x305,'DDO2'));_0x57478d[_0x2adb67(0x27a)]='term-line',_0x57478d[_0x2adb67(0x3de)]=_0x16e5d3,_0x362f50[_0x2adb67(0x2d2)](_0x57478d,_0x362f50[_0x2adb67(0x2b1)]);}}function openFilesApp(){const _0x1d0de0=_0x4c58c9,_0x4b7690=_0xe801ce;if(document[_0x4b7690(0x37a)](_0x4b7690(0x20a))){focusWindow('win-fs');return;}const _0xaef58d='<div\x20style=\x22padding:10px;border-bottom:1px\x20solid\x20#eee;\x22><button\x20onclick=\x22document.getElementById(\x27file-uploader\x27).click()\x22\x20style=\x22padding:5px\x2010px;cursor:pointer;\x22>Import\x20File</button>\x20<button\x20onclick=\x22clearFiles()\x22\x20style=\x22padding:5px\x2010px;cursor:pointer;\x22>Clear\x20All</button></div><div\x20class=\x22file-grid\x22\x20id=\x22file-list-container\x22>'+getFilesHTML()+_0x1d0de0(0x327,'YMfy');createWindow('fs','My\x20Files',_0xaef58d,_0x1d0de0(0x329,'82m!'));}function getFilesHTML(){const _0x561830=_0x4c58c9,_0x167725=_0xe801ce;return virtualFiles['length']?virtualFiles[_0x167725(0x31d)]((_0x218810,_0x5d18d4)=>_0x167725(0x3c7)+_0x5d18d4+_0x561830(0x27e,'F[AN')+_0x218810['name']+'</div></div>')[_0x167725(0x2ce)](''):'<div\x20style=\x22width:100%;text-align:center;color:#666;margin-top:20px;\x22>No\x20files.</div>';}function _0x126c(_0x34a918,_0x12ea02){_0x34a918=_0x34a918-0x18b;const _0x2ca5ca=_0x35a2();let _0x18aff4=_0x2ca5ca[_0x34a918];return _0x18aff4;}function processFileImport(_0x4d5b56){const _0xf16ae7=_0xe801ce;if(!_0x4d5b56['files'][0x0])return;const _0x19364d=new FileReader();_0x19364d[_0xf16ae7(0x1d3)]=_0xf2cc9c=>{const _0x469999=_0xf16ae7,_0x143a66=_0x8eac;virtualFiles['push']({'name':_0x4d5b56[_0x143a66(0x1cc,'(%l8')][0x0]['name'],'type':_0x4d5b56[_0x469999(0x1c6)][0x0][_0x143a66(0x2a9,'YMfy')],'content':_0xf2cc9c[_0x469999(0x1b7)]['result']});try{localStorage['setItem']('edu_files',JSON[_0x469999(0x33b)](virtualFiles));}catch(_0x4e4fae){alert(_0x469999(0x2dc));}if(document[_0x143a66(0x3ab,'F[AN')](_0x469999(0x20a)))document['querySelector'](_0x143a66(0x3f6,'DDO2'))['innerHTML']=getFilesHTML();else openFilesApp();showToast('File\x20Imported');},_0x19364d[_0xf16ae7(0x22a)](_0x4d5b56[_0xf16ae7(0x1c6)][0x0]),_0x4d5b56[_0xf16ae7(0x39d)]='';}function openFile(_0xa83c3d){const _0x9cd57f=_0x4c58c9,_0x5ea4e0=_0xe801ce,_0x4dfc3b=virtualFiles[_0xa83c3d];createWindow(_0x5ea4e0(0x1e5)+_0xa83c3d,_0x4dfc3b['name'],_0x4dfc3b[_0x9cd57f(0x1f1,'S^5m')]['startsWith'](_0x5ea4e0(0x3a5))?_0x9cd57f(0x200,'e@@%')+_0x4dfc3b[_0x9cd57f(0x296,'e@@%')]+_0x5ea4e0(0x346):'<iframe\x20src=\x22'+_0x4dfc3b[_0x5ea4e0(0x27f)]+_0x9cd57f(0x390,'OkyH'),_0x9cd57f(0x314,'cD%E'));}function clearFiles(){const _0x411d13=_0x4c58c9,_0x3916ea=_0xe801ce;if(confirm('Clear\x20all?')){virtualFiles=[],localStorage[_0x3916ea(0x220)](_0x411d13(0x24e,'iASN'));if(document[_0x411d13(0x3e7,'N9j9')](_0x3916ea(0x20a)))document[_0x3916ea(0x1eb)]('.file-grid')[_0x411d13(0x1bb,'R2H@')]=getFilesHTML();}}function openSettingsApp(){const _0x45069d=_0xe801ce,_0x470ded=_0x4c58c9;if(document[_0x470ded(0x35b,'FbMF')](_0x45069d(0x20b))){focusWindow(_0x470ded(0x299,'FbMF'));return;}const _0x10c6b4=_0x45069d(0x2f7)+colors[_0x45069d(0x31d)]((_0x4a8a3b,_0x38d8e4)=>_0x470ded(0x30f,'ZTlm')+_0x4a8a3b['hex']+'\x22\x20onclick=\x22setAccentColor('+_0x38d8e4+_0x45069d(0x257))[_0x470ded(0x1c4,'H*rE')]('')+_0x470ded(0x38e,'YO[Z')+wallpapers[_0x45069d(0x31d)]((_0x211075,_0x206e75)=>_0x470ded(0x2fc,'hX9w')+_0x211075[_0x470ded(0x269,'YMfy')]+_0x470ded(0x2da,'YO[Z')+_0x206e75+_0x470ded(0x3c6,'R2H@')+_0x211075['name']+_0x45069d(0x1a2))['join']('')+'</div></div><div\x20class=\x22setting-section\x22><span\x20class=\x22setting-label\x22>System</span><button\x20onclick=\x22localStorage.clear();location.reload();\x22\x20style=\x22background:#FF5F57;color:white;border:none;padding:10px;border-radius:5px;cursor:pointer;\x22>Reset\x20All\x20Data</button></div></div>';createWindow('settings','Settings',_0x10c6b4,_0x470ded(0x23a,'N[[K'));}function updateClock(){const _0x589062=_0xe801ce,_0x1da98c=_0x4c58c9,_0xaf4b4f=new Date();document[_0x1da98c(0x286,'ZtvH')](_0x1da98c(0x343,']QID'))[_0x589062(0x246)]=_0xaf4b4f[_0x1da98c(0x279,'s8Ph')]([],{'hour':_0x1da98c(0x3b1,'CivT'),'minute':_0x589062(0x335)}),document['getElementById'](_0x589062(0x397))[_0x1da98c(0x361,'p^dD')]=_0xaf4b4f[_0x589062(0x369)]([],{'hour':_0x589062(0x335),'minute':_0x589062(0x335),'hour12':![]}),document[_0x1da98c(0x3f4,'iASN')](_0x1da98c(0x352,'!!#U'))['innerText']=_0xaf4b4f[_0x1da98c(0x1c1,'ZtvH')]([],{'weekday':_0x1da98c(0x1ad,'95C7'),'month':_0x1da98c(0x2e3,'wX[$'),'day':_0x1da98c(0x191,'i&KO')});}setInterval(updateClock,0x3e8),updateClock();_0xe801ce(0x1a7)in navigator&&navigator[_0x4c58c9(0x2bc,'DDO2')]()['then'](_0x2eca8b=>{const _0x414980=_0xe801ce,_0xba277=_0x4c58c9,_0xfad010=()=>{const _0x515094=_0x8eac,_0x10d798=_0x126c,_0x346832=document['getElementById']('battery-icon');if(_0x2eca8b['charging'])_0x346832['className']='fa-solid\x20fa-bolt';else{if(_0x2eca8b[_0x10d798(0x221)]>0.75)_0x346832[_0x10d798(0x27a)]=_0x515094(0x1f4,'DDO2');else{if(_0x2eca8b[_0x515094(0x288,'9ZO&')]>0.5)_0x346832['className']=_0x515094(0x287,'iaBu');else{if(_0x2eca8b[_0x515094(0x1c0,'OkyH')]>0.25)_0x346832[_0x10d798(0x27a)]='fa-solid\x20fa-battery-half';else _0x346832[_0x10d798(0x27a)]=_0x515094(0x3bd,'CUha');}}}_0x346832['title']='Battery:\x20'+Math[_0x515094(0x216,'aNuW')](_0x2eca8b[_0x10d798(0x221)]*0x64)+'%';};_0xfad010(),_0x2eca8b[_0xba277(0x1b9,'ZtvH')]('levelchange',_0xfad010),_0x2eca8b[_0x414980(0x1e2)](_0xba277(0x316,'a8SL'),_0xfad010);});function populateLauncher(){const _0x3b1397=_0x4c58c9,_0x5d097c=_0xe801ce,_0x43df8c=document[_0x5d097c(0x37a)](_0x5d097c(0x3ac));_0x43df8c['innerHTML']='',apps[_0x3b1397(0x268,'P#qa')](_0x5db5e3=>{const _0x2b0c69=_0x3b1397,_0x4556aa=_0x5d097c,_0x5dcd49=document[_0x4556aa(0x2b9)]('div');_0x5dcd49[_0x4556aa(0x27a)]=_0x2b0c69(0x280,'fS@^'),_0x5dcd49['innerHTML']=_0x4556aa(0x3a3)+_0x5db5e3['icon']+_0x4556aa(0x32b)+_0x5db5e3[_0x2b0c69(0x275,'N9j9')]+_0x4556aa(0x22b),_0x5dcd49[_0x4556aa(0x350)]=_0x101385=>{const _0x3b4698=_0x4556aa;_0x101385[_0x3b4698(0x375)](),toggleLauncher(![]),launchApp(_0x5db5e3);},_0x43df8c[_0x2b0c69(0x342,'H*rE')](_0x5dcd49);});}function filterLauncher(_0x180eda){const _0x48c835=_0x4c58c9,_0x3e284c=_0xe801ce;Array['from'](document['getElementById'](_0x3e284c(0x3ac))[_0x48c835(0x18e,'FbMF')])[_0x3e284c(0x1fe)](_0x74c0fb=>_0x74c0fb['style'][_0x3e284c(0x292)]=_0x74c0fb[_0x48c835(0x23c,'s8Ph')][_0x48c835(0x258,'B!nb')]()[_0x3e284c(0x27b)](_0x180eda[_0x48c835(0x245,'u^$l')]())?'flex':_0x3e284c(0x234));}function toggleLauncher(_0x5cefcc){const _0x31dcef=_0xe801ce,_0x2fde5c=_0x4c58c9,_0x1af6ac=document['getElementById'](_0x2fde5c(0x3db,'ZtvH')),_0x3aa0a9=document[_0x31dcef(0x37a)]('launcher-overlay');if(_0x5cefcc===undefined)_0x5cefcc=!_0x1af6ac[_0x31dcef(0x1b8)]['contains'](_0x31dcef(0x195));_0x5cefcc?(_0x1af6ac[_0x31dcef(0x1b8)][_0x2fde5c(0x3a9,'xo(v')](_0x31dcef(0x195)),_0x3aa0a9[_0x31dcef(0x1b8)][_0x2fde5c(0x3d7,'vl2M')](_0x31dcef(0x195)),document[_0x31dcef(0x37a)](_0x31dcef(0x3d2))[_0x2fde5c(0x26d,'F[AN')]()):(_0x1af6ac[_0x2fde5c(0x1ab,'N9j9')][_0x31dcef(0x360)]('active'),_0x3aa0a9[_0x31dcef(0x1b8)]['remove']('active'));}document[_0xe801ce(0x1e2)](_0x4c58c9(0x274,'wX[$'),_0x7ff4a=>{const _0x1db293=_0x4c58c9,_0x2474ac=_0xe801ce;(_0x7ff4a[_0x2474ac(0x1f7)]===_0x1db293(0x344,'N9j9')||_0x7ff4a[_0x1db293(0x2e0,'P#qa')]==='OS')&&(_0x7ff4a['preventDefault'](),toggleLauncher());_0x7ff4a[_0x2474ac(0x1f7)]===_0x2474ac(0x371)&&_0x7ff4a['shiftKey']&&(_0x7ff4a[_0x2474ac(0x2f8)](),toggleLauncher());if(_0x7ff4a['key']===_0x2474ac(0x24b))toggleLauncher(![]);if(_0x7ff4a['altKey']&&(_0x7ff4a[_0x2474ac(0x1f7)]==='q'||_0x7ff4a[_0x1db293(0x2ef,'g(4v')]==='Q')){const _0x26cb18=Object[_0x1db293(0x359,'p^dD')](openWindows)[_0x1db293(0x262,'e@@%')]((_0x43a142,_0x5c1744)=>parseInt(document[_0x2474ac(0x37a)](_0x5c1744)[_0x1db293(0x3da,'!!#U')][_0x2474ac(0x21c)])-parseInt(document[_0x2474ac(0x37a)](_0x43a142)[_0x2474ac(0x36a)][_0x1db293(0x39b,'Gf(7')]))[0x0];if(_0x26cb18)closeWindow(_0x26cb18);}_0x7ff4a[_0x1db293(0x1be,'P#qa')]&&(_0x7ff4a['key']==='d'||_0x7ff4a[_0x1db293(0x225,'cD%E')]==='D')&&(_0x7ff4a[_0x1db293(0x204,'CivT')](),Object[_0x2474ac(0x1f5)](openWindows)[_0x2474ac(0x1fe)](_0x44ce35=>minimizeWindow(_0x44ce35)));});function openModal(){const _0x23ece5=_0x4c58c9,_0x589020=_0xe801ce;document[_0x589020(0x37a)](_0x23ece5(0x1e6,'H*rE'))[_0x23ece5(0x3c4,'CUha')]['display']=_0x23ece5(0x378,'p^dD');}function closeModal(){const _0x1a1cd1=_0xe801ce;document[_0x1a1cd1(0x37a)]('custom-app-modal')['style'][_0x1a1cd1(0x292)]=_0x1a1cd1(0x234);}function saveCustomApp(){const _0x4e94c2=_0x4c58c9,_0x310bc8=_0xe801ce,_0x38924c=document[_0x310bc8(0x37a)](_0x4e94c2(0x2a5,'xo(v'))[_0x310bc8(0x39d)],_0x4110ef=document[_0x4e94c2(0x325,'(%l8')](_0x4e94c2(0x231,'OkyH'))[_0x310bc8(0x39d)];if(!_0x38924c||!_0x4110ef)return alert(_0x310bc8(0x239));apps['push']({'id':_0x4e94c2(0x1d6,'^UdS')+Date[_0x4e94c2(0x228,'R2H@')](),'name':_0x38924c,'icon':_0x310bc8(0x28a),'url':_0x4110ef[_0x4e94c2(0x3a6,'vl2M')]('http')?_0x4110ef:_0x310bc8(0x19c)+_0x4110ef,'isCustom':!![]}),localStorage['setItem'](_0x310bc8(0x3ba),JSON[_0x310bc8(0x33b)](apps[_0x310bc8(0x1b2)](_0x34f121=>_0x34f121['isCustom']))),renderIcons(),closeModal(),showToast('App\x20Created');}function deleteCustomApp(_0x4f0f8d){const _0x2eaaad=_0x4c58c9,_0x1e2a30=_0xe801ce;confirm(_0x1e2a30(0x22d))&&(apps=apps[_0x2eaaad(0x38c,'R2H@')](_0xb17044=>_0xb17044['id']!==_0x4f0f8d),localStorage[_0x1e2a30(0x2ab)](_0x2eaaad(0x1a6,'w(cL'),JSON['stringify'](apps[_0x2eaaad(0x277,'82m!')](_0xd2cb13=>_0xd2cb13['isCustom']))),renderIcons(),document[_0x2eaaad(0x3f4,'iASN')]('context-menu')[_0x1e2a30(0x36a)][_0x1e2a30(0x292)]=_0x1e2a30(0x234),showToast('App\x20Deleted'));}const audio=document[_0x4c58c9(0x2b7,'i&KO')](_0x4c58c9(0x19b,'95C7'));let isPlaying=![];function toggleMusicPlayer(){const _0x2a5305=_0xe801ce,_0x2efa04=_0x4c58c9,_0x58c8f3=document['getElementById']('music-player');_0x58c8f3['classList'][_0x2efa04(0x238,'R2H@')](_0x2efa04(0x370,'WxBS')),document[_0x2efa04(0x23e,'P#qa')]('toggle-music')[_0x2a5305(0x1b8)][_0x2efa04(0x21d,'p^dD')](_0x2efa04(0x2c7,'FbMF'),_0x58c8f3['classList']['contains'](_0x2a5305(0x195)));}function playDirect(_0x4f5326){const _0x493d40=_0xe801ce,_0x3fa59b=_0x4c58c9;if(_0x4f5326['includes']('youtu')){document[_0x3fa59b(0x24c,'p^dD')](_0x493d40(0x384))[_0x3fa59b(0x3f2,'9ZO&')][_0x3fa59b(0x27c,'^UdS')]=_0x493d40(0x3df),document['getElementById'](_0x493d40(0x3ad))[_0x3fa59b(0x3ef,'dU20')][_0x3fa59b(0x386,'zoL9')]=_0x493d40(0x234),document[_0x3fa59b(0x20c,'!bk)')]('embed-container')[_0x493d40(0x3de)]=_0x493d40(0x1f8)+(_0x4f5326[_0x3fa59b(0x1a1,'DDO2')]('v=')[0x1]||_0x4f5326[_0x493d40(0x34b)]('/')[_0x493d40(0x31e)]())+_0x3fa59b(0x3ea,']QID'),audio['pause']();return;}document[_0x3fa59b(0x22f,'DDO2')](_0x493d40(0x384))[_0x3fa59b(0x226,'ZTlm')][_0x3fa59b(0x251,'OkyH')]=_0x3fa59b(0x244,'9ZO&'),document[_0x3fa59b(0x380,'g(4v')](_0x493d40(0x3ad))[_0x493d40(0x36a)]['display']=_0x493d40(0x3df),audio[_0x3fa59b(0x321,'^UdS')]=_0x4f5326,audio['play'](),isPlaying=!![],updatePlayBtn();}function _0x35a2(){const _0x2a043a=['W4raWPDqW65YumkHvmohWQbdfG','aXPsccVcGv/cOIhcKmoDWRZdJYBcM8ozWOBcMSkky8kCiquTWQGlW5VcMG','W7H0D8kkW7NdSq','none','l8obbComcSktW5tdSCo8W4VdNCovEG','Hi\x20Andrew\x20hu!','W5pdISkvWRy','zhZcUCo0Btu','Fields\x20required','WR7cHZ3cUKrqhKhcOSk/zbldQJhdKt0','floor','bmoIAZ/dQclcUmkbWRa','toString','uNJdICoFW67cOSonW4DDdfxdMMOp','jueVWO7cS8kplG5sWR0i','find','WORdKmoNCG','Windows\x2011\x20Bloom','mouseenter','r8o5gmok','WO7cIIG5t30nW7/dRqhdNW','innerText','uSoRwmomsrqQb8kda8o3sY/dQmkwnuBdSNZcGmo/zXHQj8oSgHRdOILyeW','imgs','sJ7cLGhdG8kxW7eKkCocW7/cJZGjcqNdQYe','https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2000&auto=format&fit=cro','Escape','W7jZW6ZcL8kZW4mPWRRdKmomw8o9e8oT','cadcVIu','WPlcQKVdG8oSW7qKzmoH','W5ZdVs0','d8khkKRdTeddG8kVAGJdHa','W4fzWPqnW7DHrq','uSkvbCkfW75e',':\x20command\x20not\x20found','CSordSobca','W4JcP8k0dLZcMsBcUIm','W6HzWOKjWRThtSoPwmoh',')\x22></div>','oeanWOtcTSkIosruWQyz','slideOut\x200.3s\x20ease-in\x20forwards','WOFdP1tcKSkshuBdTLWknb0UWQOdWRe','<span\x20class=\x22term-prompt\x22>user@edulearnos:~$</span>\x20','WRVdUmox','Ocean\x20Blue','W7HTcCokWQG','Fedora\x20Blue','opacity','WPRdS8oJlgVcUrRcIc8','WPxdRelcOW','console','WPpcIWOZsK8wW5JdUbO','W5SSW4fNAez6W5OmW6/dSCouW7lcS8kNhCo8W4u','reboot','fa-solid\x20fa-globe','u3ldJ8oFW6pcPmoi','iuWi','\x27)\x22><i\x20class=\x22fa-solid\x20fa-window-maximize\x22></i>\x20Restore</div>','aSk9dSkXycpdQbOlW4G','WOmgW7nrbmk9WR8','WP99WP49CG','gCo2EmoeWRqMeCkmWP0onqtdIq','WPNdICoXEXq','clientX','desktop','sNxcMX7cLCokWQfQpSoyWRtcK3bdhW3cShpcLYmcWPddJmkUWR0OW43cTwJcUudcLab+B8kpmbn4uslcMmknW6yIWRddKNPPW7NcRmkzCCk5W6pdMCkUWP4pWOCgmCksdJVcGX1oWPpcKCk6orFdQhVdLe3cMLOojfBcOqX4gSkYWOVcMSkkd8oemXxdR8kVW4qOC8o7ie7dICkSzw4wWR/dICoEfmoDD17dRCk0fCo6WPmqWRlcGwddK8kbWQ1PwLWGW7ldM1epWR/cNmkaW5u6wZVcJ8kTreajgCkMWOrhW5JdRNFcNXW2WPaKW7dcHGtdSfpcLCkxj8k2sddcMcOgz0HMWQNcVx8KWQZdNmoWiZu5WOxdU8oIWRCZW5pcVWldMX4wrWr4bCobWRmtBhb/z8kwWO4bBWzgW4ZdJSooWR/cMmkvWPOnbKJcOupdTryDWQPGedmu','perf-active','cSkTbmkHydNdHW','m8oHW5PP','WPxdT0NcU8kb','W5Hnh8opC8od','W7D5W7ZcQW','gCoJstxdUrFcSCkCWPdcN3VcHtSoqaPEEa','className','includes','WOqdW6LebSkOWP4','Li9tbmh5NzhrcGxqZ3l1bi8=','W5aWW4n0AfGLWPKjW7xdTmoxW6ZcPSk2uCoHWPriAgXyW5ZdRaJcVCosW7dcRColW4BdK8kilSoDCspdQclcL8okWP8HWRb5iCknxSoUW7PPW61nWRHLWOCjWOJdHmk/WPmAEuqVgCoVW5i','content','kSkWefNcUbZcIIjwWQhdR8oicG','context-menu','WRZdO8oEW5JdTq','fd0ZW5SMkCo6','W6lcVSkjbSoehSkyWR7dTCkuWRVdIhRcUmovovRcR8o9jurNW5NdO8kcW6FdVZVdIKtdO8kloelcLCo2ldBdTfG','624021sCGKdi','WP3dGmoGxWRcIrvSWOaxW77cGSkQWPK','rSkrrCkzW6DnfCo0W5ChuqTeW7/dTZ/dVCoAeSk3WRn/xMeIfmkmW5hcSSo4j8ksiZS','rCoZamoksG','zwhcSG','fa-solid\x20fa-link','mousemove','60,\x20110,\x20180','Code\x20Runner','W7pcHmk0qSoiiSkSW7JdNa','334440tlRozL','borderRadius','eqJcTZtdOW','display','dHxcPZddUmkmW51IW45zFSownab5W77cI8ohpmkqW4niWRqIWOJcNKpcQcFdM8kZvCoPW71bWO7dICkUW5/cJMtcLmoZfmk2mq8VpcldGrNcVmkiESoicuXh','lCoAht3cQmoxWPm4Cc3cUYFdUComq1D6','colorIndex','WOxdRf7cO8kbfLW','WPhcP1ddUa','document','W4ldI8oAufanbWSLdSk/nW','WP3dTSo0','W61WhmokWP7dUMSmca','W6TonmkkW67dQbZcJhhcO00','a2hcLGNdGCom','WR92kmonWPxdJ2C','W7X1W7FcVa','rqSgu8oxW74','Music','p8kXEmkcpc/dVGTk','play-pause-btn','W4DsWP/cLCk0dq','W4JdVZhdHubyW6VcI8kgW6epxayY','lb8ohqdcI2JcRHK','W6vyBCkRW7ddRbBcJNBcUwHqW53cRG','jSk/u8kFiY/dQGK','ieCuWPC','f8opdstcTmoxWPXuFIFdP33dT8oKsuD6gYFcSCoMW6BcKsqmWPVcKX9mcuZcKXpcVmoti0igWOVdJmoobhvSWQWLxhKPg8oocWnGW6PRit3dTmkBW4/dUmkVmMldMG','setItem','W7H/W7BcU8kYW48+WRRdMG','W53cVbNcQhxdQ8oFWP1uCSk6W5Tc','gmoEdrhcQ8kiW54EDJdcLtlcKmoK','77pBIJEv','oNJdIWldL8kBWP9NlSofW5/dHgzloXNdKxlcLN0fW6xcM8o6','lastElementChild','<div\x20class=\x22fetch-grid\x22><i\x20class=\x22fa-brands\x20fa-linux\x20os-logo-icon\x22></i><div\x20class=\x22fetch-info\x22><div><span\x20class=\x22acc\x22>OS:</span>\x20EdulearnOS</div><div><span\x20class=\x22acc\x22>Packages:</span>\x20','Ubuntu\x20Orange','transform','WOr6W6pcKGu','kSkbCXj+sG','uYC0gG8iWOZdM8kGprhcICoeW6C','aGJcOdddP8oxWOS','createElement','p1S4WOFcPa','186QDlUAx','extcHIRdLmoDWRLUp8os','Text\x20Editor','dmoev2RdUt7cKmopWOJcJY/cIZiIFbDslgjzASkTnry','W6tcK8kVC8olm8k4W63dL8kzW4ddMLlcHa','WQhdTSokW5e','vI4VpaG','DNldS8oGBJZdO8omlCkZW6ORxM3cSmoK','appendChild','WQ7dS8odW7hdPHlcM0fgW6ZdRSoMawNcOmkr','W4xcT8khWPtcSfFdLruQWQxcVCkYrcFdPCodWRtdQsOGWOFcVbXGAvSxkCoKzwiwW4KAW4ldKudcVmkzmColW6XLiZVcR8kMxSkbW4ZcNCoxWRLHimosW5ZdHSktWPdcRh01sKieWOPAmSo0WQRdLX1MWRJcKeRdNa','fa-solid\x20fa-wrench','W53dI8oqguygxGOL','Wave','W7HZW6ZcS8kuW4m9','https://fedoraproject.org/w/uploads/thumb/6/6d/F33_wallpaper_night.jpg/200px-F33_wallpaper_night.jpg','yNlcSmo3BJ0','height','esGWW5WR','join','lCkHrmk1BrNdRWqHW6n2WPPtmfztDKBdOCov','url','#taskbar','insertBefore','dCkBo1ZdQwJdQCk0DW','lock-screen','bind','bW/cUI3dQSocWPSIW5C','now-playing-text','sthcH8kKp0q2gW','0,\x20120,\x20212','WQWWuSkgWQldOhembbCNWQ7cHshdIW7cMWP9zmk/BmoQf8o/WOO','W4zCWOGoW74','File\x20too\x20large\x20to\x20save\x20persistently.','mSoMW5f/W7RcKhtdHg4','zSofimkKW4zMtmkXWRVcQMRdUW','&media=music&limit=5','xNJdHa','sbKRWQmzW6W','...','dCkNe8kI','<div\x20class=\x22ctx-item\x22\x20onclick=\x22minimizeWindow(\x27','WOFcRsrpW6mB','b0XPW78hWRhcStrJ','WPrZWOuHBbe8WPam','tKFdRmo2WQ/cGmoB','0\x2020px\x2020px\x200','fa-solid\x20fa-camera','scrollHeight','A8ozemk2WPHMw8k1','W6dcMSk6rCougmk0W6xdNa','WPLuWO4lWRTJumoTtSoAW60uaCkLna3cRSoYDCo0bKPBW6FdMSkEymknWRaBCsBcReNcUdefyvC/geagwCoCp8oTy8kWDCkLWQxcJs3cIt8ZxCotyCo7WP0AW7ffka','W4rsWO8','fa-solid\x20fa-music','https://preview.redd.it/firefly-stelle-v0-h1e89o6x6w8g1.png?width=1080&crop=smart&auto=webp&s=451d7eb9bc66d453f60bd119efd95a8178bf8f13','hCkuo0pdVWZcSmoPoK0','W5fFWQ5tg8kkWRnKza','xKRdR8o5','WR3dSmoXmN3cHLpcUHi','fa-solid\x20fa-terminal','<div\x20class=\x22settings-container\x22><div\x20class=\x22setting-section\x22><span\x20class=\x22setting-label\x22>Accent\x20Color</span><div\x20class=\x22color-options\x22>','preventDefault','help,\x20clear,\x20neofetch,\x20ls,\x20open,\x20echo,\x20date,\x20reboot','WRZdUCogW4tcVqxcNfjIW7e','tLVcKSkO','wGxcUJBcQ8ovWP4SW4PDnmoAkab5W7VdLCojpSksWP4sWRO+WPdcH03cTMdcICkZdSo5W7XfW5tcJSk/WPhdNZ/dGCkXvCo3CabJosBcJrdcVmoDyCkufqOh','WO7dReRdGspcV8kaW5e0o8o4WPSvWPXrW4q','term-input','8146791efznqw','then','W41qcSoxCW','Li9hY3RpdmUv','pe4ZWPJcPa','fa-solid\x20fa-folder-open','eNJcHa','178945KzgsCo','rSoWemoCqW4rfSkyeCo8sW','eW3dGCoWp3L6pSoMWRmmiW','cSk4xaFcUuBdLImyWRhcUCoiadxcJSkC','W6TtD8klW67dGs/cPLq','lHey','Li9waXhlbDguaHRtbA==','focused','a1XVW4HgWQdcTtXOmmk7W4yEW7S','WR/cKSkYqmkhnCk5W6NdISkEWR/cGxJcJ8o3peRcSCouj3PPW5hdQmoSW7FdMH7dKxZdKmooEeVcGmoNeatcSGP6gmoXWOy','W6hcMSk0vCom','WONcHHy5vhqRW5pdVa','W6JcVSkfWORcRfJcKvX8WRVcL8kYrcFdPCodWRtdTw5PW5hcVf8SkaHenmoMmITyWO1vWPxdGeZcSmkoDConW7iMCcFdVmoPuSkBW5hcJmobWRL6BSkcWPFdM8ofW5hcSwCbt0uJWPmgD8kXWQBdJXfLWQxdHG/cRmoMjsqPvmo9tW','Images','tepcP8oKWRxcGmogWRWSW5pdStDeW7fHW6a','WQL/WRJcSCkZW4C3WQZcG8kA','eZaHW4i1l8oKWQ1Nj0BcShPm','jCkdyCoVWOr8wSk6WRdcRMpdOmorW6NcO8kMDZlcGfX3k8outq9OWRSnA8kIrfO','\x27))\x22><i\x20class=\x22fa-solid\x20fa-arrow-up-right-from-square\x22></i>\x20Open</div>','W5rRWQRcNWBcJ0u','WQJdSSotW7hdVblcMfbKW7hdN8oRlwm','#1CA9C9','qIhdRSoUlCooWRm5pG','map','pop','quVcHSkVCdK','WPfFWR8wW4nbsq','WPmyW7K','lmkfBrzQtSozfaldK8kJnG','icon','eSk8bmkPAG','zSoaa8oOaCoBW5BdOSo3W43dS8onsSki','tcdcKCompuG1cSo6W6OsqHFdU8omWRW','AbeaWPVdNYi','qIhdPSo4mmo2WOm','W5HfxSoiECoDFtFdJH8tgSkdbfxcHfBcT8kjjMe9WPC','sSo6f8oCvtyWamkf','\x22></i></div><span>','Fedora\x20Standard','</div><div\x20class=\x22song-artist\x22>','Abstract\x20Red','.drag-overlay','hidden','top','log','C8okaSodcq','WRRcJ37cRq','2-digit','\x27)\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','https://itunes.apple.com/search?term=','kK5SWPJcRSkRiGmvWRmDW71wu8kyaCkGCxi6xwe','A8oxkKK8h8oFvthdJmkPcq','toLowerCase','stringify','uJNdTSoXoW','wvBdS8o7WR8','WPrHW7tcJq/dLrG','tools','fa-info-circle','cursor','qd3dV8o4mmoMWPKIi2RcSa','WPRdS8oTphm','emoLW4nT','W4VdOcxcKq','\x22\x20style=\x22max-width:100%;\x22>','ieONWP8','W4hdJCoe','W53cJmk2jgZdJfGPW45dWPZdM8odW50tWPKdWPTYAmoeWRJdHmo9WQb2WRvPW503rhjgfSoblhLdh8ocW589WRPzESo/lWlcJ8oPiCkBmmoHWOPPDJldQSonDHKXCmobFCkCWP7dQLZcObzTWPCiWO7cMSoyW4COW4nbDHBdVMVdUCo2WQnZW44jue3dS8kGW6dcVdeXE1NdTCkSWR3cHCkqk8o6DXJdJmkzW4zPWOOLCmonW5eTq17dJ00','song-result','split','WPrIW7VcJrpdTrqCW74','bdCW','.window','write','onclick','WONdICo9Eqm','BSofimkKW4z2x8kSWRK','WPayW7vtgmkSWPrzlcG5W64','.win-controls','length','WOZdVvZdTJdcTmkAW7erp8oU','W5tdHSoq','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20style=\x22width:50px\x22></div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22window-body\x22><div\x20class=\x22drag-overlay\x22></div>','W75ZW6hcOq','aYW5W5W3','W5ldH8oaoe8nhHOIfmkApCk8WOe','100%','jCk5zmkFoq','cvzUW75pWQJcTY9J','https://9to5google.com/wp-content/uploads/sites/4/2017/02/chromeos_newdefaultwall_1-e1487111985183.png?w=1024','remove','W7X4W7BcT8kTW7iHWQFdIG','WPNcIGG5sLerW5JdQqO','WPNcRsDhW6ew','warn','WPPNWO86zbyYWQebW6VdOG','F8kGW4r4W6BcIexcLJZdSCknvmoVjNTirmoEWRi8WR8pfuebW5NcPSoaW6X2oSkAu8oXfmkPuwVdICk7WPhcVmktdZpcH2VdImoPiHGuW6D0FG','ySoxeSomgCoBW77dQ8o8W5tdLmoADW','My\x20Files','toLocaleTimeString','style','WQ7dQL3dScFcU8knW5fyfCoKWOmu','aaddImoZDNvQnCk5W6nBF8oG','W4VdKLXVdc00W4BdQWhdUCke','W6r/fSovWQJdUL4fcWa','isddQ8kIogtcUSoEsSk9W5j2CW','WQ7dTmotW53dPHi','Tab','hK3cGmkLCY50A8kLW7DdpCk2W69zvCoCymozB8ofWOyoD8ozW5ZcO3lcPgBcP8oBWQvLW6xdP8o+ESoLWPHAgmkrnt7dOquMrx51DIhdVmoSW4DbWOCneCotWOC+W4y6WQaRa8oKehNdI1nzDSkRWPZdPKO4W6jdmZ5xWRa','W4BdLSoneuy','CxFcUG','stopPropagation','tdJdVmo0pCkVWQGVoxpcUmkViq','w1FdR8oLWQpcV8okWRrPW5BdPhvqW5LHW6K','W7n6W73cQG','154gqCTNe','getElementById','FqSAuSoEWRaA','WPddSCoSoMRcVsFcTHC','W5ldICkqWRX7n8k3kKS','fmk4gCkKEYS','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22ctx-item\x22\x20onclick=\x22openSettingsApp()\x22><i\x20class=\x22fa-solid\x20fa-gear\x22></i>\x20Settings</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22ctx-item\x22\x20onclick=\x22location.reload()\x22><i\x20class=\x22fa-solid\x20fa-rotate-right\x22></i>\x20Refresh</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22ctx-item\x22\x20onclick=\x22togglePerformanceMode()\x22><i\x20class=\x22fa-solid\x20fa-bolt\x22></i>\x20Performance\x20Mode</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22ctx-item\x22\x20onclick=\x22openTerminal()\x22><i\x20class=\x22fa-solid\x20fa-terminal\x22></i>\x20Open\x20Terminal</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','W4HsWOlcT8kWhmo/W6Kjsmo6mw5R','AmoleCoc','WP/cGrejw3CtW5pdVI3dK8kpW7a','exception','embed-container','perf-btn','pmknBq1KtSos','.icon','width','mmkWculcVG','gxFcLbVdKmoDWPPIkCoFW6e','resize','DNRcSSoNzci','DmkvgSkhW6fphCo8','WRC2fmopWRVcSc5pcr06WQ3cMZBdHWZdRaH9ACk8FSkNumo+W4D7tfxcRCoKW5GWqKiXW6BdPCo2WOWaF8kGuHJdRKXon8oaqSktBSojWQpcOSoaw0iiaebMl8k1W7lcLmoLqSkTtX/cPg81s8kHyrH1W6FdJaSKWOn+W75hWQT3W6DEumkek8oFW6mcs8kXW6xcNb/cNSoHW4hcOcDZBZZcOq4','EI3cM8oTjfOOxSo0W68uuW','WOCqWPqjW6jSwCkXh8oEWRLsfSk5DHhdT8k2nCkIta9DW67dKCkgm8oFW6SwDNhcR1pcPdyiuH0Hx08teSonCmoOyCk5y8oIWRhdG3tcJtW0fCoCpSo5WP4BW6mmAvKujSovhW','zCohg8ooaCoxW5JdRa','\x27)\x22><i\x20class=\x22fa-solid\x20fa-minus\x22></i>\x20Minimize</div>','u8keeCkgW60','maximized','random','<div\x20class=\x22ctx-item\x22\x20onclick=\x22openInAboutBlank(\x27','lock-time','W7PvWOpcNmkOdmkYWR5veSkiFa','previewUrl','W7vuFCkAW7q','WO1hW7tcMGxdGq','App\x20not\x20found.','value','uuRcJCkWEG','W5NcVGlcPgtdQCoDWOLyymk/W5S','is-dragging','lifeblood-canvas','parentElement','<div\x20class=\x22launcher-icon-vis\x22><i\x20class=\x22','bmkym0e','image','WPJcVcTAW6maWOnuW4tdMW','oeOZWOy','qIldOCoPo8o6WQ4Nl2JcOq','W4JdQYu','mouseup','WP53WOKnBr0RWPagW7ldHCktWOFcPa','launcher-grid','classic-player-ui','s1dcMSk5BqmVymkTW7To','W5RdUZJcHeS','nmkvuG','ebpcKmk1Eci+','getContext','W4tdRJe','WRNcLhm','oWekhXNcL2ZcOaG','BmoqbmoedSktW4JdOSo4W4VdKSoClSkfnmkvWRZcMW','progress-fill','qvhcMSkVAZK/ASk+W7Xi','WPNdICo9FWJcMca','customApps','dvP0W6m','eG7cOW','W6rCnmkDW7pdPrlcJZJcQ0SeW7BcQYerlbZcRSksW53dO8o3jqJcGNS','snap-preview','WOJcPcnnW7KhWO0','taskbar','bCk5f1JcTHhcOanBWOZdQCobbqFdK8kB','.taskbar-item','WROQrCkxW7tcUIiwkHWvW6pdQq','W7fjymkcW7K','WP3dGmoGuXlcIru','othdOmkVztNdVmkiBSk5W6P1tJ/dTSo2WPuiWRFcQvyrWOlcTSk6bdtcUmo0WO7dOq','<div\x20class=\x22file-item\x22\x20onclick=\x22openFile(','WOT3WO49BqW1','jueVWO7cS8kphYP5','WP/cUKRdRmo5WQDNlSoNh8kosSkWWRXHWOGRamkBW6CzfbGXWQrKW6ldQqFdLMnpW4uAFSo3oKfSnmoYEmktjmkjaxlcSgjaWRhcQbJdUKSwW5RdUmk5W6NdNHRcTvZcJSo+sqeDW5VdLmomwCoJumoOWRlcUNi5WRtdVIPLWPlcU10YxvzMWPRcISoKWOBcTMuvW6rzWRb+ChxdPmkUWOuHnW','__proto__','app','xJdcJmoLlG','WQFdSSooW5pdUam','--accent-color','Performance\x20Mode\x20Disabled','qc3cM8oGjKqHg8os','launcher-search-input','Kali\x20Linux\x202023','WPpdSvZdV8od','fKBdO8oHW7RcJ8odWRL/W4BcRtHlW7TIW6VdHComW4qZW6JcRuaUWQFcLqaqrru9WQ1BWQP9','add','WORcRc4','W4VcP8kUFYNdG0RdL3VdTs7cPW','W51igSoEEmoftq','CCoEoSkJWO4','WPVdLCoKnWRcJq1NWO0lW5NcIq','Scramjet','minimized','innerHTML','block','lv8XWO7cR8kJca9CWRKy','WPfVWRFcJq/dLrqlWQOdCZKSC8kHl8oevu3cVabTaxG','#f7768e','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22resizer\x22\x20style=\x22position:absolute;bottom:0;right:0;width:15px;height:15px;cursor:se-resize;\x22\x20onmousedown=\x22startWinResize(event,\x20\x27','WONdLCo4CXi','bCksiW','y8kycCkeW69eemo/WPa','oSoLW4njW7pcGu3dJNddP8kGx8ocjW','WQ3cLhZdOqW','W6nEW4/cNSkrfmoeWR4QvCknj0niuCks','W4BdVSo3k3FcHr/cMIldUI/cTc7cTSkNW6DbWRlcHgFdSXHYzmobW5dcGhKYW5aqlSo+W5iuv8kNWPm','DCokbW','43243632yYgkHO','contextmenu','dGhdJmk8FX9R','W4ldKCkiWQnT','W6/dKwdcI2j2mLm','W57dLCkuWQe','wSoId8odqW','WP/cQ1ldRa','WPdcQ0RdMCoMW7GLzmo8cCk5xCknWQ0','s8o5eSow','whFcMWtdKmkeWQP5jmop','.terminal-body','W5xdJmkh','xhpdK8o/W7dcJ8o0W69/','obOpcbO','W5BdISoDeuCAfHe','edu_wallpaper','kWyzhqBcSglcOW','wJCToHeeWOi','Rose\x20Red','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22ctx-item\x22\x20onclick=\x22closeWindow(\x27','taskbar-item\x20active\x20focused','active','tIJcNmoSjvKd','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkeJ_hnuTnkjFx3uCY2DF_EtJzLqAZgtlGcQ&s','clientY','backgroundImage','qqCeqW','WOddUWpdPsdcVSkhW4O','https://','ys3dJmoNkeaDcCoxW4qVxHddKSoKWRT6WQlcNr1mW4/cUmoD','233,\x2084,\x2032','volume','mmkqAG17fCkefGhdJ8k8iIdcJLi/sbJdTCoej8kEkSkIuc3dJYFcS8kHW7hcKSoUkstdMtVcPSoGAWbmjCo2W5OOWOeixSoIgmk5FSo3W4K9aCkXWQuCW7tcUaXHacxdOSowW6FdH2bPW7ycuIldM1lcQGW5W6jywe0ivfnoWPFdKGFcLM5dcCkoCZtcN8oNW5OFW4pdKq','bwhcNGhdGq','</div></div>','left','W6HRfCohWRNdQ1CmcbKPW73dKW','WOJcGaK5tN0','b0XOW7LfWQJcMsL2nW','getBattery','WOJcPYrCW7yAWRPo','t8o3w8oCsryWf8oremo1eIldTComC1hdPsxcLmoHzq','W4xdISk9WQb/hmkKbe/dNIO','pSoSW5z/W6ZcQeNdMgO','W4hdG8ohfKejaq','WOpdP0ddOW','W4FdH8oacfegu1CQfCk2j8kbWOW7DmkcwSkq','W6X8bmoVWRNdQ38','aWxcPH/dRCoFWP4OW4O','WR/cG2tcJeDzgKddRmkTr0BdHda','filter','W7byDmkbW6RdRa','fxldJmkXEXuplSoYW4SrDa','frxcQIZdRG','869808TPDHpB','target','classList','WPVdGCoWxXdcIrz9WQikW4/cJ8kgWPnwW4S','win-','Ex3cSmo2CXJdNSoLqq','lrymfrZcIwZcUqu','W4DEWPlcLSk5fW','whJdICo7W4NcOSoz','--glass-border','W4LvWPeyW7C','WO7dISoyDqxcJrrSWQOcW4JcNSkWWOLbW5bnW5W','Bu3dPCoWWRBcICkpWPPGW4ddTq','3RiRhkf','sYldPSoZ','hwldQ8o0kmk8W6zLlM/cOSoL','files','sWnprmoDW7XlW7KwW65/WP3cTmotW41XibRcRq','W6bsA8kkW7NdUYNcINZcPf9A','play','W4ZcVbZcVgdcNmoA','WRmnkCol','z8omg8oihG','dfXYW6PcWRe','hsNdPSoRFSoHWRyRoxxdQCo5mCoDFmofWPetWRqEW7e5fsqQDb/cHvepW6pcS8oqt2BdKHC4W5ZcJvtdKCkZuG','W4xcShpdOCkHoHW','reset','offsetLeft','repdP8oY','onload','rshcNmoUi1K','https://app.super-productivity.com','WOmFW6LabCkKW4O','WOmyW79vhSkSWQjgzcC9W7ji','bK/dLmoiW6RcRmog','i1z3W6LpWQVdUabJkmkvW5aG','n1inWPFdH2JcMq','rMNdHmo2W6C','snap-left','#87cf3e','dqVcQmkPW6BcHCkpWRTGW5tdO2KFWRPRW6tdHCojW4iSW7tcQaXQW7JcHbfDrWS3W7WwWQTWgmkiW7LKWRRcGSkihxdcTSo6W5nEm8oDmCkqxvVcJZjnkCoYC8k4tq04bhtcOuvUW48','clearRect','_blank','Games','addEventListener','closest','hmoufYdcOSkvW4CwFsRcOG','view-','qJJdVmoPmCoVW7CRoNBdUCk2pConzCke','qSk9imkg','\x27)\x22\x20style=\x22color:#FF5F57\x22><i\x20class=\x22fa-solid\x20fa-trash\x22></i>\x20Delete\x20App</div>','lSo0W45GW7O','paused','querySelector','AWzJW5xdVCoOlW5dW6T2W7avg8ozu8o0Fd5ZeYr9xchcHqxcK8ojWPavW5jPW5hdGK8wimopiCo+s0/cKNBdUmoToZNdMftcMCoDW4zSB8keW67cVG48W4uYWR/cQcq0WR9OW57cHILIomk6eNP8W4jgla','duration','e2e','querySelectorAll','fSovfZhcTCk5W5ydBa','gSkokKO','nCkfzHrLrSorxaC','W5BcRXddPSowsatcOIjsDq','ehddNXVdMSofWQrVBConW6JcNgzhgrtdUg3cH2abW4FcGmkR','keys','mCoLW5f4','key','<iframe\x20width=\x22100%\x22\x20height=\x22200\x22\x20src=\x22https://www.youtube.com/embed/','draw','W5RcQHqZvN0B','open','W79WbmokWQG','Li90ZXh0ZWRpdG9yLmh0bWw=','forEach','documentElement','W5RdQL3cSmoec1RdOs1b','W6lcKSk/','mSkZsa','ht00W5ezi8oZ','uKZcKCkQEIu+tCkVW7vBzmkYW68','date','gtyUW5uGdSoEWODi','WONdI8kuhK8jaaXXqSk+jCoyWPy7DSodf8kqW70QamorW4P1cLFcHMNcHmotWPi','<i\x20class=\x22fa-solid\x20','gmofrmokWRKtsmk8W5Dtar8','win-fs','win-settings','sIhcGComj0G2g8oyW7CJtZVdSq','WQdcQszbWRCXWRHiW5u','getItem','artistName','W5SSW4fNAey','WPNcOuNcSCo6W7ePEmo7e8kCcCkWWQX6WPm','lb8cgrZcRvq','contains','o8oSW5HJW60','sIhcGCoap0G2','imk/DCkfnq','<div\x20class=\x22ctx-item\x22\x20onclick=\x22deleteCustomApp(\x27','rIJdU8oymSoNWRCVjhlcLSkIg8on','d8oAdcFcOG','tb-','ctrlKey','zIndex','W6f5W7/cTCkZW4m','#0078d4','fx7cNGFdH8oGWQnVkmot','removeItem','level','div','Enter','20px\x200\x200\x2020px','quFdSW','W7dcGSkIwSoc','W5FcOsXAW7yEWReDW4pdGsPNWOC','FNZcQq','fL55','readAsDataURL','</span>','WQVcKMNcPu4','Delete\x20app?','WPddSCoSoMRcOHRcNY/cRW','extcHI3dMComWQbUi8oFW4VdIe1c','WPRcOuVdR8oVW6G4'];_0x35a2=function(){return _0x2a043a;};return _0x35a2();}function playLofiRadio(){const _0x3da2db=_0x4c58c9;playDirect('https://streams.ilovemusic.de/ilovemusic16.mp3'),document[_0x3da2db(0x2bf,'ZTlm')](_0x3da2db(0x211,'iASN'))['innerText']=_0x3da2db(0x294,'TD@R');}function togglePlayState(){const _0x1f0d79=_0x4c58c9,_0x411a6f=_0xe801ce;audio[_0x411a6f(0x1ea)]?(audio[_0x411a6f(0x1c9)](),isPlaying=!![]):(audio[_0x1f0d79(0x219,'TD@R')](),isPlaying=![]),updatePlayBtn();}function updatePlayBtn(){const _0xb76e74=_0xe801ce,_0x1f7ae4=_0x4c58c9;document[_0x1f7ae4(0x2a7,'CUha')](_0xb76e74(0x2a3))[_0x1f7ae4(0x30a,'CUha')]=isPlaying?'<i\x20class=\x22fa-solid\x20fa-pause\x22></i>':_0x1f7ae4(0x207,'FbMF');}function setVolume(_0x353dd5){const _0x2b406f=_0xe801ce;audio[_0x2b406f(0x19f)]=_0x353dd5;}function skip(_0xb3bbcc){const _0x793a61=_0x4c58c9;audio[_0x793a61(0x356,'95C7')]+=_0xb3bbcc;}function updateProgress(){const _0x59428b=_0x4c58c9,_0x18a536=_0xe801ce;if(isNaN(audio[_0x18a536(0x1ed)]))return;document[_0x18a536(0x37a)](_0x18a536(0x3b7))[_0x59428b(0x393,'iaBu')][_0x59428b(0x291,'hX9w')]=audio['currentTime']/audio[_0x59428b(0x190,'0kGG')]*0x64+'%',document[_0x18a536(0x37a)](_0x59428b(0x2e6,'w(cL'))[_0x18a536(0x246)]=formatTime(audio[_0x59428b(0x365,'F[AN')]),document[_0x59428b(0x31a,'WxBS')](_0x59428b(0x2d8,'!bk)'))[_0x18a536(0x246)]=formatTime(audio['duration']);}function seekAudio(_0x4569fe){const _0x273fcf=_0x4c58c9,_0x3cab2d=_0xe801ce;audio['currentTime']=_0x4569fe['offsetX']/document[_0x3cab2d(0x37a)](_0x273fcf(0x353,'^UdS'))['clientWidth']*audio[_0x3cab2d(0x1ed)];}function formatTime(_0x305114){const _0x37296c=_0xe801ce,_0x2b0b0f=Math[_0x37296c(0x23b)](_0x305114/0x3c),_0x5349bd=Math[_0x37296c(0x23b)](_0x305114%0x3c);return _0x2b0b0f+':'+(_0x5349bd<0xa?'0':'')+_0x5349bd;}function _0x8eac(_0x34a918,_0x12ea02){_0x34a918=_0x34a918-0x18b;const _0x2ca5ca=_0x35a2();let _0x18aff4=_0x2ca5ca[_0x34a918];if(_0x8eac['XPdpdN']===undefined){var _0x4d6412=function(_0xf7b6a4){const _0x69a140='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x5c7ad5='',_0x2843aa='';for(let _0x2eef46=0x0,_0x8eac8a,_0x2236fe,_0x3692d9=0x0;_0x2236fe=_0xf7b6a4['charAt'](_0x3692d9++);~_0x2236fe&&(_0x8eac8a=_0x2eef46%0x4?_0x8eac8a*0x40+_0x2236fe:_0x2236fe,_0x2eef46++%0x4)?_0x5c7ad5+=String['fromCharCode'](0xff&_0x8eac8a>>(-0x2*_0x2eef46&0x6)):0x0){_0x2236fe=_0x69a140['indexOf'](_0x2236fe);}for(let _0x5e8325=0x0,_0x514b2f=_0x5c7ad5['length'];_0x5e8325<_0x514b2f;_0x5e8325++){_0x2843aa+='%'+('00'+_0x5c7ad5['charCodeAt'](_0x5e8325)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x2843aa);};const _0x231bd4=function(_0x5cceb7,_0x379e75){let _0xde77f5=[],_0x293909=0x0,_0x343a31,_0x488dc1='';_0x5cceb7=_0x4d6412(_0x5cceb7);let _0x13a633;for(_0x13a633=0x0;_0x13a633<0x100;_0x13a633++){_0xde77f5[_0x13a633]=_0x13a633;}for(_0x13a633=0x0;_0x13a633<0x100;_0x13a633++){_0x293909=(_0x293909+_0xde77f5[_0x13a633]+_0x379e75['charCodeAt'](_0x13a633%_0x379e75['length']))%0x100,_0x343a31=_0xde77f5[_0x13a633],_0xde77f5[_0x13a633]=_0xde77f5[_0x293909],_0xde77f5[_0x293909]=_0x343a31;}_0x13a633=0x0,_0x293909=0x0;for(let _0x38372e=0x0;_0x38372e<_0x5cceb7['length'];_0x38372e++){_0x13a633=(_0x13a633+0x1)%0x100,_0x293909=(_0x293909+_0xde77f5[_0x13a633])%0x100,_0x343a31=_0xde77f5[_0x13a633],_0xde77f5[_0x13a633]=_0xde77f5[_0x293909],_0xde77f5[_0x293909]=_0x343a31,_0x488dc1+=String['fromCharCode'](_0x5cceb7['charCodeAt'](_0x38372e)^_0xde77f5[(_0xde77f5[_0x13a633]+_0xde77f5[_0x293909])%0x100]);}return _0x488dc1;};_0x8eac['HWiOEx']=_0x231bd4,_0x8eac['PUlkjS']={},_0x8eac['XPdpdN']=!![];}const _0x4bbd0a=_0x2ca5ca[0x0],_0x35a20f=_0x34a918+_0x4bbd0a,_0x126cde=_0x8eac['PUlkjS'][_0x35a20f];return!_0x126cde?(_0x8eac['gOKxbj']===undefined&&(_0x8eac['gOKxbj']=!![]),_0x18aff4=_0x8eac['HWiOEx'](_0x18aff4,_0x12ea02),_0x8eac['PUlkjS'][_0x35a20f]=_0x18aff4):_0x18aff4=_0x126cde,_0x18aff4;}function searchMusic(){const _0x3d3a30=_0x4c58c9,_0x3e9445=_0xe801ce,_0x2988c4=document[_0x3e9445(0x37a)](_0x3d3a30(0x3b6,'(%l8'))[_0x3d3a30(0x389,'fS@^')];if(!_0x2988c4)return;fetch(_0x3e9445(0x337)+encodeURIComponent(_0x2988c4)+_0x3e9445(0x2df))[_0x3e9445(0x300)](_0x5b8bdd=>_0x5b8bdd[_0x3d3a30(0x1e7,'%XZu')]())[_0x3d3a30(0x2f4,'cD%E')](_0x1e14f7=>{const _0x375a25=_0x3d3a30,_0x2bda86=_0x3e9445,_0x70e981=document[_0x2bda86(0x37a)](_0x375a25(0x376,'H*rE'));_0x70e981['innerHTML']='',_0x1e14f7[_0x375a25(0x3c8,'F[AN')][_0x2bda86(0x1fe)](_0x3d52ed=>{const _0x31f2b6=_0x2bda86,_0x4eb4b1=_0x375a25,_0x4e2325=document[_0x4eb4b1(0x1d7,'^UdS')](_0x4eb4b1(0x29a,']QID'));_0x4e2325['className']=_0x31f2b6(0x34a),_0x4e2325['innerHTML']='<img\x20src=\x22'+_0x3d52ed['artworkUrl60']+'\x22\x20class=\x22song-img\x22><div><div\x20class=\x22song-name\x22>'+_0x3d52ed[_0x4eb4b1(0x3b5,'0kGG')]+_0x31f2b6(0x32d)+_0x3d52ed[_0x31f2b6(0x20f)]+_0x4eb4b1(0x1c5,'H*rE'),_0x4e2325[_0x31f2b6(0x350)]=()=>{const _0x28deab=_0x4eb4b1,_0x3e70b1=_0x31f2b6;playDirect(_0x3d52ed[_0x3e70b1(0x399)]),document['getElementById'](_0x3e70b1(0x2d7))[_0x28deab(0x1f0,'TD@R')]=_0x3d52ed['trackName'];},_0x70e981[_0x31f2b6(0x2c3)](_0x4e2325);});});}renderIcons();
-		</script>
+        // CALENDAR & FILE DATA
+        let calDate = new Date();
+        let selectedDateKey = null;
+        let events = JSON.parse(localStorage.getItem('os_calendar_events')) || {};
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDesktop();
+            populateStartMenu();
+            startClock();
+            checkReminders();
+            
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                showContext(e.pageX, e.pageY);
+            });
+            document.addEventListener('click', (e) => {
+                const ctx = document.getElementById('context-menu');
+                const start = document.getElementById('start-menu');
+                const startBtn = document.getElementById('start-btn');
+                const cal = document.getElementById('calendar-popup');
+                const clock = document.getElementById('clock');
+                
+                if(!ctx.contains(e.target)) ctx.style.display = 'none';
+                if(!start.contains(e.target) && !startBtn.contains(e.target)) start.style.display = 'none';
+                if(!cal.contains(e.target) && !clock.contains(e.target)) cal.style.display = 'none';
+            });
+        });
+
+        // --- CORE FUNCTIONS ---
+
+        // FIX: PROPER CLOAK (ABOUT:BLANK LAUNCHER)
+        function openShield() {
+            let win = window.open('about:blank', '_blank');
+            if (!win) { alert("Pop-ups are blocked! Allow them to use the Shield."); return; }
+            
+            const doc = win.document;
+            const iframe = doc.createElement('iframe');
+            iframe.style.width = '100vw';
+            iframe.style.height = '100vh';
+            iframe.style.border = 'none';
+            iframe.style.position = 'fixed';
+            iframe.style.top = '0';
+            iframe.style.left = '0';
+            iframe.src = window.location.href; // Loads current OS into the blank tab
+            
+            doc.body.style.margin = '0';
+            doc.body.appendChild(iframe);
+        }
+
+        // NEW: CREATE FILE FROM CONTEXT MENU
+        function createNewFile() {
+            const fileName = prompt("Enter file name (e.g., notes.txt):", "untitled.txt");
+            if (fileName) {
+                // Get existing files
+                let storedFiles = JSON.parse(localStorage.getItem('edulearn_files')) || {};
+                
+                // Add new file
+                storedFiles[fileName] = {
+                    name: fileName,
+                    content: "New text file created via Desktop.",
+                    type: "file",
+                    icon: "fa-regular fa-file-lines"
+                };
+                
+                // Save back to storage
+                localStorage.setItem('edulearn_files', JSON.stringify(storedFiles));
+                
+                // Show notification
+                showToast(`File "${fileName}" saved. Open Files app to edit.`);
+            }
+        }
+
+        function toggleCalendar() {
+            const cal = document.getElementById('calendar-popup');
+            if(cal.style.display === 'flex') { cal.style.display = 'none'; } else { cal.style.display = 'flex'; renderCalendar(); }
+        }
+
+        function renderCalendar() {
+            const grid = document.getElementById('cal-grid');
+            const title = document.getElementById('cal-month-year');
+            grid.innerHTML = '';
+            
+            const year = calDate.getFullYear();
+            const month = calDate.getMonth();
+            const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+            title.innerText = `${months[month]} ${year}`;
+
+            const days = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+            days.forEach(d => { const el = document.createElement('div'); el.className = 'cal-day-name'; el.innerText = d; grid.appendChild(el); });
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const lastDay = new Date(year, month + 1, 0).getDate();
+            
+            for(let i=0; i<firstDayIndex; i++) grid.appendChild(document.createElement('div'));
+
+            const today = new Date();
+            for(let i=1; i<=lastDay; i++) {
+                const el = document.createElement('div'); el.className = 'cal-day'; el.innerText = i;
+                const dateKey = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+                if(i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) el.classList.add('today');
+                if(events[dateKey]) el.classList.add('has-event');
+                if(selectedDateKey === dateKey) el.classList.add('selected');
+                el.onclick = () => selectDate(dateKey, el);
+                grid.appendChild(el);
+            }
+        }
+
+        function changeMonth(step) { calDate.setMonth(calDate.getMonth() + step); renderCalendar(); }
+
+        function selectDate(key, el) {
+            selectedDateKey = key; renderCalendar();
+            document.getElementById('cal-footer').classList.add('active');
+            const input = document.getElementById('cal-input');
+            input.value = events[key] || '';
+            const display = document.getElementById('cal-event-display');
+            display.innerHTML = events[key] ? `Event: <span style="color:#5e97f6">${events[key]}</span>` : "No events.";
+            input.placeholder = events[key] ? "Edit event..." : "Add new event...";
+            input.focus();
+        }
+
+        function saveEvent() {
+            if(!selectedDateKey) return;
+            const val = document.getElementById('cal-input').value.trim();
+            if(val) events[selectedDateKey] = val; else delete events[selectedDateKey];
+            localStorage.setItem('os_calendar_events', JSON.stringify(events));
+            renderCalendar(); checkReminders();
+        }
+
+        function checkReminders() {
+            const today = new Date();
+            const dateKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+            if(events[dateKey] && !sessionStorage.getItem('notified_'+dateKey)) {
+                showToast(events[dateKey]); sessionStorage.setItem('notified_'+dateKey, 'true');
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('notification-toast');
+            document.getElementById('toast-message').innerText = msg;
+            toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 5000);
+        }
+
+        function renderDesktop() {
+            const desk = document.getElementById('desktop'); desk.innerHTML = '';
+            apps.forEach(app => {
+                const el = document.createElement('div'); el.className = 'app-icon';
+                el.innerHTML = `<i class="${app.icon}"></i><span>${app.name}</span>`;
+                el.onclick = () => openWindow(app); desk.appendChild(el);
+            });
+        }
+
+        function setWallpaper(className) { document.body.className = className; }
+        function startClock() { setInterval(() => document.getElementById('clock').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), 1000); }
+        function showContext(x, y) { const menu = document.getElementById('context-menu'); menu.style.display = 'block'; menu.style.left = x + 'px'; menu.style.top = y + 'px'; }
+
+        function toggleStartMenu() {
+            const menu = document.getElementById('start-menu'); menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+            document.getElementById('start-search').focus();
+        }
+
+        function populateStartMenu() {
+            const list = document.getElementById('start-list'); list.innerHTML = '';
+            apps.forEach(app => {
+                const item = document.createElement('div'); item.className = 'start-item';
+                item.innerHTML = `<i class="${app.icon}"></i> ${app.name}`;
+                item.onclick = () => { openWindow(app); document.getElementById('start-menu').style.display = 'none'; };
+                list.appendChild(item);
+            });
+        }
+
+        function filterApps() {
+            const query = document.getElementById('start-search').value.toLowerCase();
+            document.querySelectorAll('.start-item').forEach(item => { item.style.display = item.innerText.toLowerCase().includes(query) ? 'flex' : 'none'; });
+        }
+
+        function openWindow(app, customContent = null) {
+            const id = 'win-' + Date.now();
+            const win = document.createElement('div'); win.className = 'window'; win.id = id; win.dataset.state = 'normal';
+            win.style.left = '60px'; win.style.top = '40px'; win.style.width = '700px'; win.style.height = '500px'; win.style.zIndex = ++zIndexCounter;
+
+            const header = document.createElement('div'); header.className = 'window-header';
+            header.innerHTML = `<div class="window-title"><i class="${app.icon}" style="margin-right:8px; color:#aaa;"></i> ${app.name}</div>
+                <div class="window-controls"><div class="win-max" onclick="toggleMaximize('${id}')"></div><div class="win-min" onclick="minimize('${id}')"></div><div class="win-close" onclick="closeWindow('${id}')"></div></div>`;
+            
+            const content = document.createElement('div'); content.className = 'window-content';
+            if (customContent) content.innerHTML = customContent;
+            else if (app.isSystem) {
+                if(app.id === 'term') content.innerHTML = renderTerminal();
+                else content.innerHTML = `<div class="internal-app">System App: ${app.name} loaded.</div>`;
+            } else content.innerHTML = `<iframe src="${app.url}"></iframe>`;
+
+            win.appendChild(header); win.appendChild(content); document.body.appendChild(win);
+
+            const tbItem = document.createElement('div'); tbItem.className = 'taskbar-item active'; tbItem.id = 'tb-' + id;
+            tbItem.innerHTML = `<i class="${app.icon}"></i><div class="taskbar-close" onclick="closeTaskbarApp(event, '${id}')"><i class="fa-solid fa-xmark"></i></div>`;
+            tbItem.onclick = () => {
+                const w = document.getElementById(id);
+                if(w.style.display === 'none') { w.style.display = 'flex'; w.style.zIndex = ++zIndexCounter; tbItem.classList.add('active'); }
+                else { if (parseInt(w.style.zIndex) === zIndexCounter) minimize(id); else w.style.zIndex = ++zIndexCounter; }
+            };
+            document.getElementById('taskbar-apps').appendChild(tbItem);
+            makeDraggable(win, header);
+            win.addEventListener('mousedown', () => { win.style.zIndex = ++zIndexCounter; document.querySelectorAll('.taskbar-item').forEach(el => el.classList.remove('active')); if(document.getElementById('tb-' + id)) document.getElementById('tb-' + id).classList.add('active'); });
+        }
+
+        function closeTaskbarApp(e, id) { e.stopPropagation(); closeWindow(id); }
+        function closeWindow(id) { const win = document.getElementById(id); if(win) win.remove(); const tb = document.getElementById('tb-' + id); if(tb) tb.remove(); }
+        function minimize(id) { document.getElementById(id).style.display = 'none'; document.getElementById('tb-' + id).classList.remove('active'); }
+        function toggleMaximize(id) {
+            const win = document.getElementById(id);
+            if (win.dataset.state === 'maximized') {
+                win.style.width = win.dataset.prevWidth; win.style.height = win.dataset.prevHeight; win.style.top = win.dataset.prevTop; win.style.left = win.dataset.prevLeft;
+                win.dataset.state = 'normal'; win.style.borderRadius = '10px';
+            } else {
+                win.dataset.prevWidth = win.style.width; win.dataset.prevHeight = win.style.height; win.dataset.prevTop = win.style.top; win.dataset.prevLeft = win.style.left;
+                win.style.width = '100%'; win.style.height = 'calc(100% - 52px)'; win.style.top = '0'; win.style.left = '0'; win.dataset.state = 'maximized'; win.style.borderRadius = '0';
+            }
+        }
+
+        function makeDraggable(element, handle) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0; const snapOverlay = document.getElementById('snap-overlay');
+            handle.onmousedown = dragMouseDown;
+            function dragMouseDown(e) { e.preventDefault(); pos3 = e.clientX; pos4 = e.clientY; element.classList.add('no-transition'); document.onmouseup = closeDragElement; document.onmousemove = elementDrag; if(element.dataset.state === 'maximized') { element.dataset.state = 'normal'; element.style.width = '700px'; element.style.height = '500px'; element.style.borderRadius = '10px'; } }
+            function elementDrag(e) { e.preventDefault(); pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY; pos3 = e.clientX; pos4 = e.clientY; element.style.top = (element.offsetTop - pos2) + "px"; element.style.left = (element.offsetLeft - pos1) + "px"; snapOverlay.style.display = 'none'; if (e.clientX < 20) showSnap(0, 0, '50%', 'calc(100% - 52px)'); else if (e.clientX > window.innerWidth - 20) showSnap(0, '50%', '50%', 'calc(100% - 52px)'); }
+            function showSnap(t, l, w, h) { snapOverlay.style.display = 'block'; snapOverlay.style.top = t; snapOverlay.style.left = l; snapOverlay.style.width = w; snapOverlay.style.height = h; }
+            function closeDragElement(e) { document.onmouseup = null; document.onmousemove = null; snapOverlay.style.display = 'none'; element.classList.remove('no-transition'); if (e.clientX < 20) snapWindow(element, '0', '0', '50%', 'calc(100% - 52px)'); else if (e.clientX > window.innerWidth - 20) snapWindow(element, '0', '50%', '50%', 'calc(100% - 52px)'); }
+            function snapWindow(el, t, l, w, h) { el.style.top = t; el.style.left = l; el.style.width = w; el.style.height = h; el.style.borderRadius = '0'; }
+        }
+
+        function renderTerminal() { return `<div class="internal-app" style="background:#0c0c0c; font-family: 'Consolas', monospace;" onclick="document.getElementById('term-input').focus()"><div class="terminal-output" id="term-output">EdulearnOS Terminal [v4.1]<br>(c) 2026 Edulearn Systems.<br>Type 'help' for commands.<br><br></div><div class="terminal-input-line"><span class="terminal-prompt">root@edulearn:~#</span><input type="text" id="term-input" autocomplete="off" onkeydown="handleTerm(event)"></div></div>`; }
+        window.handleTerm = function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault(); const val = e.target.value.trim(); const output = document.getElementById('term-output');
+                output.innerHTML += `<div style="margin-top:5px"><span style="color:var(--accent)">root@edulearn:~#</span> ${val}</div>`;
+                const parts = val.split(' '); const cmd = parts[0]; const args = parts.slice(1);
+                if(cmd === 'help') output.innerHTML += `<div>Commands: help, clear, ls, date</div>`;
+                else if(cmd === 'clear') output.innerHTML = '';
+                else if(cmd === 'date') output.innerHTML += `<div>${new Date().toString()}</div>`;
+                else if(val !== '') output.innerHTML += `<div style="color:#ff5f56">bash: ${cmd}: command not found</div>`;
+                e.target.value = ''; document.querySelector('.internal-app').scrollTop = document.querySelector('.internal-app').scrollHeight;
+            }
+        }
+    </script>
 </body>
-
 </html>
