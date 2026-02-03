@@ -1,290 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What's New - EdulearnOS</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            /* Clean Modern Palette */
-            --glass-bg: rgba(20, 20, 30, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-highlight: rgba(255, 255, 255, 0.03);
-            
-            --accent-primary: #3b82f6; /* Bright Blue */
-            --accent-glow: rgba(59, 130, 246, 0.4);
-            
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            
-            --font-main: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Edulearn V5 Info</title>
 
-        * { box-sizing: border-box; outline: none; }
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2000&auto=format&fit=crop') no-repeat center center fixed;
-            background-size: cover;
-            font-family: var(--font-main);
-            overflow: hidden;
-            color: var(--text-primary);
-        }
+	<style>
+		:root {
+			--bg-dark: #050505;
+			--surface: rgba(20, 20, 20, 0.6);
+			--surface-hover: rgba(40, 40, 40, 0.8);
+			--border: rgba(255, 255, 255, 0.1);
+			--accent: #ffffff;
+			--text-main: #ffffff;
+			--text-muted: #888888;
+			--glow-white: 0 0 15px rgba(255, 255, 255, 0.2);
+		}
 
-        /* Overlay for contrast */
-        body::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(8px);
-            z-index: -1;
-        }
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
 
-        /* --- Main Modal --- */
-        .update-modal {
-            width: 420px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 
-                0 20px 50px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            animation: modalFloat 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
+		body {
+			font-family: 'Inter', sans-serif;
+			background-color: var(--bg-dark);
+			background-image: radial-gradient(circle at center, #111111 0%, #000000 100%);
+			color: var(--text-main);
+			height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+			position: relative;
+		}
 
-        /* Header Area */
-        .modal-header {
-            padding: 24px 28px 10px;
-        }
+		/* --- PARTICLES --- */
+		#particles-js {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			pointer-events: none;
+			opacity: 0.4;
+		}
 
-        .badge-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
+		/* --- MAIN CONTAINER --- */
+		.info-container {
+			position: relative;
+			z-index: 10;
+			width: 100%;
+			max-width: 800px;
+			padding: 3rem;
+			background: var(--surface);
+			border: 1px solid var(--border);
+			border-radius: 24px;
+			backdrop-filter: blur(20px);
+			-webkit-backdrop-filter: blur(20px);
+			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+			text-align: center;
+			animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+		}
 
-        .version-pill {
-            background: rgba(59, 130, 246, 0.15);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
+		/* Container Border Highlight */
+		.info-container::before {
+			content: '';
+			position: absolute;
+			inset: 0;
+			border-radius: 24px;
+			padding: 1px;
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+			-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+			-webkit-mask-composite: xor;
+			mask-composite: exclude;
+			pointer-events: none;
+		}
 
-        .date-text {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-        }
+		h1 {
+			font-size: 3rem;
+			font-weight: 800;
+			letter-spacing: -1px;
+			margin-bottom: 0.5rem;
+			background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+		}
 
-        .title-large {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin: 0;
-            background: linear-gradient(to right, #fff, #cbd5e1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+		.subtitle {
+			font-size: 1.1rem;
+			color: var(--text-muted);
+			margin-bottom: 3rem;
+			font-weight: 300;
+		}
 
-        /* Content Scroll Area */
-        .update-list {
-            list-style: none;
-            padding: 10px 16px;
-            margin: 0;
-            max-height: 320px;
-            overflow-y: auto;
-        }
-        
-        /* Custom Scrollbar */
-        .update-list::-webkit-scrollbar { width: 4px; }
-        .update-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+		/* --- VERSIONS GRID --- */
+		.versions-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 2rem;
+			margin-bottom: 3rem;
+		}
 
-        .update-item {
-            display: flex;
-            gap: 16px;
-            padding: 16px;
-            border-radius: 16px;
-            transition: 0.2s ease;
-            cursor: default;
-        }
+		.version-card {
+			background: rgba(255, 255, 255, 0.03);
+			border: 1px solid var(--border);
+			border-radius: 16px;
+			padding: 2rem;
+			transition: all 0.3s ease;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			position: relative;
+			overflow: hidden;
+		}
 
-        .update-item:hover {
-            background: var(--glass-highlight);
-        }
+		.version-card:hover {
+			transform: translateY(-5px);
+			background: rgba(255, 255, 255, 0.06);
+			border-color: rgba(255, 255, 255, 0.3);
+			box-shadow: var(--glow-white);
+		}
 
-        .icon-wrapper {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            flex-shrink: 0;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
+		.card-icon {
+			font-size: 2.5rem;
+			margin-bottom: 1rem;
+			color: #fff;
+			text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+		}
 
-        .content-wrapper { flex: 1; }
+		.card-title {
+			font-size: 1.25rem;
+			font-weight: 700;
+			margin-bottom: 0.5rem;
+			color: #fff;
+		}
 
-        .item-head {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
-        }
+		.card-desc {
+			font-size: 0.9rem;
+			color: var(--text-muted);
+			line-height: 1.5;
+		}
 
-        .item-desc {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            line-height: 1.4;
-        }
+		.tag {
+			display: inline-block;
+			margin-top: 1rem;
+			padding: 4px 12px;
+			border-radius: 20px;
+			font-size: 0.75rem;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
 
-        /* Footer / Action */
-        .modal-footer {
-            padding: 20px 28px 24px;
-            background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
-        }
+		.tag.gaming {
+			background: rgba(76, 175, 80, 0.2);
+			color: #4caf50;
+			border: 1px solid rgba(76, 175, 80, 0.3);
+		}
 
-        .btn-primary {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 12px;
-            background: var(--accent-primary);
-            color: white;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 15px var(--accent-glow);
-            position: relative;
-            overflow: hidden;
-        }
+		.tag.productivity {
+			background: rgba(33, 150, 243, 0.2);
+			color: #2196f3;
+			border: 1px solid rgba(33, 150, 243, 0.3);
+		}
 
-        .btn-primary:hover {
-            background: #2563eb;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
-        }
+		/* --- FOOTER --- */
+		.footer {
+			border-top: 1px solid var(--border);
+			padding-top: 1.5rem;
+			font-size: 0.85rem;
+			color: #666;
+		}
 
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
+		.footer span {
+			color: #fff;
+			font-weight: 600;
+		}
 
-        /* Animations */
-        @keyframes modalFloat {
-            0% { opacity: 0; transform: scale(0.92) translateY(30px); }
-            100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: scale(0.95);
+			}
 
-        /* Colors for specific icons */
-        .c-cal { color: #f87171; }   /* Red */
-        .c-file { color: #fbbf24; }  /* Amber */
-        .c-shield { color: #34d399; } /* Emerald */
-        .c-ui { color: #60a5fa; }    /* Blue */
-        
-    </style>
+			to {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+
+		@media (max-width: 600px) {
+			.versions-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.info-container {
+				padding: 1.5rem;
+			}
+		}
+	</style>
 </head>
+
 <body>
 
-    <div class="update-modal" id="changelogModal">
-        <div class="modal-header">
-            <div class="badge-container">
-                <span class="version-pill">Version 4.0.0 Beta</span>
-                <span class="date-text">Feb 2026</span>
-            </div>
-            <h1 class="title-large">Welcome to EdulearnOS 4</h1>
-        </div>
+	<canvas id="particles-js"></canvas>
 
-        <ul class="update-list">
-            
-            <li class="update-item">
-                <div class="icon-wrapper c-cal">
-                    <i class="fa-regular fa-calendar-check"></i>
-                </div>
-                <div class="content-wrapper">
-                    <div class="item-head">Smart Calendar</div>
-                    <div class="item-desc">Clicking the date/time now opens the full Calendar app instantly.</div>
-                </div>
-            </li>
+	<div class="info-container">
+		<h1>Edulearn V5</h1>
+		<div class="subtitle">Dual Architecture Update</div>
 
-            <li class="update-item">
-                <div class="icon-wrapper c-file">
-                    <i class="fa-solid fa-file-lines"></i>
-                </div>
-                <div class="content-wrapper">
-                    <div class="item-head">Quick File Creation</div>
-                    <div class="item-desc">Right-click anywhere on the desktop to create a "New Text File".</div>
-                </div>
-            </li>
+		<div class="versions-grid">
+			<div class="version-card">
+				<i class="fa-solid fa-bolt card-icon"></i>
+				<div class="card-title">Edulearn Lite</div>
+				<div class="card-desc">
+					A streamlined, lightweight interface optimized for maximum frame rates and low latency.
+				</div>
+				<span class="tag gaming">Built for Gaming</span>
+			</div>
 
-            <li class="update-item">
-                <div class="icon-wrapper c-shield">
-                    <i class="fa-solid fa-shield-halved"></i>
-                </div>
-                <div class="content-wrapper">
-                    <div class="item-head">Ultraviolet Proxy Fix</div>
-                    <div class="item-desc">Resolved connectivity issues. The Shield icon now correctly toggles secure browsing.</div>
-                </div>
-            </li>
+			<div class="version-card">
+				<i class="fa-solid fa-layer-group card-icon"></i>
+				<div class="card-title">EdulearnOS</div>
+				<div class="card-desc">
+					A complete desktop environment with multi-window support, tools, and widgets.
+				</div>
+				<span class="tag productivity">Built for Productivity</span>
+			</div>
+		</div>
 
-            <li class="update-item">
-                <div class="icon-wrapper c-ui">
-                    <i class="fa-solid fa-layer-group"></i>
-                </div>
-                <div class="content-wrapper">
-                    <div class="item-head">Refined Glass UI</div>
-                    <div class="item-desc">Cleaner CSS architecture, smoother blurs, and optimized asset loading.</div>
-                </div>
-            </li>
+		<div class="footer">
+			Current Version: <span>5.0.0 (Beta)</span> &bull; Developed by Edulearn Systems
+		</div>
+	</div>
 
-        </ul>
+	<script>
+		// --- PARTICLES SYSTEM (Matching Lite.html) ---
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
 
-        <div class="modal-footer">
-            <button class="btn-primary" onclick="dismissUpdate()">Experience 4.0</button>
-        </div>
-    </div>
-
-    <script>
-        function dismissUpdate() {
-            const modal = document.getElementById('changelogModal');
-            
-            // Animate out
-            modal.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-            modal.style.opacity = '0';
-            modal.style.transform = 'scale(0.9) translateY(20px)';
-            modal.style.filter = 'blur(10px)';
-
-            setTimeout(() => {
-                // In a real OS integration, this would close the window/iframe
-                // For this demo, we hide the body
-                document.body.style.display = 'none';
-                
-                // Optional: Send message to parent OS if inside iframe
-                try {
-                    window.parent.postMessage('closeChangelog', '*');
-                } catch(e) {}
-            }, 400);
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
-    </script>
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.1;
+                this.speedX = Math.random() * 0.2 - 0.1;
+                this.speedY = Math.random() * 0.2 - 0.1;
+                this.opacity = Math.random() * 0.3 + 0.05;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Wrap around screen
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            const count = 30; // Subtle density
+            for (let i = 0; i < count; i++) {
+                particlesArray.push(new Particle());
+            }
+            animateParticles();
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+	</script>
 </body>
+
 </html>

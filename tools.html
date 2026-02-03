@@ -9,13 +9,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
-            --bg-app: #0f172a;
-            --glass-panel: rgba(30, 41, 59, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-hover: rgba(255, 255, 255, 0.12);
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
+            /* Midnight Theme Variables */
+            --bg-app: #050505;
+            --glass-panel: rgba(20, 20, 20, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-hover: rgba(40, 40, 40, 0.8);
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --accent: #ffffff;
             --danger: #ef4444;
             --success: #22c55e;
             
@@ -27,15 +28,26 @@
         body {
             font-family: var(--font-ui);
             background-color: var(--bg-app);
+            background-image: radial-gradient(circle at center, #111111 0%, #000000 100%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 40px 20px;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08) 0%, transparent 25%);
+            position: relative;
+        }
+
+        /* --- PARTICLES --- */
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.4;
         }
 
         /* --- HEADER --- */
@@ -44,6 +56,8 @@
             margin-bottom: 40px;
             width: 100%;
             max-width: 600px;
+            position: relative;
+            z-index: 10;
         }
 
         .title {
@@ -82,9 +96,9 @@
 
         .search-input:focus {
             outline: none;
-            border-color: var(--accent);
-            background: rgba(0,0,0,0.5);
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(0,0,0,0.6);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
         }
 
         .search-icon {
@@ -102,6 +116,8 @@
             gap: 20px;
             width: 100%;
             max-width: 900px;
+            position: relative;
+            z-index: 10;
         }
 
         .tool-card {
@@ -115,6 +131,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
         }
@@ -122,8 +139,8 @@
         .tool-card:hover {
             transform: translateY(-2px);
             background: var(--glass-hover);
-            border-color: rgba(255,255,255,0.2);
-            box-shadow: 0 10px 20px -5px rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.3);
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.5);
         }
 
         .tool-card:active {
@@ -220,6 +237,8 @@
     </style>
 </head>
 <body>
+
+    <canvas id="particles-js"></canvas>
 
     <div class="header">
         <div class="title">System Tools</div>
@@ -343,6 +362,63 @@
 
         // Initial Load
         renderTools();
+
+        // --- PARTICLES SYSTEM ---
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.1;
+                this.speedX = Math.random() * 0.2 - 0.1;
+                this.speedY = Math.random() * 0.2 - 0.1;
+                this.opacity = Math.random() * 0.3 + 0.05;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            const count = 40; 
+            for (let i = 0; i < count; i++) {
+                particlesArray.push(new Particle());
+            }
+            animateParticles();
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
     </script>
 </body>
 </html>

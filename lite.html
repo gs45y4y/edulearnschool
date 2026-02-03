@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Edulearn | Studies</title>
+	<link id="dynamic-favicon" rel="icon" href="https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png">
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		/* --- CORE VARIABLES --- */
+		:root {
+			/* Default Theme: Midnight */
+			--bg-body: #101010;
+			--bg-sidebar: #141414;
+			--accent: #ffffff;
+			--text-main: #ffffff;
+			--text-muted: #aaaaaa;
+			--card-bg: #1a1a1a;
+			--glow-text: 0 0 10px rgba(255, 255, 255, 0.5);
+			--glow-strong: 0 0 20px rgba(255, 255, 255, 0.8);
+			--glow-box: 0 0 12px rgba(255, 255, 255, 0.05);
+
+			/* Sizing */
+			--sidebar-width-collapsed: 48px;
+			--sidebar-width-expanded: 200px;
+			--nav-item-height: 40px;
+		}
+
+		/* --- RESET & BASE --- */
+		* {
+			box-sizing: border-box;
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+			background-color: var(--bg-body);
+			color: var(--text-main);
+			overflow: hidden;
+			display: flex;
+			height: 100vh;
+			font-size: 13px;
+			transition: background-color 0.3s, color 0.3s;
+		}
+
+		/* --- PARTICLES CANVAS --- */
+		#particles-js {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			z-index: 1;
+			pointer-events: none;
+			opacity: 0.6;
+		}
+
+		/* --- SIDEBAR NAVIGATION --- */
+		.sidebar {
+			width: var(--sidebar-width-collapsed);
+			height: 100vh;
+			background-color: var(--bg-sidebar);
+			border-right: 1px solid #333;
+			display: flex;
+			flex-direction: column;
+			transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			position: relative;
+			z-index: 1000;
+			box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
+			overflow: hidden;
+			white-space: nowrap;
+		}
+
+		.sidebar:hover {
+			width: var(--sidebar-width-expanded);
+		}
+
+		.brand {
+			height: 50px;
+			display: flex;
+			align-items: center;
+			padding: 0 14px;
+			font-weight: bold;
+			font-size: 14px;
+			color: var(--text-main);
+			text-shadow: var(--glow-text);
+			border-bottom: 1px solid #333;
+			margin-bottom: 5px;
+		}
+
+		.brand i {
+			min-width: 20px;
+			font-size: 16px;
+			margin-right: 15px;
+			text-align: center;
+		}
+
+		.brand span {
+			opacity: 0;
+			transition: opacity 0.2s;
+		}
+
+		.sidebar:hover .brand span {
+			opacity: 1;
+			transition-delay: 0.1s;
+		}
+
+		.nav-link {
+			display: flex;
+			align-items: center;
+			height: var(--nav-item-height);
+			padding: 0 14px;
+			color: var(--text-muted);
+			text-decoration: none;
+			cursor: pointer;
+			transition: all 0.2s;
+			position: relative;
+			font-size: 12px;
+		}
+
+		.nav-link:hover,
+		.nav-link.active {
+			background-color: rgba(255, 255, 255, 0.05);
+			color: var(--text-main);
+			text-shadow: var(--glow-text);
+		}
+
+		.nav-link.active::before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 2px;
+			background-color: var(--accent);
+			box-shadow: 0 0 8px var(--accent);
+		}
+
+		.nav-link i {
+			min-width: 20px;
+			font-size: 16px;
+			margin-right: 15px;
+			text-align: center;
+		}
+
+		.nav-link span {
+			opacity: 0;
+			transition: opacity 0.1s;
+		}
+
+		.sidebar:hover .nav-link span {
+			opacity: 1;
+			transition-delay: 0.1s;
+		}
+
+		/* --- STATS WIDGET --- */
+		.stats-widget {
+			margin-top: auto;
+			border-top: 1px solid #333;
+			padding: 10px 0;
+			background: rgba(0, 0, 0, 0.2);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+			height: 60px;
+		}
+
+		.stats-content {
+			display: flex;
+			align-items: center;
+			opacity: 0;
+			transition: opacity 0.2s;
+		}
+
+		.sidebar:hover .stats-content {
+			opacity: 1;
+			transition-delay: 0.1s;
+		}
+
+		.stats-icon-only {
+			position: absolute;
+			bottom: 20px;
+			left: 14px;
+			color: #4caf50;
+			font-size: 14px;
+			opacity: 1;
+			transition: opacity 0.2s;
+		}
+
+		.sidebar:hover .stats-icon-only {
+			opacity: 0;
+		}
+
+
+		/* --- MAIN CONTENT (FULLSCREEN) --- */
+		.main-content {
+			flex: 1;
+			position: relative;
+			height: 100vh;
+			overflow: hidden;
+			padding: 0;
+			z-index: 10;
+		}
+
+		.page {
+			display: none;
+			width: 100%;
+			height: 100%;
+			animation: fadeIn 0.3s ease;
+			flex-direction: column;
+		}
+
+		.page.active {
+			display: flex;
+		}
+
+		/* Home text container */
+		.home-container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			text-align: center;
+			padding: 20px;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: scale(0.99);
+			}
+
+			to {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
+
+		/* --- TITLE, CLOCK & START BUTTON --- */
+
+		#hero-title {
+			font-size: 64px;
+			margin-bottom: 5px;
+			text-shadow: var(--glow-strong);
+			font-weight: 600;
+			letter-spacing: -1px;
+			line-height: 1.1;
+		}
+
+		.hero-subtitle {
+			color: #ccc;
+			font-size: 16px;
+			margin-bottom: 10px;
+			letter-spacing: 0.5px;
+		}
+
+		.hero-quote {
+			color: #666;
+			font-size: 13px;
+			font-style: italic;
+			margin-bottom: 40px;
+			font-family: monospace;
+			min-height: 20px; /* Prevents layout jump */
+		}
+
+		.clock-container {
+			text-align: center;
+			user-select: none;
+			opacity: 0.9;
+			margin-bottom: 40px;
+		}
+
+		.clock-time {
+			font-size: 36px;
+			font-weight: 300;
+			color: #fff;
+			text-shadow: var(--glow-text);
+			letter-spacing: 2px;
+			margin-bottom: 5px;
+		}
+
+		.clock-date {
+			font-size: 14px;
+			color: var(--text-muted);
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+
+		/* Start Button */
+		.start-btn {
+			background-color: var(--accent);
+			color: #000;
+			padding: 14px 40px;
+			border-radius: 50px;
+			font-size: 16px;
+			font-weight: 600;
+			text-decoration: none;
+			border: none;
+			cursor: pointer;
+			box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+			transition: all 0.2s ease;
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.start-btn:hover {
+			transform: scale(1.05);
+			box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+		}
+
+		/* --- IFRAME WRAPPER --- */
+		.iframe-wrapper {
+			flex: 1;
+			width: 100%;
+			height: 100%;
+			background: #000;
+			border-radius: 0;
+			border: none;
+			box-shadow: none;
+			overflow: hidden;
+		}
+
+		iframe {
+			width: 100%;
+			height: 100%;
+			border: none;
+			display: block;
+		}
+
+		/* --- SETTINGS MODAL --- */
+		.modal-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.7);
+			z-index: 2000;
+			display: none;
+			justify-content: center;
+			align-items: center;
+			backdrop-filter: blur(5px);
+		}
+
+		.modal-overlay.active {
+			display: flex;
+		}
+
+		.modal-box {
+			background: var(--bg-sidebar);
+			width: 450px;
+			border-radius: 8px;
+			border: 1px solid #444;
+			padding: 0;
+			box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+			color: var(--text-main);
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
+
+		.modal-header {
+			padding: 15px 20px;
+			border-bottom: 1px solid #333;
+			display: flex;
+			justify-content: space-between;
+			font-weight: bold;
+			background: rgba(255, 255, 255, 0.05);
+		}
+
+		.close-btn {
+			cursor: pointer;
+			color: #888;
+		}
+
+		.close-btn:hover {
+			color: #fff;
+		}
+
+		.modal-body {
+			padding: 20px;
+			max-height: 400px;
+			overflow-y: auto;
+		}
+
+		.setting-group {
+			margin-bottom: 20px;
+			padding-bottom: 20px;
+			border-bottom: 1px solid #333;
+		}
+
+		.setting-group:last-child {
+			border-bottom: none;
+		}
+
+		.setting-label {
+			display: block;
+			font-size: 12px;
+			color: var(--text-muted);
+			margin-bottom: 6px;
+			font-weight: 600;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+
+		input[type="text"],
+		select {
+			width: 100%;
+			padding: 10px;
+			background: #222;
+			border: 1px solid #444;
+			color: white;
+			border-radius: 4px;
+			outline: none;
+			font-size: 13px;
+		}
+
+		input[type="text"]:focus {
+			border-color: var(--accent);
+		}
+
+		.btn {
+			background: #333;
+			color: white;
+			border: none;
+			padding: 10px 16px;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 12px;
+			transition: background 0.2s;
+			width: 100%;
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		.btn:hover {
+			background: #444;
+		}
+
+		.btn-primary {
+			background: var(--accent);
+			color: #111;
+			font-weight: bold;
+		}
+
+		.btn-primary:hover {
+			opacity: 0.9;
+		}
+
+		.range-wrap {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		input[type="range"] {
+			flex: 1;
+		}
+
+		.info-text {
+			font-size: 11px;
+			color: #666;
+			margin-top: 5px;
+			line-height: 1.4;
+		}
+	</style>
+</head>
+
+<body>
+
+	<canvas id="particles-js"></canvas>
+
+	<nav class="sidebar">
+		<div class="brand">
+			<i class="fa-solid fa-ghost"></i>
+			<span>Edulearn Lite</span>
+		</div>
+
+		<a class="nav-link active" onclick="switchPage('home', this)">
+			<i class="fa-solid fa-house"></i>
+			<span>Home</span>
+		</a>
+		<a class="nav-link" onclick="switchPage('games-page', this)">
+			<i class="fa-solid fa-gamepad"></i>
+			<span>Games</span>
+		</a>
+		<a class="nav-link" onclick="switchPage('search-page', this)">
+			<i class="fa-solid fa-magnifying-glass"></i>
+			<span>Search</span>
+		</a>
+        <a class="nav-link" onclick="switchPage('tools-page', this)">
+			<i class="fa-solid fa-wrench"></i>
+			<span>Tools</span>
+		</a>
+
+		<a class="nav-link" onclick="switchPage('info-page', this)">
+			<i class="fa-solid fa-circle-info"></i>
+			<span>Info</span>
+		</a>
+
+		<a class="nav-link" onclick="openSettings()">
+			<i class="fa-solid fa-gear"></i>
+			<span>Settings</span>
+		</a>
+
+		<div style="flex-grow: 1;"></div>
+
+		<i class="fa-solid fa-chart-simple stats-icon-only" title="Analytics Active"></i>
+
+		<div class="stats-widget">
+			<div class="stats-content">
+				<div style="font-size: 11px; margin-bottom: 4px; color: #888;">Live Views</div>
+				<div class="stats-content">
+					<i class="fa-solid fa-user-group" style="margin-right:8px;color:#4caf50;"></i>
+					<span style="font-size:13px;">
+            <span id="online-count">0</span> online
+					</span>
+				</div>
+
+			</div>
+		</div>
+	</nav>
+
+	<main class="main-content">
+
+		<section id="home" class="page active">
+			<div class="home-container">
+
+				<h1 id="hero-title">Edulearn Lite</h1>
+				<p class="hero-subtitle">The cleanest unblocked experience.</p>
+
+				<p class="hero-quote" id="random-quote">"coded by the skids, for the skids"</p>
+
+				<div class="clock-container">
+					<div class="clock-time" id="clock-time">00:00:00</div>
+					<div class="clock-date" id="clock-date">Loading Date...</div>
+				</div>
+
+				<button class="start-btn" onclick="startBrowsing()">
+                    Start Gaming <i class="fa-solid fa-arrow-right"></i>
+                </button>
+			</div>
+		</section>
+
+		<section id="games-page" class="page">
+			<div class="iframe-wrapper">
+				<iframe src="./math/gn-math.html"></iframe>
+			</div>
+		</section>
+
+		<section id="search-page" class="page">
+			<div class="iframe-wrapper">
+				<iframe src="./active/index.html"></iframe>
+			</div>
+		</section>
+        <section id="tools-page" class="page">
+			<div class="iframe-wrapper">
+				<iframe src="./tools.html"></iframe>
+			</div>
+		</section>
+
+		<section id="info-page" class="page">
+			<div class="iframe-wrapper">
+				<iframe id="info-frame" src=""></iframe>
+			</div>
+		</section>
+	</main>
+
+	<div class="modal-overlay" id="settings-modal">
+		<div class="modal-box">
+			<div class="modal-header">
+				<span><i class="fa-solid fa-sliders" style="margin-right:10px;"></i>Config</span>
+				<i class="fa-solid fa-xmark close-btn" onclick="closeSettings()"></i>
+			</div>
+
+			<div class="modal-body">
+				<div class="setting-group">
+					<span class="setting-label">Tab Cloaking</span>
+					<input type="text" id="input-title" placeholder="Tab Title" onkeyup="updateTab()" style="margin-bottom: 10px;">
+					<input type="text" id="input-icon" placeholder="Tab Icon URL" onkeyup="updateTab()">
+        </div>
+
+					<div class="setting-group">
+						<span class="setting-label">Appearance</span>
+						<select id="theme-select" onchange="changeTheme(this.value)" style="margin-bottom: 15px;">
+            <option value="midnight">Midnight (Default)</option>
+            <option value="ocean">Ocean Blue</option>
+            <option value="sunset">Sunset Orange</option>
+            <option value="amoled">Pure Black</option>
+          </select>
+
+						<span class="setting-label">Particle Density: <span id="particle-val">20</span></span>
+						<div class="range-wrap">
+							<input type="range" id="particle-slider" min="0" max="80" value="20" oninput="updateParticlesRealtime(this.value)">
+          </div>
+						</div>
+
+						<div class="setting-group">
+							<span class="setting-label">System Info</span>
+							<p class="info-text">
+								Analytics: <span style="color:#4caf50">Active (vercel)</span><br>
+            Visual Counter: <span style="color:#4caf50">Active</span>
+							</p>
+						</div>
+
+						<div>
+							<button class="btn btn-primary" onclick="openAboutBlank()">Open in About:Blank</button>
+							<button class="btn" onclick="saveSettings()">Save Configuration</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				// --- 1. STATE MANAGEMENT ---
+    const defaultSettings = {
+      title: 'Edulearn | Studies',
+      icon: 'https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png',
+      theme: 'midnight',
+      particles: 20
+    };
+
+    let userSettings = JSON.parse(localStorage.getItem('el_settings')) || defaultSettings;
+
+    applySettings();
+
+    // --- 2. PARTICLES SYSTEM ---
+    const canvas = document.getElementById('particles-js');
+    const ctx = canvas.getContext('2d');
+    let particlesArray = [];
+    let isAnimating = false;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedX = Math.random() * 0.4 - 0.2;
+        this.speedY = Math.random() * 0.4 - 0.2;
+        this.opacity = Math.random() * 0.5 + 0.1;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particlesArray = [];
+      let count = parseInt(userSettings.particles);
+      if (count > 100) count = 100;
+
+      for (let i = 0; i < count; i++) {
+        particlesArray.push(new Particle());
+      }
+
+      if (count > 0 && !isAnimating) {
+        isAnimating = true;
+        animateParticles();
+      } else if (count === 0) {
+        isAnimating = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function animateParticles() {
+      if (!isAnimating) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+      }
+      requestAnimationFrame(animateParticles);
+    }
+
+    initParticles();
+
+
+    // --- 3. SETTINGS LOGIC ---
+
+    function applySettings() {
+      document.title = userSettings.title;
+      document.getElementById('dynamic-favicon').href = userSettings.icon;
+
+      document.getElementById('input-title').value = userSettings.title;
+      document.getElementById('input-icon').value = userSettings.icon;
+      document.getElementById('theme-select').value = userSettings.theme;
+      document.getElementById('particle-slider').value = userSettings.particles;
+      document.getElementById('particle-val').innerText = userSettings.particles;
+
+      updateTheme(userSettings.theme);
+    }
+
+    function updateTheme(themeName) {
+      const root = document.documentElement.style;
+      if (themeName === 'ocean') {
+        root.setProperty('--bg-body', '#0f172a');
+        root.setProperty('--bg-sidebar', '#1e293b');
+        root.setProperty('--accent', '#38bdf8');
+        root.setProperty('--glow-text', '0 0 10px #38bdf8');
+        root.setProperty('--glow-strong', '0 0 20px #38bdf8');
+      } else if (themeName === 'sunset') {
+        root.setProperty('--bg-body', '#2a0a0a');
+        root.setProperty('--bg-sidebar', '#3f1010');
+        root.setProperty('--accent', '#f97316');
+        root.setProperty('--glow-text', '0 0 10px #f97316');
+        root.setProperty('--glow-strong', '0 0 20px #f97316');
+      } else if (themeName === 'amoled') {
+        root.setProperty('--bg-body', '#000000');
+        root.setProperty('--bg-sidebar', '#000000');
+        root.setProperty('--accent', '#ffffff');
+        root.setProperty('--card-bg', '#050505');
+      } else {
+        root.removeProperty('--bg-body');
+        root.removeProperty('--bg-sidebar');
+        root.removeProperty('--accent');
+        root.removeProperty('--card-bg');
+        root.removeProperty('--glow-text');
+        root.removeProperty('--glow-strong');
+      }
+    }
+
+    function updateTab() {
+      userSettings.title = document.getElementById('input-title').value;
+      userSettings.icon = document.getElementById('input-icon').value;
+      document.title = userSettings.title;
+      document.getElementById('dynamic-favicon').href = userSettings.icon;
+    }
+
+    function changeTheme(val) {
+      userSettings.theme = val;
+      updateTheme(val);
+    }
+
+    function updateParticlesRealtime(val) {
+      document.getElementById('particle-val').innerText = val;
+      userSettings.particles = parseInt(val);
+      initParticles();
+    }
+
+    function saveSettings() {
+      localStorage.setItem('el_settings', JSON.stringify(userSettings));
+      closeSettings();
+    }
+
+    function openSettings() {
+      document.getElementById('settings-modal').classList.add('active');
+    }
+
+    function closeSettings() {
+      document.getElementById('settings-modal').classList.remove('active');
+    }
+
+    // --- 4. NAVIGATION, CLOCK & QUOTES ---
+
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      document.getElementById('clock-time').innerText = `${hours}:${minutes}:${seconds} ${ampm}`;
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+      document.getElementById('clock-date').innerText = now.toLocaleDateString('en-US', options);
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    function displayRandomQuote() {
+        const quotes = [
+            "coded by the skids, for the skids",
+            "teachers hate ts",
+            "unblocked and unlocked",
+            "running on pure caffeine",
+            "if you're reading this, do your homework",
+            "no admins allowed",
+            "security through obscurity",
+            "ctrl + w to win instantly",
+            "made with <3 and spaghetti code",
+            "Set this up in alt tab to quickly escape",
+            "L AH",
+            "decode this: aHR0cHM6Ly9hbmRyZXdodWlzLmdheQ==",
+            "last updated: feb 2, 2026",
+            "need more blahaj",
+            "typing this while going to class lol"
+        ];
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('random-quote').innerText = '"' + randomQuote + '"';
+    }
+    // Set quote on load
+    displayRandomQuote();
+
+    function openAboutBlank() {
+      let win = window.open();
+      win.document.body.style.margin = '0';
+      win.document.body.style.height = '100vh';
+      let iframe = win.document.createElement('iframe');
+      iframe.style.border = 'none';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.margin = '0';
+      iframe.src = window.location.href;
+      win.document.body.appendChild(iframe);
+    }
+
+    function switchPage(pageId, navElement) {
+      // Hide all pages
+      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+      
+      // Show selected page
+      const page = document.getElementById(pageId);
+      if(page) page.classList.add('active');
+
+      // Update Sidebar state
+      if (navElement) {
+        document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+        navElement.classList.add('active');
+      }
+
+      // --- ADDED: Refresh quote if Home is selected ---
+      if (pageId === 'home') {
+          displayRandomQuote();
+      }
+
+      // Special Check for Info Page: Load iframe only when clicked
+      if (pageId === 'info-page') {
+          const infoFrame = document.getElementById('info-frame');
+          // Check if empty to avoid reloading every time
+          if (!infoFrame.getAttribute('src')) {
+              infoFrame.src = atob('Li9pbmZvLmh0bWw='); // ./info.html
+          }
+      }
+    }
+
+    function startBrowsing() {
+      switchPage('games-page');
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-link')[1].classList.add('active');
+    }
+
+    // --- LIVE ONLINE USERS (VERCEL) ---
+    const onlineId = crypto.randomUUID();
+
+    async function updateOnline() {
+      try {
+        const r = await fetch(`/api/online?id=${onlineId}`, {
+          cache: "no-store"
+        });
+        if (!r.ok) return;
+        document.getElementById("online-count").textContent = await r.text();
+      } catch {
+        // fail silently
+      }
+    }
+
+    updateOnline();
+    setInterval(updateOnline, 15000);
+			</script>
+</body>
+
+</html>

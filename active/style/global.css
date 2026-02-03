@@ -1,149 +1,196 @@
-@import"https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap";
-@font-face{
-font-family:"Good Timing Rg";
-src:url("/_a/font/good-timing-bd.otf") format("opentype");
-font-weight:normal;
-font-style:normal
+/* Import Inter Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap');
+
+/* Optional: Keep Good Timing if used for specific branding, otherwise Inter is default */
+@font-face {
+    font-family: "Good Timing Rg";
+    src: url("/_a/font/good-timing-bd.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
 }
 
-body{
-background-color:#071824;
-color:#e6f6ff;
-font-family:"DM Sans",sans-serif;
-text-align:center
+:root {
+    --bg-dark: #050505;
+    --surface: #141414;
+    --surface-hover: #1f1f1f;
+    --border: #333333;
+    --text-main: #ffffff;
+    --text-muted: #aaaaaa;
+    --accent-glow: rgba(255, 255, 255, 0.15);
 }
 
-h1{
-font-size:2.5em;
-margin-bottom:20px
+body {
+    background-color: var(--bg-dark);
+    background-image: radial-gradient(circle at center, #111111 0%, #000000 100%);
+    color: var(--text-main);
+    font-family: "Inter", sans-serif;
+    text-align: center;
+    margin: 0;
 }
 
-nav{
-background:rgba(10,30,45,.85);
-border-radius:8px;
-padding:20px;
-box-shadow:0 4px 10px rgba(0,0,0,.5)
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: -1px;
 }
 
-ul{
-list-style-type:none;
-padding:0;
-display:flex;
-gap:10px
+nav {
+    background: rgba(20, 20, 20, 0.85);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(10px);
 }
 
-li{
-margin:15px 0
+ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    gap: 10px;
 }
 
-a{
-color:#5fd0ff
+li {
+    margin: 15px 0;
 }
 
-button{
-display:inline-block;
-text-decoration:none;
-color:rgba(230,246,255,.85);
-font-size:1.2em;
-padding:12px 22px;
-border:2px solid rgba(120,200,230,.35);
-border-radius:5px;
-transition:.25s;
-background:rgba(15,40,60,.85)
+a {
+    color: var(--text-main);
+    text-decoration: none;
+    transition: 0.2s;
 }
 
-button:hover{
-color:#fff;
-background-color:#3fc4e8;
-border-color:#3fc4e8;
-transform:translateY(-3px)
+a:hover {
+    color: #ccc;
 }
 
-.flex-horiz{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:10px
+button {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--text-muted);
+    font-family: "Inter", sans-serif;
+    font-size: 1.1em;
+    font-weight: 500;
+    padding: 12px 24px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: 0.25s ease;
+    background: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
 }
 
-.flex-vert{
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-gap:10px
+button:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
-#particles-js{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:-1
+.flex-horiz {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
-::-webkit-scrollbar{
-width:10px
+.flex-vert {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 
-::-webkit-scrollbar-track{
-background:#0b2a3f
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.5;
 }
 
-::-webkit-scrollbar-thumb{
-background:#3fb6d8;
-border-radius:10px 0 0 10px
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
 
-::-webkit-scrollbar-thumb:hover{
-background:#c8f3ff
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
 }
 
-.greenCircle{
-height:15px;
-width:15px;
-background-color:#5ff0c8;
-border-radius:100%
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
 }
 
-#logo{
-width:20%
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
-.title{
-font-family:"Good Timing Rg","DM Sans",sans-serif;
-height:50px;
-font-size:50px
+.greenCircle {
+    height: 15px;
+    width: 15px;
+    background-color: #4caf50; /* Keep green for online status, or make white */
+    border-radius: 100%;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
 }
 
-.accent{
-color:#3fc4e8
+#logo {
+    width: 20%;
+    filter: grayscale(100%) brightness(200%); /* Force white logo */
 }
 
-footer{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-color:#eaf7ff;
-text-align:center;
-padding:4px 0
+.title {
+    font-family: "Inter", sans-serif;
+    height: 50px;
+    font-size: 50px;
+    font-weight: 800;
+    letter-spacing: -2px;
 }
 
-.gridContainer{
-width:calc(100% - 100px);
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-padding:20px;
-margin-left:65px
+.accent {
+    color: #888; /* Subtle grey instead of cyan */
 }
 
-.gridContainer .item{
-padding:10px;
-border-radius:8px;
-background:rgba(180,230,255,.08);
--webkit-backdrop-filter:blur(10px);
-backdrop-filter:blur(10px)
+footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 10px 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+    font-size: 0.85rem;
+}
+
+.gridContainer {
+    width: calc(100% - 100px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+    margin-left: 65px;
+}
+
+.gridContainer .item {
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    transition: 0.2s;
+}
+
+.gridContainer .item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #555;
+    transform: translateY(-2px);
 }

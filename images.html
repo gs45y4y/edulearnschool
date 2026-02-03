@@ -6,39 +6,45 @@
 <title>Gallery</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
   :root {
-    --glass-bg: rgba(15, 23, 42, 0.65);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-hover: rgba(255, 255, 255, 0.1);
-    --accent: #3b82f6;
-    --text-main: #f8fafc;
-    --text-sub: #94a3b8;
+    /* Midnight Theme Variables */
+    --bg-dark: #050505;
+    --surface: rgba(20, 20, 20, 0.6);
+    --border: rgba(255, 255, 255, 0.1);
+    --surface-hover: rgba(40, 40, 40, 0.8);
+    --text-main: #ffffff;
+    --text-sub: #888888;
+    --accent: #ffffff;
   }
 
   * { box-sizing: border-box; outline: none; }
 
   body {
     font-family: 'Inter', sans-serif;
-    background: url('https://images.unsplash.com/photo-1518837695005-2083093ee35b?q=80&w=2000&auto=format&fit=crop') no-repeat center center fixed;
-    background-size: cover;
+    background-color: var(--bg-dark);
+    background-image: radial-gradient(circle at center, #111111 0%, #000000 100%);
     margin: 0;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    color: var(--text-main);
+    position: relative;
   }
 
-  /* Dark Overlay */
-  body::before {
-    content: "";
+  /* Particles Canvas */
+  #particles-js {
     position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(10px);
-    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.4;
   }
 
   /* Main Window */
@@ -46,20 +52,37 @@
     width: 90%;
     max-width: 1100px;
     height: 85vh;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 20px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 10; /* Above particles */
+    position: relative;
+  }
+
+  /* Top Border Gradient Accent */
+  .window::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 
   /* Header / Toolbar */
   .toolbar {
-    padding: 15px 25px;
-    border-bottom: 1px solid var(--glass-border);
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -77,15 +100,18 @@
     color: var(--text-main);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+    font-size: 1.1rem;
+    letter-spacing: -0.5px;
   }
 
   .count-badge {
-    background: rgba(255,255,255,0.1);
-    padding: 2px 8px;
-    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    padding: 4px 10px;
+    border-radius: 20px;
     font-size: 0.75rem;
     color: var(--text-sub);
+    border: 1px solid var(--border);
   }
 
   .search-box {
@@ -94,18 +120,19 @@
 
   .search-box input {
     background: rgba(0,0,0,0.3);
-    border: 1px solid var(--glass-border);
+    border: 1px solid var(--border);
     color: var(--text-main);
-    padding: 8px 15px 8px 35px;
-    border-radius: 8px;
+    padding: 10px 15px 10px 35px;
+    border-radius: 10px;
     font-size: 0.9rem;
     width: 250px;
     transition: 0.2s;
+    font-family: inherit;
   }
 
   .search-box input:focus {
-    background: rgba(0,0,0,0.5);
-    border-color: var(--accent);
+    background: rgba(0,0,0,0.6);
+    border-color: rgba(255,255,255,0.3);
   }
 
   .search-icon {
@@ -121,7 +148,7 @@
   .gallery-container {
     flex: 1;
     overflow-y: auto;
-    padding: 25px;
+    padding: 30px;
   }
 
   .gallery-grid {
@@ -132,21 +159,20 @@
 
   .img-card {
     background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--glass-border);
+    border: 1px solid var(--border);
     border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
     transition: all 0.2s ease;
     position: relative;
     aspect-ratio: 1;
-    group;
   }
 
   .img-card:hover {
     transform: translateY(-4px);
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255,255,255,0.2);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border-color: rgba(255,255,255,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
 
   .img-card img {
@@ -157,7 +183,7 @@
   }
 
   .img-card:hover img {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
   .img-overlay {
@@ -165,8 +191,8 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    padding: 20px 10px 10px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 30px 15px 15px;
     opacity: 0;
     transition: 0.2s;
   }
@@ -181,6 +207,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight: 500;
   }
 
   /* Full Screen Modal */
@@ -223,10 +250,10 @@
     bottom: 30px;
     display: flex;
     gap: 20px;
-    background: rgba(255,255,255,0.1);
+    background: rgba(20, 20, 20, 0.8);
     padding: 10px 20px;
     border-radius: 30px;
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid var(--border);
   }
 
   .control-btn {
@@ -246,30 +273,33 @@
   }
 
   .control-btn:hover {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
     transform: scale(1.1);
   }
 
   .close-btn {
     position: absolute;
-    top: 20px;
-    right: 30px;
-    background: rgba(255,255,255,0.1);
-    border: none;
+    top: 30px;
+    right: 40px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
     color: white;
-    width: 40px; height: 40px;
+    width: 44px; height: 44px;
     border-radius: 50%;
     cursor: pointer;
     font-size: 1.2rem;
     transition: 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .close-btn:hover { background: #ef4444; }
+  .close-btn:hover { background: #ef4444; border-color: #ef4444; }
 
   /* Scrollbar */
   .gallery-container::-webkit-scrollbar { width: 6px; }
   .gallery-container::-webkit-scrollbar-track { background: transparent; }
-  .gallery-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-  .gallery-container::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+  .gallery-container::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+  .gallery-container::-webkit-scrollbar-thumb:hover { background: #555; }
 
   /* Loading State */
   .error-state {
@@ -284,11 +314,13 @@
 </head>
 <body>
 
+  <canvas id="particles-js"></canvas>
+
 <div class="window">
   <div class="toolbar">
     <div class="title-group">
       <div class="window-title">
-        <i class="fa-regular fa-images" style="color: #3b82f6;"></i>
+        <i class="fa-regular fa-images" style="color: #fff;"></i>
         Gallery
       </div>
       <span class="count-badge" id="imageCount">0 items</span>
@@ -429,6 +461,63 @@
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
   });
+
+  // --- PARTICLES SYSTEM ---
+  const canvas = document.getElementById('particles-js');
+  const ctx = canvas.getContext('2d');
+  let particlesArray = [];
+  
+  function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Particle {
+      constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 0.1;
+          this.speedX = Math.random() * 0.2 - 0.1;
+          this.speedY = Math.random() * 0.2 - 0.1;
+          this.opacity = Math.random() * 0.3 + 0.05;
+      }
+      update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x < 0) this.x = canvas.width;
+          if (this.x > canvas.width) this.x = 0;
+          if (this.y < 0) this.y = canvas.height;
+          if (this.y > canvas.height) this.y = 0;
+      }
+      draw() {
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+      }
+  }
+
+  function initParticles() {
+      particlesArray = [];
+      const count = 40; 
+      for (let i = 0; i < count; i++) {
+          particlesArray.push(new Particle());
+      }
+      animateParticles();
+  }
+
+  function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = 0; i < particlesArray.length; i++) {
+          particlesArray[i].update();
+          particlesArray[i].draw();
+      }
+      requestAnimationFrame(animateParticles);
+  }
+
+  initParticles();
 
 </script>
 </body>

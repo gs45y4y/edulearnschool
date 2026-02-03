@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Version</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* CSS RESET & VARIABLES */
+        :root {
+            --bg-dark: #050505;
+            --surface: #111111;
+            --border: #333333;
+            --glow-white: 0 0 15px rgba(255, 255, 255, 0.4), 0 0 30px rgba(255, 255, 255, 0.1);
+            --glow-text: 0 0 10px rgba(255, 255, 255, 0.6);
+            --accent: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            color: white;
+        }
+
+        .selection-container {
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* GLOWING HEADER */
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            color: #ffffff;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .cards-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        /* CARD STYLES */
+        .launch-card {
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .launch-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #fff;
+            background: rgba(40, 40, 40, 0.8);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .launch-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #444;
+            transition: all 0.3s;
+        }
+
+        .launch-card:hover::before {
+            background: #fff;
+            box-shadow: 0 0 15px white;
+        }
+
+        /* GLOWING ICON */
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: #e0e0e0;
+            transition: all 0.3s;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .launch-card:hover .card-icon {
+            color: #fff;
+            transform: scale(1.1);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        /* GLOWING TITLES */
+        .card-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .card-desc {
+            font-size: 1rem;
+            color: #aaa;
+            font-weight: 400;
+        }
+
+        .launch-card:hover .card-title {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+
+        .launch-card:hover .card-desc {
+            color: #fff;
+        }
+
+        /* Badge for Lite */
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #222;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            border: 1px solid #555;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        /* RANDOM BUTTON STYLES */
+        .random-btn {
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .random-btn:hover {
+            border-color: #fff;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .random-btn i {
+            font-size: 1.1em;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .cards-wrapper {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="selection-container">
+        <h1>Choose What to launch..</h1>
+
+        <div class="cards-wrapper">
+            <div class="launch-card" onclick="launch('os')">
+                <i class="fa-solid fa-desktop card-icon"></i>
+                <div class="card-title">EdulearnOS</div>
+                <div class="card-desc">Beta Version</div>
+            </div>
+
+            <div class="launch-card" onclick="launch('lite')">
+                <div class="badge">Default</div>
+                <i class="fa-solid fa-bolt card-icon"></i>
+                <div class="card-title">Edulearn Lite</div>
+                <div class="card-desc">New & Fast</div>
+            </div>
+        </div>
+
+        <button class="random-btn" onclick="launch('random')">
+            <i class="fa-solid fa-shuffle"></i> Pick one for me
+        </button>
+    </div>
+
+    <script>
+        function launch(type) {
+            
+            // Random Logic
+            if (type === 'random') {
+                const options = ['os', 'lite'];
+                // 50/50 chance
+                const randomChoice = options[Math.floor(Math.random() * options.length)];
+                launch(randomChoice);
+                return;
+            }
+
+            let url = '';
+            
+            if (type === 'os') {
+                // ./x4konkor3.html
+                url = atob('Li94NGtvbmtvcjMuaHRtbA=='); 
+            } else {
+                // ./lite.html
+                url = atob('Li9saXRlLmh0bWw=');
+            }
+
+            // Using href instead of replace ensures that the Back button 
+            // brings you BACK to this menu, instead of skipping it.
+            window.location.href = url;
+        }
+    </script>
+
+</body>
+</html>
