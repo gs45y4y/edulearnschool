@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edulearnschool | Activities</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<meta name="description" content="EdulearnOS is a free, web-based operating system designed for education. Access a terminal, code runner, games, and secure browsing tools directly in your browser.">
-    <meta name="keywords" content="web os, edulearn, online operating system, educational tools, javascript os, browser os, web desktop">
-    <meta name="author" content="Edulearn corp.">
-    <meta name="robots" content="index, follow">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Edulearnschool | Activities</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<meta name="description"
+		content="EdulearnOS is a free, web-based operating system designed for education. Access a terminal, code runner, games, and secure browsing tools directly in your browser.">
+	<meta name="keywords"
+		content="web os, edulearn, online operating system, educational tools, javascript os, browser os, web desktop">
+	<meta name="author" content="Edulearn corp.">
+	<meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="EdulearnOS - Web-Based Educational OS">
-    <meta property="og:description" content="Experience a fully functional desktop in your browser. Features include games, scramjet & ultraviolet bundled, and more. V4 Beta is live.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://edulearnschool.vercel.app/x4konkor3.html">
-    <meta property="og:image" content="https://raw.githubusercontent.com/POX-dev/edulearnschool/main/imgs/example.png"> <meta property="og:site_name" content="EdulearnOS">
+	<meta property="og:title" content="EdulearnOS - Web-Based Educational OS">
+	<meta property="og:description"
+		content="Experience a fully functional desktop in your browser. Features include games, scramjet & ultraviolet bundled, and more. V4 Beta is live.">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="https://edulearnschool.vercel.app/x4konkor3.html">
+	<meta property="og:image" content="https://raw.githubusercontent.com/POX-dev/edulearnschool/main/imgs/example.png">
+	<meta property="og:site_name" content="EdulearnOS">
 
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="EdulearnOS - Web-Based Educational OS">
-    <meta name="twitter:description" content="Experience a fully functional desktop in your browser with EdulearnOS.">
-    <meta name="twitter:image" content="https://raw.githubusercontent.com/POX-dev/edulearnschool/main/imgs/example.png">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="EdulearnOS - Web-Based Educational OS">
+	<meta name="twitter:description" content="Experience a fully functional desktop in your browser with EdulearnOS.">
+	<meta name="twitter:image" content="https://raw.githubusercontent.com/POX-dev/edulearnschool/main/imgs/example.png">
 
-    <meta name="theme-color" content="#5e97f6">
+	<meta name="theme-color" content="#5e97f6">
 
-    <script type="application/ld+json">
-    {
+	<script type="application/ld+json">
+		{
       "@context": "https://edulearnschool.vercel.app",
       "@type": "WebApplication",
       "name": "EdulearnOS",
@@ -37,181 +42,771 @@
       },
       "description": "A web-based operating system simulation with tools for education so you can have some fun during class ;)"
     }
-    </script>
-    <style>
-        /* --- CSS REMAINS THE SAME AS BEFORE --- */
-        :root {
-            --bg-dark: #121212;
-            --bg-light: #1e1e1e;
-            --window-bg: #252525;
-            --window-header: #2f2f2f;
-            --text-main: #e0e0e0;
-            --accent: #5e97f6;
-            --taskbar-bg: rgba(18, 18, 18, 0.95);
-            --taskbar-height: 52px;
-            --border-color: #333;
-        }
+	</script>
+	<style>
+		/* --- CSS REMAINS THE SAME AS BEFORE --- */
+		:root {
+			--bg-dark: #121212;
+			--bg-light: #1e1e1e;
+			--window-bg: #252525;
+			--window-header: #2f2f2f;
+			--text-main: #e0e0e0;
+			--accent: #5e97f6;
+			--taskbar-bg: rgba(18, 18, 18, 0.95);
+			--taskbar-height: 52px;
+			--border-color: #333;
+		}
 
-        * { box-sizing: border-box; }
+		* {
+			box-sizing: border-box;
+		}
 
-        body {
-            margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; overflow: hidden;
-            background-color: var(--bg-dark); background-size: cover; background-position: center;
-            color: var(--text-main); transition: background-image 0.5s ease;
-            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%235e97f6" stroke="white" stroke-width="2" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>') 1 1, auto;
-        }
+		body {
+			margin: 0;
+			padding: 0;
+			font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+			overflow: hidden;
+			background-color: var(--bg-dark);
+			background-size: cover;
+			background-position: center;
+			color: var(--text-main);
+			transition: background-image 0.5s ease;
+			cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="%235e97f6" stroke="white" stroke-width="2" stroke-linejoin="round"><path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/></svg>') 1 1, auto;
+		}
 
-        .wp-iceland { background-image: url('https://www.usnews.com/object/image/00000162-f3a3-d0d5-a57f-fbf33c300000/3-vestrahorn-iceland.jpg?update-time=1745871301820&size=responsive970'); }
-        .wp-rainier { background-image: url('https://www.usnews.com/object/image/00000162-f3a3-d0d5-a57f-fbf3af9b0000/20-mount-rainier-national-park.jpg?update-time=1745872131347&size=responsive970'); }
-        .wp-windows { background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop'); }
-        .wp-chrome { background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop'); }
-        .wp-linux { background-image: url('https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=2574&auto=format&fit=crop'); }
+		.wp-iceland {
+			background-image: url('https://www.usnews.com/object/image/00000162-f3a3-d0d5-a57f-fbf33c300000/3-vestrahorn-iceland.jpg?update-time=1745871301820&size=responsive970');
+		}
 
-        #watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 80px; font-weight: bold; color: rgba(255, 255, 255, 0.4); text-shadow: 0 0 20px rgba(0,0,0,0.5); pointer-events: none; user-select: none; text-align: center; z-index: 0; }
-        #watermark span.ver { color: rgba(94, 151, 246, 0.8); font-size: 0.5em; vertical-align: super; }
+		.wp-rainier {
+			background-image: url('https://www.usnews.com/object/image/00000162-f3a3-d0d5-a57f-fbf3af9b0000/20-mount-rainier-national-park.jpg?update-time=1745872131347&size=responsive970');
+		}
 
-        #desktop { height: calc(100vh - var(--taskbar-height)); width: 100%; padding: 20px; display: flex; flex-direction: column; flex-wrap: wrap; align-content: flex-start; gap: 20px; position: relative; z-index: 1; }
-        .app-icon { width: 85px; height: 95px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px; transition: background 0.2s; text-align: center; }
-        .app-icon:hover { background-color: rgba(255, 255, 255, 0.08); }
-        .app-icon i { font-size: 36px; color: #ffffff; margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8)); }
-        .app-icon span { font-size: 13px; text-shadow: 0 1px 4px rgba(0,0,0,0.9); color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; font-weight: 500; }
+		.wp-windows {
+			background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
+		}
 
-        #taskbar { position: absolute; bottom: 0; width: 100%; height: var(--taskbar-height); background: var(--taskbar-bg); backdrop-filter: blur(15px); display: flex; align-items: center; padding: 0 10px; border-top: 1px solid #444; z-index: 9999; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); }
-        #start-btn { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-right: 15px; cursor: pointer; transition: background 0.2s; background: rgba(255,255,255,0.05); }
-        #start-btn:hover { background: rgba(255,255,255,0.15); }
-        #start-btn i { font-size: 20px; color: white; }
-        #taskbar-apps { display: flex; align-items: center; gap: 6px; }
-        .taskbar-item { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; border-radius: 6px; cursor: pointer; transition: all 0.2s; position: relative; }
-        .taskbar-item:hover { background: rgba(255,255,255,0.1); }
-        .taskbar-item.active { background: rgba(255,255,255,0.15); border-bottom: 3px solid var(--accent); }
-        .taskbar-item i { color: white; font-size: 20px; }
-        .shield-btn { color: #4a90e2; }
+		.wp-chrome {
+			background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2670&auto=format&fit=crop');
+		}
+
+		.wp-linux {
+			background-image: url('https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=2574&auto=format&fit=crop');
+		}
+
+		#watermark {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: 80px;
+			font-weight: bold;
+			color: rgba(255, 255, 255, 0.4);
+			text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+			pointer-events: none;
+			user-select: none;
+			text-align: center;
+			z-index: 0;
+		}
+
+		#watermark span.ver {
+			color: rgba(94, 151, 246, 0.8);
+			font-size: 0.5em;
+			vertical-align: super;
+		}
+
+		#desktop {
+			height: calc(100vh - var(--taskbar-height));
+			width: 100%;
+			padding: 20px;
+			display: flex;
+			flex-direction: column;
+			flex-wrap: wrap;
+			align-content: flex-start;
+			gap: 20px;
+			position: relative;
+			z-index: 1;
+		}
+
+		.app-icon {
+			width: 85px;
+			height: 95px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			border-radius: 8px;
+			transition: background 0.2s;
+			text-align: center;
+		}
+
+		.app-icon:hover {
+			background-color: rgba(255, 255, 255, 0.08);
+		}
+
+		.app-icon i {
+			font-size: 36px;
+			color: #ffffff;
+			margin-bottom: 10px;
+			filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+		}
+
+		.app-icon span {
+			font-size: 13px;
+			text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+			color: white;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-width: 100%;
+			font-weight: 500;
+		}
+
+		#taskbar {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: var(--taskbar-height);
+			background: var(--taskbar-bg);
+			backdrop-filter: blur(15px);
+			display: flex;
+			align-items: center;
+			padding: 0 10px;
+			border-top: 1px solid #444;
+			z-index: 9999;
+			box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+		}
+
+		#start-btn {
+			width: 42px;
+			height: 42px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			margin-right: 15px;
+			cursor: pointer;
+			transition: background 0.2s;
+			background: rgba(255, 255, 255, 0.05);
+		}
+
+		#start-btn:hover {
+			background: rgba(255, 255, 255, 0.15);
+		}
+
+		#start-btn i {
+			font-size: 20px;
+			color: white;
+		}
+
+		#taskbar-apps {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+		}
+
+		.taskbar-item {
+			width: 42px;
+			height: 42px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: all 0.2s;
+			position: relative;
+		}
+
+		.taskbar-item:hover {
+			background: rgba(255, 255, 255, 0.1);
+		}
+
+		.taskbar-item.active {
+			background: rgba(255, 255, 255, 0.15);
+			border-bottom: 3px solid var(--accent);
+		}
+
+		.taskbar-item i {
+			color: white;
+			font-size: 20px;
+		}
+
+		.shield-btn {
+			color: #4a90e2;
+		}
+
+		.taskbar-close {
+			position: absolute;
+			top: -4px;
+			right: -4px;
+			width: 16px;
+			height: 16px;
+			background-color: #ff5f56;
+			border-radius: 50%;
+			display: none;
+			align-items: center;
+			justify-content: center;
+			font-size: 10px;
+			color: white;
+			z-index: 10;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+		}
+
+		.taskbar-item:hover .taskbar-close {
+			display: flex;
+		}
+
+		.taskbar-close:hover {
+			background-color: #ff3b30;
+			transform: scale(1.1);
+		}
         
-        .taskbar-close { position: absolute; top: -4px; right: -4px; width: 16px; height: 16px; background-color: #ff5f56; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 10px; color: white; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .taskbar-item:hover .taskbar-close { display: flex; }
-        .taskbar-close:hover { background-color: #ff3b30; transform: scale(1.1); }
+        /* SYSTEM TRAY (Right Side) */
+        #system-tray {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            gap: 15px;
+            padding-right: 10px;
+        }
 
-        #clock { margin-left: auto; color: #ddd; font-size: 14px; padding: 0 20px; font-weight: 500; cursor: pointer; height: 100%; display: flex; align-items: center; transition: background 0.2s; border-radius: 4px; }
-        #clock:hover { background: rgba(255,255,255,0.1); color: white; }
+        .tray-item {
+            display: flex;
+            align-items: center;
+            color: #ccc;
+            font-size: 13px;
+            cursor: default;
+            transition: color 0.2s;
+        }
+        
+        .tray-item:hover {
+            color: white;
+        }
+        
+        /* Specific tray items */
+        .tray-battery {
+            display: flex;
+            align-items: center;
+        }
+        .tray-online {
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Battery Colors */
+        .bat-high { color: #4caf50; }
+        .bat-med { color: #ff9800; }
+        .bat-low { color: #f44336; }
+        .bat-charge { color: #2196f3; }
 
-        /* CALENDAR */
-        #calendar-popup { position: absolute; bottom: 60px; right: 10px; width: 320px; background: #252525; border: 1px solid #444; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); display: none; flex-direction: column; z-index: 10000; padding: 15px; animation: slideUp 0.2s ease-out; }
-        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .cal-title { font-size: 16px; font-weight: bold; color: white; }
-        .cal-nav { background: transparent; border: none; color: #aaa; cursor: pointer; font-size: 14px; padding: 5px 10px; transition: 0.2s; }
-        .cal-nav:hover { color: white; background: rgba(255,255,255,0.1); border-radius: 4px; }
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; font-size: 13px; }
-        .cal-day-name { color: #888; font-weight: 600; font-size: 12px; margin-bottom: 5px; }
-        .cal-day { width: 36px; height: 36px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; cursor: pointer; color: #ccc; border: 1px solid transparent; position: relative; }
-        .cal-day:hover { background: rgba(255,255,255,0.1); color: white; }
-        .cal-day.today { background: var(--accent); color: white; font-weight: bold; }
-        .cal-day.selected { border-color: var(--accent); background: rgba(94, 151, 246, 0.2); }
-        .cal-day.has-event::after { content: ''; position: absolute; bottom: 4px; width: 4px; height: 4px; background-color: #00d2ff; border-radius: 50%; }
-        .cal-footer { margin-top: 15px; padding-top: 10px; border-top: 1px solid #333; display: none; flex-direction: column; gap: 8px; }
-        .cal-footer.active { display: flex; }
-        .cal-event-input { background: #1a1a1a; border: 1px solid #444; padding: 8px; color: white; border-radius: 4px; outline: none; width: 100%; font-size: 13px; }
-        .cal-event-btn { background: var(--accent); color: white; border: none; padding: 6px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-        .cal-event-display { font-size: 12px; color: #aaa; margin-bottom: 5px; font-style: italic; }
+		#clock {
+			color: #ddd;
+			font-size: 14px;
+			padding: 5px 10px;
+			font-weight: 500;
+			cursor: pointer;
+			height: 34px;
+			display: flex;
+			align-items: center;
+			transition: background 0.2s;
+			border-radius: 4px;
+		}
 
-        /* TOAST */
-        #notification-toast { position: absolute; top: 20px; right: -300px; width: 280px; background: #252525; border-left: 4px solid var(--accent); border-radius: 4px; padding: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 20000; transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; }
-        #notification-toast.show { right: 20px; }
-        .toast-title { font-weight: bold; color: white; margin-bottom: 5px; font-size: 14px; }
-        .toast-msg { color: #ccc; font-size: 13px; }
+		#clock:hover {
+			background: rgba(255, 255, 255, 0.1);
+			color: white;
+		}
 
-        /* START MENU */
-        #start-menu { position: absolute; bottom: 60px; left: 10px; width: 320px; height: 450px; background: #252525; border: 1px solid #444; border-radius: 8px; display: none; flex-direction: column; z-index: 10000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding: 15px; }
-        #start-search { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #444; background: #1e1e1e; color: white; margin-bottom: 10px; outline: none; }
-        #start-list { flex: 1; overflow-y: auto; }
-        .start-item { display: flex; align-items: center; padding: 8px; cursor: pointer; border-radius: 4px; }
-        .start-item:hover { background: var(--accent); color: white; }
-        .start-item i { width: 30px; text-align: center; margin-right: 10px; }
+		/* CALENDAR */
+		#calendar-popup {
+			position: absolute;
+			bottom: 60px;
+			right: 10px;
+			width: 320px;
+			background: #252525;
+			border: 1px solid #444;
+			border-radius: 8px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+			display: none;
+			flex-direction: column;
+			z-index: 10000;
+			padding: 15px;
+			animation: slideUp 0.2s ease-out;
+		}
 
-        /* WINDOWS */
-        .window { position: absolute; background: var(--window-bg); border: 1px solid var(--border-color); border-radius: 10px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); display: flex; flex-direction: column; min-width: 300px; min-height: 200px; resize: both; overflow: hidden; opacity: 0; animation: fadeIn 0.2s forwards; }
-        .no-transition { transition: none !important; }
-        @keyframes fadeIn { to { opacity: 1; } }
-        .window-header { height: 40px; background: var(--window-header); display: flex; align-items: center; justify-content: space-between; padding: 0 12px; cursor: default; user-select: none; border-bottom: 1px solid var(--border-color); }
-        .window-title { font-size: 14px; font-weight: 500; color: #eee; display: flex; align-items: center; }
-        .window-controls { display: flex; gap: 8px; }
-        .window-controls div { width: 13px; height: 13px; border-radius: 50%; cursor: pointer; transition: transform 0.1s; }
-        .window-controls div:hover { filter: brightness(1.2); }
-        .win-max { background: #27c93f; } .win-min { background: #ffbd2e; } .win-close { background: #ff5f56; }
-        .window-content { flex: 1; position: relative; background: var(--bg-light); }
-        iframe { width: 100%; height: 100%; border: none; background: white; }
+		@keyframes slideUp {
+			from {
+				transform: translateY(20px);
+				opacity: 0;
+			}
 
-        .internal-app { padding: 20px; color: #ccc; height: 100%; overflow-y: auto; font-family: monospace; }
-        .terminal-output { font-family: 'Consolas', monospace; font-size: 14px; color: #ddd; }
-        .terminal-input-line { display: flex; margin-top: 10px; }
-        .terminal-prompt { color: var(--accent); margin-right: 10px; font-weight: bold; }
-        #term-input { background: transparent; border: none; color: white; flex: 1; outline: none; font-family: monospace; font-size: 14px; }
+			to {
+				transform: translateY(0);
+				opacity: 1;
+			}
+		}
 
-        /* CONTEXT MENU */
-        #context-menu { position: absolute; background: #252525; border: 1px solid #444; border-radius: 8px; width: 180px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 10000; padding: 5px 0; }
-        .ctx-item { padding: 10px 15px; font-size: 13px; cursor: pointer; color: #eee; display: flex; align-items: center; }
-        .ctx-item i { width: 20px; margin-right: 5px; color: #888; }
-        .ctx-item:hover { background: var(--accent); color: white; }
-        .ctx-header { padding: 8px 15px; font-size: 11px; color: #666; text-transform: uppercase; font-weight: bold; border-bottom: 1px solid #333; margin-bottom: 5px; cursor: default; }
+		.cal-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 15px;
+		}
 
-        #snap-overlay { position: absolute; background: rgba(94, 151, 246, 0.15); border: 2px solid rgba(94, 151, 246, 0.5); z-index: 500; pointer-events: none; display: none; border-radius: 10px; }
-    </style>
+		.cal-title {
+			font-size: 16px;
+			font-weight: bold;
+			color: white;
+		}
+
+		.cal-nav {
+			background: transparent;
+			border: none;
+			color: #aaa;
+			cursor: pointer;
+			font-size: 14px;
+			padding: 5px 10px;
+			transition: 0.2s;
+		}
+
+		.cal-nav:hover {
+			color: white;
+			background: rgba(255, 255, 255, 0.1);
+			border-radius: 4px;
+		}
+
+		.cal-grid {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			gap: 5px;
+			text-align: center;
+			font-size: 13px;
+		}
+
+		.cal-day-name {
+			color: #888;
+			font-weight: 600;
+			font-size: 12px;
+			margin-bottom: 5px;
+		}
+
+		.cal-day {
+			width: 36px;
+			height: 36px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			border-radius: 50%;
+			cursor: pointer;
+			color: #ccc;
+			border: 1px solid transparent;
+			position: relative;
+		}
+
+		.cal-day:hover {
+			background: rgba(255, 255, 255, 0.1);
+			color: white;
+		}
+
+		.cal-day.today {
+			background: var(--accent);
+			color: white;
+			font-weight: bold;
+		}
+
+		.cal-day.selected {
+			border-color: var(--accent);
+			background: rgba(94, 151, 246, 0.2);
+		}
+
+		.cal-day.has-event::after {
+			content: '';
+			position: absolute;
+			bottom: 4px;
+			width: 4px;
+			height: 4px;
+			background-color: #00d2ff;
+			border-radius: 50%;
+		}
+
+		.cal-footer {
+			margin-top: 15px;
+			padding-top: 10px;
+			border-top: 1px solid #333;
+			display: none;
+			flex-direction: column;
+			gap: 8px;
+		}
+
+		.cal-footer.active {
+			display: flex;
+		}
+
+		.cal-event-input {
+			background: #1a1a1a;
+			border: 1px solid #444;
+			padding: 8px;
+			color: white;
+			border-radius: 4px;
+			outline: none;
+			width: 100%;
+			font-size: 13px;
+		}
+
+		.cal-event-btn {
+			background: var(--accent);
+			color: white;
+			border: none;
+			padding: 6px;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 12px;
+		}
+
+		.cal-event-display {
+			font-size: 12px;
+			color: #aaa;
+			margin-bottom: 5px;
+			font-style: italic;
+		}
+
+		/* TOAST */
+		#notification-toast {
+			position: absolute;
+			top: 20px;
+			right: -300px;
+			width: 280px;
+			background: #252525;
+			border-left: 4px solid var(--accent);
+			border-radius: 4px;
+			padding: 15px;
+			box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+			z-index: 20000;
+			transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+			display: flex;
+			flex-direction: column;
+		}
+
+		#notification-toast.show {
+			right: 20px;
+		}
+
+		.toast-title {
+			font-weight: bold;
+			color: white;
+			margin-bottom: 5px;
+			font-size: 14px;
+		}
+
+		.toast-msg {
+			color: #ccc;
+			font-size: 13px;
+		}
+
+		/* START MENU */
+		#start-menu {
+			position: absolute;
+			bottom: 60px;
+			left: 10px;
+			width: 320px;
+			height: 450px;
+			background: #252525;
+			border: 1px solid #444;
+			border-radius: 8px;
+			display: none;
+			flex-direction: column;
+			z-index: 10000;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+			padding: 15px;
+		}
+
+		#start-search {
+			width: 100%;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #444;
+			background: #1e1e1e;
+			color: white;
+			margin-bottom: 10px;
+			outline: none;
+		}
+
+		#start-list {
+			flex: 1;
+			overflow-y: auto;
+		}
+
+		.start-item {
+			display: flex;
+			align-items: center;
+			padding: 8px;
+			cursor: pointer;
+			border-radius: 4px;
+		}
+
+		.start-item:hover {
+			background: var(--accent);
+			color: white;
+		}
+
+		.start-item i {
+			width: 30px;
+			text-align: center;
+			margin-right: 10px;
+		}
+
+		/* WINDOWS */
+		.window {
+			position: absolute;
+			background: var(--window-bg);
+			border: 1px solid var(--border-color);
+			border-radius: 10px;
+			box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+			display: flex;
+			flex-direction: column;
+			min-width: 300px;
+			min-height: 200px;
+			resize: both;
+			overflow: hidden;
+			opacity: 0;
+			animation: fadeIn 0.2s forwards;
+		}
+
+		.no-transition {
+			transition: none !important;
+		}
+
+		@keyframes fadeIn {
+			to {
+				opacity: 1;
+			}
+		}
+
+		.window-header {
+			height: 40px;
+			background: var(--window-header);
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 12px;
+			cursor: default;
+			user-select: none;
+			border-bottom: 1px solid var(--border-color);
+		}
+
+		.window-title {
+			font-size: 14px;
+			font-weight: 500;
+			color: #eee;
+			display: flex;
+			align-items: center;
+		}
+
+		.window-controls {
+			display: flex;
+			gap: 8px;
+		}
+
+		.window-controls div {
+			width: 13px;
+			height: 13px;
+			border-radius: 50%;
+			cursor: pointer;
+			transition: transform 0.1s;
+		}
+
+		.window-controls div:hover {
+			filter: brightness(1.2);
+		}
+
+		.win-max {
+			background: #27c93f;
+		}
+
+		.win-min {
+			background: #ffbd2e;
+		}
+
+		.win-close {
+			background: #ff5f56;
+		}
+
+		.window-content {
+			flex: 1;
+			position: relative;
+			background: var(--bg-light);
+		}
+
+		iframe {
+			width: 100%;
+			height: 100%;
+			border: none;
+			background: white;
+		}
+
+		.internal-app {
+			padding: 20px;
+			color: #ccc;
+			height: 100%;
+			overflow-y: auto;
+			font-family: monospace;
+		}
+
+		.terminal-output {
+			font-family: 'Consolas', monospace;
+			font-size: 14px;
+			color: #ddd;
+		}
+
+		.terminal-input-line {
+			display: flex;
+			margin-top: 10px;
+		}
+
+		.terminal-prompt {
+			color: var(--accent);
+			margin-right: 10px;
+			font-weight: bold;
+		}
+
+		#term-input {
+			background: transparent;
+			border: none;
+			color: white;
+			flex: 1;
+			outline: none;
+			font-family: monospace;
+			font-size: 14px;
+		}
+
+		/* CONTEXT MENU */
+		#context-menu {
+			position: absolute;
+			background: #252525;
+			border: 1px solid #444;
+			border-radius: 8px;
+			width: 180px;
+			display: none;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+			z-index: 10000;
+			padding: 5px 0;
+		}
+
+		.ctx-item {
+			padding: 10px 15px;
+			font-size: 13px;
+			cursor: pointer;
+			color: #eee;
+			display: flex;
+			align-items: center;
+		}
+
+		.ctx-item i {
+			width: 20px;
+			margin-right: 5px;
+			color: #888;
+		}
+
+		.ctx-item:hover {
+			background: var(--accent);
+			color: white;
+		}
+
+		.ctx-header {
+			padding: 8px 15px;
+			font-size: 11px;
+			color: #666;
+			text-transform: uppercase;
+			font-weight: bold;
+			border-bottom: 1px solid #333;
+			margin-bottom: 5px;
+			cursor: default;
+		}
+
+		#snap-overlay {
+			position: absolute;
+			background: rgba(94, 151, 246, 0.15);
+			border: 2px solid rgba(94, 151, 246, 0.5);
+			z-index: 500;
+			pointer-events: none;
+			display: none;
+			border-radius: 10px;
+		}
+	</style>
 </head>
+
 <body class="wp-iceland">
 
-    <div id="watermark">EdulearnOS <span class="ver">V4 Beta</span></div>
-    <div id="desktop"></div>
-    <div id="snap-overlay"></div>
+	<div id="watermark">EdulearnOS <span class="ver">V4 Beta</span></div>
+	<div id="desktop"></div>
+	<div id="snap-overlay"></div>
 
-    <div id="notification-toast">
-        <div class="toast-title"><i class="fa-regular fa-bell"></i> Reminder</div>
-        <div class="toast-msg" id="toast-message">Event Details Here</div>
-    </div>
+	<div id="notification-toast">
+		<div class="toast-title"><i class="fa-regular fa-bell"></i> Reminder</div>
+		<div class="toast-msg" id="toast-message">Event Details Here</div>
+	</div>
 
-    <div id="calendar-popup">
-        <div class="cal-header">
-            <button class="cal-nav" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="cal-title" id="cal-month-year">Month Year</div>
-            <button class="cal-nav" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
-        </div>
-        <div class="cal-grid" id="cal-grid"></div>
-        <div class="cal-footer" id="cal-footer">
-            <div class="cal-event-display" id="cal-event-display">No events for this day.</div>
-            <input type="text" id="cal-input" class="cal-event-input" placeholder="Add event...">
-            <button class="cal-event-btn" onclick="saveEvent()">Save Event</button>
-        </div>
-    </div>
+	<div id="calendar-popup">
+		<div class="cal-header">
+			<button class="cal-nav" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+			<div class="cal-title" id="cal-month-year">Month Year</div>
+			<button class="cal-nav" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
+		</div>
+		<div class="cal-grid" id="cal-grid"></div>
+		<div class="cal-footer" id="cal-footer">
+			<div class="cal-event-display" id="cal-event-display">No events for this day.</div>
+			<input type="text" id="cal-input" class="cal-event-input" placeholder="Add event...">
+			<button class="cal-event-btn" onclick="saveEvent()">Save Event</button>
+		</div>
+	</div>
 
-    <div id="start-menu">
-        <input type="text" id="start-search" placeholder="Search apps..." onkeyup="filterApps()">
-        <div id="start-list"></div>
-    </div>
+	<div id="start-menu">
+		<input type="text" id="start-search" placeholder="Search apps..." onkeyup="filterApps()">
+		<div id="start-list"></div>
+	</div>
 
-    <div id="context-menu">
-        <div class="ctx-header">General</div>
-        <div class="ctx-item" onclick="createNewFile()"><i class="fa-solid fa-file-circle-plus"></i> New Text File</div>
-        <div class="ctx-header">Backgrounds</div>
-        <div class="ctx-item" onclick="setWallpaper('wp-iceland')"><i class="fa-solid fa-water"></i> Vestrahorn</div>
-        <div class="ctx-item" onclick="setWallpaper('wp-rainier')"><i class="fa-solid fa-mountain"></i> Mt. Rainier</div>
-        <div class="ctx-item" onclick="setWallpaper('wp-windows')"><i class="fa-brands fa-windows"></i> Windows</div>
-        <div class="ctx-item" onclick="setWallpaper('wp-chrome')"><i class="fa-brands fa-chrome"></i> ChromeOS</div>
-        <div class="ctx-item" onclick="setWallpaper('wp-linux')"><i class="fa-brands fa-linux"></i> Linux</div>
-        <div class="ctx-header">System</div>
-        <div class="ctx-item" onclick="location.reload()"><i class="fa-solid fa-power-off"></i> Restart</div>
-    </div>
+	<div id="context-menu">
+		<div class="ctx-header">General</div>
+		<div class="ctx-item" onclick="createNewFile()"><i class="fa-solid fa-file-circle-plus"></i> New Text File</div>
+		<div class="ctx-header">Backgrounds</div>
+		<div class="ctx-item" onclick="setWallpaper('wp-iceland')"><i class="fa-solid fa-water"></i> Vestrahorn</div>
+		<div class="ctx-item" onclick="setWallpaper('wp-rainier')"><i class="fa-solid fa-mountain"></i> Mt. Rainier
+		</div>
+		<div class="ctx-item" onclick="setWallpaper('wp-windows')"><i class="fa-brands fa-windows"></i> Windows</div>
+		<div class="ctx-item" onclick="setWallpaper('wp-chrome')"><i class="fa-brands fa-chrome"></i> ChromeOS</div>
+		<div class="ctx-item" onclick="setWallpaper('wp-linux')"><i class="fa-brands fa-linux"></i> Linux</div>
+		<div class="ctx-header">System</div>
+		<div class="ctx-item" onclick="location.reload()"><i class="fa-solid fa-power-off"></i> Restart</div>
+	</div>
 
-    <div id="taskbar">
-        <div id="start-btn" onclick="toggleStartMenu()"><i class="fa-solid fa-circle-dot"></i></div>
-        <div id="taskbar-apps">
-            <div class="taskbar-item shield-btn" onclick="openShield()" title="Open Safe Browser">
-                <i class="fa-solid fa-shield-halved"></i>
+	<div id="taskbar">
+		<div id="start-btn" onclick="toggleStartMenu()"><i class="fa-solid fa-circle-dot"></i></div>
+		<div id="taskbar-apps">
+			<div class="taskbar-item shield-btn" onclick="openShield()" title="Open Safe Browser">
+				<i class="fa-solid fa-shield-halved"></i>
+			</div>
+		</div>
+        
+        <div id="system-tray">
+            <div class="tray-item tray-online" title="Online Users">
+                <i class="fa-solid fa-user-group" style="color:#4caf50; margin-right:6px;"></i>
+                <span id="online-count">0</span>
             </div>
-        </div>
-        <div id="clock" onclick="toggleCalendar()">12:00 PM</div>
-    </div>
+            
+            <div class="tray-item tray-battery" title="Battery Status">
+                <i id="bat-icon" class="fa-solid fa-battery-full"></i>
+                <span id="battery-level" style="margin-left:6px; min-width:35px;">--%</span>
+            </div>
 
-    <script>
-        // CONFIG
+		    <div id="clock" onclick="toggleCalendar()">12:00 PM</div>
+        </div>
+	</div>
+
+	<script>
+		// CONFIG
         let apps = [
             { id: 'sc', name: 'Scramjet', icon: 'fa-solid fa-globe', url: atob('Li9tbmh5NzhrcGxqZ3l1bi8=') },
             { id: 'uv', name: 'Ultraviolet', icon: 'fa-solid fa-globe', url: atob('Li9hY3RpdmUv') },
@@ -261,7 +856,65 @@
                 if(!start.contains(e.target) && !startBtn.contains(e.target)) start.style.display = 'none';
                 if(!cal.contains(e.target) && !clock.contains(e.target)) cal.style.display = 'none';
             });
+            
+            // Init Battery
+            initBattery();
+            // Init Online Users
+            updateOnline();
+            setInterval(updateOnline, 15000);
         });
+
+        // --- SYSTEM TRAY FUNCTIONS ---
+
+        function initBattery() {
+            if (navigator.getBattery) {
+                navigator.getBattery().then(function(battery) {
+                    updateBatteryUI(battery);
+                    battery.addEventListener('levelchange', function() { updateBatteryUI(battery); });
+                    battery.addEventListener('chargingchange', function() { updateBatteryUI(battery); });
+                });
+            } else {
+                document.getElementById('battery-level').innerText = "N/A";
+            }
+        }
+
+        function updateBatteryUI(battery) {
+            const level = Math.round(battery.level * 100);
+            const charging = battery.charging;
+            const icon = document.getElementById('bat-icon');
+            const text = document.getElementById('battery-level');
+            
+            text.innerText = level + '%';
+            
+            // Reset
+            icon.className = "fa-solid";
+            
+            if (charging) {
+                icon.classList.add('fa-bolt', 'bat-charge');
+            } else {
+                // Icon shape
+                if(level > 80) icon.classList.add('fa-battery-full');
+                else if(level > 60) icon.classList.add('fa-battery-three-quarters');
+                else if(level > 40) icon.classList.add('fa-battery-half');
+                else if(level > 20) icon.classList.add('fa-battery-quarter');
+                else icon.classList.add('fa-battery-empty');
+                
+                // Color
+                if (level > 50) icon.classList.add('bat-high');
+                else if (level > 20) icon.classList.add('bat-med');
+                else icon.classList.add('bat-low');
+            }
+        }
+
+        const onlineId = crypto.randomUUID();
+        async function updateOnline() {
+            try {
+                const r = await fetch(`/api/online?id=${onlineId}`, { cache: "no-store" });
+                if (r.ok) {
+                    document.getElementById("online-count").textContent = await r.text();
+                }
+            } catch (e) { console.log('Online counter offline'); }
+        }
 
         // --- CORE FUNCTIONS ---
 
@@ -510,6 +1163,7 @@
                 if(terminalApp) terminalApp.scrollTop = terminalApp.scrollHeight;
             }
         }
-    </script>
+	</script>
 </body>
+
 </html>

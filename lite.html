@@ -5,26 +5,29 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Edulearn | Studies</title>
-	<link id="dynamic-favicon" rel="icon" href="https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png">
-
+	<link id="dynamic-favicon" rel="icon"
+		href="https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png">
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<style>
 		/* --- CORE VARIABLES --- */
 		:root {
-			/* Default Theme: Midnight */
-			--bg-body: #101010;
-			--bg-sidebar: #141414;
+			/* Theme: Midnight Grey */
+			--bg-body: #202020;
+			--bg-sidebar: #2b2b2b;
 			--accent: #ffffff;
-			--text-main: #ffffff;
-			--text-muted: #aaaaaa;
-			--card-bg: #1a1a1a;
-			--glow-text: 0 0 10px rgba(255, 255, 255, 0.5);
-			--glow-strong: 0 0 20px rgba(255, 255, 255, 0.8);
-			--glow-box: 0 0 12px rgba(255, 255, 255, 0.05);
+			--text-main: #e0e0e0;
+			--text-muted: #9e9e9e;
+			--card-bg: #333333;
+			--glow-text: 0 0 10px rgba(255, 255, 255, 0.2);
+			--glow-strong: 0 0 20px rgba(255, 255, 255, 0.5);
+
+			/* Background Overlay */
+			--bg-overlay: 0.0;
+			/* Default no dim */
 
 			/* Sizing */
-			--sidebar-width-collapsed: 48px;
+			--sidebar-width-collapsed: 54px;
 			--sidebar-width-expanded: 200px;
 			--nav-item-height: 40px;
 		}
@@ -39,12 +42,30 @@
 		body {
 			font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
 			background-color: var(--bg-body);
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
 			color: var(--text-main);
 			overflow: hidden;
 			display: flex;
 			height: 100vh;
 			font-size: 13px;
 			transition: background-color 0.3s, color 0.3s;
+			position: relative;
+		}
+
+		/* Background Dim Overlay */
+		body::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, var(--bg-overlay));
+			z-index: 0;
+			pointer-events: none;
 		}
 
 		/* --- PARTICLES CANVAS --- */
@@ -56,7 +77,7 @@
 			left: 0;
 			z-index: 1;
 			pointer-events: none;
-			opacity: 0.6;
+			opacity: 0.4;
 		}
 
 		/* --- SIDEBAR NAVIGATION --- */
@@ -64,13 +85,13 @@
 			width: var(--sidebar-width-collapsed);
 			height: 100vh;
 			background-color: var(--bg-sidebar);
-			border-right: 1px solid #333;
+			border-right: 1px solid #3a3a3a;
 			display: flex;
 			flex-direction: column;
 			transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 			position: relative;
 			z-index: 1000;
-			box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
+			box-shadow: 5px 0 20px rgba(0, 0, 0, 0.3);
 			overflow: hidden;
 			white-space: nowrap;
 		}
@@ -88,14 +109,15 @@
 			font-size: 14px;
 			color: var(--text-main);
 			text-shadow: var(--glow-text);
-			border-bottom: 1px solid #333;
+			border-bottom: 1px solid #3a3a3a;
 			margin-bottom: 5px;
+			overflow: hidden;
 		}
 
 		.brand i {
-			min-width: 20px;
+			min-width: 24px;
 			font-size: 16px;
-			margin-right: 15px;
+			margin-right: 10px;
 			text-align: center;
 		}
 
@@ -124,9 +146,8 @@
 
 		.nav-link:hover,
 		.nav-link.active {
-			background-color: rgba(255, 255, 255, 0.05);
+			background-color: rgba(255, 255, 255, 0.08);
 			color: var(--text-main);
-			text-shadow: var(--glow-text);
 		}
 
 		.nav-link.active::before {
@@ -135,15 +156,15 @@
 			left: 0;
 			top: 0;
 			height: 100%;
-			width: 2px;
+			width: 3px;
 			background-color: var(--accent);
 			box-shadow: 0 0 8px var(--accent);
 		}
 
 		.nav-link i {
-			min-width: 20px;
+			min-width: 24px;
 			font-size: 16px;
-			margin-right: 15px;
+			margin-right: 10px;
 			text-align: center;
 		}
 
@@ -157,48 +178,89 @@
 			transition-delay: 0.1s;
 		}
 
-		/* --- STATS WIDGET --- */
-		.stats-widget {
+		/* --- FOOTER STATS --- */
+		.sidebar-footer {
 			margin-top: auto;
-			border-top: 1px solid #333;
-			padding: 10px 0;
+			width: 100%;
 			background: rgba(0, 0, 0, 0.2);
+			border-top: 1px solid #3a3a3a;
 			display: flex;
 			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			overflow: hidden;
-			height: 60px;
+			padding: 10px 0;
 		}
 
-		.stats-content {
+		.stat-row {
 			display: flex;
 			align-items: center;
-			opacity: 0;
-			transition: opacity 0.2s;
+			justify-content: center;
+			width: 100%;
+			height: 28px;
+			color: var(--text-muted);
+			font-size: 11px;
+			white-space: nowrap;
+			overflow: hidden;
+			transition: all 0.2s;
+			padding: 0 2px;
 		}
 
-		.sidebar:hover .stats-content {
-			opacity: 1;
-			transition-delay: 0.1s;
+		.timer-row {
+			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+			margin-bottom: 5px;
+			padding-bottom: 5px;
 		}
 
-		.stats-icon-only {
-			position: absolute;
-			bottom: 20px;
-			left: 14px;
+		.sidebar:hover .stat-row {
+			justify-content: flex-start;
+			padding-left: 18px;
+			font-size: 12px;
+		}
+
+		.stat-row i {
+			min-width: 20px;
+			text-align: center;
+			font-size: 13px;
+		}
+
+		.stat-value {
+			margin-left: 4px;
+			font-weight: 600;
+			color: var(--text-main);
+		}
+
+		.sidebar:hover .stat-row i {
+			margin-right: 8px;
+		}
+
+		.stat-label {
+			display: none;
+			margin-left: 4px;
+			font-weight: normal;
+			color: #777;
+		}
+
+		.sidebar:hover .stat-label {
+			display: inline;
+		}
+
+		/* Battery Colors */
+		.bat-high {
 			color: #4caf50;
-			font-size: 14px;
-			opacity: 1;
-			transition: opacity 0.2s;
 		}
 
-		.sidebar:hover .stats-icon-only {
-			opacity: 0;
+		.bat-med {
+			color: #ff9800;
+		}
+
+		.bat-low {
+			color: #f44336;
+		}
+
+		.bat-charge {
+			color: #2196f3;
 		}
 
 
-		/* --- MAIN CONTENT (FULLSCREEN) --- */
+		/* --- MAIN CONTENT --- */
 		.main-content {
 			flex: 1;
 			position: relative;
@@ -220,7 +282,6 @@
 			display: flex;
 		}
 
-		/* Home text container */
 		.home-container {
 			display: flex;
 			flex-direction: column;
@@ -243,8 +304,7 @@
 			}
 		}
 
-		/* --- TITLE, CLOCK & START BUTTON --- */
-
+		/* --- HERO TEXT --- */
 		#hero-title {
 			font-size: 64px;
 			margin-bottom: 5px;
@@ -255,7 +315,7 @@
 		}
 
 		.hero-subtitle {
-			color: #ccc;
+			color: var(--text-muted);
 			font-size: 16px;
 			margin-bottom: 10px;
 			letter-spacing: 0.5px;
@@ -267,7 +327,9 @@
 			font-style: italic;
 			margin-bottom: 40px;
 			font-family: monospace;
-			min-height: 20px; /* Prevents layout jump */
+			min-height: 20px;
+			z-index: 2;
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 		}
 
 		.clock-container {
@@ -280,7 +342,7 @@
 		.clock-time {
 			font-size: 36px;
 			font-weight: 300;
-			color: #fff;
+			color: var(--text-main);
 			text-shadow: var(--glow-text);
 			letter-spacing: 2px;
 			margin-bottom: 5px;
@@ -296,7 +358,7 @@
 		/* Start Button */
 		.start-btn {
 			background-color: var(--accent);
-			color: #000;
+			color: #222;
 			padding: 14px 40px;
 			border-radius: 50px;
 			font-size: 16px;
@@ -304,7 +366,7 @@
 			text-decoration: none;
 			border: none;
 			cursor: pointer;
-			box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+			box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
 			transition: all 0.2s ease;
 			display: inline-flex;
 			align-items: center;
@@ -313,7 +375,7 @@
 
 		.start-btn:hover {
 			transform: scale(1.05);
-			box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+			box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
 		}
 
 		/* --- IFRAME WRAPPER --- */
@@ -321,7 +383,7 @@
 			flex: 1;
 			width: 100%;
 			height: 100%;
-			background: #000;
+			background: #111;
 			border-radius: 0;
 			border: none;
 			box-shadow: none;
@@ -369,7 +431,7 @@
 
 		.modal-header {
 			padding: 15px 20px;
-			border-bottom: 1px solid #333;
+			border-bottom: 1px solid #3a3a3a;
 			display: flex;
 			justify-content: space-between;
 			font-weight: bold;
@@ -394,7 +456,7 @@
 		.setting-group {
 			margin-bottom: 20px;
 			padding-bottom: 20px;
-			border-bottom: 1px solid #333;
+			border-bottom: 1px solid #3a3a3a;
 		}
 
 		.setting-group:last-child {
@@ -415,9 +477,9 @@
 		select {
 			width: 100%;
 			padding: 10px;
-			background: #222;
-			border: 1px solid #444;
-			color: white;
+			background: rgba(0, 0, 0, 0.2);
+			border: 1px solid #555;
+			color: var(--text-main);
 			border-radius: 4px;
 			outline: none;
 			font-size: 13px;
@@ -439,6 +501,7 @@
 			width: 100%;
 			text-align: center;
 			margin-bottom: 10px;
+			display: inline-block;
 		}
 
 		.btn:hover {
@@ -451,8 +514,13 @@
 			font-weight: bold;
 		}
 
-		.btn-primary:hover {
-			opacity: 0.9;
+		.btn-danger {
+			background: #d32f2f;
+			color: #fff;
+		}
+
+		.btn-danger:hover {
+			background: #b71c1c;
 		}
 
 		.range-wrap {
@@ -470,6 +538,12 @@
 			color: #666;
 			margin-top: 5px;
 			line-height: 1.4;
+		}
+
+		.upload-row {
+			display: flex;
+			gap: 10px;
+			align-items: center;
 		}
 	</style>
 </head>
@@ -496,7 +570,7 @@
 			<i class="fa-solid fa-magnifying-glass"></i>
 			<span>Search</span>
 		</a>
-        <a class="nav-link" onclick="switchPage('tools-page', this)">
+		<a class="nav-link" onclick="switchPage('tools-page', this)">
 			<i class="fa-solid fa-wrench"></i>
 			<span>Tools</span>
 		</a>
@@ -513,18 +587,21 @@
 
 		<div style="flex-grow: 1;"></div>
 
-		<i class="fa-solid fa-chart-simple stats-icon-only" title="Analytics Active"></i>
-
-		<div class="stats-widget">
-			<div class="stats-content">
-				<div style="font-size: 11px; margin-bottom: 4px; color: #888;">Live Views</div>
-				<div class="stats-content">
-					<i class="fa-solid fa-user-group" style="margin-right:8px;color:#4caf50;"></i>
-					<span style="font-size:13px;">
-            <span id="online-count">0</span> online
-					</span>
-				</div>
-
+		<div class="sidebar-footer">
+			<div class="stat-row timer-row">
+				<i class="fa-solid fa-stopwatch"></i>
+				<span id="game-timer" class="stat-value">00:00</span>
+				<span class="stat-label">Session</span>
+			</div>
+			<div class="stat-row">
+				<i class="fa-solid fa-user-group" style="color:#4caf50;"></i>
+				<span id="online-count" class="stat-value">0</span>
+				<span class="stat-label">online</span>
+			</div>
+			<div class="stat-row">
+				<i id="bat-icon" class="fa-solid fa-battery-full"></i>
+				<span id="battery-level" class="stat-value">--%</span>
+				<span class="stat-label">Battery</span>
 			</div>
 		</div>
 	</nav>
@@ -561,7 +638,7 @@
 				<iframe src="./active/index.html"></iframe>
 			</div>
 		</section>
-        <section id="tools-page" class="page">
+		<section id="tools-page" class="page">
 			<div class="iframe-wrapper">
 				<iframe src="./tools.html"></iframe>
 			</div>
@@ -586,51 +663,79 @@
 					<span class="setting-label">Tab Cloaking</span>
 					<input type="text" id="input-title" placeholder="Tab Title" onkeyup="updateTab()" style="margin-bottom: 10px;">
 					<input type="text" id="input-icon" placeholder="Tab Icon URL" onkeyup="updateTab()">
-        </div>
+                </div>
 
 					<div class="setting-group">
-						<span class="setting-label">Appearance</span>
-						<select id="theme-select" onchange="changeTheme(this.value)" style="margin-bottom: 15px;">
-            <option value="midnight">Midnight (Default)</option>
-            <option value="ocean">Ocean Blue</option>
-            <option value="sunset">Sunset Orange</option>
-            <option value="amoled">Pure Black</option>
-          </select>
+						<span class="setting-label">Theme & Background</span>
 
-						<span class="setting-label">Particle Density: <span id="particle-val">20</span></span>
+						<select id="theme-select" onchange="changeTheme(this.value)" style="margin-bottom: 15px;">
+                        <option value="midnight">Midnight Grey (Default)</option>
+                        <option value="ocean">Ocean Blue</option>
+                        <option value="sunset">Sunset Orange</option>
+                        <option value="amoled">Pure Black</option>
+                    </select>
+
+						<span class="setting-label">Background Image</span>
+						<select id="bg-preset" onchange="changeBgPreset(this.value)" style="margin-bottom: 10px;">
+                        <option value="none">None (Use Theme Color)</option>
+                        <option value="space">OS Icelandic theme</option>
+                        <option value="mountain">Alpine Mountains</option>
+                        <option value="city">Cyberpunk City</option>
+                        <option value="abstract">Dark Abstract</option>
+                    </select>
+
+						<div class="upload-row" style="margin-bottom: 15px;">
+							<label class="btn" style="flex:1; margin:0; display:flex; align-items:center; justify-content:center; gap:5px;">
+                            <i class="fa-solid fa-upload"></i> Upload File
+                            <input type="file" id="bg-upload" accept="image/*" style="display:none" onchange="handleBgUpload(this)">
+                        </label>
+							<button class="btn btn-danger" style="width:auto; margin:0;" onclick="clearBackground()" title="Remove Background">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+						</div>
+
+						<span class="setting-label">Background Dimming: <span id="dim-val">0%</span></span>
 						<div class="range-wrap">
-							<input type="range" id="particle-slider" min="0" max="80" value="20" oninput="updateParticlesRealtime(this.value)">
-          </div>
+							<input type="range" id="dim-slider" min="0" max="90" value="0" oninput="updateBgDim(this.value)">
+                    </div>
 						</div>
 
 						<div class="setting-group">
-							<span class="setting-label">System Info</span>
-							<p class="info-text">
-								Analytics: <span style="color:#4caf50">Active (vercel)</span><br>
-            Visual Counter: <span style="color:#4caf50">Active</span>
-							</p>
-						</div>
+							<span class="setting-label">Particle Density: <span id="particle-val">20</span></span>
+							<div class="range-wrap">
+								<input type="range" id="particle-slider" min="0" max="80" value="20" oninput="updateParticlesRealtime(this.value)">
+                    </div>
+							</div>
 
-						<div>
-							<button class="btn btn-primary" onclick="openAboutBlank()">Open in About:Blank</button>
-							<button class="btn" onclick="saveSettings()">Save Configuration</button>
+							<div class="setting-group">
+								<span class="setting-label">System Info</span>
+								<p class="info-text">
+									Analytics: <span style="color:#4caf50">Active (vercel)</span><br>
+                        Session: <span id="session-display">00:00</span>
+								</p>
+							</div>
+
+							<div>
+								<button class="btn btn-primary" onclick="openAboutBlank()">Open in About:Blank</button>
+								<button class="btn" onclick="saveSettings()">Save Configuration</button>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<script>
-				// --- 1. STATE MANAGEMENT ---
+				<script>
+					// --- 1. STATE MANAGEMENT ---
     const defaultSettings = {
       title: 'Edulearn | Studies',
       icon: 'https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png',
       theme: 'midnight',
-      particles: 20
+      particles: 20,
+      bgImage: null, // Custom Base64 or URL
+      bgPreset: 'none',
+      bgDim: 0
     };
 
     let userSettings = JSON.parse(localStorage.getItem('el_settings')) || defaultSettings;
-
-    applySettings();
 
     // --- 2. PARTICLES SYSTEM ---
     const canvas = document.getElementById('particles-js');
@@ -695,11 +800,94 @@
       }
       requestAnimationFrame(animateParticles);
     }
-
     initParticles();
 
 
-    // --- 3. SETTINGS LOGIC ---
+    // --- 3. BACKGROUND LOGIC ---
+    const bgPresets = {
+        space: "https://www.usnews.com/object/image/00000162-f3a3-d0d5-a57f-fbf33c300000/3-vestrahorn-iceland.jpg?update-time=1745871301820&size=responsive970",
+        mountain: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80",
+        city: "https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=1920&q=80",
+        abstract: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1920&q=80"
+    };
+
+    function applyBackground() {
+        const body = document.body;
+        
+        // 1. Handle Dimming
+        const dimVal = userSettings.bgDim || 0;
+        document.documentElement.style.setProperty('--bg-overlay', dimVal / 100);
+        document.getElementById('dim-slider').value = dimVal;
+        document.getElementById('dim-val').innerText = dimVal + "%";
+
+        // 2. Determine Image Source
+        let src = null;
+        
+        // Check Custom Upload first
+        if (userSettings.bgImage) {
+            src = userSettings.bgImage;
+            document.getElementById('bg-preset').value = 'none'; // Reset preset dropdown visually
+        } 
+        // Check Preset
+        else if (userSettings.bgPreset && userSettings.bgPreset !== 'none') {
+            src = bgPresets[userSettings.bgPreset];
+            document.getElementById('bg-preset').value = userSettings.bgPreset;
+        } else {
+            document.getElementById('bg-preset').value = 'none';
+        }
+
+        // 3. Apply
+        if (src) {
+            body.style.backgroundImage = `url('${src}')`;
+        } else {
+            body.style.backgroundImage = 'none';
+        }
+    }
+
+    function handleBgUpload(input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        // Check size (limit to ~3MB to be safe for LocalStorage)
+        if (file.size > 3000000) {
+            alert("File is too large! Please choose an image under 3MB.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = function() {
+            userSettings.bgImage = reader.result; // Base64 string
+            userSettings.bgPreset = 'none'; // Clear preset
+            applyBackground();
+        }
+        reader.readAsDataURL(file);
+    }
+
+    function changeBgPreset(val) {
+        if (val === 'none') {
+            userSettings.bgPreset = 'none';
+            userSettings.bgImage = null; // Clear custom too if they purposely choose None
+        } else {
+            userSettings.bgPreset = val;
+            userSettings.bgImage = null; // Preset overrides custom
+        }
+        applyBackground();
+    }
+
+    function clearBackground() {
+        userSettings.bgImage = null;
+        userSettings.bgPreset = 'none';
+        applyBackground();
+    }
+
+    function updateBgDim(val) {
+        userSettings.bgDim = val;
+        document.documentElement.style.setProperty('--bg-overlay', val / 100);
+        document.getElementById('dim-val').innerText = val + "%";
+    }
+
+
+    // --- 4. SETTINGS & THEME ---
 
     function applySettings() {
       document.title = userSettings.title;
@@ -712,6 +900,7 @@
       document.getElementById('particle-val').innerText = userSettings.particles;
 
       updateTheme(userSettings.theme);
+      applyBackground(); // Apply BG
     }
 
     function updateTheme(themeName) {
@@ -734,12 +923,13 @@
         root.setProperty('--accent', '#ffffff');
         root.setProperty('--card-bg', '#050505');
       } else {
-        root.removeProperty('--bg-body');
-        root.removeProperty('--bg-sidebar');
-        root.removeProperty('--accent');
-        root.removeProperty('--card-bg');
-        root.removeProperty('--glow-text');
-        root.removeProperty('--glow-strong');
+        // Midnight
+        root.setProperty('--bg-body', '#202020');
+        root.setProperty('--bg-sidebar', '#2b2b2b');
+        root.setProperty('--accent', '#ffffff');
+        root.setProperty('--card-bg', '#333333');
+        root.setProperty('--glow-text', '0 0 10px rgba(255, 255, 255, 0.2)');
+        root.setProperty('--glow-strong', '0 0 20px rgba(255, 255, 255, 0.5)');
       }
     }
 
@@ -762,8 +952,12 @@
     }
 
     function saveSettings() {
-      localStorage.setItem('el_settings', JSON.stringify(userSettings));
-      closeSettings();
+      try {
+        localStorage.setItem('el_settings', JSON.stringify(userSettings));
+        closeSettings();
+      } catch (e) {
+        alert("Settings could not be saved (Storage Full). Your background image might be too large.");
+      }
     }
 
     function openSettings() {
@@ -774,7 +968,7 @@
       document.getElementById('settings-modal').classList.remove('active');
     }
 
-    // --- 4. NAVIGATION, CLOCK & QUOTES ---
+    // --- 5. NAVIGATION, CLOCK & QUOTES ---
 
     function updateClock() {
       const now = new Date();
@@ -785,12 +979,7 @@
       hours = hours % 12;
       hours = hours ? hours : 12;
       document.getElementById('clock-time').innerText = `${hours}:${minutes}:${seconds} ${ampm}`;
-      const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      };
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       document.getElementById('clock-date').innerText = now.toLocaleDateString('en-US', options);
     }
     setInterval(updateClock, 1000);
@@ -817,7 +1006,6 @@
         const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
         document.getElementById('random-quote').innerText = '"' + randomQuote + '"';
     }
-    // Set quote on load
     displayRandomQuote();
 
     function openAboutBlank() {
@@ -834,30 +1022,20 @@
     }
 
     function switchPage(pageId, navElement) {
-      // Hide all pages
       document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-      
-      // Show selected page
       const page = document.getElementById(pageId);
       if(page) page.classList.add('active');
 
-      // Update Sidebar state
       if (navElement) {
         document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
         navElement.classList.add('active');
       }
 
-      // --- ADDED: Refresh quote if Home is selected ---
-      if (pageId === 'home') {
-          displayRandomQuote();
-      }
-
-      // Special Check for Info Page: Load iframe only when clicked
+      if (pageId === 'home') displayRandomQuote();
       if (pageId === 'info-page') {
           const infoFrame = document.getElementById('info-frame');
-          // Check if empty to avoid reloading every time
           if (!infoFrame.getAttribute('src')) {
-              infoFrame.src = atob('Li9pbmZvLmh0bWw='); // ./info.html
+              infoFrame.src = atob('Li9pbmZvLmh0bWw=');
           }
       }
     }
@@ -868,24 +1046,68 @@
       document.querySelectorAll('.nav-link')[1].classList.add('active');
     }
 
-    // --- LIVE ONLINE USERS (VERCEL) ---
-    const onlineId = crypto.randomUUID();
+    // --- GAME TIMER ---
+    let startTime = Date.now();
+    function updateGameTimer() {
+        let diff = Math.floor((Date.now() - startTime) / 1000);
+        let h = Math.floor(diff / 3600);
+        let m = Math.floor((diff % 3600) / 60);
+        let s = diff % 60;
+        let formatted = (h > 0 ? h + ':' : '') + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+        document.getElementById('game-timer').innerText = formatted;
+        document.getElementById('session-display').innerText = formatted;
+    }
+    setInterval(updateGameTimer, 1000);
 
-    async function updateOnline() {
-      try {
-        const r = await fetch(`/api/online?id=${onlineId}`, {
-          cache: "no-store"
+    // --- BATTERY ---
+    function updateBatteryUI(battery) {
+        const level = Math.round(battery.level * 100);
+        const charging = battery.charging;
+        const icon = document.getElementById('bat-icon');
+        const text = document.getElementById('battery-level');
+        text.innerText = level + '%';
+        icon.className = "fa-solid";
+        icon.classList.remove('bat-high', 'bat-med', 'bat-low', 'bat-charge');
+        
+        if (charging) {
+            icon.classList.add('fa-bolt', 'bat-charge');
+        } else {
+            if(level > 75) icon.classList.add('fa-battery-full');
+            else if(level > 50) icon.classList.add('fa-battery-three-quarters');
+            else if(level > 25) icon.classList.add('fa-battery-half');
+            else if(level > 10) icon.classList.add('fa-battery-quarter');
+            else icon.classList.add('fa-battery-empty');
+            
+            if (level > 50) icon.classList.add('bat-high');
+            else if (level > 20) icon.classList.add('bat-med');
+            else icon.classList.add('bat-low');
+        }
+    }
+    if (navigator.getBattery) {
+        navigator.getBattery().then(function(battery) {
+            updateBatteryUI(battery);
+            battery.addEventListener('levelchange', function() { updateBatteryUI(battery); });
+            battery.addEventListener('chargingchange', function() { updateBatteryUI(battery); });
         });
-        if (!r.ok) return;
-        document.getElementById("online-count").textContent = await r.text();
-      } catch {
-        // fail silently
-      }
+    } else {
+        document.getElementById('battery-level').innerText = "N/A";
     }
 
+    // --- INIT ---
+    applySettings();
+
+    // --- ONLINE USERS ---
+    const onlineId = crypto.randomUUID();
+    async function updateOnline() {
+      try {
+        const r = await fetch(`/api/online?id=${onlineId}`, { cache: "no-store" });
+        if (!r.ok) return;
+        document.getElementById("online-count").textContent = await r.text();
+      } catch { }
+    }
     updateOnline();
     setInterval(updateOnline, 15000);
-			</script>
+				</script>
 </body>
 
 </html>
