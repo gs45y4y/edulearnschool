@@ -1,424 +1,542 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>System Tools</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>System Tools</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<style>
+		/* --- CORE VARIABLES (MATCHING MAIN LITE.HTML) --- */
+		:root {
+			/* Theme: Midnight Grey */
+			--bg-body: #202020;
+			--bg-sidebar: #2b2b2b;
+			--accent: #ffffff;
+			--text-main: #e0e0e0;
+			--text-muted: #9e9e9e;
+			--card-bg: #333333;
+			--glow-text: 0 0 10px rgba(255, 255, 255, 0.2);
+			--glow-strong: 0 0 20px rgba(255, 255, 255, 0.5);
 
-        :root {
-            /* Midnight Theme Variables */
-            --bg-app: #050505;
-            --glass-panel: rgba(20, 20, 20, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-hover: rgba(40, 40, 40, 0.8);
-            --text-main: #ffffff;
-            --text-muted: #aaaaaa;
-            --accent: #ffffff;
-            --danger: #ef4444;
-            --success: #22c55e;
-            
-            --font-ui: 'Inter', sans-serif;
-        }
+			--border-color: #3a3a3a;
+			--danger: #d32f2f;
+			--success: #4caf50;
+		}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
 
-        body {
-            font-family: var(--font-ui);
-            background-color: var(--bg-app);
-            background-image: radial-gradient(circle at center, #111111 0%, #000000 100%);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px;
-            position: relative;
-        }
+		body {
+			font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+			background-color: var(--bg-body);
+			color: var(--text-main);
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 40px 20px;
+			position: relative;
+			overflow-x: hidden;
+		}
 
-        /* --- PARTICLES --- */
-        #particles-js {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-            opacity: 0.4;
-        }
+		/* --- PARTICLES --- */
+		#particles-js {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			pointer-events: none;
+			opacity: 0.4;
+		}
 
-        /* --- HEADER --- */
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            width: 100%;
-            max-width: 600px;
-            position: relative;
-            z-index: 10;
-        }
+		/* --- HEADER --- */
+		.header {
+			text-align: center;
+			margin-bottom: 40px;
+			width: 100%;
+			max-width: 600px;
+			position: relative;
+			z-index: 10;
+		}
 
-        .title {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
-            background: linear-gradient(to right, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+		.title {
+			font-size: 2.5rem;
+			font-weight: 600;
+			margin-bottom: 10px;
+			letter-spacing: -1px;
+			color: var(--text-main);
+			text-shadow: var(--glow-strong);
+		}
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-        }
+		.subtitle {
+			color: var(--text-muted);
+			font-size: 0.95rem;
+			margin-bottom: 25px;
+		}
 
-        /* --- SEARCH --- */
-        .search-container {
-            position: relative;
-            width: 100%;
-        }
+		/* --- SEARCH --- */
+		.search-container {
+			position: relative;
+			width: 100%;
+		}
 
-        .search-input {
-            width: 100%;
-            padding: 14px 20px 14px 45px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.2s;
-            font-family: var(--font-ui);
-        }
+		.search-input {
+			width: 100%;
+			padding: 14px 20px 14px 45px;
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			border-radius: 8px;
+			color: var(--text-main);
+			font-size: 1rem;
+			transition: all 0.2s;
+			font-family: inherit;
+		}
 
-        .search-input:focus {
-            outline: none;
-            border-color: rgba(255,255,255,0.3);
-            background: rgba(0,0,0,0.6);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
-        }
+		.search-input:focus {
+			outline: none;
+			border-color: var(--accent);
+			box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+		}
 
-        .search-icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
+		.search-icon {
+			position: absolute;
+			left: 16px;
+			top: 50%;
+			transform: translateY(-50%);
+			color: var(--text-muted);
+		}
 
-        /* --- GRID --- */
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 900px;
-            position: relative;
-            z-index: 10;
-        }
+		/* --- GRID --- */
+		.tools-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+			gap: 20px;
+			width: 100%;
+			max-width: 900px;
+			position: relative;
+			z-index: 10;
+		}
 
-        .tool-card {
-            background: var(--glass-panel);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
+		.tool-card {
+			background: var(--card-bg);
+			border: 1px solid var(--border-color);
+			border-radius: 8px;
+			padding: 20px;
+			display: flex;
+			align-items: center;
+			gap: 15px;
+			cursor: pointer;
+			transition: all 0.2s ease;
+			position: relative;
+			overflow: hidden;
+		}
 
-        .tool-card:hover {
-            transform: translateY(-2px);
-            background: var(--glass-hover);
-            border-color: rgba(255,255,255,0.3);
-            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.5);
-        }
+		.tool-card:hover {
+			transform: translateY(-2px);
+			background: #3a3a3a;
+			border-color: #555;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+		}
 
-        .tool-card:active {
-            transform: scale(0.98);
-        }
+		.tool-card:active {
+			transform: scale(0.98);
+		}
 
-        .icon-box {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: var(--accent);
-            border: 1px solid var(--glass-border);
-        }
+		.icon-box {
+			width: 45px;
+			height: 45px;
+			border-radius: 8px;
+			background: rgba(255, 255, 255, 0.05);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1.2rem;
+			color: var(--accent);
+			border: 1px solid var(--border-color);
+			text-shadow: var(--glow-text);
+		}
 
-        .tool-info {
-            flex: 1;
-        }
+		.tool-info {
+			flex: 1;
+		}
 
-        .tool-name {
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-bottom: 4px;
-            color: var(--text-main);
-        }
+		.tool-name {
+			font-weight: 600;
+			font-size: 1.1rem;
+			margin-bottom: 4px;
+			color: var(--text-main);
+		}
 
-        .tool-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
+		.tool-desc {
+			font-size: 0.85rem;
+			color: var(--text-muted);
+		}
 
-        .copy-hint {
-            opacity: 0;
-            position: absolute;
-            right: 20px;
-            background: var(--accent);
-            color: #000;
-            font-size: 0.75rem;
-            font-weight: bold;
-            padding: 4px 8px;
-            border-radius: 6px;
-            transition: 0.2s;
-            transform: translateX(10px);
-        }
+		.copy-hint {
+			opacity: 0;
+			position: absolute;
+			right: 20px;
+			background: var(--accent);
+			color: #111;
+			font-size: 0.75rem;
+			font-weight: bold;
+			padding: 4px 8px;
+			border-radius: 4px;
+			transition: 0.2s;
+			transform: translateX(10px);
+		}
 
-        .tool-card:hover .copy-hint {
-            opacity: 1;
-            transform: translateX(0);
-        }
+		.tool-card:hover .copy-hint {
+			opacity: 1;
+			transform: translateX(0);
+		}
 
-        /* --- TOAST --- */
-        .toast-container {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            pointer-events: none;
-            z-index: 100;
-        }
+		/* --- TOOL OVERLAY (IFRAME VIEW) --- */
+		.tool-view-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: var(--bg-body);
+			z-index: 2000;
+			display: none;
+			/* Hidden by default */
+			flex-direction: column;
+		}
 
-        .toast {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid var(--glass-border);
-            color: var(--text-main);
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            backdrop-filter: blur(10px);
-        }
+		.tool-view-overlay.active {
+			display: flex;
+		}
 
-        .toast i { color: var(--success); }
+		.tool-header-bar {
+			height: 50px;
+			background: var(--bg-sidebar);
+			border-bottom: 1px solid var(--border-color);
+			display: flex;
+			align-items: center;
+			padding: 0 20px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+		}
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+		.btn-back {
+			background: transparent;
+			border: 1px solid var(--border-color);
+			color: var(--text-main);
+			padding: 6px 14px;
+			border-radius: 4px;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			font-size: 0.9rem;
+			transition: all 0.2s;
+		}
 
-        @keyframes fadeOut {
-            to { opacity: 0; transform: translateY(-10px); }
-        }
+		.btn-back:hover {
+			background: rgba(255, 255, 255, 0.1);
+			border-color: var(--accent);
+		}
 
-    </style>
+		.tool-frame {
+			flex: 1;
+			width: 100%;
+			border: none;
+		}
+
+		/* --- TOAST --- */
+		.toast-container {
+			position: fixed;
+			bottom: 30px;
+			left: 50%;
+			transform: translateX(-50%);
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			pointer-events: none;
+			z-index: 3000;
+		}
+
+		.toast {
+			background: var(--bg-sidebar);
+			border: 1px solid var(--border-color);
+			color: var(--text-main);
+			padding: 12px 24px;
+			border-radius: 50px;
+			font-size: 0.9rem;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+			animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+		}
+
+		.toast i {
+			color: var(--success);
+		}
+
+		@keyframes slideUp {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		@keyframes fadeOut {
+			to {
+				opacity: 0;
+				transform: translateY(-10px);
+			}
+		}
+	</style>
 </head>
+
 <body>
 
-    <canvas id="particles-js"></canvas>
+	<canvas id="particles-js"></canvas>
 
-    <div class="header">
-        <div class="title">System Tools</div>
-        <div class="subtitle">Click any card to copy the tool URL to your clipboard.</div>
-        
-        <div class="search-container">
-            <i class="fa-solid fa-search search-icon"></i>
-            <input type="text" id="searchInput" class="search-input" placeholder="Find a utility...">
-        </div>
+	<div class="header">
+		<div class="title">System Tools</div>
+		<div class="subtitle">Click a card to copy the URL or open the tool.</div>
+
+		<div class="search-container">
+			<i class="fa-solid fa-search search-icon"></i>
+			<input type="text" id="searchInput" class="search-input" placeholder="Find a utility...">
     </div>
+		</div>
 
-    <div class="tools-grid" id="toolsGrid">
-        </div>
+		<div class="tools-grid" id="toolsGrid">
+		</div>
 
-    <div class="toast-container" id="toastContainer"></div>
+		<div id="toolOverlay" class="tool-view-overlay">
+			<div class="tool-header-bar">
+				<button class="btn-back" onclick="closeTool()">
+              <i class="fa-solid fa-arrow-left"></i> Back to Tools
+          </button>
+			</div>
+			<iframe id="toolFrame" class="tool-frame" src=""></iframe>
+		</div>
 
-    <script>
-        // Tool Data Configuration
-        const tools = [
-            {
-                name: "Sh1mmer",
-                desc: "Enrollment modification utility",
-                url: "https://sh1mmer.me",
-                icon: "fa-microchip"
-            },
-            {
-                name: "ExtPrint3r",
-                desc: "Extension manipulation & management",
-                url: "https://extprint3r.github.io/",
-                icon: "fa-puzzle-piece"
-            },
-            {
-                name: "Versioner",
-                desc: "Check ChromeOS version details",
-                url: "https://vibec3der.github.io/chromeos-versioner",
-                icon: "fa-code-branch"
-            },
-            {
-                name: "Old Bypasses",
-                desc: "Legacy unblocking methods collection",
-                url: "https://chessisfornerds.netlify.app",
-                icon: "fa-ghost"
-            },
-            {
-                name: "Ingot",
-                desc: "Bookmarklet execution simplified",
-                url: "https://ingot.k12.lol",
-                icon: "fa-terminal"
-            }
-        ];
+		<div class="toast-container" id="toastContainer"></div>
 
-        const grid = document.getElementById('toolsGrid');
-        const searchInput = document.getElementById('searchInput');
+		<script>
+			// Tool Data Configuration
+      const tools = [
+        {
+          name: "E2E v2",
+          desc: "Basically Uncrackable encryption for any social media platform!",
+          url: "./e2ev2.html",
+          icon: "fa-eye",
+          action: "open" // This tool opens in the iframe
+        },
+        {
+          name: "Sh1mmer",
+          desc: "Enrollment modification utility",
+          url: "https://sh1mmer.me",
+          icon: "fa-microchip",
+          action: "copy"
+        },
+        {
+          name: "ExtPrint3r",
+          desc: "Extension manipulation & management",
+          url: "https://extprint3r.github.io/",
+          icon: "fa-puzzle-piece",
+          action: "copy"
+        },
+        {
+          name: "Versioner",
+          desc: "Check ChromeOS version details",
+          url: "https://vibec3der.github.io/chromeos-versioner",
+          icon: "fa-code-branch",
+          action: "copy"
+        },
+        {
+          name: "Old Bypasses",
+          desc: "Legacy unblocking methods collection",
+          url: "https://chessisfornerds.netlify.app",
+          icon: "fa-ghost",
+          action: "copy"
+        },
+        {
+          name: "Ingot",
+          desc: "Bookmarklet execution simplified",
+          url: "https://ingot.k12.lol",
+          icon: "fa-terminal",
+          action: "copy"
+        }
+      ];
 
-        // Render Cards
-        function renderTools(filter = "") {
-            grid.innerHTML = "";
-            const filtered = tools.filter(t => 
-                t.name.toLowerCase().includes(filter.toLowerCase()) || 
-                t.desc.toLowerCase().includes(filter.toLowerCase())
-            );
+      const grid = document.getElementById('toolsGrid');
+      const searchInput = document.getElementById('searchInput');
 
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No tools found matching "${filter}"</div>`;
-                return;
-            }
+      // Render Cards
+      function renderTools(filter = "") {
+        grid.innerHTML = "";
+        const filtered = tools.filter(t => 
+          t.name.toLowerCase().includes(filter.toLowerCase()) || 
+          t.desc.toLowerCase().includes(filter.toLowerCase())
+        );
 
-            filtered.forEach(tool => {
-                const card = document.createElement('div');
-                card.className = 'tool-card';
-                card.onclick = () => copyToClipboard(tool.url, tool.name);
-                
-                card.innerHTML = `
-                    <div class="icon-box">
-                        <i class="fa-solid ${tool.icon}"></i>
-                    </div>
-                    <div class="tool-info">
-                        <div class="tool-name">${tool.name}</div>
-                        <div class="tool-desc">${tool.desc}</div>
-                    </div>
-                    <div class="copy-hint">COPY</div>
-                `;
-                grid.appendChild(card);
-            });
+        if (filtered.length === 0) {
+          grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No tools found matching "${filter}"</div>`;
+          return;
         }
 
-        // Copy Logic
-        async function copyToClipboard(text, name) {
-            try {
-                await navigator.clipboard.writeText(text);
-                showToast(`Copied URL for ${name}`);
-            } catch (err) {
-                showToast('Failed to copy', true);
-            }
-        }
+        filtered.forEach(tool => {
+          const card = document.createElement('div');
+          card.className = 'tool-card';
+          // Decide click action based on tool property
+          card.onclick = () => handleToolClick(tool);
+          
+          const badgeText = tool.action === 'open' ? 'OPEN' : 'COPY';
 
-        // Toast Notification
-        function showToast(msg, isError = false) {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            
-            const icon = isError ? 'fa-circle-xmark' : 'fa-circle-check';
-            const color = isError ? 'var(--danger)' : 'var(--success)';
-            
-            toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color}"></i> ${msg}`;
-            
-            container.appendChild(toast);
-
-            // Remove after 3 seconds
-            setTimeout(() => {
-                toast.style.animation = 'fadeOut 0.3s forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // Search Listener
-        searchInput.addEventListener('input', (e) => {
-            renderTools(e.target.value);
+          card.innerHTML = `
+            <div class="icon-box">
+              <i class="fa-solid ${tool.icon}"></i>
+            </div>
+            <div class="tool-info">
+              <div class="tool-name">${tool.name}</div>
+              <div class="tool-desc">${tool.desc}</div>
+            </div>
+            <div class="copy-hint">${badgeText}</div>
+          `;
+          grid.appendChild(card);
         });
+      }
 
-        // Initial Load
-        renderTools();
+      // Handle Click (Switch Logic)
+      function handleToolClick(tool) {
+          if (tool.action === 'open') {
+              openToolView(tool.url);
+          } else {
+              copyToClipboard(tool.url, tool.name);
+          }
+      }
 
-        // --- PARTICLES SYSTEM ---
-        const canvas = document.getElementById('particles-js');
-        const ctx = canvas.getContext('2d');
-        let particlesArray = [];
+      // Open Tool Logic
+      function openToolView(url) {
+          const overlay = document.getElementById('toolOverlay');
+          const frame = document.getElementById('toolFrame');
+          
+          frame.src = url;
+          overlay.classList.add('active');
+      }
+
+      // Close Tool Logic (Back Button)
+      function closeTool() {
+          const overlay = document.getElementById('toolOverlay');
+          const frame = document.getElementById('toolFrame');
+          
+          overlay.classList.remove('active');
+          frame.src = "about:blank"; // Stop any media/scripts running
+      }
+
+      // Copy Logic
+      async function copyToClipboard(text, name) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast(`Copied URL for ${name}`);
+        } catch (err) {
+          showToast('Failed to copy', true);
+        }
+      }
+
+      // Toast Notification
+      function showToast(msg, isError = false) {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = 'toast';
         
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        const icon = isError ? 'fa-circle-xmark' : 'fa-circle-check';
+        const color = isError ? 'var(--danger)' : 'var(--success)';
+        
+        toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color}"></i> ${msg}`;
+        
+        container.appendChild(toast);
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.1;
-                this.speedX = Math.random() * 0.2 - 0.1;
-                this.speedY = Math.random() * 0.2 - 0.1;
-                this.opacity = Math.random() * 0.3 + 0.05;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+        // Remove after 3 seconds
+        setTimeout(() => {
+          toast.style.animation = 'fadeOut 0.3s forwards';
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
 
-        function initParticles() {
-            particlesArray = [];
-            const count = 40; 
-            for (let i = 0; i < count; i++) {
-                particlesArray.push(new Particle());
-            }
-            animateParticles();
-        }
+      // Search Listener
+      searchInput.addEventListener('input', (e) => {
+        renderTools(e.target.value);
+      });
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particlesArray.length; i++) {
-                particlesArray[i].update();
-                particlesArray[i].draw();
-            }
-            requestAnimationFrame(animateParticles);
-        }
+      // Initial Load
+      renderTools();
 
-        initParticles();
-    </script>
+      // --- PARTICLES SYSTEM ---
+      const canvas = document.getElementById('particles-js');
+      const ctx = canvas.getContext('2d');
+      let particlesArray = [];
+      
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 2 + 0.5;
+          this.speedX = Math.random() * 0.4 - 0.2;
+          this.speedY = Math.random() * 0.4 - 0.2;
+          this.opacity = Math.random() * 0.5 + 0.1;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          if (this.x < 0) this.x = canvas.width;
+          if (this.x > canvas.width) this.x = 0;
+          if (this.y < 0) this.y = canvas.height;
+          if (this.y > canvas.height) this.y = 0;
+        }
+        draw() {
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function initParticles() {
+        particlesArray = [];
+        const count = 30;
+        for (let i = 0; i < count; i++) {
+          particlesArray.push(new Particle());
+        }
+        animateParticles();
+      }
+
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particlesArray.length; i++) {
+          particlesArray[i].update();
+          particlesArray[i].draw();
+        }
+        requestAnimationFrame(animateParticles);
+      }
+
+      initParticles();
+		</script>
 </body>
+
 </html>

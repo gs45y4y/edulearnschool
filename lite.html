@@ -12,7 +12,6 @@
 	<style>
 		/* --- CORE VARIABLES --- */
 		:root {
-			/* Theme: Midnight Grey */
 			--bg-body: #202020;
 			--bg-sidebar: #2b2b2b;
 			--accent: #ffffff;
@@ -21,18 +20,12 @@
 			--card-bg: #333333;
 			--glow-text: 0 0 10px rgba(255, 255, 255, 0.2);
 			--glow-strong: 0 0 20px rgba(255, 255, 255, 0.5);
-
-			/* Background Overlay */
 			--bg-overlay: 0.0;
-			/* Default no dim */
-
-			/* Sizing */
 			--sidebar-width-collapsed: 54px;
 			--sidebar-width-expanded: 200px;
 			--nav-item-height: 40px;
 		}
 
-		/* --- RESET & BASE --- */
 		* {
 			box-sizing: border-box;
 			margin: 0;
@@ -55,7 +48,6 @@
 			position: relative;
 		}
 
-		/* Background Dim Overlay */
 		body::before {
 			content: '';
 			position: absolute;
@@ -68,7 +60,6 @@
 			pointer-events: none;
 		}
 
-		/* --- PARTICLES CANVAS --- */
 		#particles-js {
 			position: absolute;
 			width: 100%;
@@ -80,20 +71,21 @@
 			opacity: 0.4;
 		}
 
-		/* --- SIDEBAR NAVIGATION --- */
+		/* --- SIDEBAR --- */
 		.sidebar {
 			width: var(--sidebar-width-collapsed);
 			height: 100vh;
 			background-color: var(--bg-sidebar);
-			border-right: 1px solid #3a3a3a;
+			border-right: 1px solid rgba(255, 255, 255, 0.05);
 			display: flex;
 			flex-direction: column;
 			transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 			position: relative;
 			z-index: 1000;
-			box-shadow: 5px 0 20px rgba(0, 0, 0, 0.3);
+			box-shadow: 5px 0 30px rgba(0, 0, 0, 0.5);
 			overflow: hidden;
 			white-space: nowrap;
+			backdrop-filter: blur(10px);
 		}
 
 		.sidebar:hover {
@@ -101,24 +93,25 @@
 		}
 
 		.brand {
-			height: 50px;
+			height: 60px;
 			display: flex;
 			align-items: center;
-			padding: 0 14px;
-			font-weight: bold;
+			padding: 0 16px;
+			font-weight: 700;
 			font-size: 14px;
 			color: var(--text-main);
-			text-shadow: var(--glow-text);
-			border-bottom: 1px solid #3a3a3a;
-			margin-bottom: 5px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+			margin-bottom: 10px;
 			overflow: hidden;
+			letter-spacing: 0.5px;
 		}
 
 		.brand i {
 			min-width: 24px;
-			font-size: 16px;
-			margin-right: 10px;
+			font-size: 18px;
+			margin-right: 12px;
 			text-align: center;
+			color: var(--accent);
 		}
 
 		.brand span {
@@ -134,14 +127,15 @@
 		.nav-link {
 			display: flex;
 			align-items: center;
-			height: var(--nav-item-height);
-			padding: 0 14px;
+			height: 44px;
+			padding: 0 16px;
 			color: var(--text-muted);
 			text-decoration: none;
 			cursor: pointer;
 			transition: all 0.2s;
 			position: relative;
-			font-size: 12px;
+			font-size: 13px;
+			font-weight: 500;
 		}
 
 		.nav-link:hover,
@@ -158,14 +152,19 @@
 			height: 100%;
 			width: 3px;
 			background-color: var(--accent);
-			box-shadow: 0 0 8px var(--accent);
+			box-shadow: 0 0 12px var(--accent);
 		}
 
 		.nav-link i {
 			min-width: 24px;
 			font-size: 16px;
-			margin-right: 10px;
+			margin-right: 12px;
 			text-align: center;
+			transition: color 0.2s;
+		}
+
+		.nav-link:hover i {
+			color: var(--accent);
 		}
 
 		.nav-link span {
@@ -178,15 +177,14 @@
 			transition-delay: 0.1s;
 		}
 
-		/* --- FOOTER STATS --- */
 		.sidebar-footer {
 			margin-top: auto;
 			width: 100%;
-			background: rgba(0, 0, 0, 0.2);
-			border-top: 1px solid #3a3a3a;
+			background: rgba(0, 0, 0, 0.3);
+			border-top: 1px solid rgba(255, 255, 255, 0.05);
 			display: flex;
 			flex-direction: column;
-			padding: 10px 0;
+			padding: 15px 0;
 		}
 
 		.stat-row {
@@ -194,19 +192,19 @@
 			align-items: center;
 			justify-content: center;
 			width: 100%;
-			height: 28px;
+			height: 30px;
 			color: var(--text-muted);
 			font-size: 11px;
 			white-space: nowrap;
 			overflow: hidden;
 			transition: all 0.2s;
-			padding: 0 2px;
+			padding: 0 4px;
 		}
 
 		.timer-row {
 			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-			margin-bottom: 5px;
-			padding-bottom: 5px;
+			margin-bottom: 8px;
+			padding-bottom: 8px;
 		}
 
 		.sidebar:hover .stat-row {
@@ -222,9 +220,10 @@
 		}
 
 		.stat-value {
-			margin-left: 4px;
+			margin-left: 6px;
 			font-weight: 600;
 			color: var(--text-main);
+			font-family: monospace;
 		}
 
 		.sidebar:hover .stat-row i {
@@ -233,7 +232,7 @@
 
 		.stat-label {
 			display: none;
-			margin-left: 4px;
+			margin-left: 6px;
 			font-weight: normal;
 			color: #777;
 		}
@@ -242,7 +241,26 @@
 			display: inline;
 		}
 
-		/* Battery Colors */
+		/* --- ANIMATIONS & STATUS --- */
+		@keyframes fps-glow {
+			0% {
+				text-shadow: 0 0 5px #00e5ff;
+			}
+
+			50% {
+				text-shadow: 0 0 15px #00e5ff, 0 0 5px white;
+			}
+
+			100% {
+				text-shadow: 0 0 5px #00e5ff;
+			}
+		}
+
+		.fps-high-glow {
+			color: #00e5ff !important;
+			animation: fps-glow 1.5s infinite alternate;
+		}
+
 		.bat-high {
 			color: #4caf50;
 		}
@@ -259,7 +277,6 @@
 			color: #2196f3;
 		}
 
-
 		/* --- MAIN CONTENT --- */
 		.main-content {
 			flex: 1;
@@ -274,7 +291,7 @@
 			display: none;
 			width: 100%;
 			height: 100%;
-			animation: fadeIn 0.3s ease;
+			animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 			flex-direction: column;
 		}
 
@@ -295,7 +312,7 @@
 		@keyframes fadeIn {
 			from {
 				opacity: 0;
-				transform: scale(0.99);
+				transform: scale(0.98);
 			}
 
 			to {
@@ -304,47 +321,49 @@
 			}
 		}
 
-		/* --- HERO TEXT --- */
 		#hero-title {
-			font-size: 64px;
-			margin-bottom: 5px;
-			text-shadow: var(--glow-strong);
-			font-weight: 600;
-			letter-spacing: -1px;
-			line-height: 1.1;
+			font-size: 72px;
+			margin-bottom: 8px;
+			text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+			font-weight: 800;
+			letter-spacing: -2px;
+			line-height: 1;
+			background: linear-gradient(180deg, #fff, #aaa);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
 		}
 
 		.hero-subtitle {
 			color: var(--text-muted);
-			font-size: 16px;
-			margin-bottom: 10px;
+			font-size: 18px;
+			margin-bottom: 12px;
 			letter-spacing: 0.5px;
+			font-weight: 400;
 		}
 
 		.hero-quote {
 			color: #666;
-			font-size: 13px;
+			font-size: 14px;
 			font-style: italic;
-			margin-bottom: 40px;
-			font-family: monospace;
+			margin-bottom: 50px;
+			font-family: 'Courier New', monospace;
 			min-height: 20px;
 			z-index: 2;
-			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+			opacity: 0.7;
 		}
 
 		.clock-container {
 			text-align: center;
 			user-select: none;
-			opacity: 0.9;
-			margin-bottom: 40px;
+			margin-bottom: 50px;
 		}
 
 		.clock-time {
-			font-size: 36px;
-			font-weight: 300;
+			font-size: 42px;
+			font-weight: 200;
 			color: var(--text-main);
-			text-shadow: var(--glow-text);
-			letter-spacing: 2px;
+			text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+			letter-spacing: 3px;
 			margin-bottom: 5px;
 		}
 
@@ -352,198 +371,240 @@
 			font-size: 14px;
 			color: var(--text-muted);
 			text-transform: uppercase;
-			letter-spacing: 1px;
+			letter-spacing: 2px;
+			font-weight: 600;
 		}
 
-		/* Start Button */
+		/* --- CLEAN BUTTONS --- */
 		.start-btn {
 			background-color: var(--accent);
-			color: #222;
-			padding: 14px 40px;
-			border-radius: 50px;
-			font-size: 16px;
-			font-weight: 600;
+			color: #111;
+			padding: 16px 50px;
+			border-radius: 100px;
+			/* Full pill shape */
+			font-size: 15px;
+			font-weight: 800;
 			text-decoration: none;
 			border: none;
 			cursor: pointer;
-			box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-			transition: all 0.2s ease;
+			/* Sophisticated diffuse shadow */
+			box-shadow: 0 10px 40px -10px rgba(255, 255, 255, 0.3);
+			transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 			display: inline-flex;
 			align-items: center;
-			gap: 10px;
+			gap: 12px;
+			text-transform: uppercase;
+			letter-spacing: 1px;
 		}
 
 		.start-btn:hover {
-			transform: scale(1.05);
-			box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+			transform: translateY(-4px) scale(1.05);
+			box-shadow: 0 20px 50px -10px rgba(255, 255, 255, 0.5);
 		}
 
-		/* --- IFRAME WRAPPER --- */
-		.iframe-wrapper {
-			flex: 1;
-			width: 100%;
-			height: 100%;
-			background: #111;
-			border-radius: 0;
-			border: none;
-			box-shadow: none;
-			overflow: hidden;
+		.start-btn:active {
+			transform: translateY(-1px) scale(1.02);
 		}
 
-		iframe {
-			width: 100%;
-			height: 100%;
-			border: none;
-			display: block;
-		}
-
-		/* --- SETTINGS MODAL --- */
+		/* --- MODALS & FORMS --- */
 		.modal-overlay {
 			position: fixed;
 			top: 0;
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background: rgba(0, 0, 0, 0.7);
+			background: rgba(0, 0, 0, 0.6);
 			z-index: 2000;
 			display: none;
 			justify-content: center;
 			align-items: center;
-			backdrop-filter: blur(5px);
+			backdrop-filter: blur(12px);
+			opacity: 0;
+			transition: opacity 0.3s ease;
 		}
 
 		.modal-overlay.active {
 			display: flex;
+			opacity: 1;
 		}
 
 		.modal-box {
-			background: var(--bg-sidebar);
+			background: rgba(43, 43, 43, 0.95);
 			width: 450px;
-			border-radius: 8px;
-			border: 1px solid #444;
+			border-radius: 16px;
+			border: 1px solid rgba(255, 255, 255, 0.08);
 			padding: 0;
-			box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 			color: var(--text-main);
 			display: flex;
 			flex-direction: column;
 			overflow: hidden;
+			transform: scale(0.95);
+			transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		}
+
+		.modal-overlay.active .modal-box {
+			transform: scale(1);
 		}
 
 		.modal-header {
-			padding: 15px 20px;
-			border-bottom: 1px solid #3a3a3a;
+			padding: 20px 24px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 			display: flex;
 			justify-content: space-between;
-			font-weight: bold;
-			background: rgba(255, 255, 255, 0.05);
+			font-weight: 700;
+			font-size: 15px;
+			background: rgba(255, 255, 255, 0.02);
+			letter-spacing: 0.5px;
 		}
 
 		.close-btn {
 			cursor: pointer;
 			color: #888;
+			transition: 0.2s;
+			font-size: 18px;
 		}
 
 		.close-btn:hover {
 			color: #fff;
+			transform: rotate(90deg);
 		}
 
 		.modal-body {
-			padding: 20px;
+			padding: 24px;
 			max-height: 400px;
 			overflow-y: auto;
 		}
 
 		.setting-group {
-			margin-bottom: 20px;
-			padding-bottom: 20px;
-			border-bottom: 1px solid #3a3a3a;
+			margin-bottom: 24px;
+			padding-bottom: 24px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 		}
 
 		.setting-group:last-child {
 			border-bottom: none;
+			padding-bottom: 0;
+			margin-bottom: 10px;
 		}
 
 		.setting-label {
 			display: block;
-			font-size: 12px;
+			font-size: 11px;
 			color: var(--text-muted);
-			margin-bottom: 6px;
+			margin-bottom: 8px;
+			font-weight: 700;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+
+		.update-list {
+			list-style: none;
+			padding-left: 5px;
+			line-height: 1.6;
+		}
+
+		.update-list li::before {
+			content: "•";
+			color: var(--accent);
+			font-weight: bold;
+			display: inline-block;
+			width: 1em;
+			margin-left: -1em;
+		}
+
+		/* Inputs */
+		input[type="text"],
+		select {
+			width: 100%;
+			padding: 12px 16px;
+			background: rgba(0, 0, 0, 0.3);
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			color: var(--text-main);
+			border-radius: 8px;
+			outline: none;
+			font-size: 13px;
+			transition: all 0.2s;
+			font-family: inherit;
+		}
+
+		input[type="text"]:focus,
+		select:focus {
+			border-color: var(--accent);
+			background: rgba(0, 0, 0, 0.5);
+			box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+		}
+
+		/* --- MODERN BUTTONS (SECONDARY) --- */
+		.btn {
+			background: rgba(255, 255, 255, 0.06);
+			color: var(--text-main);
+			border: 1px solid rgba(255, 255, 255, 0.05);
+			padding: 12px 20px;
+			border-radius: 10px;
+			cursor: pointer;
+			font-size: 12px;
 			font-weight: 600;
+			transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+			width: 100%;
+			text-align: center;
+			margin-bottom: 12px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 8px;
 			text-transform: uppercase;
 			letter-spacing: 0.5px;
 		}
 
-		input[type="text"],
-		select {
-			width: 100%;
-			padding: 10px;
-			background: rgba(0, 0, 0, 0.2);
-			border: 1px solid #555;
-			color: var(--text-main);
-			border-radius: 4px;
-			outline: none;
-			font-size: 13px;
-		}
-
-		input[type="text"]:focus {
-			border-color: var(--accent);
-		}
-
-		.btn {
-			background: #333;
-			color: white;
-			border: none;
-			padding: 10px 16px;
-			border-radius: 4px;
-			cursor: pointer;
-			font-size: 12px;
-			transition: background 0.2s;
-			width: 100%;
-			text-align: center;
-			margin-bottom: 10px;
-			display: inline-block;
-		}
-
 		.btn:hover {
-			background: #444;
+			background: rgba(255, 255, 255, 0.12);
+			border-color: rgba(255, 255, 255, 0.2);
+			transform: translateY(-2px);
 		}
 
+		.btn:active {
+			transform: translateY(0);
+		}
+
+		/* --- MODERN BUTTONS (PRIMARY / WHITE) --- */
 		.btn-primary {
 			background: var(--accent);
 			color: #111;
-			font-weight: bold;
+			border: none;
+			/* Soft ambient glow instead of harsh outline */
+			box-shadow: 0 4px 15px rgba(255, 255, 255, 0.15);
+		}
+
+		.btn-primary:hover {
+			background: var(--accent);
+			/* Keep white */
+			transform: translateY(-2px) scale(1.02);
+			box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
 		}
 
 		.btn-danger {
-			background: #d32f2f;
-			color: #fff;
+			background: rgba(211, 47, 47, 0.2);
+			color: #ff8a80;
+			border-color: rgba(211, 47, 47, 0.3);
 		}
 
 		.btn-danger:hover {
-			background: #b71c1c;
+			background: rgba(211, 47, 47, 0.3);
+			box-shadow: 0 4px 15px rgba(211, 47, 47, 0.2);
 		}
 
-		.range-wrap {
-			display: flex;
-			align-items: center;
-			gap: 10px;
-		}
-
-		input[type="range"] {
+		.iframe-wrapper {
 			flex: 1;
+			width: 100%;
+			height: 100%;
+			background: #111;
 		}
 
-		.info-text {
-			font-size: 11px;
-			color: #666;
-			margin-top: 5px;
-			line-height: 1.4;
-		}
-
-		.upload-row {
-			display: flex;
-			gap: 10px;
-			align-items: center;
+		iframe {
+			width: 100%;
+			height: 100%;
+			border: none;
 		}
 	</style>
 </head>
@@ -575,6 +636,11 @@
 			<span>Tools</span>
 		</a>
 
+		<a class="nav-link" onclick="openUpdates()">
+			<i class="fa-solid fa-newspaper"></i>
+			<span>Updates</span>
+		</a>
+
 		<a class="nav-link" onclick="switchPage('info-page', this)">
 			<i class="fa-solid fa-circle-info"></i>
 			<span>Info</span>
@@ -594,6 +660,11 @@
 				<span class="stat-label">Session</span>
 			</div>
 			<div class="stat-row">
+				<i class="fa-solid fa-gauge-high"></i>
+				<span id="fps-display" class="stat-value">--</span>
+				<span class="stat-label">FPS</span>
+			</div>
+			<div class="stat-row">
 				<i class="fa-solid fa-user-group" style="color:#4caf50;"></i>
 				<span id="online-count" class="stat-value">0</span>
 				<span class="stat-label">online</span>
@@ -607,47 +678,35 @@
 	</nav>
 
 	<main class="main-content">
-
 		<section id="home" class="page active">
 			<div class="home-container">
-
 				<h1 id="hero-title">Edulearn Lite</h1>
 				<p class="hero-subtitle">The cleanest unblocked experience.</p>
-
 				<p class="hero-quote" id="random-quote">"coded by the skids, for the skids"</p>
-
 				<div class="clock-container">
 					<div class="clock-time" id="clock-time">00:00:00</div>
 					<div class="clock-date" id="clock-date">Loading Date...</div>
 				</div>
-
 				<button class="start-btn" onclick="startBrowsing()">
-                    Start Gaming <i class="fa-solid fa-arrow-right"></i>
-                </button>
+					Start Gaming <i class="fa-solid fa-arrow-right"></i>
+				</button>
 			</div>
 		</section>
 
 		<section id="games-page" class="page">
-			<div class="iframe-wrapper">
-				<iframe src="./math/gn-math.html"></iframe>
-			</div>
+			<div class="iframe-wrapper"><iframe src="./math/gn-math.html"></iframe></div>
 		</section>
 
 		<section id="search-page" class="page">
-			<div class="iframe-wrapper">
-				<iframe src="./active/index.html"></iframe>
-			</div>
+			<div class="iframe-wrapper"><iframe src="./active/index.html"></iframe></div>
 		</section>
+
 		<section id="tools-page" class="page">
-			<div class="iframe-wrapper">
-				<iframe src="./tools.html"></iframe>
-			</div>
+			<div class="iframe-wrapper"><iframe src="./tools.html"></iframe></div>
 		</section>
 
 		<section id="info-page" class="page">
-			<div class="iframe-wrapper">
-				<iframe id="info-frame" src=""></iframe>
-			</div>
+			<div class="iframe-wrapper"><iframe id="info-frame" src=""></iframe></div>
 		</section>
 	</main>
 
@@ -657,84 +716,67 @@
 				<span><i class="fa-solid fa-sliders" style="margin-right:10px;"></i>Config</span>
 				<i class="fa-solid fa-xmark close-btn" onclick="closeSettings()"></i>
 			</div>
-
 			<div class="modal-body">
 				<div class="setting-group">
 					<span class="setting-label">Tab Cloaking</span>
 					<input type="text" id="input-title" placeholder="Tab Title" onkeyup="updateTab()" style="margin-bottom: 10px;">
 					<input type="text" id="input-icon" placeholder="Tab Icon URL" onkeyup="updateTab()">
-                </div>
-
+				</div>
 					<div class="setting-group">
 						<span class="setting-label">Theme & Background</span>
-
 						<select id="theme-select" onchange="changeTheme(this.value)" style="margin-bottom: 15px;">
-                        <option value="midnight">Midnight Grey (Default)</option>
-                        <option value="ocean">Ocean Blue</option>
-                        <option value="sunset">Sunset Orange</option>
-                        <option value="amoled">Pure Black</option>
-                    </select>
-
-						<span class="setting-label">Background Image</span>
-						<select id="bg-preset" onchange="changeBgPreset(this.value)" style="margin-bottom: 10px;">
-                        <option value="none">None (Use Theme Color)</option>
-                        <option value="space">OS Icelandic theme</option>
-                        <option value="mountain">Alpine Mountains</option>
-                        <option value="city">Cyberpunk City</option>
-                        <option value="abstract">Dark Abstract</option>
-                    </select>
-
-						<div class="upload-row" style="margin-bottom: 15px;">
-							<label class="btn" style="flex:1; margin:0; display:flex; align-items:center; justify-content:center; gap:5px;">
-                            <i class="fa-solid fa-upload"></i> Upload File
-                            <input type="file" id="bg-upload" accept="image/*" style="display:none" onchange="handleBgUpload(this)">
-                        </label>
-							<button class="btn btn-danger" style="width:auto; margin:0;" onclick="clearBackground()" title="Remove Background">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-						</div>
-
+						<option value="midnight">Midnight Grey (Default)</option>
+						<option value="ocean">Ocean Blue</option>
+						<option value="sunset">Sunset Orange</option>
+						<option value="amoled">Pure Black</option>
+					</select>
 						<span class="setting-label">Background Dimming: <span id="dim-val">0%</span></span>
-						<div class="range-wrap">
-							<input type="range" id="dim-slider" min="0" max="90" value="0" oninput="updateBgDim(this.value)">
-                    </div>
-						</div>
-
-						<div class="setting-group">
-							<span class="setting-label">Particle Density: <span id="particle-val">20</span></span>
-							<div class="range-wrap">
-								<input type="range" id="particle-slider" min="0" max="80" value="20" oninput="updateParticlesRealtime(this.value)">
-                    </div>
-							</div>
-
-							<div class="setting-group">
-								<span class="setting-label">System Info</span>
-								<p class="info-text">
-									Analytics: <span style="color:#4caf50">Active (vercel)</span><br>
-                        Session: <span id="session-display">00:00</span>
-								</p>
-							</div>
-
-							<div>
-								<button class="btn btn-primary" onclick="openAboutBlank()">Open in About:Blank</button>
-								<button class="btn" onclick="saveSettings()">Save Configuration</button>
-							</div>
-						</div>
+						<input type="range" id="dim-slider" min="0" max="90" value="0" oninput="updateBgDim(this.value)" style="width:100%">
+				</div>
+						<button class="btn btn-primary" onclick="openAboutBlank()">
+					<i class="fa-solid fa-arrow-up-right-from-square"></i> Open in About:Blank
+				</button>
+						<button class="btn" onclick="saveSettings()">Save Changes</button>
 					</div>
 				</div>
+			</div>
 
-				<script>
-					// --- 1. STATE MANAGEMENT ---
+			<div class="modal-overlay" id="updates-modal">
+				<div class="modal-box" style="width: 400px;">
+					<div class="modal-header">
+						<span><i class="fa-solid fa-bullhorn" style="margin-right:10px; color: var(--accent);"></i>Recent Updates</span>
+						<i class="fa-solid fa-xmark close-btn" onclick="closeUpdates()"></i>
+					</div>
+					<div class="modal-body">
+						<div class="setting-group">
+							<span class="setting-label">Feb 4, 2026 - v2.2</span>
+							<ul class="update-list">
+								<li>Cleaned up UI Buttons (No more skid vibes)</li>
+								<li>Added smooth hover animations</li>
+								<li>Improved modal transparency</li>
+							</ul>
+						</div>
+						<div class="setting-group">
+							<span class="setting-label">Feb 2, 2026</span>
+							<p class="info-text">Initial release of the Lite framework with tab cloaking and
+								customizable themes.</p>
+						</div>
+						<button class="btn btn-primary" onclick="closeUpdates()">Got it!</button>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				// --- 1. STATE & SETTINGS ---
     const defaultSettings = {
-      title: 'Edulearn | Studies',
-      icon: 'https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png',
-      theme: 'midnight',
-      particles: 20,
-      bgImage: null, // Custom Base64 or URL
-      bgPreset: 'none',
-      bgDim: 0
+        title: 'Edulearn | Studies',
+        icon: 'https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png',
+        theme: 'midnight',
+        particles: 20,
+        bgImage: null,
+        bgPreset: 'none',
+        bgDim: 0
     };
-
     let userSettings = JSON.parse(localStorage.getItem('el_settings')) || defaultSettings;
 
     // --- 2. PARTICLES SYSTEM ---
@@ -743,402 +785,185 @@
     let particlesArray = [];
     let isAnimating = false;
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
+    function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
     class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = Math.random() * 0.4 - 0.2;
-        this.speedY = Math.random() * 0.4 - 0.2;
-        this.opacity = Math.random() * 0.5 + 0.1;
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-      }
-      draw() {
-        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-      }
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = Math.random() * 0.4 - 0.2;
+            this.speedY = Math.random() * 0.4 - 0.2;
+            this.opacity = Math.random() * 0.5 + 0.1;
+        }
+        update() {
+            this.x += this.speedX; this.y += this.speedY;
+            if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+        }
+        draw() {
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+        }
     }
 
     function initParticles() {
-      particlesArray = [];
-      let count = parseInt(userSettings.particles);
-      if (count > 100) count = 100;
-
-      for (let i = 0; i < count; i++) {
-        particlesArray.push(new Particle());
-      }
-
-      if (count > 0 && !isAnimating) {
-        isAnimating = true;
-        animateParticles();
-      } else if (count === 0) {
-        isAnimating = false;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
+        particlesArray = [];
+        let count = parseInt(userSettings.particles);
+        for (let i = 0; i < count; i++) particlesArray.push(new Particle());
+        if (count > 0 && !isAnimating) { isAnimating = true; animateParticles(); }
     }
 
     function animateParticles() {
-      if (!isAnimating) return;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-        particlesArray[i].draw();
-      }
-      requestAnimationFrame(animateParticles);
+        if (!isAnimating) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particlesArray.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
     }
     initParticles();
 
+    // --- 3. MODALS & AUTO-POPUP ---
+    function openSettings() { document.getElementById('settings-modal').classList.add('active'); }
+    function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
+    function openUpdates() { document.getElementById('updates-modal').classList.add('active'); }
+    function closeUpdates() { document.getElementById('updates-modal').classList.remove('active'); }
 
-    // --- 3. BACKGROUND LOGIC ---
-    const bgPresets = {
-        space: "https://www.usnews.com/object/image/00000162-f3a3-d0d5-a57f-fbf33c300000/3-vestrahorn-iceland.jpg?update-time=1745871301820&size=responsive970",
-        mountain: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1920&q=80",
-        city: "https://images.unsplash.com/photo-1555680202-c86f0e12f086?auto=format&fit=crop&w=1920&q=80",
-        abstract: "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=1920&q=80"
+    window.onload = () => {
+        applySettings();
+        if (!sessionStorage.getItem('updates_shown')) {
+            setTimeout(openUpdates, 1000);
+            sessionStorage.setItem('updates_shown', 'true');
+        }
     };
 
-    function applyBackground() {
-        const body = document.body;
-        
-        // 1. Handle Dimming
-        const dimVal = userSettings.bgDim || 0;
-        document.documentElement.style.setProperty('--bg-overlay', dimVal / 100);
-        document.getElementById('dim-slider').value = dimVal;
-        document.getElementById('dim-val').innerText = dimVal + "%";
-
-        // 2. Determine Image Source
-        let src = null;
-        
-        // Check Custom Upload first
-        if (userSettings.bgImage) {
-            src = userSettings.bgImage;
-            document.getElementById('bg-preset').value = 'none'; // Reset preset dropdown visually
-        } 
-        // Check Preset
-        else if (userSettings.bgPreset && userSettings.bgPreset !== 'none') {
-            src = bgPresets[userSettings.bgPreset];
-            document.getElementById('bg-preset').value = userSettings.bgPreset;
-        } else {
-            document.getElementById('bg-preset').value = 'none';
-        }
-
-        // 3. Apply
-        if (src) {
-            body.style.backgroundImage = `url('${src}')`;
-        } else {
-            body.style.backgroundImage = 'none';
-        }
-    }
-
-    function handleBgUpload(input) {
-        const file = input.files[0];
-        if (!file) return;
-
-        // Check size (limit to ~3MB to be safe for LocalStorage)
-        if (file.size > 3000000) {
-            alert("File is too large! Please choose an image under 3MB.");
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.onloadend = function() {
-            userSettings.bgImage = reader.result; // Base64 string
-            userSettings.bgPreset = 'none'; // Clear preset
-            applyBackground();
-        }
-        reader.readAsDataURL(file);
-    }
-
-    function changeBgPreset(val) {
-        if (val === 'none') {
-            userSettings.bgPreset = 'none';
-            userSettings.bgImage = null; // Clear custom too if they purposely choose None
-        } else {
-            userSettings.bgPreset = val;
-            userSettings.bgImage = null; // Preset overrides custom
-        }
-        applyBackground();
-    }
-
-    function clearBackground() {
-        userSettings.bgImage = null;
-        userSettings.bgPreset = 'none';
-        applyBackground();
-    }
-
-    function updateBgDim(val) {
-        userSettings.bgDim = val;
-        document.documentElement.style.setProperty('--bg-overlay', val / 100);
-        document.getElementById('dim-val').innerText = val + "%";
-    }
-
-
-    // --- 4. SETTINGS & THEME ---
-
+    // --- 4. THEME & SETTINGS LOGIC ---
     function applySettings() {
-      document.title = userSettings.title;
-      document.getElementById('dynamic-favicon').href = userSettings.icon;
-
-      document.getElementById('input-title').value = userSettings.title;
-      document.getElementById('input-icon').value = userSettings.icon;
-      document.getElementById('theme-select').value = userSettings.theme;
-      document.getElementById('particle-slider').value = userSettings.particles;
-      document.getElementById('particle-val').innerText = userSettings.particles;
-
-      updateTheme(userSettings.theme);
-      applyBackground(); // Apply BG
+        document.title = userSettings.title;
+        document.getElementById('dynamic-favicon').href = userSettings.icon;
+        document.getElementById('input-title').value = userSettings.title;
+        document.getElementById('input-icon').value = userSettings.icon;
+        document.getElementById('theme-select').value = userSettings.theme;
+        document.getElementById('dim-slider').value = userSettings.bgDim;
+        updateTheme(userSettings.theme);
+        updateBgDim(userSettings.bgDim);
     }
 
     function updateTheme(themeName) {
-      const root = document.documentElement.style;
-      if (themeName === 'ocean') {
-        root.setProperty('--bg-body', '#0f172a');
-        root.setProperty('--bg-sidebar', '#1e293b');
-        root.setProperty('--accent', '#38bdf8');
-        root.setProperty('--glow-text', '0 0 10px #38bdf8');
-        root.setProperty('--glow-strong', '0 0 20px #38bdf8');
-      } else if (themeName === 'sunset') {
-        root.setProperty('--bg-body', '#2a0a0a');
-        root.setProperty('--bg-sidebar', '#3f1010');
-        root.setProperty('--accent', '#f97316');
-        root.setProperty('--glow-text', '0 0 10px #f97316');
-        root.setProperty('--glow-strong', '0 0 20px #f97316');
-      } else if (themeName === 'amoled') {
-        root.setProperty('--bg-body', '#000000');
-        root.setProperty('--bg-sidebar', '#000000');
-        root.setProperty('--accent', '#ffffff');
-        root.setProperty('--card-bg', '#050505');
-      } else {
-        // Midnight
-        root.setProperty('--bg-body', '#202020');
-        root.setProperty('--bg-sidebar', '#2b2b2b');
-        root.setProperty('--accent', '#ffffff');
-        root.setProperty('--card-bg', '#333333');
-        root.setProperty('--glow-text', '0 0 10px rgba(255, 255, 255, 0.2)');
-        root.setProperty('--glow-strong', '0 0 20px rgba(255, 255, 255, 0.5)');
-      }
+        const root = document.documentElement.style;
+        if (themeName === 'ocean') {
+            root.setProperty('--bg-body', '#0f172a'); root.setProperty('--bg-sidebar', '#1e293b'); root.setProperty('--accent', '#38bdf8');
+        } else if (themeName === 'sunset') {
+            root.setProperty('--bg-body', '#2a0a0a'); root.setProperty('--bg-sidebar', '#3f1010'); root.setProperty('--accent', '#f97316');
+        } else if (themeName === 'amoled') {
+            root.setProperty('--bg-body', '#000000'); root.setProperty('--bg-sidebar', '#000000'); root.setProperty('--accent', '#ffffff');
+        } else {
+            root.setProperty('--bg-body', '#202020'); root.setProperty('--bg-sidebar', '#2b2b2b'); root.setProperty('--accent', '#ffffff');
+        }
     }
 
+    function saveSettings() { localStorage.setItem('el_settings', JSON.stringify(userSettings)); closeSettings(); }
+    function changeTheme(val) { userSettings.theme = val; updateTheme(val); }
+    function updateBgDim(val) { userSettings.bgDim = val; document.getElementById('dim-val').innerText = val + "%"; document.documentElement.style.setProperty('--bg-overlay', val / 100); }
     function updateTab() {
-      userSettings.title = document.getElementById('input-title').value;
-      userSettings.icon = document.getElementById('input-icon').value;
-      document.title = userSettings.title;
-      document.getElementById('dynamic-favicon').href = userSettings.icon;
+        userSettings.title = document.getElementById('input-title').value || "Edulearn | Studies";
+        userSettings.icon = document.getElementById('input-icon').value || "https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png";
+        document.title = userSettings.title;
+        document.getElementById('dynamic-favicon').href = userSettings.icon;
     }
 
-    function changeTheme(val) {
-      userSettings.theme = val;
-      updateTheme(val);
-    }
-
-    function updateParticlesRealtime(val) {
-      document.getElementById('particle-val').innerText = val;
-      userSettings.particles = parseInt(val);
-      initParticles();
-    }
-
-    function saveSettings() {
-      try {
-        localStorage.setItem('el_settings', JSON.stringify(userSettings));
-        closeSettings();
-      } catch (e) {
-        alert("Settings could not be saved (Storage Full). Your background image might be too large.");
-      }
-    }
-
-    function openSettings() {
-      document.getElementById('settings-modal').classList.add('active');
-    }
-
-    function closeSettings() {
-      document.getElementById('settings-modal').classList.remove('active');
-    }
-
-    // --- 5. NAVIGATION, CLOCK & QUOTES ---
-
+    // --- 5. NAVIGATION, CLOCK & FULL QUOTE LIST ---
     function updateClock() {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-      document.getElementById('clock-time').innerText = `${hours}:${minutes}:${seconds} ${ampm}`;
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('clock-date').innerText = now.toLocaleDateString('en-US', options);
+        const now = new Date();
+        document.getElementById('clock-time').innerText = now.toLocaleTimeString();
+        document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+    setInterval(updateClock, 1000); updateClock();
 
     function displayRandomQuote() {
         const quotes = [
-            "coded by the skids, for the skids",
-            "teachers hate ts",
-            "unblocked and unlocked",
-            "running on pure caffeine",
-            "if you're reading this, do your homework",
-            "no admins allowed",
-            "security through obscurity",
-            "ctrl + w to win instantly",
-            "made with <3 and spaghetti code",
-            "Set this up in alt tab to quickly escape",
-            "L AH",
-            "decode this: aHR0cHM6Ly9hbmRyZXdodWlzLmdheQ==",
-            "last updated: Feb 3, 2026",
-            "need more blahaj",
-            "typing this while going to class lol",
-			"mrbeast i neeeeed some money",
-			"please speeed i neeeeed this - EMDC",
-			"How are you playing Hollow Knight at school bro?",
-			"I'm gonna steal your os, remove the stupid stuff except the browser, and make it my own hahaha",
-			"lmfao skids who steal my source code, riddle me this: It's public on github.",
-			"originally just a webview kajig",
-			"frogiesarcade vibes",
-			"falarisisnt.gay",
-			"And I.. I will get my revenge - Conall Sadako",
-			"This is where the fun begins - Obi Wan Kenobi",
-			"AH is depressed ahh vibes",
-			"vibecoded type shi",
-			"vibecoded, but it WORKS!",
-			"skid approved!!",
-			"It's VERSELL not VERSUL",
-			"Monkey find computer. Monkey type.",
-			"blahhahahahhahhahahhahhahaah stupid messages",
-			"I....am not Steve.",
-			"por-tugal - phew",
-			"buh bye",
-			"hihihihihihihihi",
-		    "goguardian is trash",
-			"lightsped sytems",
-			"go get the milk - therealfour, milk lover 67",
-			"Pull up! Terrain Ahead - Flight #67 autopilot before crash",
-			"Twinkle toes",
-			"No matter how much it feels like it, I'm not gay I swear! - A random",
-			"I need more blahajjjjjj - vk6",
-			"THIS IS MY ADDRESSS WHY U LEAKIN IT!!!??!?! - .vikc",
-			"last message typed so far"
-	
+            "coded by the skids, for the skids", "teachers hate ts", "unblocked and unlocked", "running on pure caffeine", "if you're reading this, do your homework",
+            "no admins allowed", "security through obscurity", "ctrl + w to win instantly", "made with <3 and spaghetti code", "Set this up in alt tab to quickly escape",
+            "L AH", "decode this: aHR0cHM6Ly9hbmRyZXdodWlzLmdheQ==", "last updated: Feb 3, 2026", "need more blahaj", "typing this while going to class lol",
+            "mrbeast i neeeeed some money", "please speeed i neeeeed this - EMDC", "How are you playing Hollow Knight at school bro?",
+            "I'm gonna steal your os, remove the stupid stuff except the browser, and make it my own hahaha", "lmfao skids who steal my source code, riddle me this: It's public on github.",
+            "originally just a webview kajig", "frogiesarcade vibes", "L", "And I.. I will get my revenge - Conall Sadako", "This is where the fun begins - Obi Wan Kenobi",
+            "AH is depressed ahh vibes", "vibecoded type shi", "vibecoded, but it WORKS!", "skid approved!!", "It's VERSELL not VERSUL", "Monkey find computer. Monkey type.",
+            "blahhahahahhahhahahhahhahaah stupid messages", "I....am not Steve.", "por-tugal - phew", "buh bye", "hihihihihihihihi", "goguardian is trash", "lightsped sytems",
+            "go get the milk - therealfour, milk lover 67", "Pull up! Terrain Ahead - Flight #67 autopilot before crash", "Twinkle toes",
+            "No matter how much it feels like it, I'm not gay I swear! - A random", "I need more blahajjjjjj - vk6", "THIS IS MY ADDRESSS WHY U LEAKIN IT!!!??!?! - .vikc",
+            "yo the old games site are ancient compared to ts - guy", "Wait.. I can have MULTIPLE TABS?!? HOLY SHI*", "If you use this and I know you're a skid, screw you lmfao",
+            "generate an image of fartrizzeggplant1 hahahahaa", "if you use this, you're not gay", "https://bebby.w3spaces.com for more!", "you're dumb", "I'm depressed typing this",
+            "dont cry.. just.. cry", "L r/k12sysadmins", "gaming freedom!", "yall ready to play TS ALL DAY!?", "The ogs know of classroom.lol", "tyrone's stupid games",
+            "L linewize", "I have securly for breakfast, gogaurdian for lunch, and lightsped for dinner - a random sk1d", "if you read this, consider yourself lucky.",
+            "Albie plsssss bring the custom dmn back it was so PEAK", "educational.sbs", "dont mind me..I'm just here", "I'm jobless fr", "Jobless for using AI? Really?",
+            "if you called me a skid, doing it fucking again.", "Nig-eria.. woah, that was close", "not racist fr", "if you go on 'shinano r3*', you're a degenerate ",
+            "THIS SITE IS NOT FOR DEGENERATES. GO AWAY!!", "eat my pick- this pickle", "if i catch you tryna bypass to go to the hub consider yourself unlucky.",
+            "I should ring Alvin's gong - wise guy", "If you want to humiliate your enemies, do it in a way that doesn't waste your own time. Use AI - Sun Zu",
+            "skibdiidiididiididiidiidd", "albie was here", "L HAZEL, REISIMIKA, SOPQL, and EMMYWEMMY. - Absolute cinema guy", "AH you suck at batminton - anonymous",
+            "Go on.. touch app scripts. - dedede the third", "L NONDEGENERATES I USE SKIDBOOT - AH (bro can guess who)", "UNBLOCKED GAMES IN DA BIG 26!",
+            "NO G00NING (And I specifically am talking about a CERTAIN SOMEONE)", "Pathetic - AH", "If you made it this far, join the discord!", "You know I know if you hop on the hUb, do you?",
+            "Deepfakes of me lmfao", "L krish", "krishisaddictedtobrawlstars.raspberryip.com", "Hi, mr J20.", "the type of shi i see on tiktok:", "I'm sorry, what-", "last message typed so far"
         ];
-        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-        document.getElementById('random-quote').innerText = '"' + randomQuote + '"';
+        document.getElementById('random-quote').innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
     }
     displayRandomQuote();
 
-    function openAboutBlank() {
-      let win = window.open();
-      win.document.body.style.margin = '0';
-      win.document.body.style.height = '100vh';
-      let iframe = win.document.createElement('iframe');
-      iframe.style.border = 'none';
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.style.margin = '0';
-      iframe.src = window.location.href;
-      win.document.body.appendChild(iframe);
-    }
-
     function switchPage(pageId, navElement) {
-      document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-      const page = document.getElementById(pageId);
-      if(page) page.classList.add('active');
-
-      if (navElement) {
-        document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-        navElement.classList.add('active');
-      }
-
-      if (pageId === 'home') displayRandomQuote();
-      if (pageId === 'info-page') {
-          const infoFrame = document.getElementById('info-frame');
-          if (!infoFrame.getAttribute('src')) {
-              infoFrame.src = atob('Li9pbmZvLmh0bWw=');
-          }
-      }
+        document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        if (navElement) {
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            navElement.classList.add('active');
+        }
+        if (pageId === 'home') displayRandomQuote();
+        if (pageId === 'info-page' && !document.getElementById('info-frame').src) document.getElementById('info-frame').src = atob('Li9pbmZvLmh0bWw=');
     }
 
-    function startBrowsing() {
-      switchPage('games-page');
-      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-link')[1].classList.add('active');
-    }
+    function startBrowsing() { switchPage('games-page'); document.querySelectorAll('.nav-link')[1].classList.add('active'); }
 
-    // --- GAME TIMER ---
+    // --- 6. SYSTEM STATS (FPS, TIMER, BATTERY, ONLINE) ---
     let startTime = Date.now();
-    function updateGameTimer() {
+    setInterval(() => {
         let diff = Math.floor((Date.now() - startTime) / 1000);
-        let h = Math.floor(diff / 3600);
-        let m = Math.floor((diff % 3600) / 60);
-        let s = diff % 60;
-        let formatted = (h > 0 ? h + ':' : '') + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-        document.getElementById('game-timer').innerText = formatted;
-        document.getElementById('session-display').innerText = formatted;
-    }
-    setInterval(updateGameTimer, 1000);
+        let m = Math.floor(diff / 60), s = diff % 60;
+        document.getElementById('game-timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+    }, 1000);
 
-    // --- BATTERY ---
+    let frameCount = 0, lastTime = performance.now();
+    function updateFPS() {
+        frameCount++; let now = performance.now();
+        if (now - lastTime >= 1000) {
+            let fps = frameCount; document.getElementById('fps-display').innerText = fps;
+            fps >= 55 ? document.getElementById('fps-display').classList.add('fps-high-glow') : document.getElementById('fps-display').classList.remove('fps-high-glow');
+            frameCount = 0; lastTime = now;
+        }
+        requestAnimationFrame(updateFPS);
+    }
+    updateFPS();
+
     function updateBatteryUI(battery) {
         const level = Math.round(battery.level * 100);
-        const charging = battery.charging;
         const icon = document.getElementById('bat-icon');
-        const text = document.getElementById('battery-level');
-        text.innerText = level + '%';
-        icon.className = "fa-solid";
-        icon.classList.remove('bat-high', 'bat-med', 'bat-low', 'bat-charge');
-        
-        if (charging) {
-            icon.classList.add('fa-bolt', 'bat-charge');
-        } else {
-            if(level > 75) icon.classList.add('fa-battery-full');
-            else if(level > 50) icon.classList.add('fa-battery-three-quarters');
-            else if(level > 25) icon.classList.add('fa-battery-half');
-            else if(level > 10) icon.classList.add('fa-battery-quarter');
-            else icon.classList.add('fa-battery-empty');
-            
-            if (level > 50) icon.classList.add('bat-high');
-            else if (level > 20) icon.classList.add('bat-med');
-            else icon.classList.add('bat-low');
-        }
+        document.getElementById('battery-level').innerText = level + '%';
+        icon.className = "fa-solid " + (battery.charging ? "fa-bolt bat-charge" : (level > 50 ? "fa-battery-full bat-high" : (level > 20 ? "fa-battery-half bat-med" : "fa-battery-quarter bat-low")));
     }
-    if (navigator.getBattery) {
-        navigator.getBattery().then(function(battery) {
-            updateBatteryUI(battery);
-            battery.addEventListener('levelchange', function() { updateBatteryUI(battery); });
-            battery.addEventListener('chargingchange', function() { updateBatteryUI(battery); });
-        });
-    } else {
-        document.getElementById('battery-level').innerText = "N/A";
-    }
+    if (navigator.getBattery) navigator.getBattery().then(b => { updateBatteryUI(b); b.onlevelchange = () => updateBatteryUI(b); b.onchargingchange = () => updateBatteryUI(b); });
 
-    // --- INIT ---
-    applySettings();
-
-    // --- ONLINE USERS ---
     const onlineId = crypto.randomUUID();
     async function updateOnline() {
-      try {
-        const r = await fetch(`/api/online?id=${onlineId}`, { cache: "no-store" });
-        if (!r.ok) return;
-        document.getElementById("online-count").textContent = await r.text();
-      } catch { }
+        try { const r = await fetch(`/api/online?id=${onlineId}`, { cache: "no-store" }); if (r.ok) document.getElementById("online-count").textContent = await r.text(); } catch { }
     }
-    updateOnline();
-    setInterval(updateOnline, 15000);
-				</script>
+    setInterval(updateOnline, 15000); updateOnline();
+
+    function openAboutBlank() {
+        let win = window.open();
+        let iframe = win.document.createElement('iframe');
+        iframe.style = "position:fixed;top:0;left:0;width:100%;height:100%;border:none;";
+        iframe.src = window.location.href; win.document.body.appendChild(iframe);
+    }
+			</script>
 </body>
 
 </html>
