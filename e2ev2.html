@@ -518,8 +518,7 @@
             var confirmationMessage = 'CLOSING THIS TAB COULD HAVE UNINTENDED CONSEQUENCES! '
                 + 'If you leave, your chats and private key will be lost.';
 
-            (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-            return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+             
         });
     </script>
 </body>

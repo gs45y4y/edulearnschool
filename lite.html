@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
 	<meta charset="UTF-8">
@@ -16,11 +16,9 @@
 			--bg-card: #111111;
 			--border-color: #222;
 			--accent: #c026d3;
-			/* Vibrant Purple */
 			--accent-glow: rgba(192, 38, 211, 0.4);
 			--text-main: #f5f5f5;
 			--text-muted: #a3a3a3;
-
 			--sidebar-width-collapsed: 60px;
 			--sidebar-width-expanded: 220px;
 		}
@@ -223,22 +221,17 @@
 			display: inline;
 		}
 
-		/* --- ANIMATIONS & STATUS --- */
 		.fps-high {
 			color: #22c55e;
 		}
 
-		/* Green */
 		.fps-med {
 			color: #eab308;
 		}
 
-		/* Yellow */
 		.fps-low {
 			color: #ef4444;
 		}
-
-		/* Red */
 
 		.bat-high {
 			color: #4caf50;
@@ -391,7 +384,7 @@
 			border: none;
 		}
 
-		/* --- SETTINGS MODAL (New Multi-tab Design) --- */
+		/* --- SETTINGS MODAL --- */
 		.modal-overlay {
 			position: fixed;
 			top: 0;
@@ -440,7 +433,6 @@
 			color: #fff;
 		}
 
-		/* Settings Sidebar */
 		.settings-nav {
 			width: 220px;
 			background: #0c0c0c;
@@ -483,11 +475,14 @@
 			border-left-color: var(--accent);
 		}
 
-		/* Settings Content */
 		.settings-content {
 			flex: 1;
 			padding: 40px;
 			overflow-y: auto;
+			/* Added spacing to prevent overlap */
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
 		}
 
 		.settings-tab {
@@ -540,7 +535,6 @@
 			margin-top: 15px;
 		}
 
-		/* Custom Toggle Switch */
 		.toggle-switch {
 			position: relative;
 			display: inline-block;
@@ -586,14 +580,7 @@
 			transform: translateX(24px);
 		}
 
-		.btn-group {
-			display: flex;
-			gap: 10px;
-			margin-top: 15px;
-		}
-
 		.btn {
-			flex: 1;
 			padding: 12px;
 			border-radius: 8px;
 			border: 1px solid #333;
@@ -670,7 +657,6 @@
 			background: rgba(0, 0, 0, 0.5);
 		}
 
-		/* --- UPDATES MODAL (Separate) --- */
 		.updates-modal-box {
 			background: rgba(17, 17, 17, 0.95);
 			width: 400px;
@@ -680,20 +666,10 @@
 			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 			color: var(--text-main);
 		}
-
-		.update-list li::before {
-			content: "•";
-			color: var(--accent);
-			font-weight: bold;
-			display: inline-block;
-			width: 1em;
-			margin-left: -1em;
-		}
 	</style>
 </head>
 
 <body>
-
 	<canvas id="particles-js"></canvas>
 
 	<nav class="sidebar">
@@ -701,7 +677,6 @@
 			<i class="fa-solid fa-ghost"></i>
 			<span>Edulearn Lite</span>
 		</div>
-
 		<a class="nav-link active" onclick="switchPage('home', this)">
 			<i class="fa-solid fa-house"></i>
 			<span>Home</span>
@@ -718,24 +693,23 @@
 			<i class="fa-solid fa-wrench"></i>
 			<span>Tools</span>
 		</a>
-
 		<a class="nav-link" onclick="openUpdates()">
 			<i class="fa-solid fa-newspaper"></i>
 			<span>Updates</span>
 		</a>
-
 		<a class="nav-link" onclick="switchPage('info-page', this)">
 			<i class="fa-solid fa-circle-info"></i>
 			<span>Info</span>
 		</a>
-
 		<a class="nav-link" onclick="openSettings()">
 			<i class="fa-solid fa-gear"></i>
 			<span>Settings</span>
 		</a>
-
+		<a class="nav-link" onclick="switchPage('extras-page', this)">
+			<i class="fa-solid fa-plus"></i>
+			<span>Extras</span>
+		</a>
 		<div style="flex-grow: 1;"></div>
-
 		<div class="sidebar-footer">
 			<div class="stat-row timer-row">
 				<i class="fa-solid fa-stopwatch"></i>
@@ -779,24 +753,23 @@
 		<section id="games-page" class="page">
 			<div class="iframe-wrapper"><iframe src="./math/gn-math.html"></iframe></div>
 		</section>
-
 		<section id="search-page" class="page">
 			<div class="iframe-wrapper"><iframe src="./active/index.html"></iframe></div>
 		</section>
-
 		<section id="tools-page" class="page">
 			<div class="iframe-wrapper"><iframe src="./tools.html"></iframe></div>
 		</section>
-
 		<section id="info-page" class="page">
 			<div class="iframe-wrapper"><iframe src="./info.html"></iframe></div>
+		</section>
+		<section id="extras-page" class="page">
+			<div class="iframe-wrapper"><iframe src="./extras.html"></iframe></div>
 		</section>
 	</main>
 
 	<div class="modal-overlay" id="settings-modal">
 		<div class="settings-container">
 			<i class="fa-solid fa-xmark close-modal" onclick="closeSettings()"></i>
-
 			<div class="settings-nav">
 				<div class="settings-nav-header">Settings</div>
 				<div class="settings-nav-item active" onclick="switchSettingsTab('tab-cloaking', this)">
@@ -811,19 +784,20 @@
 				<div class="settings-nav-item" onclick="switchSettingsTab('tab-data', this)">
 					<i class="fa-solid fa-database"></i> Data
 				</div>
+				<div class="settings-nav-item" onclick="switchSettingsTab('tab-experiments', this)">
+					<i class="fa-solid fa-flask"></i> Experiments
+				</div>
 			</div>
 
 			<div class="settings-content">
 				<div id="tab-cloaking" class="settings-tab active">
 					<div class="section-title">Cloaking</div>
 					<div class="section-desc">Manage disguise and stealth settings.</div>
-
 					<div class="card">
 						<h3>About:Blank Launcher</h3>
-						<p>Hides the URL and history by embedding the site in a blank page.</p>
-						<div class="btn-group">
-							<button class="btn btn-primary" onclick="openAboutBlank()">Launch About:Blank</button>
-							<button class="btn" onclick="alert('Use about:blank for best results.')">Launch Blob</button>
+						<div class="btn-group" style="display:flex; gap:10px;">
+							<button class="btn btn-primary" onclick="openAboutBlank()" style="flex:1;">Launch About:Blank</button>
+							<button class="btn" onclick="alert('Use about:blank for best results.')" style="flex:1;">Launch Blob</button>
 						</div>
 						<div class="toggle-row">
 							<span>Auto-launch on open</span>
@@ -833,7 +807,6 @@
                             </label>
 						</div>
 					</div>
-
 					<div class="card">
 						<h3>Tab Disguise</h3>
 						<div class="preset-grid">
@@ -860,7 +833,6 @@
 						<div class="section-desc">Safety features for emergency switching.</div>
 						<div class="card">
 							<h3>Panic Binding</h3>
-							<p>Click the box below and press a key to bind it.</p>
 							<input type="text" id="panic-key-display" placeholder="Click to bind..." readonly onclick="startBinding()">
 							<input type="text" id="panic-url" value="https://launchpad.classlink.com" placeholder="Redirect URL" onchange="savePanicSettings()">
 							<div class="toggle-row">
@@ -890,7 +862,7 @@
 							<div class="toggle-row">
 								<span>Particles</span>
 								<label class="toggle-switch">
-                                <input type="checkbox" checked onchange="toggleParticles(this)">
+                                <input type="checkbox" id="particle-toggle" checked onchange="toggleParticles(this)">
                                 <span class="slider"></span>
                             </label>
 							</div>
@@ -902,7 +874,23 @@
 						<div class="card">
 							<h3>Reset</h3>
 							<p>Clear all saved settings and preferences.</p>
-							<button class="btn" style="color:#ff8a80; border-color: #5c1818; background: #2a0a0a;" onclick="localStorage.removeItem('el_settings'); location.reload();">Reset All Data</button>
+							<button class="btn" style="color:#ff8a80; border-color: #5c1818; background: #2a0a0a; width: 100%;" onclick="localStorage.removeItem('el_settings'); location.reload();">Reset All Data</button>
+						</div>
+					</div>
+
+					<div id="tab-experiments" class="settings-tab">
+						<div class="section-title">Experiments</div>
+						<div class="section-desc">Beta features that may be unstable.</div>
+						<div class="card">
+							<h3>EdulearnOS</h3>
+							<p>Switch the environment to the OS-style layout.</p>
+							<div class="toggle-row">
+								<span>Enable EdulearnOS</span>
+								<label class="toggle-switch">
+                                <input type="checkbox" id="edulearnos-toggle" onchange="toggleEdulearnOS(this)">
+                                <span class="slider"></span>
+                            </label>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -917,42 +905,37 @@
 					<i class="fa-solid fa-xmark close-btn" onclick="closeUpdates()" style="cursor:pointer;"></i>
 				</div>
 				<div style="margin-bottom:20px; border-bottom:1px solid #333; padding-bottom:10px;">
-					<span style="font-size:11px; color:#888; text-transform:uppercase;">Feb 5, 2026 - v5.3.0</span>
+					<span style="font-size:11px; color:#888; text-transform:uppercase;">Feb 5, 2026 - v5.3.1</span>
 					<ul style="list-style:none; padding-left:10px; margin-top:5px; line-height:1.6;">
-						<li>• New Advanced Settings Menu</li>
-						<li>• Panic Key & Cloaking Added</li>
-						<li>• Cleaned up UI</li>
+						<li>• Fixed Settings Overlap</li>
+						<li>• Added EdulearnOS Experiment</li>
+						<li>• Improved Modal Layout</li>
 					</ul>
 				</div>
-				<button class="btn btn-primary" onclick="closeUpdates()">Got it!</button>
+				<button class="btn btn-primary" onclick="closeUpdates()" style="width:100%;">Got it!</button>
 			</div>
 		</div>
 
 		<script>
-			// --- 1. SETTINGS STATE ---
-        const defaultSettings = {
+			const defaultSettings = {
             title: 'Edulearn | Studies',
             icon: 'https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png',
             theme: 'midnight',
             particles: true,
             autoCloak: false,
-            // antiClose: false, // REMOVED FROM DEFAULTS
             panicKey: '`',
             panicUrl: 'https://launchpad.classlink.com',
             panicEnabled: true
         };
         let userSettings = JSON.parse(localStorage.getItem('el_settings')) || defaultSettings;
 
-        // --- 2. PARTICLES SYSTEM (Restored) ---
+        // Particles System
         const canvas = document.getElementById('particles-js');
         const ctx = canvas.getContext('2d');
         let particlesArray = [];
         let isAnimating = false;
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
@@ -966,43 +949,27 @@
                 this.opacity = Math.random() * 0.5 + 0.1;
             }
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
+                this.x += this.speedX; this.y += this.speedY;
                 if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
                 if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
             }
             draw() {
                 ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
             }
         }
 
         function initParticles() {
             particlesArray = [];
-            if (!userSettings.particles) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                isAnimating = false;
-                return;
-            }
+            if (!userSettings.particles) { ctx.clearRect(0, 0, canvas.width, canvas.height); isAnimating = false; return; }
             for (let i = 0; i < 30; i++) particlesArray.push(new Particle());
-            if (!isAnimating) {
-                isAnimating = true;
-                animateParticles();
-            }
+            if (!isAnimating) { isAnimating = true; animateParticles(); }
         }
 
         function animateParticles() {
-            if (!isAnimating || !userSettings.particles) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                return;
-            }
+            if (!isAnimating || !userSettings.particles) { ctx.clearRect(0, 0, canvas.width, canvas.height); return; }
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particlesArray.forEach(p => {
-                p.update();
-                p.draw();
-            });
+            particlesArray.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animateParticles);
         }
         initParticles();
@@ -1013,7 +980,7 @@
             initParticles();
         }
 
-        // --- 3. UI LOGIC (Navigation, Quotes) ---
+        // Navigation
         function switchPage(pageId, navElement) {
             document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
@@ -1022,7 +989,6 @@
                 navElement.classList.add('active');
             }
             if (pageId === 'home') displayRandomQuote();
-            if (pageId === 'info-page' && !document.getElementById('info-frame').src) document.getElementById('info-frame').src = atob('Li9pbmZvLmh0bWw=');
         }
 
         function startBrowsing() {
@@ -1030,90 +996,37 @@
             document.querySelectorAll('.nav-link')[1].classList.add('active');
         }
 
-        function openUpdates() {
-            document.getElementById('updates-modal').classList.add('active');
-        }
-
-        function closeUpdates() {
-            document.getElementById('updates-modal').classList.remove('active');
-        }
+        function openUpdates() { document.getElementById('updates-modal').classList.add('active'); }
+        function closeUpdates() { document.getElementById('updates-modal').classList.remove('active'); }
 
         function displayRandomQuote() {
-            const quotes = [
-                "coded by the skids, for the skids", "teachers hate ts", "unblocked and unlocked", "running on pure caffeine",
-                "if you're reading this, do your homework", "no admins allowed", "security through obscurity", "ctrl + w to win instantly",
-                "made with <3 and spaghetti code", "Set this up in alt tab to quickly escape", "L AH", "decode this: aHR0cHM6Ly9hbmRyZXdodWlzLmdheQ==",
-                "need more blahaj", "typing this while going to class lol", "mrbeast i neeeeed some money", "please speeed i neeeeed this - EMDC",
-                "How are you playing Hollow Knight at school bro?", "I'm gonna steal your os, remove the stupid stuff except the browser, and make it my own hahaha",
-                "lmfao skids who steal my source code, riddle me this: It's public on github.", "originally just a webview kajig", "frogiesarcade vibes", "L",
-                "And I.. I will get my revenge - Conall Sadako", "This is where the fun begins - Obi Wan Kenobi", "AH is depressed ahh vibes", "vibecoded type shi",
-                "vibecoded, but it WORKS!", "skid approved!!", "It's VERSELL not VERSUL", "Monkey find computer. Monkey type.", "blahhahahahhahhahahhahhahaah stupid messages",
-                "I....am not Steve.", "por-tugal - phew", "buh bye", "hihihihihihihihi", "goguardian is trash", "lightsped sytems",
-                "go get the milk - therealfour, milk lover 67", "Pull up! Terrain Ahead - Flight #67 autopilot before crash", "Twinkle toes",
-                "No matter how much it feels like it, I'm not gay I swear! - A random", "I need more blahajjjjjj - vk6", "THIS IS MY ADDRESSS WHY U LEAKIN IT!!!??!?! - .vikc",
-                "yo the old games site are ancient compared to ts - guy", "Wait.. I can have MULTIPLE TABS?!? HOLY SHI*", "If you use this and I know you're a skid, screw you lmfao",
-                "generate an image of fartrizzeggplant1 hahahahaa", "if you use this, you're not gay", "https://bebby.w3spaces.com for more!", "you're dumb",
-                "I'm depressed typing this", "dont cry.. just.. cry", "L r/k12sysadmins", "gaming freedom!", "yall ready to play TS ALL DAY!?", "The ogs know of classroom.lol",
-                "tyrone's stupid games", "L linewize", "I have securly for breakfast, gogaurdian for lunch, and lightsped for dinner - a random sk1d",
-                "if you read this, consider yourself lucky.", "Albie plsssss bring the custom dmn back it was so PEAK", "educational.sbs", "dont mind me..I'm just here",
-                "I'm jobless fr", "Jobless for using AI? Really?", "if you called me a skid, doing it fucking again.", "Nig-eria.. woah, that was close", "not racist fr",
-                "if you go on 'shinano r3*', you're a degenerate ", "THIS SITE IS NOT FOR DEGENERATES. GO AWAY!!", "eat my pick- this pickle",
-                "if i catch you tryna bypass to go to the hub consider yourself unlucky.", "I should ring Alvin's gong - wise guy",
-                "If you want to humiliate your enemies, do it in a way that doesn't waste your own time. Use AI - Sun Zu", "skibdiidiididiididiidiidd", "albie was here",
-                "L HAZEL, REISIMIKA, SOPQL, and EMMYWEMMY. - Absolute cinema guy", "AH you suck at batminton - anonymous", "Go on.. touch app scripts. - dedede the third",
-                "L NONDEGENERATES I USE SKIDBOOT - AH (bro can guess who)", "UNBLOCKED GAMES IN DA BIG 26!", "NO G00NING (And I specifically am talking about a CERTAIN SOMEONE)",
-                "Pathetic - AH", "If you made it this far, join the discord!", "You know I know if you hop on the hUb, do you?", "Deepfakes of me lmfao", "L krish",
-                "krishisaddictedtobrawlstars.raspberryip.com", "Hi, mr J20.", "the type of shi i see on tiktok:", "I'm sorry, what-", "last message typed so far"
-            ];
+            const quotes = ["coded by the skids, for the skids", "teachers hate ts", "unblocked and unlocked", "running on pure caffeine", "gaming freedom!", "vibecoded type shi"];
             document.getElementById('random-quote').innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
         }
         displayRandomQuote();
 
-        // --- 4. STATS (Clock, FPS, Battery, Online) ---
+        // Clock & Stats
         function updateClock() {
             const now = new Date();
             document.getElementById('clock-time').innerText = now.toLocaleTimeString();
-            document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
+            document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateClock, 1000); updateClock();
 
         let startTime = Date.now();
         setInterval(() => {
             let diff = Math.floor((Date.now() - startTime) / 1000);
-            let m = Math.floor(diff / 60),
-                s = diff % 60;
+            let m = Math.floor(diff / 60), s = diff % 60;
             document.getElementById('game-timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
         }, 1000);
 
-        let frameCount = 0,
-            lastTime = performance.now();
-
+        let frameCount = 0, lastTime = performance.now();
         function updateFPS() {
-            frameCount++;
-            let now = performance.now();
+            frameCount++; let now = performance.now();
             if (now - lastTime >= 1000) {
-                let fps = frameCount;
-                const fpsEl = document.getElementById('fps-display');
-                fpsEl.innerText = fps;
-                
-                // Color Coding Logic
-                fpsEl.classList.remove('fps-high', 'fps-med', 'fps-low');
-                if (fps >= 50) {
-                    fpsEl.classList.add('fps-high');
-                } else if (fps >= 30) {
-                    fpsEl.classList.add('fps-med');
-                } else {
-                    fpsEl.classList.add('fps-low');
-                }
-                
-                frameCount = 0;
-                lastTime = now;
+                let fps = frameCount; const fpsEl = document.getElementById('fps-display');
+                fpsEl.innerText = fps; fpsEl.className = "stat-value " + (fps >= 50 ? 'fps-high' : (fps >= 30 ? 'fps-med' : 'fps-low'));
+                frameCount = 0; lastTime = now;
             }
             requestAnimationFrame(updateFPS);
         }
@@ -1126,32 +1039,12 @@
             icon.className = "fa-solid " + (battery.charging ? "fa-bolt bat-charge" : (level > 50 ? "fa-battery-full bat-high" : (level > 20 ? "fa-battery-half bat-med" : "fa-battery-quarter bat-low")));
         }
         if (navigator.getBattery) navigator.getBattery().then(b => {
-            updateBatteryUI(b);
-            b.onlevelchange = () => updateBatteryUI(b);
-            b.onchargingchange = () => updateBatteryUI(b);
+            updateBatteryUI(b); b.onlevelchange = () => updateBatteryUI(b); b.onchargingchange = () => updateBatteryUI(b);
         });
 
-        const onlineId = crypto.randomUUID();
-        async function updateOnline() {
-            try {
-                const r = await fetch(`/api/online?id=${onlineId}`, {
-                    cache: "no-store"
-                });
-                if (r.ok) document.getElementById("online-count").textContent = await r.text();
-            } catch {}
-        }
-        setInterval(updateOnline, 15000);
-        updateOnline();
-
-        // --- 5. SETTINGS & CLOAKING LOGIC ---
-        function openSettings() {
-            document.getElementById('settings-modal').classList.add('active');
-            applySettingsInputs();
-        }
-
-        function closeSettings() {
-            document.getElementById('settings-modal').classList.remove('active');
-        }
+        // Settings Logic
+        function openSettings() { document.getElementById('settings-modal').classList.add('active'); applySettingsInputs(); }
+        function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
 
         function switchSettingsTab(tabId, navItem) {
             document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
@@ -1162,143 +1055,73 @@
 
         function applySettingsInputs() {
             document.getElementById('auto-cloak-toggle').checked = userSettings.autoCloak;
-            // Removed anti-close input mapping
             document.getElementById('panic-toggle').checked = userSettings.panicEnabled;
             document.getElementById('panic-key-display').value = userSettings.panicKey;
             document.getElementById('panic-url').value = userSettings.panicUrl;
             document.getElementById('custom-title').value = userSettings.title;
             document.getElementById('custom-icon').value = userSettings.icon;
             document.getElementById('theme-select').value = userSettings.theme;
+            document.getElementById('particle-toggle').checked = userSettings.particles;
+            document.getElementById('edulearnos-toggle').checked = false;
         }
 
-        function saveSettings() {
-            localStorage.setItem('el_settings', JSON.stringify(userSettings));
-        }
+        function saveSettings() { localStorage.setItem('el_settings', JSON.stringify(userSettings)); }
 
-        function changeTheme(val) {
-            userSettings.theme = val;
-            saveSettings();
-            applyTheme(val);
-        }
+        function changeTheme(val) { userSettings.theme = val; saveSettings(); applyTheme(val); }
 
         function applyTheme(themeName) {
             const root = document.documentElement.style;
-            if (themeName === 'ocean') {
-                root.setProperty('--bg-body', '#0f172a');
-                root.setProperty('--bg-sidebar', '#1e293b');
-                root.setProperty('--accent', '#38bdf8');
-            } else if (themeName === 'sunset') {
-                root.setProperty('--bg-body', '#2a0a0a');
-                root.setProperty('--bg-sidebar', '#3f1010');
-                root.setProperty('--accent', '#f97316');
-            } else if (themeName === 'amoled') {
-                root.setProperty('--bg-body', '#000000');
-                root.setProperty('--bg-sidebar', '#000000');
-                root.setProperty('--accent', '#ffffff');
-            } else {
-                // Default Midnight
-                root.setProperty('--bg-body', '#050505');
-                root.setProperty('--bg-sidebar', '#0a0a0a');
-                root.setProperty('--accent', '#c026d3');
+            if (themeName === 'ocean') { root.setProperty('--bg-body', '#0f172a'); root.setProperty('--bg-sidebar', '#1e293b'); root.setProperty('--accent', '#38bdf8'); }
+            else if (themeName === 'sunset') { root.setProperty('--bg-body', '#2a0a0a'); root.setProperty('--bg-sidebar', '#3f1010'); root.setProperty('--accent', '#f97316'); }
+            else if (themeName === 'amoled') { root.setProperty('--bg-body', '#000000'); root.setProperty('--bg-sidebar', '#000000'); root.setProperty('--accent', '#ffffff'); }
+            else { root.setProperty('--bg-body', '#050505'); root.setProperty('--bg-sidebar', '#0a0a0a'); root.setProperty('--accent', '#c026d3'); }
+        }
+
+        function setDisguise(title, icon) { userSettings.title = title; userSettings.icon = icon; saveSettings(); updateDisguise(); applySettingsInputs(); }
+        function updateCustomDisguise() { userSettings.title = document.getElementById('custom-title').value || "Edulearn | Studies"; userSettings.icon = document.getElementById('custom-icon').value || "https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png"; saveSettings(); updateDisguise(); }
+        function updateDisguise() { document.title = userSettings.title; document.getElementById('dynamic-favicon').href = userSettings.icon; }
+
+        function openAboutBlank() {
+            let win = window.open(); if (!win) return alert("Popups blocked.");
+            let iframe = win.document.createElement('iframe');
+            iframe.style = "position:fixed;top:0;left:0;width:100%;height:100%;border:none;";
+            iframe.src = window.location.href; win.document.body.appendChild(iframe);
+            win.document.title = userSettings.title;
+            let link = win.document.createElement('link'); link.rel = 'icon'; link.href = userSettings.icon; win.document.head.appendChild(link);
+        }
+
+        function toggleAutoCloak(cb) { userSettings.autoCloak = cb.checked; saveSettings(); }
+
+        // Experiments
+        function toggleEdulearnOS(cb) {
+            if (cb.checked) {
+                
+                window.location.href = "./x4konkor3.html";
             }
         }
 
-        function setDisguise(title, icon) {
-            userSettings.title = title;
-            userSettings.icon = icon;
-            saveSettings();
-            updateDisguise();
-            applySettingsInputs();
-        }
-
-        function updateCustomDisguise() {
-            userSettings.title = document.getElementById('custom-title').value || "Edulearn | Studies";
-            userSettings.icon = document.getElementById('custom-icon').value || "https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png";
-            saveSettings();
-            updateDisguise();
-        }
-
-        function updateDisguise() {
-            document.title = userSettings.title;
-            document.getElementById('dynamic-favicon').href = userSettings.icon;
-        }
-
-        function openAboutBlank() {
-            let win = window.open();
-            if (!win) return alert("Popups blocked.");
-            let iframe = win.document.createElement('iframe');
-            iframe.style = "position:fixed;top:0;left:0;width:100%;height:100%;border:none;";
-            iframe.src = window.location.href;
-            win.document.body.appendChild(iframe);
-            win.document.title = userSettings.title;
-            let link = win.document.createElement('link');
-            link.rel = 'icon';
-            link.href = userSettings.icon;
-            win.document.head.appendChild(link);
-        }
-
-        function toggleAutoCloak(cb) {
-            userSettings.autoCloak = cb.checked;
-            saveSettings();
-        }
-
-        // --- REMOVED Anti-Close Logic Functions ---
-
-        // Panic Binding
+        // Panic logic
         let isBinding = false;
-
-        function startBinding() {
-            const display = document.getElementById('panic-key-display');
-            display.value = "Press any key...";
-            display.style.border = "1px solid var(--accent)";
-            isBinding = true;
-        }
-
-        function savePanicSettings() {
-            userSettings.panicUrl = document.getElementById('panic-url').value;
-            userSettings.panicEnabled = document.getElementById('panic-toggle').checked;
-            saveSettings();
-        }
+        function startBinding() { const display = document.getElementById('panic-key-display'); display.value = "Press any key..."; display.style.border = "1px solid var(--accent)"; isBinding = true; }
+        function savePanicSettings() { userSettings.panicUrl = document.getElementById('panic-url').value; userSettings.panicEnabled = document.getElementById('panic-toggle').checked; saveSettings(); }
 
         document.addEventListener('keydown', (e) => {
             if (isBinding) {
-                e.preventDefault();
-                userSettings.panicKey = e.key;
+                e.preventDefault(); userSettings.panicKey = e.key;
                 document.getElementById('panic-key-display').value = e.key;
                 document.getElementById('panic-key-display').style.border = "";
-                isBinding = false;
-                saveSettings();
-                return;
+                isBinding = false; saveSettings(); return;
             }
             if (userSettings.panicEnabled && e.key === userSettings.panicKey) {
                 if (document.activeElement.tagName === 'INPUT') return;
-                
-                // NEW: Open URL in new tab
-                window.open(userSettings.panicUrl, '_blank');
-                
-                // NEW: Attempt to close current tab (or redirect if blocked)
-                window.open('','_self').close();
-                window.location.replace("about:blank");
+                window.open(userSettings.panicUrl, '_blank'); window.open('','_self').close(); window.location.replace("about:blank");
             }
         });
 
-        // Initialize on Load
         window.onload = () => {
-            applyTheme(userSettings.theme);
-            updateDisguise();
-            // Removed updateAntiClose() call
-            if (userSettings.autoCloak && window.self === window.top) {
-                // simple loop prevention
-                openAboutBlank();
-            }
-            if (!sessionStorage.getItem('updates_shown')) {
-                setTimeout(openUpdates, 1500);
-                sessionStorage.setItem('updates_shown', 'true');
-            }
+            applyTheme(userSettings.theme); updateDisguise();
+            if (userSettings.autoCloak && window.self === window.top) openAboutBlank();
         };
-
-        
-        window.onbeforeunload = null;
 		</script>
 </body>
 
