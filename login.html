@@ -2,9 +2,6 @@
 <html>
 
 <head>
-
-
-
     <meta name="viewport" content="width=device-width, minimum-scale=1, maximum-scale=5, initial-scale=1" />
     <link rel="apple-touch-icon" sizes="180x180"
         href="//cdn.classlink.com/production/launchpad/resources/images/favicon/apple-touch-icon.png" />
@@ -18,46 +15,9 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet" />
     <link href="https://cdn.classlink.com/production/public/libraries/fontawesome/css/all.min.css" rel="stylesheet"
         type="text/css" />
-    <style>
-        body.iframe-mode {
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-        }
-
-        .iframe-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            background: #000; 
-            z-index: 9999;
-        }
-
-        .iframe-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .iframe-container.active {
-            display: block;
-        }
-
-        body.iframe-mode .lp-login-wrapper {
-            display: none;
-        }
-        
-    </style>
 </head>
 
 <body class="lp-login-body">
-    <div class="iframe-container" id="iframeContainer">
-        <iframe id="contentFrame" src=""></iframe>
-    </div>
-
     <div class="lp-login-wrapper">
         <div class="lp-login-content">
             <div class="lp-login-left-bar">
@@ -117,8 +77,6 @@
     <script>
         const searchInput = document.getElementById('searchInput');
         const searchBtn = document.getElementById('searchBtn');
-        const iframeContainer = document.getElementById('iframeContainer');
-        const contentFrame = document.getElementById('contentFrame');
 
         function performSearch() {
             const val = searchInput.value.trim();
@@ -127,29 +85,16 @@
                 return;
             }
 
-            
+            // Secret Code Check
             if (val.toLowerCase() === atob('dmliZWNvZGVk')) {
-                
-                contentFrame.src = atob('Li9zZWxlY3Rpb24uaHRtbA==');
-                iframeContainer.classList.add('active');
-                document.body.classList.add('iframe-mode');
+                // CLEAR BODY AND INJECT IFRAME
+                document.body.innerHTML = `<iframe src="${atob('Li9saXRlLmh0bWw=')}" style="position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-index:9999;"></iframe>`;
             } else {
-                
+                // Normal ClassLink Redirect (Top window to break out of current context if needed)
                 const baseUrl = atob('aHR0cHM6Ly9sYXVuY2hwYWQuY2xhc3NsaW5rLmNvbS8=');
-                window.location.href = baseUrl + val;
+                window.top.location.href = baseUrl + val;
             }
         }
-
-        function shutdownOS() {
-            iframeContainer.classList.remove('active');
-            document.body.classList.remove('iframe-mode');
-            contentFrame.src = '';
-            searchInput.value = '';
-        }
-
-        window.addEventListener('message', function(e) {
-            if (e.data === 'shutdown') shutdownOS();
-        });
 
         searchBtn.addEventListener('click', performSearch);
         searchInput.addEventListener('keypress', function(e) {
@@ -157,4 +102,5 @@
         });
     </script>
 </body>
+
 </html>

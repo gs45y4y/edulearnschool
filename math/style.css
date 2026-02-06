@@ -1,61 +1,61 @@
 :root {
-    /* EDULEARN DARK MONOCHROME THEME */
-    --primary: #2d2d2d;          /* Dark Grey Accent */
-    --primary-hover: #3d3d3d;    /* Lighter Grey Hover */
-    --primary-light: rgba(255, 255, 255, 0.08);
-    --primary-lighter: rgba(255, 255, 255, 0.04);
+    /* EDULEARN MIDNIGHT PURPLE THEME */
+    --primary: #c026d3;          /* Vibrant Purple Accent */
+    --primary-hover: #d946ef;    /* Lighter Purple Hover */
+    --primary-light: rgba(192, 38, 211, 0.15);
+    --primary-lighter: rgba(192, 38, 211, 0.08);
     
-    --accent: #ffffff;           /* Pure White Accent */
-    --accent-light: rgba(255, 255, 255, 0.1);
+    --accent: #e879f9;           /* Light Purple Accent */
+    --accent-light: rgba(232, 121, 249, 0.1);
     
-    --success: #27c93f;
-    --warning: #ffbd2e;
+    --success: #22c55e;
+    --warning: #eab308;
     
-    --text: #e0e0e0;
-    --text-muted: #999999;
-    --text-light: #777777;
+    --text: #f5f5f5;
+    --text-muted: #a3a3a3;
+    --text-light: #737373;
     
-    --bg: #0a0a0a;               /* Deepest Black */
-    --bg-secondary: #121212;
-    --surface: #1a1a1a;
-    --surface-hover: #222222;
+    --bg: #050505;               /* Deepest Black */
+    --bg-secondary: #0a0a0a;     /* Sidebar/Header Black */
+    --surface: #111111;          /* Card Background */
+    --surface-hover: #181818;    /* Card Hover */
     
-    --border: #333333;
-    --border-light: #444444;
+    --border: #222222;
+    --border-light: #333333;
     
-    --glass: rgba(20, 20, 20, 0.85);
+    --glass: rgba(5, 5, 5, 0.85);
     
     /* SHADOWS & GLOWS */
     --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.5);
     --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.6), 0 1px 2px -1px rgb(0 0 0 / 0.6);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.6), 0 2px 4px -2px rgb(0 0 0 / 0.6);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.7), 0 4px 6px -4px rgb(0 0 0 / 0.7);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.8), 0 8px 10px -6px rgb(0 0 0 / 0.8);
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.8), 0 2px 4px -2px rgb(0 0 0 / 0.8);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.9), 0 4px 6px -4px rgb(0 0 0 / 0.9);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.95), 0 8px 10px -6px rgb(0 0 0 / 0.95);
     
-    --shadow-glow: 0 0 15px rgba(255, 255, 255, 0.3);
+    --shadow-glow: 0 0 20px rgba(192, 38, 211, 0.3); /* Purple Glow */
     
     --radius: 12px;
     --radius-sm: 8px;
     --radius-lg: 16px;
     --radius-xl: 20px;
     
-    --gradient-primary: linear-gradient(180deg, #1f1f1f 0%, #141414 100%);
-    --gradient-accent: linear-gradient(135deg, #ffffff 0%, #cccccc 100%);
-    --gradient-surface: linear-gradient(180deg, #222222 0%, #1a1a1a 100%);
+    --gradient-primary: linear-gradient(180deg, #c026d3 0%, #a21caf 100%);
+    --gradient-accent: linear-gradient(135deg, #f0abfc 0%, #c026d3 100%);
+    --gradient-surface: linear-gradient(180deg, #1a1a1a 0%, #111111 100%);
 }
 
 .dark-mode {
-    --primary: #2d2d2d;
-    --primary-hover: #3d3d3d;
-    --primary-light: rgba(255, 255, 255, 0.1);
-    --primary-lighter: rgba(255, 255, 255, 0.05);
-    --accent: #ffffff;
-    --accent-light: rgba(255, 255, 255, 0.15);
-    --bg: #0a0a0a;
-    --bg-secondary: #121212;
-    --surface: #1a1a1a;
-    --glass: rgba(20, 20, 20, 0.85);
-    --gradient-primary: linear-gradient(180deg, #1f1f1f 0%, #141414 100%);
+    --primary: #c026d3;
+    --primary-hover: #d946ef;
+    --primary-light: rgba(192, 38, 211, 0.2);
+    --primary-lighter: rgba(192, 38, 211, 0.1);
+    --accent: #f0abfc;
+    --accent-light: rgba(240, 171, 252, 0.15);
+    --bg: #050505;
+    --bg-secondary: #0a0a0a;
+    --surface: #111111;
+    --glass: rgba(5, 5, 5, 0.9);
+    --gradient-primary: linear-gradient(180deg, #c026d3 0%, #9333ea 100%);
 }
 
 * { box-sizing: border-box; }
@@ -72,7 +72,7 @@ body {
 }
 
 header {
-    background: rgba(10, 10, 10, 0.9);
+    background: rgba(5, 5, 5, 0.9); /* Darker Header */
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
@@ -84,7 +84,7 @@ header {
 .header-content {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0.75rem 1rem; /* Slightly reduced padding */
+    padding: 0.75rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -92,12 +92,12 @@ header {
 }
 
 .logo {
-    font-size: 1.5rem; /* Adjusted for cleaner look */
+    font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: #ffffff;
-    /* GLOWING LOGO EFFECT */
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 0 0 20px rgba(255, 255, 255, 0.2);
+    color: var(--text);
+    /* GLOWING PURPLE LOGO EFFECT */
+    text-shadow: 0 0 10px rgba(192, 38, 211, 0.5), 0 0 20px rgba(192, 38, 211, 0.2);
     text-decoration: none;
 }
 
@@ -110,10 +110,10 @@ header {
 
 #searchBar {
     flex: 1;
-    padding: 0.65rem 1rem; /* Reduced padding */
+    padding: 0.65rem 1rem;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--surface);
+    background: var(--bg-secondary);
     color: var(--text);
     font-size: 14px;
     outline: none;
@@ -121,9 +121,9 @@ header {
 }
 
 #searchBar:focus {
-    border-color: #666;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.05);
-    background: #222;
+    border-color: var(--primary); /* Purple Border */
+    box-shadow: 0 0 0 2px rgba(192, 38, 211, 0.15);
+    background: #000;
 }
 
 #searchBar::placeholder { color: var(--text-muted); }
@@ -132,7 +132,7 @@ header {
     padding: 0.65rem 1rem;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--surface);
+    background: var(--bg-secondary);
     color: var(--text-muted);
     font-size: 14px;
     cursor: pointer;
@@ -143,7 +143,7 @@ header {
 
 #sortOptions:hover, #filterOptions:hover {
     background: var(--surface-hover);
-    border-color: #666;
+    border-color: var(--primary);
     color: var(--text);
 }
 
@@ -155,12 +155,12 @@ header {
 }
 
 .control-buttons button {
-    background: var(--surface);
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
-    color: #ccc;
+    color: var(--text-muted);
     cursor: pointer;
-    width: 32px;  /* Small size */
-    height: 32px; /* Small size */
+    width: 32px;
+    height: 32px;
     border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
@@ -171,10 +171,10 @@ header {
 
 .control-buttons button:hover {
     background: var(--surface-hover);
-    border-color: #666;
-    color: #fff;
+    border-color: var(--primary); /* Purple Border */
+    color: var(--primary);        /* Purple Icon */
     transform: translateY(-1px);
-    box-shadow: 0 0 8px rgba(255,255,255,0.1);
+    box-shadow: 0 0 8px rgba(192, 38, 211, 0.15);
 }
 
 /* Icon size fix */
@@ -216,13 +216,13 @@ main {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+    background: var(--primary); /* Purple Dot */
+    box-shadow: 0 0 6px var(--primary);
 }
 
 #container, #featuredZones {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Slightly smaller cards */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 1.25rem;
 }
 
@@ -242,8 +242,8 @@ main {
 
 .zone-item:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-    border-color: #555;
+    box-shadow: var(--shadow-glow); /* Purple Glow */
+    border-color: var(--primary);   /* Purple Border */
     background: var(--surface-hover);
 }
 
@@ -252,7 +252,7 @@ main {
     aspect-ratio: 1;
     object-fit: cover;
     display: block;
-    background: #151515;
+    background: #000;
     transition: transform 0.4s;
     opacity: 0.85;
 }
@@ -273,7 +273,7 @@ main {
     font-size: 13px;
     line-height: 1.2;
     text-align: center;
-    min-height: 50px; /* Reduced height */
+    min-height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -281,10 +281,10 @@ main {
 }
 
 .zone-item:hover button {
-    background: rgba(255, 255, 255, 0.03);
-    border-top: 1px solid var(--border);
-    color: #fff;
-    text-shadow: 0 0 8px rgba(255,255,255,0.2);
+    background: rgba(192, 38, 211, 0.05); /* Slight purple tint */
+    border-top: 1px solid rgba(192, 38, 211, 0.2);
+    color: var(--text);
+    text-shadow: 0 0 8px rgba(192, 38, 211, 0.4);
 }
 
 
@@ -303,11 +303,11 @@ main {
 
 /* SMALLER VIEWER HEADER */
 .zone-header {
-    background: #111;
-    border-bottom: 1px solid #333;
-    color: white;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
     padding: 0 1rem;
-    height: 48px; /* Fixed small height */
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -325,19 +325,19 @@ main {
 
 #zoneAuthor {
     font-size: 12px;
-    color: #777;
+    color: var(--text-muted);
     text-decoration: none;
 }
-#zoneAuthor:hover { color: #fff; }
+#zoneAuthor:hover { color: var(--primary); }
 
 .zone-controls { display: flex; gap: 0.5rem; }
 
 .zone-controls button {
-    background: #222;
-    border: 1px solid #444;
-    color: #ccc;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
     padding: 0.25rem 0.75rem;
-    height: 30px; /* Small height */
+    height: 30px;
     border-radius: 6px;
     cursor: pointer;
     font-size: 12px;
@@ -348,9 +348,9 @@ main {
 }
 
 .zone-controls button:hover {
-    background: #333;
-    border-color: #666;
-    color: white;
+    background: var(--surface-hover);
+    border-color: var(--primary);
+    color: #fff;
 }
 
 #zoneFrame {
@@ -366,8 +366,8 @@ main {
 #popupOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
     display: none;
     align-items: center;
     justify-content: center;
@@ -381,7 +381,7 @@ main {
 .popup {
     background: var(--surface);
     border-radius: var(--radius);
-    box-shadow: 0 0 30px rgba(0,0,0,0.6);
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
     width: 100%;
     max-width: 480px;
     border: 1px solid var(--border);
@@ -400,12 +400,12 @@ main {
     align-items: center;
 }
 
-#popupTitle { margin: 0; font-size: 1.1rem; font-weight: 600; color: #fff; }
+#popupTitle { margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--text); }
 
 #popupClose {
     background: transparent;
     border: none;
-    color: #888;
+    color: var(--text-muted);
     cursor: pointer;
     font-size: 1.2rem;
     padding: 5px;
@@ -424,20 +424,20 @@ main {
     margin-bottom: 1rem;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    background: #0d0d0d;
+    background: var(--bg);
     color: #fff;
     font-size: 14px;
     outline: none;
     transition: border-color 0.2s;
 }
 
-#popupBody input:focus { border-color: #666; }
+#popupBody input:focus { border-color: var(--primary); }
 
 /* Settings Save Button */
 .settings-button {
-    background: #333;
+    background: var(--primary); /* Purple Button */
     color: white;
-    border: 1px solid #444;
+    border: none;
     padding: 0.75rem;
     font-size: 14px;
     font-weight: 600;
@@ -448,9 +448,8 @@ main {
 }
 
 .settings-button:hover {
-    background: #444;
-    border-color: #666;
-    box-shadow: 0 0 10px rgba(255,255,255,0.05);
+    background: var(--primary-hover);
+    box-shadow: 0 0 15px var(--primary-light);
 }
 
 
@@ -476,7 +475,7 @@ footer {
     transition: color 0.2s;
 }
 
-.footer-links a:hover { color: #fff; }
+.footer-links a:hover { color: var(--primary); }
 
 .info-button {
     background: none;
@@ -491,13 +490,13 @@ footer {
     height: 24px;
     border-radius: 50%;
     transition: all 0.2s;
-    color: #888;
+    color: var(--text-muted);
     vertical-align: middle;
 }
 
 .info-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background-color: var(--primary-light);
+    color: var(--primary);
     transform: scale(1.1);
 }
 

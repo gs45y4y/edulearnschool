@@ -92,6 +92,7 @@ Join our community for support, updates, and discussions:
 - **genizy/breadbb** – GN-Math Library Developer  
 - **RHW** – Scramjet-static Integration  
 - **Albie** – Main Domain Provider
+- **Night Network / AmplifyDev** - Css taken from popular site service "[Space](https://gointospace.app)"
 
 *If we missed you in the credits, feel free to contact vibec3der at `fernproxys3@proton.me`*
 

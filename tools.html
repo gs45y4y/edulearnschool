@@ -2,336 +2,357 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>System Tools</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<style>
-		/* --- CORE VARIABLES (MATCHING MAIN LITE.HTML) --- */
-		:root {
-			/* Theme: Midnight Grey */
-			--bg-body: #202020;
-			--bg-sidebar: #2b2b2b;
-			--accent: #ffffff;
-			--text-main: #e0e0e0;
-			--text-muted: #9e9e9e;
-			--card-bg: #333333;
-			--glow-text: 0 0 10px rgba(255, 255, 255, 0.2);
-			--glow-strong: 0 0 20px rgba(255, 255, 255, 0.5);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CORE VARIABLES (MATCHING MIDNIGHT PURPLE LITE.HTML) --- */
+        :root {
+            /* Theme: Midnight Purple */
+            --bg-body: #050505;
+            --bg-sidebar: #0a0a0a;
+            --accent: #c026d3; /* Vibrant Purple */
+            --accent-glow: rgba(192, 38, 211, 0.4);
+            
+            --text-main: #f5f5f5;
+            --text-muted: #a3a3a3;
+            
+            --card-bg: #111111;
+            
+            --glow-text: 0 0 10px rgba(192, 38, 211, 0.3);
+            --glow-strong: 0 0 20px rgba(192, 38, 211, 0.5);
 
-			--border-color: #3a3a3a;
-			--danger: #d32f2f;
-			--success: #4caf50;
-		}
+            --border-color: #222222;
+            
+            --danger: #ef4444;
+            --success: #22c55e;
+        }
 
-		* {
-			margin: 0;
-			padding: 0;
-			box-sizing: border-box;
-		}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-		body {
-			font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
-			background-color: var(--bg-body);
-			color: var(--text-main);
-			min-height: 100vh;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			padding: 40px 20px;
-			position: relative;
-			overflow-x: hidden;
-		}
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-		/* --- PARTICLES --- */
-		#particles-js {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			z-index: 1;
-			pointer-events: none;
-			opacity: 0.4;
-		}
+        /* --- PARTICLES --- */
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.4;
+        }
 
-		/* --- HEADER --- */
-		.header {
-			text-align: center;
-			margin-bottom: 40px;
-			width: 100%;
-			max-width: 600px;
-			position: relative;
-			z-index: 10;
-		}
+        /* --- HEADER --- */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            z-index: 10;
+        }
 
-		.title {
-			font-size: 2.5rem;
-			font-weight: 600;
-			margin-bottom: 10px;
-			letter-spacing: -1px;
-			color: var(--text-main);
-			text-shadow: var(--glow-strong);
-		}
+        .title {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* Subtle shadow instead of glow */
+        }
+        
+        /* Optional: Add purple gradient to text like hero title */
+        .title span {
+            color: var(--accent);
+            text-shadow: var(--glow-text);
+        }
 
-		.subtitle {
-			color: var(--text-muted);
-			font-size: 0.95rem;
-			margin-bottom: 25px;
-		}
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
 
-		/* --- SEARCH --- */
-		.search-container {
-			position: relative;
-			width: 100%;
-		}
+        /* --- SEARCH --- */
+        .search-container {
+            position: relative;
+            width: 100%;
+        }
 
-		.search-input {
-			width: 100%;
-			padding: 14px 20px 14px 45px;
-			background: var(--bg-sidebar);
-			border: 1px solid var(--border-color);
-			border-radius: 8px;
-			color: var(--text-main);
-			font-size: 1rem;
-			transition: all 0.2s;
-			font-family: inherit;
-		}
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            background: rgba(0, 0, 0, 0.3); /* Transparent dark */
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 1rem;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
 
-		.search-input:focus {
-			outline: none;
-			border-color: var(--accent);
-			box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-		}
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+            background: rgba(0, 0, 0, 0.5);
+        }
 
-		.search-icon {
-			position: absolute;
-			left: 16px;
-			top: 50%;
-			transform: translateY(-50%);
-			color: var(--text-muted);
-		}
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+        
+        .search-input:focus + .search-icon, 
+        .search-container:focus-within .search-icon {
+            color: var(--accent);
+        }
 
-		/* --- GRID --- */
-		.tools-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-			gap: 20px;
-			width: 100%;
-			max-width: 900px;
-			position: relative;
-			z-index: 10;
-		}
+        /* --- GRID --- */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            position: relative;
+            z-index: 10;
+        }
 
-		.tool-card {
-			background: var(--card-bg);
-			border: 1px solid var(--border-color);
-			border-radius: 8px;
-			padding: 20px;
-			display: flex;
-			align-items: center;
-			gap: 15px;
-			cursor: pointer;
-			transition: all 0.2s ease;
-			position: relative;
-			overflow: hidden;
-		}
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
 
-		.tool-card:hover {
-			transform: translateY(-2px);
-			background: #3a3a3a;
-			border-color: #555;
-			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-		}
+        .tool-card:hover {
+            transform: translateY(-4px);
+            background: #181818;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
 
-		.tool-card:active {
-			transform: scale(0.98);
-		}
+        .tool-card:active {
+            transform: scale(0.98);
+        }
 
-		.icon-box {
-			width: 45px;
-			height: 45px;
-			border-radius: 8px;
-			background: rgba(255, 255, 255, 0.05);
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 1.2rem;
-			color: var(--accent);
-			border: 1px solid var(--border-color);
-			text-shadow: var(--glow-text);
-		}
+        .icon-box {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            background: rgba(192, 38, 211, 0.1); /* Low opacity purple */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--accent);
+            border: 1px solid rgba(192, 38, 211, 0.2);
+            text-shadow: var(--glow-text);
+        }
 
-		.tool-info {
-			flex: 1;
-		}
+        .tool-info {
+            flex: 1;
+        }
 
-		.tool-name {
-			font-weight: 600;
-			font-size: 1.1rem;
-			margin-bottom: 4px;
-			color: var(--text-main);
-		}
+        .tool-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+            color: var(--text-main);
+        }
 
-		.tool-desc {
-			font-size: 0.85rem;
-			color: var(--text-muted);
-		}
+        .tool-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
 
-		.copy-hint {
-			opacity: 0;
-			position: absolute;
-			right: 20px;
-			background: var(--accent);
-			color: #111;
-			font-size: 0.75rem;
-			font-weight: bold;
-			padding: 4px 8px;
-			border-radius: 4px;
-			transition: 0.2s;
-			transform: translateX(10px);
-		}
+        .copy-hint {
+            opacity: 0;
+            position: absolute;
+            right: 20px;
+            background: var(--accent);
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: 0.2s;
+            transform: translateX(10px);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
 
-		.tool-card:hover .copy-hint {
-			opacity: 1;
-			transform: translateX(0);
-		}
+        .tool-card:hover .copy-hint {
+            opacity: 1;
+            transform: translateX(0);
+        }
 
-		/* --- TOOL OVERLAY (IFRAME VIEW) --- */
-		.tool-view-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: var(--bg-body);
-			z-index: 2000;
-			display: none;
-			/* Hidden by default */
-			flex-direction: column;
-		}
+        /* --- TOOL OVERLAY (IFRAME VIEW) --- */
+        .tool-view-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-body);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+        }
 
-		.tool-view-overlay.active {
-			display: flex;
-		}
+        .tool-view-overlay.active {
+            display: flex;
+        }
 
-		.tool-header-bar {
-			height: 50px;
-			background: var(--bg-sidebar);
-			border-bottom: 1px solid var(--border-color);
-			display: flex;
-			align-items: center;
-			padding: 0 20px;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-		}
+        .tool-header-bar {
+            height: 50px;
+            background: var(--bg-sidebar);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
 
-		.btn-back {
-			background: transparent;
-			border: 1px solid var(--border-color);
-			color: var(--text-main);
-			padding: 6px 14px;
-			border-radius: 4px;
-			cursor: pointer;
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			font-size: 0.9rem;
-			transition: all 0.2s;
-		}
+        .btn-back {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
 
-		.btn-back:hover {
-			background: rgba(255, 255, 255, 0.1);
-			border-color: var(--accent);
-		}
+        .btn-back:hover {
+            background: rgba(192, 38, 211, 0.1);
+            border-color: var(--accent);
+            color: #fff;
+        }
 
-		.tool-frame {
-			flex: 1;
-			width: 100%;
-			border: none;
-		}
+        .tool-frame {
+            flex: 1;
+            width: 100%;
+            border: none;
+            background: #000;
+        }
 
-		/* --- TOAST --- */
-		.toast-container {
-			position: fixed;
-			bottom: 30px;
-			left: 50%;
-			transform: translateX(-50%);
-			display: flex;
-			flex-direction: column;
-			gap: 10px;
-			pointer-events: none;
-			z-index: 3000;
-		}
+        /* --- TOAST --- */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+            z-index: 3000;
+        }
 
-		.toast {
-			background: var(--bg-sidebar);
-			border: 1px solid var(--border-color);
-			color: var(--text-main);
-			padding: 12px 24px;
-			border-radius: 50px;
-			font-size: 0.9rem;
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-			animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-		}
+        .toast {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
 
-		.toast i {
-			color: var(--success);
-		}
+        .toast i {
+            color: var(--success);
+        }
 
-		@keyframes slideUp {
-			from {
-				opacity: 0;
-				transform: translateY(20px);
-			}
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
 
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-		@keyframes fadeOut {
-			to {
-				opacity: 0;
-				transform: translateY(-10px);
-			}
-		}
-	</style>
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-	<canvas id="particles-js"></canvas>
+    <canvas id="particles-js"></canvas>
 
-	<div class="header">
-		<div class="title">System Tools</div>
-		<div class="subtitle">Click a card to copy the URL or open the tool.</div>
+    <div class="header">
+        <div class="title">System <span>Tools</span></div>
+        <div class="subtitle">Click a card to copy the URL or open the tool.</div>
 
-		<div class="search-container">
-			<i class="fa-solid fa-search search-icon"></i>
-			<input type="text" id="searchInput" class="search-input" placeholder="Find a utility...">
+        <div class="search-container">
+            <i class="fa-solid fa-search search-icon"></i>
+            <input type="text" id="searchInput" class="search-input" placeholder="Find a utility...">
     </div>
-		</div>
+        </div>
 
-		<div class="tools-grid" id="toolsGrid">
-		</div>
+        <div class="tools-grid" id="toolsGrid">
+        </div>
 
-		<div id="toolOverlay" class="tool-view-overlay">
-			<div class="tool-header-bar">
-				<button class="btn-back" onclick="closeTool()">
+        <div id="toolOverlay" class="tool-view-overlay">
+            <div class="tool-header-bar">
+                <button class="btn-back" onclick="closeTool()">
               <i class="fa-solid fa-arrow-left"></i> Back to Tools
           </button>
-			</div>
-			<iframe id="toolFrame" class="tool-frame" src=""></iframe>
-		</div>
+            </div>
+            <iframe id="toolFrame" class="tool-frame" src=""></iframe>
+        </div>
 
-		<div class="toast-container" id="toastContainer"></div>
+        <div class="toast-container" id="toastContainer"></div>
 
-		<script>
-			// Tool Data Configuration
+        <script>
+            // Tool Data Configuration
       const tools = [
         {
           name: "E2E v2",
@@ -536,7 +557,7 @@
       }
 
       initParticles();
-		</script>
+        </script>
 </body>
 
 </html>

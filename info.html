@@ -12,15 +12,18 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 	<style>
+		/* --- CORE VARIABLES (MATCHING MIDNIGHT PURPLE LITE.HTML) --- */
 		:root {
 			--bg-dark: #050505;
-			--surface: rgba(20, 20, 20, 0.6);
-			--surface-hover: rgba(40, 40, 40, 0.8);
-			--border: rgba(255, 255, 255, 0.1);
-			--accent: #ffffff;
-			--text-main: #ffffff;
-			--text-muted: #888888;
-			--glow-white: 0 0 15px rgba(255, 255, 255, 0.2);
+			--surface: #111111;
+			--surface-hover: #181818;
+			--border: #222222;
+			--accent: #c026d3;
+			/* Vibrant Purple */
+			--accent-glow: rgba(192, 38, 211, 0.4);
+			--text-main: #f5f5f5;
+			--text-muted: #a3a3a3;
+			--glow-purple: 0 0 20px rgba(192, 38, 211, 0.3);
 		}
 
 		* {
@@ -32,14 +35,14 @@
 		body {
 			font-family: 'Inter', sans-serif;
 			background-color: var(--bg-dark);
-			background-image: radial-gradient(circle at center, #111111 0%, #000000 100%);
 			color: var(--text-main);
-			height: 100vh;
+			min-height: 100vh;
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			overflow: hidden;
+			overflow-x: hidden;
 			position: relative;
+			padding: 2rem;
 		}
 
 		/* --- PARTICLES --- */
@@ -59,30 +62,16 @@
 			position: relative;
 			z-index: 10;
 			width: 100%;
-			max-width: 800px;
+			max-width: 900px;
 			padding: 3rem;
-			background: var(--surface);
+			background: rgba(17, 17, 17, 0.8);
 			border: 1px solid var(--border);
 			border-radius: 24px;
 			backdrop-filter: blur(20px);
 			-webkit-backdrop-filter: blur(20px);
-			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
 			text-align: center;
 			animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-		}
-
-		/* Container Border Highlight */
-		.info-container::before {
-			content: '';
-			position: absolute;
-			inset: 0;
-			border-radius: 24px;
-			padding: 1px;
-			background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
-			-webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-			-webkit-mask-composite: xor;
-			mask-composite: exclude;
-			pointer-events: none;
 		}
 
 		h1 {
@@ -90,10 +79,14 @@
 			font-weight: 800;
 			letter-spacing: -1px;
 			margin-bottom: 0.5rem;
-			background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+			color: var(--text-main);
+			text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+		}
+
+		h1 span {
+			background: linear-gradient(135deg, #f0abfc 0%, #c026d3 100%);
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
-			text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
 		}
 
 		.subtitle {
@@ -112,7 +105,7 @@
 		}
 
 		.version-card {
-			background: rgba(255, 255, 255, 0.03);
+			background: var(--bg-dark);
 			border: 1px solid var(--border);
 			border-radius: 16px;
 			padding: 2rem;
@@ -126,23 +119,27 @@
 
 		.version-card:hover {
 			transform: translateY(-5px);
-			background: rgba(255, 255, 255, 0.06);
-			border-color: rgba(255, 255, 255, 0.3);
-			box-shadow: var(--glow-white);
+			background: var(--surface-hover);
+			border-color: var(--accent);
+			box-shadow: var(--glow-purple);
 		}
 
 		.card-icon {
 			font-size: 2.5rem;
 			margin-bottom: 1rem;
-			color: #fff;
-			text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+			color: var(--text-main);
+			transition: color 0.3s;
+		}
+
+		.version-card:hover .card-icon {
+			color: var(--accent);
 		}
 
 		.card-title {
 			font-size: 1.25rem;
 			font-weight: 700;
 			margin-bottom: 0.5rem;
-			color: #fff;
+			color: var(--text-main);
 		}
 
 		.card-desc {
@@ -163,27 +160,84 @@
 		}
 
 		.tag.gaming {
-			background: rgba(76, 175, 80, 0.2);
-			color: #4caf50;
-			border: 1px solid rgba(76, 175, 80, 0.3);
+			background: rgba(34, 197, 94, 0.1);
+			color: #22c55e;
+			border: 1px solid rgba(34, 197, 94, 0.2);
 		}
 
 		.tag.productivity {
-			background: rgba(33, 150, 243, 0.2);
-			color: #2196f3;
-			border: 1px solid rgba(33, 150, 243, 0.3);
+			background: rgba(192, 38, 211, 0.1);
+			color: var(--accent);
+			border: 1px solid rgba(192, 38, 211, 0.2);
+		}
+
+		/* --- CREDITS SECTION --- */
+		.credits-container {
+			border-top: 1px solid var(--border);
+			padding-top: 2rem;
+			margin-top: 2rem;
+			text-align: left;
+		}
+
+		.credits-title {
+			font-size: 1.1rem;
+			font-weight: 700;
+			margin-bottom: 1.5rem;
+			color: var(--text-main);
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.credits-title i {
+			color: var(--accent);
+		}
+
+		.credits-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+			gap: 1rem;
+		}
+
+		.credit-item {
+			font-size: 0.9rem;
+			color: var(--text-muted);
+			background: var(--bg-dark);
+			padding: 10px 15px;
+			border-radius: 8px;
+			border: 1px solid transparent;
+			transition: 0.2s;
+		}
+
+		.credit-item:hover {
+			border-color: var(--border);
+			color: var(--text-main);
+		}
+
+		.credit-role {
+			display: block;
+			font-size: 0.75rem;
+			color: #666;
+			margin-top: 2px;
+			text-transform: uppercase;
+			font-weight: 600;
+		}
+
+		.credit-item:hover .credit-role {
+			color: var(--accent);
 		}
 
 		/* --- FOOTER --- */
 		.footer {
+			margin-top: 2rem;
 			border-top: 1px solid var(--border);
 			padding-top: 1.5rem;
 			font-size: 0.85rem;
-			color: #666;
+			color: var(--text-muted);
 		}
 
 		.footer span {
-			color: #fff;
+			color: var(--accent);
 			font-weight: 600;
 		}
 
@@ -207,6 +261,10 @@
 			.info-container {
 				padding: 1.5rem;
 			}
+
+			.credits-grid {
+				grid-template-columns: 1fr 1fr;
+			}
 		}
 	</style>
 </head>
@@ -216,7 +274,7 @@
 	<canvas id="particles-js"></canvas>
 
 	<div class="info-container">
-		<h1>Edulearn V5</h1>
+		<h1>Edulearn <span>V5</span></h1>
 		<div class="subtitle">Dual Architecture Update</div>
 
 		<div class="versions-grid">
@@ -239,8 +297,21 @@
 			</div>
 		</div>
 
+		<div class="credits-container">
+			<div class="credits-title"><i class="fa-solid fa-users"></i> Credits & Contributors</div>
+			<div class="credits-grid">
+				<div class="credit-item">Neo <span class="credit-role">Lead Developer</span></div>
+				<div class="credit-item">Claude, ChatGPT, Gemini (Hey, at least we don't lie unlike SOMEONE) <span class="credit-role">AI Refactoring</span></div>
+				<div class="credit-item">Conall Sadako <span class="credit-role">Main Site Fixer</span></div>
+				<div class="credit-item">genizy / breadbb <span class="credit-role">GN-Math Library</span></div>
+				<div class="credit-item">RHW <span class="credit-role">Scramjet Integration</span></div>
+				<div class="credit-item">Albie <span class="credit-role">Domain Provider</span></div>
+				<div class="credit-item">Night Network <span class="credit-role">CSS Inspiration</span></div>
+			</div>
+		</div>
+
 		<div class="footer">
-			Current Version: <span>5.2.0 (Beta)</span> &bull; Developed by Edulearn Systems
+			Current Version: <span>5.3.0 (Beta)</span> &bull; Developed by Edulearn Systems
 		</div>
 	</div>
 
