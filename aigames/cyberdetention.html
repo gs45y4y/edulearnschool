@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Unblocked Games 2026: Cyber Detention</title>
+	<style>
+		:root {
+			--neon-green: #0f0;
+			--neon-red: #f00;
+			--bg-color: #050505;
+			--terminal-font: 'Courier New', Courier, monospace;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: var(--bg-color);
+			font-family: var(--terminal-font);
+			overflow: hidden;
+			color: var(--neon-green);
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+
+		/* GAME CONTAINER */
+		#game-container {
+			position: relative;
+			width: 800px;
+			height: 600px;
+			border: 2px solid var(--neon-green);
+			box-shadow: 0 0 20px var(--neon-green);
+			background: #000;
+			overflow: hidden;
+		}
+
+		/* CRT SCANLINE EFFECT */
+		#game-container::after {
+			content: " ";
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+			z-index: 2;
+			background-size: 100% 2px, 3px 100%;
+			pointer-events: none;
+		}
+
+		/* CANVAS */
+		canvas {
+			display: block;
+			background-color: #000;
+		}
+
+		/* UI OVERLAY */
+		#ui-layer {
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			z-index: 5;
+			pointer-events: none;
+			text-shadow: 0 0 5px var(--neon-green);
+		}
+
+		/* TEACHER ALERT SYSTEM */
+		#teacher-eye {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			width: 60px;
+			height: 60px;
+			border-radius: 50%;
+			border: 4px solid #333;
+			background: #111;
+			z-index: 5;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			box-shadow: 0 0 10px #333;
+			transition: all 0.2s;
+		}
+
+		#pupil {
+			width: 20px;
+			height: 20px;
+			background: #333;
+			border-radius: 50%;
+			transition: all 0.2s;
+		}
+
+		.watching {
+			border-color: var(--neon-red) !important;
+			box-shadow: 0 0 20px var(--neon-red) !important;
+			animation: pulse 0.5s infinite;
+		}
+
+		.watching #pupil {
+			background: var(--neon-red) !important;
+			transform: scale(1.5);
+		}
+
+		@keyframes pulse {
+			0% {
+				transform: scale(1);
+			}
+
+			50% {
+				transform: scale(1.1);
+			}
+
+			100% {
+				transform: scale(1);
+			}
+		}
+
+		/* START SCREEN */
+		#start-screen,
+		#game-over-screen {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.85);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			z-index: 10;
+			text-align: center;
+		}
+
+		h1 {
+			font-size: 40px;
+			margin-bottom: 10px;
+			text-transform: uppercase;
+			letter-spacing: 5px;
+		}
+
+		p {
+			font-size: 18px;
+			line-height: 1.5;
+			color: #ccc;
+		}
+
+		button {
+			margin-top: 20px;
+			padding: 15px 30px;
+			background: transparent;
+			border: 2px solid var(--neon-green);
+			color: var(--neon-green);
+			font-family: var(--terminal-font);
+			font-size: 20px;
+			cursor: pointer;
+			transition: 0.2s;
+		}
+
+		button:hover {
+			background: var(--neon-green);
+			color: #000;
+			box-shadow: 0 0 15px var(--neon-green);
+		}
+
+		/* BOSS MODE (FAKE SPREADSHEET) */
+		#boss-mode {
+			display: none;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			background: white;
+			color: black;
+			font-family: Arial, sans-serif;
+			z-index: 9999;
+			padding: 20px;
+			box-sizing: border-box;
+			font-size: 12px;
+		}
+
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		td,
+		th {
+			border: 1px solid #ccc;
+			padding: 5px;
+			text-align: left;
+		}
+
+		th {
+			background: #f0f0f0;
+		}
+
+		.hidden {
+			display: none !important;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="boss-mode">
+		<h2 style="color: #333; font-weight: normal; margin-bottom: 10px;">AP History 2026 - Study Sheet</h2>
+		<table>
+			<tr>
+				<th>Date</th>
+				<th>Topic</th>
+				<th>Notes</th>
+				<th>Status</th>
+			</tr>
+			<tr>
+				<td>Oct 12</td>
+				<td>The Great Firewall</td>
+				<td>Analyzed TCP protocols</td>
+				<td>Complete</td>
+			</tr>
+			<tr>
+				<td>Oct 13</td>
+				<td>Digital Revolution</td>
+				<td>Chapter 4-5 summary</td>
+				<td>Pending</td>
+			</tr>
+			<tr>
+				<td>Oct 14</td>
+				<td>Network Security</td>
+				<td>Review firewall bypass methods</td>
+				<td>Reviewing</td>
+			</tr>
+			<tr>
+				<td>Oct 15</td>
+				<td>Calculus III</td>
+				<td>Integration by parts</td>
+				<td>Complete</td>
+			</tr>
+			<tr>
+				<td>Oct 16</td>
+				<td>Biology Lab</td>
+				<td>Cellular Mitosis</td>
+				<td>Submitted</td>
+			</tr>
+			<tr>
+				<td>Oct 17</td>
+				<td>Physics</td>
+				<td>Quantum Mechanics Intro</td>
+				<td>Reading</td>
+			</tr>
+			<tr>
+				<td>Oct 18</td>
+				<td>Literature</td>
+				<td>1984 Analysis</td>
+				<td>Drafting</td>
+			</tr>
+			<tr>
+				<td>Oct 19</td>
+				<td>Gym</td>
+				<td>Physical Ed Log</td>
+				<td>Logged</td>
+			</tr>
+			<tr>
+				<td>Oct 20</td>
+				<td>Chemistry</td>
+				<td>Periodic Table Quiz</td>
+				<td>Studying</td>
+			</tr>
+			<tr>
+				<td>Oct 21</td>
+				<td>Civics</td>
+				<td>Government Branches</td>
+				<td>Complete</td>
+			</tr>
+			<tr>
+				<td>Oct 22</td>
+				<td>Art History</td>
+				<td>Renaissance Period</td>
+				<td>Pending</td>
+			</tr>
+			<tr>
+				<td>Oct 23</td>
+				<td>Computer Sci</td>
+				<td>Algorithm Efficiency</td>
+				<td>Coding</td>
+			</tr>
+			<tr>
+				<td>Oct 24</td>
+				<td>Geography</td>
+				<td>Map Skills</td>
+				<td>Done</td>
+			</tr>
+			<tr>
+				<td>Oct 25</td>
+				<td>Economics</td>
+				<td>Supply and Demand</td>
+				<td>Reading</td>
+			</tr>
+		</table>
+		<p style="margin-top: 20px; color: #666;">(Press SPACE to return to system...)</p>
+	</div>
+
+	<div id="game-container">
+
+		<div id="ui-layer">
+			<div>SCORE: <span id="score-val">0</span></div>
+			<div>STATUS: <span id="status-val">CONNECTED</span></div>
+		</div>
+
+		<div id="teacher-eye">
+			<div id="pupil"></div>
+		</div>
+
+		<div id="start-screen">
+			<h1>CYBER DETENTION 2026</h1>
+			<p>Dodge the Firewalls.<br>
+            If the EYE turns RED, press <b>SPACE</b> to hide.<br>
+            Survival is the only grade.</p>
+				<button onclick="startGame()">INITIATE HACK</button>
+		</div>
+
+		<div id="game-over-screen" class="hidden">
+			<h1 style="color: var(--neon-red)">DETENTION ASSIGNED</h1>
+			<p id="death-reason">You were caught.</p>
+			<p>Final Score: <span id="final-score">0</span></p>
+			<button onclick="resetGame()">RETRY CONNECTION</button>
+		</div>
+
+		<canvas id="gameCanvas" width="800" height="600"></canvas>
+	</div>
+
+	<script>
+		// GAME SETUP
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('score-val');
+        const statusEl = document.getElementById('status-val');
+        const eyeEl = document.getElementById('teacher-eye');
+        const bossModeEl = document.getElementById('boss-mode');
+        const startScreen = document.getElementById('start-screen');
+        const gameOverScreen = document.getElementById('game-over-screen');
+
+        // GAME STATE
+        let gameRunning = false;
+        let isPaused = false;
+        let score = 0;
+        let frames = 0;
+        let speed = 5;
+
+        // PLAYER
+        const player = {
+            x: 400,
+            y: 500,
+            width: 30,
+            height: 30,
+            color: '#0f0',
+            dx: 0,
+            speed: 7
+        };
+
+        // OBSTACLES
+        let obstacles = [];
+        
+        // TEACHER MECHANIC
+        let teacherTimer = 0;
+        let teacherState = 'idle'; // idle, warning, watching
+        let warningDuration = 0;
+
+        // INPUT HANDLING
+        let keys = {
+            ArrowLeft: false,
+            ArrowRight: false,
+            Space: false
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault(); // Stop scrolling
+                toggleBossMode();
+            }
+            if (e.key in keys) keys[e.key] = true;
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key in keys) keys[e.key] = false;
+        });
+
+        function toggleBossMode() {
+            if (!gameRunning && !isPaused) return;
+
+            isPaused = !isPaused;
+            if (isPaused) {
+                bossModeEl.style.display = 'block';
+                document.title = "AP History Notes"; // Change browser tab name
+                
+                // If watching, successful hide!
+                if (teacherState === 'watching') {
+                    teacherState = 'cooldown';
+                    eyeEl.classList.remove('watching');
+                    statusEl.innerText = "HIDDEN";
+                    statusEl.style.color = "#888";
+                }
+            } else {
+                bossModeEl.style.display = 'none';
+                document.title = "Unblocked Games 2026";
+                statusEl.innerText = "CONNECTED";
+                statusEl.style.color = "#0f0";
+                requestAnimationFrame(loop);
+            }
+        }
+
+        // CORE FUNCTIONS
+        function startGame() {
+            startScreen.classList.add('hidden');
+            gameOverScreen.classList.add('hidden');
+            gameRunning = true;
+            isPaused = false;
+            score = 0;
+            frames = 0;
+            speed = 5;
+            obstacles = [];
+            player.x = canvas.width / 2 - player.width / 2;
+            teacherState = 'idle';
+            teacherTimer = Math.random() * 200 + 100;
+            updateScore();
+            loop();
+        }
+
+        function resetGame() {
+            startGame();
+        }
+
+        function gameOver(reason) {
+            gameRunning = false;
+            document.getElementById('death-reason').innerText = reason;
+            document.getElementById('final-score').innerText = score;
+            gameOverScreen.classList.remove('hidden');
+        }
+
+        function updateScore() {
+            scoreEl.innerText = Math.floor(score);
+        }
+
+        // DRAWING
+        function drawPlayer() {
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = player.color;
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            
+            // Glitch effect on player
+            if (Math.random() > 0.9) {
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(player.x + Math.random()*5, player.y, 5, player.height);
+            }
+            ctx.shadowBlur = 0;
+        }
+
+        function drawObstacles() {
+            ctx.fillStyle = '#f00';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#f00';
+            
+            obstacles.forEach(obs => {
+                ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
+                // "Firewall" text inside block
+                ctx.fillStyle = '#000';
+                ctx.font = '10px Courier';
+                ctx.fillText('BLOCK', obs.x + 2, obs.y + 15);
+                ctx.fillStyle = '#f00';
+            });
+            ctx.shadowBlur = 0;
+        }
+
+        function drawBackground() {
+            // Faint grid
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.1)';
+            ctx.lineWidth = 1;
+            const gridSize = 40;
+            
+            // Moving vertical lines
+            const offset = (frames * 2) % gridSize;
+            
+            for(let x = 0; x <= canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            for(let y = offset; y <= canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+        }
+
+        // LOGIC
+        function update() {
+            // Player Move
+            if (keys.ArrowLeft && player.x > 0) player.x -= player.speed;
+            if (keys.ArrowRight && player.x < canvas.width - player.width) player.x += player.speed;
+
+            // Obstacle Spawner
+            if (frames % 60 === 0) {
+                let width = Math.random() * 100 + 50;
+                let x = Math.random() * (canvas.width - width);
+                obstacles.push({ x: x, y: -50, width: width, height: 20 });
+            }
+
+            // Move Obstacles
+            obstacles.forEach((obs, index) => {
+                obs.y += speed;
+                
+                // Collision
+                if (
+                    player.x < obs.x + obs.width &&
+                    player.x + player.width > obs.x &&
+                    player.y < obs.y + obs.height &&
+                    player.height + player.y > obs.y
+                ) {
+                    gameOver("Packet Loss Detected (Hit Wall)");
+                }
+
+                // Remove off-screen
+                if (obs.y > canvas.height) {
+                    obstacles.splice(index, 1);
+                    score += 10;
+                    updateScore();
+                }
+            });
+
+            // Difficulty ramp
+            if (frames % 500 === 0) speed += 0.5;
+
+            // Teacher Logic
+            handleTeacherAI();
+
+            frames++;
+        }
+
+        function handleTeacherAI() {
+            if (teacherState === 'cooldown') {
+                if (Math.random() > 0.99) teacherState = 'idle';
+                return;
+            }
+
+            teacherTimer--;
+
+            if (teacherState === 'idle') {
+                if (teacherTimer <= 0) {
+                    teacherState = 'warning';
+                    teacherTimer = 60; // 1 second warning
+                    statusEl.innerText = "WARNING...";
+                    statusEl.style.color = "yellow";
+                }
+            } else if (teacherState === 'warning') {
+                if (teacherTimer <= 0) {
+                    teacherState = 'watching';
+                    teacherTimer = 120; // 2 seconds to react
+                    eyeEl.classList.add('watching');
+                    statusEl.innerText = "TEACHER IS WATCHING!";
+                    statusEl.style.color = "red";
+                }
+            } else if (teacherState === 'watching') {
+                // If player hasn't pressed space (handled in toggleBossMode)
+                // and timer runs out OR they are moving:
+                
+                // If player moves while watched -> caught immediately
+                if (keys.ArrowLeft || keys.ArrowRight) {
+                     gameOver("Movement Detected by Teacher");
+                }
+
+                if (teacherTimer <= 0) {
+                    // If time runs out and you aren't hidden
+                    gameOver("Teacher saw your screen");
+                }
+            }
+        }
+
+        function loop() {
+            if (!gameRunning || isPaused) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            drawBackground();
+            drawPlayer();
+            drawObstacles();
+            update();
+
+            requestAnimationFrame(loop);
+        }
+
+	</script>
+</body>
+
+</html>
