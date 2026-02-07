@@ -49,7 +49,6 @@
 			left: 0;
 			z-index: 1;
 			pointer-events: none;
-			/* Removed opacity here so we can control trail opacity in JS */
 		}
 
 		/* --- SIDEBAR --- */
@@ -1098,23 +1097,24 @@
         }
         updateFPS();
 
-        // --- ONLINE USERS FETCH (Added per request) ---
-        async function updateOnlineCount() {
-            try {
-                const response = await fetch('/api/online');
-                const data = await response.json();
-                // Checks for 'count' property or falls back to raw data if it returns just a number
-                const count = data.count !== undefined ? data.count : data;
-                document.getElementById('online-count').innerText = count;
-            } catch (error) {
-                console.error('Failed to fetch online count:', error);
-                // Keeps the last known value or sets to default if it fails silently
-            }
+        // --- LIVE ONLINE USERS (VERCEL) ---
+        const onlineId = crypto.randomUUID();
+
+        async function updateOnline() {
+          try {
+            const r = await fetch(`/api/online?id=${onlineId}`, {
+              cache: "no-store"
+            });
+            if (!r.ok) return;
+            // The API must return PLAIN TEXT for this to work
+            document.getElementById("online-count").textContent = await r.text();
+          } catch {
+            // fail silently
+          }
         }
-        // Fetch every 10 seconds to avoid rate limiting
-        setInterval(updateOnlineCount, 10000);
-        updateOnlineCount(); // Initial fetch
-        // ----------------------------------------------
+
+        updateOnline();
+        setInterval(updateOnline, 15000);
 
         function updateBatteryUI(battery) {
             const level = Math.round(battery.level * 100);
