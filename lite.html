@@ -906,8 +906,8 @@
 				<div style="margin-bottom:20px; border-bottom:1px solid #333; padding-bottom:10px;">
 					<span style="font-size:11px; color:#888; text-transform:uppercase;">Feb 5, 2026 - v5.3.1</span>
 					<ul style="list-style:none; padding-left:10px; margin-top:5px; line-height:1.6;">
-						<li>• Fixed Settings Overlap</li>
-						<li>• Added EdulearnOS Experiment</li>
+						<li>• Fixed View counter </li>
+						<li>• Added Games made by ai (fu gn)</li>
 						<li>• Improved Modal Layout</li>
 					</ul>
 				</div>
@@ -1065,7 +1065,8 @@
             "skibdiidiididiididiidiidd", "albie was here", "L HAZEL, REISIMIKA, SOPQL, and EMMYWEMMY. - Absolute cinema guy", "AH you suck at batminton - anonymous",
             "Go on.. touch app scripts. - dedede the third", "L NONDEGENERATES I USE SKIDBOOT - AH (bro can guess who)", "UNBLOCKED GAMES IN DA BIG 26!",
             "NO G00NING (And I specifically am talking about a CERTAIN SOMEONE)", "Pathetic - AH", "If you made it this far, join the discord!", "You know I know if you hop on the hUb, do you?",
-            "Deepfakes of me lmfao", "L krish", "krishisaddictedtobrawlstars.raspberryip.com", "Hi, mr J20.","skids being skids","your a skid buddy", "lasy updated feb 5, 2026.. trust", "the type of shi i see on tiktok:", "I'm sorry, what-", "last message typed so far"];
+            "Deepfakes of me lmfao", "L krish", "krishisaddictedtobrawlstars.raspberryip.com", "Hi, mr J20.","skids being skids","your a skid buddy", "lasy updated feb 5, 2026.. trust", "the type of shi i see on tiktok:", "I'm sorry, what-", "shravan u got no life", "fu yuvan", "skibididididididid sigma", 
+			 "ayy 67", "based in colorado springs (we know we doxxed ourselves)", "frogiesarcade ahh quotes", "money the money", "loading da loading","toggle off particles for better performance", "I'll steal your code hahaha - J20", "last message typed so far"];
             document.getElementById('random-quote').innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
         }
         displayRandomQuote();
@@ -1096,6 +1097,24 @@
             requestAnimationFrame(updateFPS);
         }
         updateFPS();
+
+        // --- ONLINE USERS FETCH (Added per request) ---
+        async function updateOnlineCount() {
+            try {
+                const response = await fetch('/api/online');
+                const data = await response.json();
+                // Checks for 'count' property or falls back to raw data if it returns just a number
+                const count = data.count !== undefined ? data.count : data;
+                document.getElementById('online-count').innerText = count;
+            } catch (error) {
+                console.error('Failed to fetch online count:', error);
+                // Keeps the last known value or sets to default if it fails silently
+            }
+        }
+        // Fetch every 10 seconds to avoid rate limiting
+        setInterval(updateOnlineCount, 10000);
+        updateOnlineCount(); // Initial fetch
+        // ----------------------------------------------
 
         function updateBatteryUI(battery) {
             const level = Math.round(battery.level * 100);
