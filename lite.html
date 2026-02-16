@@ -1,27 +1,33 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Login</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Edulearn Lite</title>
 	<link id="dynamic-favicon" rel="icon"
-		href="https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+		href="https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
 	<style>
-		/* --- CORE VARIABLES (DEEP BLACK & PURPLE THEME) --- */
+		/* --- DYNAMIC THEME ENGINE --- */
 		:root {
-			--bg-body: #050505;
-			--bg-sidebar: #0a0a0a;
-			--bg-card: #111111;
-			--border-color: #222;
-			--accent: #c026d3;
-			--accent-glow: rgba(192, 38, 211, 0.4);
-			--text-main: #f5f5f5;
-			--text-muted: #a3a3a3;
-			--btn-text: #ffffff;
-			--sidebar-width-collapsed: 60px;
-			--sidebar-width-expanded: 220px;
+			/* Defaults (Midnight Purple) - JS will overwrite these */
+			--bg-deep: #020617;
+			--bg-gradient-start: #4c1d95;
+			--bg-gradient-mid: #1e1b4b;
+
+			--accent-primary: #8b5cf6;
+			--accent-glow: rgba(139, 92, 246, 0.5);
+
+			--sidebar-bg: rgba(15, 23, 42, 0.7);
+			--border-color: rgba(255, 255, 255, 0.08);
+
+			--text-main: #ffffff;
+			--text-muted: #94a3b8;
+
+			--sidebar-width-collapsed: 90px;
+			--sidebar-width-expanded: 240px;
 		}
 
 		* {
@@ -31,16 +37,20 @@
 		}
 
 		body {
-			font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
-			background-color: var(--bg-body);
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			background-color: var(--bg-deep);
+			/* The signature Astro "Aurora" Gradient */
+			background-image: radial-gradient(ellipse at 50% 0%, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 40%, var(--bg-deep) 80%);
 			color: var(--text-main);
 			overflow: hidden;
 			display: flex;
 			height: 100vh;
-			font-size: 13px;
-			transition: background-color 0.3s, color 0.3s;
+			font-size: 14px;
+			line-height: 1.5;
+			transition: background-image 0.5s ease, background-color 0.5s ease;
 		}
 
+		/* --- PARTICLES --- */
 		#particles-js {
 			position: absolute;
 			width: 100%;
@@ -49,228 +59,271 @@
 			left: 0;
 			z-index: 1;
 			pointer-events: none;
+			opacity: 0.6;
 		}
 
 		/* --- SIDEBAR --- */
 		.sidebar {
 			width: var(--sidebar-width-collapsed);
 			height: 100vh;
-			background-color: var(--bg-sidebar);
-			border-right: 1px solid rgba(255, 255, 255, 0.05);
+			background: var(--sidebar-bg);
+			border-right: 1px solid var(--border-color);
+			backdrop-filter: blur(15px);
+			-webkit-backdrop-filter: blur(15px);
 			display: flex;
 			flex-direction: column;
-			transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), background 0.5s ease;
 			position: relative;
-			z-index: 1000;
-			box-shadow: 5px 0 30px rgba(0, 0, 0, 0.5);
+			z-index: 100;
 			overflow: hidden;
-			white-space: nowrap;
-			backdrop-filter: blur(10px);
 		}
 
 		.sidebar:hover {
 			width: var(--sidebar-width-expanded);
 		}
 
+		/* LOGO SECTION */
 		.brand {
-			height: 60px;
+			height: 80px;
 			display: flex;
 			align-items: center;
-			padding: 0 16px;
-			font-weight: 700;
-			font-size: 14px;
-			color: var(--text-main);
-			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+			justify-content: center;
+			border-bottom: 1px solid var(--border-color);
 			margin-bottom: 10px;
 			overflow: hidden;
-			letter-spacing: 0.5px;
+			white-space: nowrap;
+			transition: 0.3s;
 		}
 
-		.brand i {
-			min-width: 24px;
-			font-size: 18px;
-			margin-right: 12px;
-			text-align: center;
-			color: var(--accent);
+		.sidebar:hover .brand {
+			justify-content: flex-start;
+			padding-left: 20px;
 		}
 
-		.brand span {
+		/* Hexagon Animation */
+		.hex-container {
+			position: relative;
+			width: 42px;
+			height: 48px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-right: 0;
+			transition: 0.3s;
+			flex-shrink: 0;
+		}
+
+		.sidebar:hover .hex-container {
+			margin-right: 15px;
+		}
+
+		.hex-shape {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(255, 255, 255, 0.05);
+			border: 2px solid var(--accent-primary);
+			clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+			box-shadow: 0 0 15px var(--accent-glow);
+			animation: pulseHex 3s infinite ease-in-out;
+			transition: border-color 0.5s, box-shadow 0.5s;
+		}
+
+		.hex-letter {
+			z-index: 2;
+			font-weight: 800;
+			font-size: 20px;
+			color: #fff;
+			text-shadow: 0 0 10px var(--accent-primary);
+		}
+
+		@keyframes pulseHex {
+
+			0%,
+			100% {
+				transform: scale(1);
+				border-color: var(--accent-primary);
+			}
+
+			50% {
+				transform: scale(1.05);
+				border-color: #fff;
+			}
+		}
+
+		.brand-text {
 			opacity: 0;
+			font-weight: 700;
+			font-size: 16px;
+			color: #fff;
 			transition: opacity 0.2s;
+			display: none;
 		}
 
-		.sidebar:hover .brand span {
+		.sidebar:hover .brand-text {
+			display: block;
 			opacity: 1;
 			transition-delay: 0.1s;
+		}
+
+
+		/* NAV LINKS */
+		.nav-links {
+			display: flex;
+			flex-direction: column;
+			gap: 2px;
 		}
 
 		.nav-link {
 			display: flex;
 			align-items: center;
-			height: 44px;
-			padding: 0 16px;
+			height: 50px;
 			color: var(--text-muted);
 			text-decoration: none;
 			cursor: pointer;
-			transition: all 0.2s;
-			position: relative;
-			font-size: 13px;
+			transition: all 0.2s ease;
 			font-weight: 500;
+			white-space: nowrap;
+			overflow: hidden;
+			justify-content: center;
+			padding: 0;
+			border-right: 3px solid transparent;
 		}
 
-		.nav-link:hover,
+		.sidebar:hover .nav-link {
+			justify-content: flex-start;
+			padding: 0 25px;
+		}
+
+		.nav-link:hover {
+			color: #fff;
+			background: rgba(255, 255, 255, 0.03);
+		}
+
 		.nav-link.active {
-			background-color: rgba(192, 38, 211, 0.1);
-			color: var(--text-main);
-		}
-
-		.nav-link.active::before {
-			content: '';
-			position: absolute;
-			left: 0;
-			top: 0;
-			height: 100%;
-			width: 3px;
-			background-color: var(--accent);
-			box-shadow: 0 0 12px var(--accent);
+			color: #fff;
+			background: rgba(255, 255, 255, 0.05);
+			border-right: 3px solid var(--accent-primary);
 		}
 
 		.nav-link i {
-			min-width: 24px;
-			font-size: 16px;
-			margin-right: 12px;
+			font-size: 18px;
+			width: 24px;
 			text-align: center;
-			transition: color 0.2s;
+			transition: 0.2s;
 		}
 
-		.nav-link:hover i {
-			color: var(--accent);
+		.sidebar:hover .nav-link i {
+			margin-right: 15px;
 		}
 
 		.nav-link span {
+			display: none;
 			opacity: 0;
-			transition: opacity 0.1s;
 		}
 
 		.sidebar:hover .nav-link span {
+			display: block;
 			opacity: 1;
-			transition-delay: 0.1s;
+			animation: fadeText 0.3s forwards;
 		}
 
+		@keyframes fadeText {
+			to {
+				opacity: 1;
+			}
+		}
+
+		/* FOOTER STATS */
 		.sidebar-footer {
 			margin-top: auto;
-			width: 100%;
-			background: rgba(0, 0, 0, 0.3);
-			border-top: 1px solid rgba(255, 255, 255, 0.05);
+			border-top: 1px solid var(--border-color);
+			background: rgba(0, 0, 0, 0.2);
+			padding: 15px 0;
 			display: flex;
 			flex-direction: column;
-			padding: 15px 0;
+			gap: 8px;
 		}
 
 		.stat-row {
 			display: flex;
 			align-items: center;
 			justify-content: center;
-			width: 100%;
 			height: 30px;
 			color: var(--text-muted);
-			font-size: 11px;
-			white-space: nowrap;
+			font-size: 12px;
 			overflow: hidden;
-			transition: all 0.2s;
-			padding: 0 4px;
-		}
-
-		.timer-row {
-			border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-			margin-bottom: 8px;
-			padding-bottom: 8px;
+			white-space: nowrap;
+			padding: 0 5px;
 		}
 
 		.sidebar:hover .stat-row {
 			justify-content: flex-start;
-			padding-left: 18px;
-			font-size: 12px;
+			padding-left: 25px;
 		}
 
 		.stat-row i {
-			min-width: 20px;
+			width: 20px;
 			text-align: center;
-			font-size: 13px;
+			font-size: 14px;
+			margin-right: 5px;
 		}
 
 		.stat-value {
-			margin-left: 6px;
+			color: #fff;
 			font-weight: 600;
-			color: var(--text-main);
 			font-family: monospace;
-		}
-
-		.sidebar:hover .stat-row i {
-			margin-right: 8px;
+			display: inline-block;
 		}
 
 		.stat-label {
 			display: none;
-			margin-left: 6px;
-			font-weight: normal;
-			color: #777;
+			margin-left: 8px;
+			font-size: 12px;
 		}
 
 		.sidebar:hover .stat-label {
 			display: inline;
+			opacity: 1;
 		}
 
-		.fps-high {
-			color: #22c55e;
-		}
-
-		.fps-med {
-			color: #eab308;
-		}
-
-		.fps-low {
-			color: #ef4444;
-		}
-
-		.bat-high {
-			color: #4caf50;
-		}
-
-		.bat-med {
-			color: #ff9800;
-		}
-
-		.bat-low {
-			color: #f44336;
-		}
-
-		.bat-charge {
-			color: #2196f3;
-		}
 
 		/* --- MAIN CONTENT --- */
 		.main-content {
 			flex: 1;
 			position: relative;
-			height: 100vh;
-			overflow: hidden;
-			padding: 0;
 			z-index: 10;
+			display: flex;
+			flex-direction: column;
 		}
 
 		.page {
 			display: none;
 			width: 100%;
 			height: 100%;
-			animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-			flex-direction: column;
+			animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 		}
 
 		.page.active {
 			display: flex;
+			flex-direction: column;
 		}
 
+		@keyframes fadeUp {
+			from {
+				opacity: 0;
+				transform: translateY(10px);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		/* --- HERO SECTION --- */
 		.home-container {
 			display: flex;
 			flex-direction: column;
@@ -278,100 +331,108 @@
 			align-items: center;
 			height: 100%;
 			text-align: center;
-			padding: 20px;
+			padding: 40px;
+			max-width: 1000px;
+			margin: 0 auto;
 		}
 
-		@keyframes fadeIn {
-			from {
-				opacity: 0;
-				transform: scale(0.98);
-			}
-
-			to {
-				opacity: 1;
-				transform: scale(1);
-			}
+		.version-pill {
+			background: linear-gradient(90deg, var(--bg-gradient-start), var(--accent-primary));
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			padding: 6px 16px;
+			border-radius: 99px;
+			font-size: 13px;
+			font-weight: 600;
+			margin-bottom: 30px;
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			box-shadow: 0 0 20px var(--accent-glow);
+			cursor: default;
+			transition: 0.5s;
 		}
 
-		/* --- FIXED TITLE STYLE --- */
+		.version-pill span {
+			color: #fff;
+		}
+
 		#hero-title {
-			font-size: 72px;
-			margin-bottom: 8px;
-			color: var(--accent);
-			text-shadow: 0 0 25px var(--accent-glow);
+			font-size: 80px;
 			font-weight: 800;
 			letter-spacing: -2px;
-			line-height: 1;
+			line-height: 1.1;
+			margin-bottom: 20px;
+			color: #fff;
+			background: linear-gradient(180deg, #fff 0%, var(--accent-primary) 100%);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			filter: drop-shadow(0 0 30px var(--accent-glow));
+			transition: 0.5s;
 		}
 
 		.hero-subtitle {
+			font-size: 24px;
 			color: var(--text-muted);
-			font-size: 18px;
-			margin-bottom: 12px;
-			letter-spacing: 0.5px;
+			max-width: 600px;
+			margin-bottom: 40px;
 			font-weight: 400;
+			line-height: 1.4;
 		}
 
-		.hero-quote {
-			color: #666;
-			font-size: 14px;
-			font-style: italic;
-			margin-bottom: 50px;
-			font-family: 'Courier New', monospace;
-			min-height: 20px;
-			z-index: 2;
-			opacity: 0.7;
+		.hero-actions {
+			display: flex;
+			gap: 20px;
+			align-items: center;
 		}
 
-		.clock-container {
-			text-align: center;
-			user-select: none;
-			margin-bottom: 50px;
-		}
-
-		.clock-time {
-			font-size: 42px;
-			font-weight: 200;
-			color: var(--text-main);
-			text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-			letter-spacing: 3px;
-			margin-bottom: 5px;
-		}
-
-		.clock-date {
-			font-size: 14px;
-			color: var(--text-muted);
-			text-transform: uppercase;
-			letter-spacing: 2px;
+		.btn-astro-white {
+			background: #fff;
+			color: #000;
+			font-size: 16px;
 			font-weight: 600;
-		}
-
-		.start-btn {
-			background-color: var(--accent);
-			color: #000000;
-			padding: 16px 50px;
-			border-radius: 100px;
-			font-size: 15px;
-			font-weight: 800;
+			padding: 14px 32px;
+			border-radius: 999px;
 			text-decoration: none;
+			transition: transform 0.2s, box-shadow 0.2s;
 			border: none;
 			cursor: pointer;
-			box-shadow: 0 10px 40px -10px rgba(192, 38, 211, 0.3);
-			transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-			display: inline-flex;
+		}
+
+		.btn-astro-white:hover {
+			transform: translateY(-2px);
+			box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+		}
+
+		.btn-astro-dark {
+			background: rgba(255, 255, 255, 0.05);
+			color: #fff;
+			border: 1px solid rgba(255, 255, 255, 0.1);
+			padding: 14px 24px;
+			border-radius: 8px;
+			font-family: monospace;
+			font-size: 14px;
+			display: flex;
 			align-items: center;
-			gap: 12px;
-			text-transform: uppercase;
-			letter-spacing: 1px;
+			gap: 10px;
+			cursor: pointer;
+			transition: 0.2s;
 		}
 
-		.start-btn:hover {
-			transform: translateY(-4px) scale(1.05);
-			box-shadow: 0 20px 50px -10px rgba(192, 38, 211, 0.5);
+		.btn-astro-dark:hover {
+			background: rgba(255, 255, 255, 0.1);
+			border-color: rgba(255, 255, 255, 0.3);
 		}
 
+		.hero-footer-text {
+			margin-top: 60px;
+			color: rgba(255, 255, 255, 0.3);
+			font-size: 13px;
+			font-family: monospace;
+			font-style: italic;
+		}
+
+		/* --- IFRAMES & UTILS --- */
 		.iframe-wrapper {
-			flex: 1;
 			width: 100%;
 			height: 100%;
 			background: #000;
@@ -383,21 +444,21 @@
 			border: none;
 		}
 
-		/* --- SETTINGS MODAL --- */
+		/* --- MODALS --- */
 		.modal-overlay {
 			position: fixed;
 			top: 0;
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background: rgba(0, 0, 0, 0.8);
+			background: rgba(0, 0, 0, 0.7);
+			backdrop-filter: blur(8px);
 			z-index: 2000;
 			display: none;
-			justify-content: center;
 			align-items: center;
-			backdrop-filter: blur(12px);
+			justify-content: center;
 			opacity: 0;
-			transition: opacity 0.3s ease;
+			transition: opacity 0.3s;
 		}
 
 		.modal-overlay.active {
@@ -405,139 +466,117 @@
 			opacity: 1;
 		}
 
-		.settings-container {
-			width: 900px;
-			height: 600px;
-			background: #080808;
-			border: 1px solid #222;
-			border-radius: 16px;
+		.settings-box {
+			width: 800px;
+			height: 550px;
+			background: var(--bg-deep);
+			border: 1px solid var(--border-color);
+			border-radius: 12px;
 			display: flex;
 			overflow: hidden;
-			box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.8);
-			color: var(--text-main);
-			position: relative;
+			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 		}
 
-		.close-modal {
-			position: absolute;
-			top: 20px;
-			right: 20px;
-			color: #666;
-			cursor: pointer;
-			font-size: 20px;
-			z-index: 10;
-		}
-
-		.close-modal:hover {
-			color: #fff;
-		}
-
-		.settings-nav {
-			width: 220px;
-			background: #0c0c0c;
-			border-right: 1px solid #222;
+		.settings-sidebar {
+			width: 200px;
+			background: rgba(0, 0, 0, 0.2);
 			padding: 20px 0;
-			display: flex;
-			flex-direction: column;
+			border-right: 1px solid var(--border-color);
 		}
 
-		.settings-nav-header {
-			padding: 0 24px 15px;
-			font-size: 20px;
-			font-weight: 700;
-			color: #fff;
-			border-bottom: 1px solid #222;
-			margin-bottom: 10px;
-		}
-
-		.settings-nav-item {
-			padding: 14px 24px;
+		.set-tab {
+			padding: 12px 24px;
 			color: var(--text-muted);
 			cursor: pointer;
-			font-weight: 600;
-			font-size: 13px;
-			display: flex;
-			align-items: center;
-			gap: 10px;
-			border-left: 3px solid transparent;
+			font-size: 14px;
+			font-weight: 500;
 			transition: 0.2s;
 		}
 
-		.settings-nav-item:hover {
+		.set-tab:hover,
+		.set-tab.active {
 			color: #fff;
-			background: rgba(255, 255, 255, 0.02);
+			background: rgba(255, 255, 255, 0.03);
 		}
 
-		.settings-nav-item.active {
-			color: #fff;
-			background: rgba(192, 38, 211, 0.05);
-			border-left-color: var(--accent);
+		.set-tab.active {
+			border-left: 3px solid var(--accent-primary);
 		}
 
-		.settings-content {
+		.settings-main {
 			flex: 1;
-			padding: 40px;
+			padding: 30px;
 			overflow-y: auto;
-			display: flex;
-			flex-direction: column;
-			gap: 10px;
 		}
 
-		.settings-tab {
+		.settings-group {
 			display: none;
 		}
 
-		.settings-tab.active {
+		.settings-group.active {
 			display: block;
-			animation: fadeIn 0.3s;
+			animation: fadeUp 0.3s;
 		}
 
-		.section-title {
-			font-size: 24px;
-			font-weight: 700;
-			margin-bottom: 10px;
-		}
-
-		.section-desc {
-			color: var(--text-muted);
-			margin-bottom: 30px;
-			font-size: 14px;
-		}
-
-		.card {
-			background: #111;
-			border: 1px solid #222;
-			border-radius: 12px;
+		.opt-card {
+			background: rgba(255, 255, 255, 0.02);
+			border: 1px solid var(--border-color);
+			border-radius: 8px;
 			padding: 20px;
-			margin-bottom: 20px;
+			margin-bottom: 15px;
 		}
 
-		.card h3 {
-			font-size: 16px;
-			font-weight: 600;
-			margin-bottom: 8px;
+		.opt-card h3 {
 			color: #fff;
+			margin-bottom: 5px;
+			font-size: 16px;
 		}
 
-		.card p {
+		.opt-card p {
+			color: var(--text-muted);
 			font-size: 13px;
-			color: #888;
-			margin-bottom: 20px;
-			line-height: 1.5;
+			margin-bottom: 15px;
+		}
+
+		/* Inputs & Toggles */
+		input[type="text"],
+		input[type="url"],
+		select {
+			width: 100%;
+			padding: 10px;
+			background: rgba(0, 0, 0, 0.3);
+			border: 1px solid var(--border-color);
+			color: #fff;
+			border-radius: 6px;
+			outline: none;
+			margin-top: 5px;
+		}
+
+		input:focus {
+			border-color: var(--accent-primary);
+		}
+
+		/* Color Picker Styling */
+		input[type="color"] {
+			width: 100%;
+			height: 40px;
+			border: none;
+			padding: 0;
+			background: transparent;
+			cursor: pointer;
 		}
 
 		.toggle-row {
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			margin-top: 15px;
+			margin-top: 10px;
 		}
 
 		.toggle-switch {
 			position: relative;
-			display: inline-block;
-			width: 50px;
-			height: 26px;
+			width: 44px;
+			height: 24px;
 		}
 
 		.toggle-switch input {
@@ -561,8 +600,8 @@
 		.slider:before {
 			position: absolute;
 			content: "";
-			height: 20px;
-			width: 20px;
+			height: 18px;
+			width: 18px;
 			left: 3px;
 			bottom: 3px;
 			background-color: white;
@@ -571,42 +610,11 @@
 		}
 
 		input:checked+.slider {
-			background-color: var(--accent);
+			background-color: var(--accent-primary);
 		}
 
 		input:checked+.slider:before {
-			transform: translateX(24px);
-		}
-
-		.btn {
-			padding: 12px;
-			border-radius: 8px;
-			border: 1px solid #333;
-			background: #1a1a1a;
-			color: #fff;
-			cursor: pointer;
-			font-weight: 600;
-			font-size: 13px;
-			transition: 0.2s;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			gap: 8px;
-		}
-
-		.btn:hover {
-			background: #252525;
-			border-color: #444;
-		}
-
-		.btn-primary {
-			background: var(--accent);
-			border: none;
-			color: var(--btn-text);
-		}
-
-		.btn-primary:hover {
-			filter: brightness(1.1);
+			transform: translateX(20px);
 		}
 
 		.preset-grid {
@@ -621,48 +629,33 @@
 			align-items: center;
 			gap: 8px;
 			padding: 15px;
-			background: #050505;
-			border: 1px solid #333;
+			background: rgba(255, 255, 255, 0.03);
+			border: 1px solid var(--border-color);
 			border-radius: 8px;
 			cursor: pointer;
-			color: #888;
+			color: var(--text-muted);
 			transition: 0.2s;
 		}
 
 		.preset-btn:hover {
-			border-color: var(--accent);
+			border-color: var(--accent-primary);
 			color: #fff;
 		}
 
-		input[type="text"],
-		input[type="url"],
-		select {
-			width: 100%;
-			padding: 12px 16px;
-			background: rgba(0, 0, 0, 0.3);
-			border: 1px solid rgba(255, 255, 255, 0.1);
-			color: var(--text-main);
-			border-radius: 8px;
-			outline: none;
+		.btn-small {
+			padding: 8px 16px;
+			background: var(--accent-primary);
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
 			font-size: 13px;
-			transition: all 0.2s;
-			margin-top: 5px;
+			margin-right: 5px;
 		}
 
-		input:focus,
-		select:focus {
-			border-color: var(--accent);
-			background: rgba(0, 0, 0, 0.5);
-		}
-
-		.updates-modal-box {
-			background: rgba(17, 17, 17, 0.95);
-			width: 400px;
-			border-radius: 16px;
-			border: 1px solid rgba(255, 255, 255, 0.08);
-			padding: 24px;
-			box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-			color: var(--text-main);
+		.btn-danger {
+			background: #7f1d1d;
+			color: #fecaca;
 		}
 	</style>
 </head>
@@ -672,79 +665,95 @@
 
 	<nav class="sidebar">
 		<div class="brand">
-			<i class="fa-solid fa-ghost"></i>
-			<span>Edulearn Lite</span>
+			<div class="hex-container">
+				<div class="hex-shape"></div>
+				<span class="hex-letter">E</span>
+			</div>
+			<span class="brand-text">Edulearn Lite</span>
 		</div>
-		<a class="nav-link active" onclick="switchPage('home', this)">
-			<i class="fa-solid fa-house"></i>
-			<span>Home</span>
-		</a>
-		<a class="nav-link" onclick="switchPage('games-page', this)">
-			<i class="fa-solid fa-gamepad"></i>
-			<span>Games</span>
-		</a>
-		<a class="nav-link" onclick="switchPage('search-page', this)">
-			<i class="fa-solid fa-magnifying-glass"></i>
-			<span>Search</span>
-		</a>
-		<a class="nav-link" onclick="switchPage('tools-page', this)">
-			<i class="fa-solid fa-wrench"></i>
-			<span>Tools</span>
-		</a>
-		<a class="nav-link" onclick="openUpdates()">
-			<i class="fa-solid fa-newspaper"></i>
-			<span>Updates</span>
-		</a>
-		<a class="nav-link" onclick="switchPage('info-page', this)">
-			<i class="fa-solid fa-circle-info"></i>
-			<span>Info</span>
-		</a>
-		<a class="nav-link" onclick="openSettings()">
-			<i class="fa-solid fa-gear"></i>
-			<span>Settings</span>
-		</a>
-		<a class="nav-link" onclick="switchPage('extras-page', this)">
-			<i class="fa-solid fa-plus"></i>
-			<span>Extras</span>
-		</a>
-		<div style="flex-grow: 1;"></div>
+
+		<div class="nav-links">
+			<a class="nav-link active" onclick="switchPage('home', this)">
+				<i class="fa-solid fa-rocket"></i> <span>Start</span>
+			</a>
+			<a class="nav-link" onclick="switchPage('games-page', this)">
+				<i class="fa-solid fa-gamepad"></i> <span>Games</span>
+			</a>
+			<a class="nav-link" onclick="switchPage('search-page', this)">
+				<i class="fa-solid fa-globe"></i> <span>Browser</span>
+			</a>
+			<a class="nav-link" onclick="switchPage('tools-page', this)">
+				<i class="fa-solid fa-wrench"></i> <span>Tools</span>
+			</a>
+			<a class="nav-link" onclick="openUpdates()">
+				<i class="fa-solid fa-bolt"></i> <span>Updates</span>
+			</a>
+			<a class="nav-link" onclick="switchPage('info-page', this)">
+				<i class="fa-solid fa-circle-info"></i> <span>Info</span>
+			</a>
+			<a class="nav-link" onclick="openSettings()">
+				<i class="fa-solid fa-sliders"></i> <span>Config</span>
+			</a>
+			<a class="nav-link" onclick="switchPage('extras-page', this)">
+				<i class="fa-solid fa-plus"></i> <span>Extras</span>
+			</a>
+		</div>
+
 		<div class="sidebar-footer">
-			<div class="stat-row timer-row">
-				<i class="fa-solid fa-stopwatch"></i>
-				<span id="game-timer" class="stat-value">00:00</span>
+			<div class="stat-row">
+				<i class="fa-regular fa-clock"></i>
+				<span class="stat-value" id="session-time">00:00</span>
 				<span class="stat-label">Session</span>
 			</div>
 			<div class="stat-row">
-				<i class="fa-solid fa-gauge-high"></i>
-				<span id="fps-display" class="stat-value">--</span>
+				<i id="fps-icon" class="fa-solid fa-gauge-high"></i>
+				<span class="stat-value" id="fps-counter">60</span>
 				<span class="stat-label">FPS</span>
 			</div>
 			<div class="stat-row">
-				<i class="fa-solid fa-user-group" style="color:#4caf50;"></i>
-				<span id="online-count" class="stat-value">0</span>
-				<span class="stat-label">online</span>
+				<i class="fa-solid fa-user-group" style="color:#4ade80;"></i>
+				<span class="stat-value" id="online-count">0</span>
+				<span class="stat-label">Online</span>
 			</div>
 			<div class="stat-row">
-				<i id="bat-icon" class="fa-solid fa-battery-full"></i>
-				<span id="battery-level" class="stat-value">--%</span>
-				<span class="stat-label">Battery</span>
+				<i id="bat-icon" class="fa-solid fa-battery-half"></i>
+				<span class="stat-value" id="bat-level">--%</span>
+				<span class="stat-label">Power</span>
 			</div>
 		</div>
 	</nav>
 
 	<main class="main-content">
+
 		<section id="home" class="page active">
 			<div class="home-container">
-				<h1 id="hero-title">Edulearn Lite</h1>
-				<p class="hero-subtitle">The cleanest unblocked experience.</p>
-				<p class="hero-quote" id="random-quote">"coded by the skids, for the skids"</p>
-				<div class="clock-container">
-					<div class="clock-time" id="clock-time">00:00:00</div>
-					<div class="clock-date" id="clock-date">Loading Date...</div>
+
+				<div class="version-pill">
+					<span id="date-pill">Loading Date...</span>
+					<i class="fa-solid fa-arrow-right" style="margin-left:5px; opacity:0.5;"></i>
 				</div>
-				<button class="start-btn" onclick="startBrowsing()">
-                    Start Gaming <i class="fa-solid fa-arrow-right"></i>
-                </button>
+
+				<h1 id="hero-title">Edulearn Lite</h1>
+
+				<p class="hero-subtitle">
+					The cleanest unblocked experience. <br>
+            Designed for speed, stealth, and performance.
+          </p>
+
+					<div class="hero-actions">
+						<button class="btn-astro-white" onclick="startBrowsing()">
+              Start Gaming
+            </button>
+						<button class="btn-astro-dark" onclick="openAboutBlank()">
+              <i class="fa-solid fa-eye-slash"></i>
+              <span>Launch about:blank</span>
+            </button>
+					</div>
+
+					<div class="hero-footer-text" id="random-quote">
+						"Loading quote..."
+					</div>
+
 			</div>
 		</section>
 
@@ -763,475 +772,530 @@
 		<section id="extras-page" class="page">
 			<div class="iframe-wrapper"><iframe src="./extras.html"></iframe></div>
 		</section>
-	</main>
 
-	<div class="modal-overlay" id="settings-modal">
-		<div class="settings-container">
-			<i class="fa-solid fa-xmark close-modal" onclick="closeSettings()"></i>
-			<div class="settings-nav">
-				<div class="settings-nav-header">Settings</div>
-				<div class="settings-nav-item active" onclick="switchSettingsTab('tab-cloaking', this)">
-					<i class="fa-solid fa-mask"></i> Cloaking
+		<div class="modal-overlay" id="settings-modal">
+			<div class="settings-box">
+				<div class="settings-sidebar">
+					<div class="set-tab active" onclick="setTab('s-gen', this)">General</div>
+					<div class="set-tab" onclick="setTab('s-cloak', this)">Cloaking</div>
+					<div class="set-tab" onclick="setTab('s-appear', this)">Appearance</div>
+					<div class="set-tab" onclick="setTab('s-data', this)">Data</div>
+					<div class="set-tab" onclick="setTab('s-exp', this)">Experiments</div>
+					<div class="set-tab" style="color:#ef4444;" onclick="closeSettings()">Close</div>
 				</div>
-				<div class="settings-nav-item" onclick="switchSettingsTab('tab-panic', this)">
-					<i class="fa-solid fa-triangle-exclamation"></i> Panic
-				</div>
-				<div class="settings-nav-item" onclick="switchSettingsTab('tab-appearance', this)">
-					<i class="fa-solid fa-palette"></i> Appearance
-				</div>
-				<div class="settings-nav-item" onclick="switchSettingsTab('tab-data', this)">
-					<i class="fa-solid fa-database"></i> Data
-				</div>
-				<div class="settings-nav-item" onclick="switchSettingsTab('tab-experiments', this)">
-					<i class="fa-solid fa-flask"></i> Experiments
-				</div>
-			</div>
-
-			<div class="settings-content">
-				<div id="tab-cloaking" class="settings-tab active">
-					<div class="section-title">Cloaking</div>
-					<div class="section-desc">Manage disguise and stealth settings.</div>
-					<div class="card">
-						<h3>About:Blank Launcher</h3>
-						<div class="btn-group" style="display:flex; gap:10px;">
-							<button class="btn btn-primary" onclick="openAboutBlank()" style="flex:1;">Launch About:Blank</button>
-							<button class="btn" onclick="alert('Use about:blank for best results.')" style="flex:1;">Launch Blob</button>
-						</div>
-						<div class="toggle-row">
-							<span>Auto-launch on open</span>
-							<label class="toggle-switch">
-                                <input type="checkbox" id="auto-cloak-toggle" onchange="toggleAutoCloak(this)">
-                                <span class="slider"></span>
-                            </label>
-						</div>
-					</div>
-					<div class="card">
-						<h3>Tab Disguise</h3>
-						<div class="preset-grid">
-							<div class="preset-btn"
-								onclick="setDisguise('Google Drive', 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png')">
-								<i class="fa-brands fa-google-drive"></i> Drive
-							</div>
-							<div class="preset-btn"
-								onclick="setDisguise('Classes', 'https://ssl.gstatic.com/classroom/favicon.png')">
-								<i class="fa-solid fa-chalkboard-user"></i> Class
-							</div>
-							<div class="preset-btn"
-								onclick="setDisguise('Gmail', 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico')">
-								<i class="fa-solid fa-envelope"></i> Gmail
-							</div>
-						</div>
-						<input type="text" id="custom-title" placeholder="Custom Title..." onkeyup="updateCustomDisguise()">
-						<input type="text" id="custom-icon" placeholder="Custom Icon URL..." onkeyup="updateCustomDisguise()">
-                    </div>
-					</div>
-
-					<div id="tab-panic" class="settings-tab">
-						<div class="section-title">Panic Button</div>
-						<div class="section-desc">Safety features for emergency switching.</div>
-						<div class="card">
-							<h3>Panic Binding</h3>
-							<input type="text" id="panic-key-display" placeholder="Click to bind..." readonly onclick="startBinding()">
-							<input type="text" id="panic-url" value="./login.html" placeholder="Redirect URL" onchange="savePanicSettings()">
+				<div class="settings-main">
+					<div id="s-gen" class="settings-group active">
+						<h2 style="margin-bottom:20px;">General Config</h2>
+						<div class="opt-card">
+							<h3>Panic Button</h3>
+							<p>Quickly redirect to a safe page.</p>
+							<input type="text" id="panic-key" placeholder="Click to bind key..." readonly onclick="bindPanic()">
+							<input type="url" id="panic-url" value="https://google.com" placeholder="Redirect URL" onchange="savePanicSettings()">
 							<div class="toggle-row">
 								<span>Enable Panic Key</span>
 								<label class="toggle-switch">
-                                <input type="checkbox" id="panic-toggle" onchange="savePanicSettings()">
-                                <span class="slider"></span>
-                            </label>
+                    <input type="checkbox" id="panic-toggle" onchange="savePanicSettings()">
+                    <span class="slider"></span>
+                  </label>
 							</div>
 						</div>
 					</div>
 
-					<div id="tab-appearance" class="settings-tab">
-						<div class="section-title">Appearance</div>
-						<div class="section-desc">Customize the UI.</div>
-						<div class="card">
-							<h3>Theme</h3>
+					<div id="s-cloak" class="settings-group">
+						<h2 style="margin-bottom:20px;">Stealth</h2>
+						<div class="opt-card">
+							<h3>About:Blank Launcher</h3>
+							<p>Open site in a cloaked about:blank window.</p>
+							<button class="btn-small" onclick="openAboutBlank()">Launch About:Blank</button>
+							<div class="toggle-row" style="margin-top:15px;">
+								<span>Auto-launch on open</span>
+								<label class="toggle-switch">
+                     <input type="checkbox" id="auto-cloak-toggle" onchange="toggleAutoCloak(this)">
+                     <span class="slider"></span>
+                   </label>
+							</div>
+						</div>
+						<div class="opt-card">
+							<h3>Tab Disguise</h3>
+							<p>Mask the browser tab icon and title.</p>
+							<div class="preset-grid">
+								<div class="preset-btn"
+									onclick="setDisguise('Google Drive', 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png')">
+									<i class="fa-brands fa-google-drive"></i> Drive
+								</div>
+								<div class="preset-btn"
+									onclick="setDisguise('Classes', 'https://ssl.gstatic.com/classroom/favicon.png')">
+									<i class="fa-solid fa-chalkboard-user"></i> Class
+								</div>
+								<div class="preset-btn"
+									onclick="setDisguise('Gmail', 'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/gmail.ico')">
+									<i class="fa-solid fa-envelope"></i> Gmail
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div id="s-appear" class="settings-group">
+						<h2 style="margin-bottom:20px;">Appearance</h2>
+						<div class="opt-card">
+							<h3>Color Palette</h3>
+							<p>Choose a preset or pick a custom color.</p>
 							<select id="theme-select" onchange="changeTheme(this.value)">
-                            <option value="midnight">Midnight Purple (Default)</option>
-                            <option value="ocean">Ocean Blue</option>
-                            <option value="sunset">Sunset Orange</option>
-                            <option value="amoled">Pure Black</option>
-                        </select>
-						</div>
-						<div class="card">
-							<h3>Effects</h3>
-							<div class="toggle-row">
-								<span>Particles</span>
-								<label class="toggle-switch">
-                                <input type="checkbox" id="particle-toggle" checked onchange="toggleParticles(this)">
-                                <span class="slider"></span>
-                            </label>
+                  <option value="midnight">Midnight (Purple)</option>
+                  <option value="ocean">Ocean (Blue)</option>
+                  <option value="sunset">Sunset (Orange)</option>
+                  <option value="amoled">Amoled (Black)</option>
+                  <option value="custom">Custom Color...</option>
+                </select>
+							<div id="custom-color-container" style="display:none; margin-top:10px;">
+								<p style="margin-bottom:5px; font-size:12px;">Pick Accent Color:</p>
+								<input type="color" id="custom-color-picker" onchange="applyCustomTheme(this.value)">
+                </div>
+							</div>
+							<div class="opt-card">
+								<h3>Effects</h3>
+								<div class="toggle-row">
+									<span>Background Particles</span>
+									<label class="toggle-switch">
+                    <input type="checkbox" id="particle-toggle" checked onchange="toggleParticles(this)">
+                    <span class="slider"></span>
+                  </label>
+								</div>
 							</div>
 						</div>
-					</div>
 
-					<div id="tab-data" class="settings-tab">
-						<div class="section-title">Data</div>
-						<div class="card">
-							<h3>Reset</h3>
-							<p>Clear all saved settings and preferences.</p>
-							<button class="btn" style="color:#ff8a80; border-color: #5c1818; background: #2a0a0a; width: 100%;" onclick="localStorage.removeItem('el_settings'); location.reload();">Reset All Data</button>
-						</div>
-					</div>
-
-					<div id="tab-experiments" class="settings-tab">
-						<div class="section-title">Experiments</div>
-						<div class="section-desc">Beta features that may be unstable.</div>
-						<div class="card">
-							<h3>EdulearnOS</h3>
-							<p>Switch the environment to the OS-style layout.</p>
-							<div class="toggle-row">
-								<span>Enable EdulearnOS</span>
-								<label class="toggle-switch">
-                                <input type="checkbox" id="edulearnos-toggle" onchange="toggleEdulearnOS(this)">
-                                <span class="slider"></span>
-                            </label>
+						<div id="s-data" class="settings-group">
+							<h2 style="margin-bottom:20px;">Data Management</h2>
+							<div class="opt-card">
+								<h3>Reset</h3>
+								<p>Clear all saved settings and preferences.</p>
+								<button class="btn-small btn-danger" onclick="localStorage.removeItem('el_settings'); location.reload();">Reset All Data</button>
 							</div>
 						</div>
+
+						<div id="s-exp" class="settings-group">
+							<h2 style="margin-bottom:20px;">Experiments</h2>
+							<div class="opt-card">
+								<h3>EdulearnOS</h3>
+								<p>Switch to the experimental Desktop OS layout.</p>
+								<div class="toggle-row">
+									<span>Enable EdulearnOS</span>
+									<label class="toggle-switch">
+                      <input type="checkbox" id="edulearnos-toggle" onchange="toggleEdulearnOS(this)">
+                      <span class="slider"></span>
+                    </label>
+								</div>
+							</div>
+						</div>
+
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="modal-overlay" id="updates-modal">
-			<div class="updates-modal-box">
-				<div
-					style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:18px; font-weight:700;">
-					<span><i class="fa-solid fa-bullhorn" style="color:var(--accent);"></i> Updates</span>
-					<i class="fa-solid fa-xmark close-btn" onclick="closeUpdates()" style="cursor:pointer;"></i>
-				</div>
-				<div style="margin-bottom:20px; border-bottom:1px solid #333; padding-bottom:10px;">
-					<span style="font-size:11px; color:#888; text-transform:uppercase;">Feb 5, 2026 - v5.3.1</span>
-					<ul style="list-style:none; padding-left:10px; margin-top:5px; line-height:1.6;">
-						<li>• Fixed View counter </li>
-						<li>• Added Games made by AI (fu gn)</li>
-						<li>• Added OG Popular retro games in extras! (Go check it out)</li>
+			<div class="modal-overlay" id="updates-modal">
+				<div class="settings-box" style="height:auto; padding:30px; width:500px; display:block;">
+					<h2 style="color:#fff; margin-bottom:15px;">Latest Updates</h2>
+					<ul style="color:#94a3b8; line-height:1.8; margin-bottom:20px;">
+						<li>New UI: Replaced hacker theme with Astro style.</li>
+						<li>Custom Themes: Pick any color you want!</li>
+						<li>Dynamic Sidebar: Sidebar changes color with theme.</li>
+						<li>Fixes: Restored all quotes and cloaking features.</li>
 					</ul>
+					<button class="btn-astro-white" style="width:100%; text-align:center;" onclick="document.getElementById('updates-modal').classList.remove('active')">Awesome</button>
 				</div>
-				<button class="btn btn-primary" onclick="closeUpdates()" style="width:100%;">Got it!</button>
 			</div>
-		</div>
 
-		<script>
-			const defaultSettings = {
-            title: 'Login',
-            icon: 'https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png',
-            theme: 'midnight',
-            particles: true,
-            autoCloak: false,
-            panicKey: '`',
-            panicUrl: './login.html',
-            panicEnabled: true
-        };
-        let userSettings = JSON.parse(localStorage.getItem('el_settings')) || defaultSettings;
+	</main>
+
+	<script>
+		// --- DEFAULT SETTINGS ---
+      const defaultSettings = {
+          title: 'Edulearn Lite',
+          icon: 'https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png',
+          theme: 'midnight',
+          customColor: '#8b5cf6', // Default violet if missing
+          particles: true,
+          autoCloak: false,
+          panicKey: '`',
+          panicUrl: 'https://google.com',
+          panicEnabled: true
+      };
+      
+      // MERGE OLD SETTINGS WITH DEFAULTS to prevent undefined errors
+      let savedSettings = JSON.parse(localStorage.getItem('el_settings')) || {};
+      let userSettings = { ...defaultSettings, ...savedSettings };
+      
+      // Fix for legacy users who might not have customColor
+      if (!userSettings.customColor) userSettings.customColor = '#8b5cf6';
+
+      // --- PARTICLES (STARS) ---
+      const cvs = document.getElementById('particles-js');
+      const ctx = cvs.getContext('2d');
+      let parts = [];
+      let particlesEnabled = userSettings.particles;
+
+      function resize() { cvs.width = window.innerWidth; cvs.height = window.innerHeight; }
+      window.onresize = resize; resize();
+
+      class Star {
+        constructor() { this.reset(); this.y = Math.random() * cvs.height; }
+        reset() {
+          this.x = Math.random() * cvs.width;
+          this.y = -10;
+          this.size = Math.random() * 2;
+          this.speed = Math.random() * 0.5 + 0.1;
+          this.opacity = Math.random() * 0.5 + 0.2;
+        }
+        update() {
+          this.y += this.speed;
+          if(this.y > cvs.height) this.reset();
+        }
+        draw() {
+          ctx.fillStyle = `rgba(255,255,255,${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+
+      function initParticles() {
+        parts = [];
+        for(let i=0; i<60; i++) parts.push(new Star());
+        loop();
+      }
+
+      function loop() {
+        if(!particlesEnabled) { ctx.clearRect(0,0,cvs.width, cvs.height); return; }
+        ctx.clearRect(0,0,cvs.width, cvs.height);
+        parts.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(loop);
+      }
+      initParticles();
+      
+      function toggleParticles(cb) {
+        userSettings.particles = cb ? cb.checked : particlesEnabled;
+        particlesEnabled = userSettings.particles;
+        saveSettings();
+        if(particlesEnabled) loop();
+      }
+
+      // --- PAGE LOGIC ---
+      function switchPage(id, el) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        if(el) {
+          document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+          el.classList.add('active');
+        }
+      }
+
+      function startBrowsing() {
+        switchPage('games-page');
+        document.querySelectorAll('.nav-link')[1].classList.add('active');
+      }
+
+      // --- DATE & SESSION TIME ---
+      const startTime = Date.now();
+      function tick() {
+        const d = new Date();
+        document.getElementById('date-pill').innerText = "Edulearn " + d.toLocaleDateString('en-US', { month:'short', day:'numeric' }) + " Available now!";
         
-        // GLOBAL COLOR FOR METEORS
-        let themeColor = '#c026d3'; 
+        // Session Time
+        const diff = Math.floor((Date.now() - startTime) / 1000);
+        const m = Math.floor(diff / 60);
+        const s = diff % 60;
+        document.getElementById('session-time').innerText = `${m}:${s.toString().padStart(2, '0')}`;
+      }
+      setInterval(tick, 1000); tick();
 
-        // Particles System (COLORED METEOR EFFECT)
-        const canvas = document.getElementById('particles-js');
-        const ctx = canvas.getContext('2d');
-        let particlesArray = [];
-        let isAnimating = false;
+      // --- QUOTES ---
+      const quotes = ["coded by the skids, for the skids", "teachers hate ts", "unblocked and unlocked", "running on pure caffeine", "if you're reading this, do your homework",
+      "no admins allowed", "security through obscurity", "ctrl + w to win instantly", "made with <3 and spaghetti code", "Set this up in alt tab to quickly escape",
+      "decode this: aHR0cHM6Ly9hbmRyZXdodWlzLmdheQ==", "last updated: Feb 3, 2026", "need more blahaj", "typing this while going to class lol",
+      "How are you playing Hollow Knight at school bro?", "originally just a webview kajig", "frogiesarcade vibes", "This is where the fun begins - Obi Wan Kenobi",
+      "vibecoded but it WORKS!", "Monkey find computer. Monkey type.", "goguardian is trash", "lightsped sytems", "go get the milk - therealfour, milk lover 67", 
+      "No matter how much it feels like it, I'm not gay I swear! - A random", "Wait.. I can have MULTIPLE TABS?!? HOLY SHI*", "If you use this and I know you're a skid, screw you lmfao",
+      "you're dumb", "I'm depressed typing this", "dont cry.. just.. cry", "gaming freedom!", "yall ready to play TS ALL DAY!?", "The ogs know of classroom.lol", 
+      "tyrone's stupid games", "I have securly for breakfast, gogaurdian for lunch, and lightsped for dinner", "educational.sbs", "I'm jobless fr", "Jobless for using AI? Really?",
+      "THIS SITE IS NOT FOR DEGENERATES. GO AWAY!!", "I should ring Alvin's gong - wise guy", "If you want to humiliate your enemies, do it in a way that doesn't waste your own time. Use AI - Sun Zu",
+      "albie was here", "UNBLOCKED GAMES IN DA BIG 26!", "If you made it this far, join the discord!", "skids being skids", "your a skid buddy", "toggle off particles for better performance", "I'll steal your code hahaha - J20", "Hella sick while typing this", "bro wtf - guy", "last message so far.. consider yourself lucky.", "I use arch btw"];
+      document.getElementById('random-quote').innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
 
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+      // --- SETTINGS ---
+      function openSettings() { document.getElementById('settings-modal').classList.add('active'); applySettingsInputs(); }
+      function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
+      function openUpdates() { document.getElementById('updates-modal').classList.add('active'); }
+      
+      function setTab(id, el) {
+        document.querySelectorAll('.settings-group').forEach(g => g.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.set-tab').forEach(t => t.classList.remove('active'));
+        el.classList.add('active');
+      }
 
-        class Particle {
-            constructor() {
-                this.reset();
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-            }
+      function applySettingsInputs() {
+        document.getElementById('panic-key').value = userSettings.panicKey;
+        document.getElementById('panic-url').value = userSettings.panicUrl;
+        document.getElementById('panic-toggle').checked = userSettings.panicEnabled;
+        document.getElementById('auto-cloak-toggle').checked = userSettings.autoCloak;
+        
+        const themeSelect = document.getElementById('theme-select');
+        themeSelect.value = userSettings.theme;
+        
+        // Show/Hide custom picker
+        document.getElementById('custom-color-container').style.display = (userSettings.theme === 'custom') ? 'block' : 'none';
+        document.getElementById('custom-color-picker').value = userSettings.customColor;
+        
+        document.getElementById('particle-toggle').checked = userSettings.particles;
+        document.getElementById('edulearnos-toggle').checked = false; 
+      }
 
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = -50; // Start higher up to allow trail to render fully entering
-                this.size = Math.random() * 2 + 0.5;
-                // SPEED: Fast diagonal fall
-                this.speedX = Math.random() * 2 + 1; // Right
-                this.speedY = Math.random() * 3 + 3; // Down
-                this.opacity = Math.random() * 0.4 + 0.2;
-            }
+      function saveSettings() { localStorage.setItem('el_settings', JSON.stringify(userSettings)); }
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                
-                // Reset if off screen (bottom or right)
-                // Added buffer for the trail length
-                if (this.x > canvas.width + 50 || this.y > canvas.height + 50) {
-                    this.reset();
-                }
-            }
-
-            draw() {
-                // DRAW TRAIL
-                // We draw a line fading from opacity to transparent backward
-                const trailLength = 15; // Length multiplier
-                const tailX = this.x - this.speedX * trailLength;
-                const tailY = this.y - this.speedY * trailLength;
-
-                const gradient = ctx.createLinearGradient(this.x, this.y, tailX, tailY);
-                gradient.addColorStop(0, themeColor); 
-                gradient.addColorStop(1, "transparent");
-
-                ctx.globalAlpha = this.opacity;
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(tailX, tailY);
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = this.size;
-                ctx.lineCap = 'round';
-                ctx.stroke();
-                
-                // DRAW HEAD (Bright spot)
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = themeColor;
-                ctx.fill();
-                
-                ctx.globalAlpha = 1.0; // Reset alpha
-            }
+      // --- THEME ENGINE ---
+      function changeTheme(val) { 
+        userSettings.theme = val; 
+        document.getElementById('custom-color-container').style.display = (val === 'custom') ? 'block' : 'none';
+        
+        if (val === 'custom') {
+            applyCustomTheme(userSettings.customColor);
+        } else {
+            applyThemePreset(val); 
         }
+        saveSettings();
+      }
+      
+      // Helper: Darken Hex Color (Safe)
+      function adjustColor(color, amount) {
+          if (!color) return '#000000'; // Safety fallback
+          return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
+      }
+      
+      // Helper: Hex to RGB
+      function hexToRgb(hex) {
+          if (!hex) return '0, 0, 0';
+          let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+          return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '0, 0, 0';
+      }
 
-        function initParticles() {
-            particlesArray = [];
-            if (!userSettings.particles) { ctx.clearRect(0, 0, canvas.width, canvas.height); isAnimating = false; return; }
-            
-            // REDUCED COUNT (User asked for "Not a lot")
-            // Changed from 30 to 12
-            for (let i = 0; i < 12; i++) particlesArray.push(new Particle());
-            
-            if (!isAnimating) { isAnimating = true; animateParticles(); }
+      function applyCustomTheme(hex) {
+          if(!hex) hex = '#8b5cf6'; // Default if null
+          userSettings.customColor = hex;
+          saveSettings();
+          
+          const root = document.documentElement.style;
+          // Set Main Accent
+          root.setProperty('--accent-primary', hex);
+          // Calculate Darker Backgrounds
+          const dark1 = adjustColor(hex, -140); 
+          const dark2 = adjustColor(hex, -180);
+          
+          root.setProperty('--bg-gradient-start', dark1);
+          root.setProperty('--bg-gradient-mid', dark2);
+          
+          // Calculate Glows
+          const rgb = hexToRgb(hex);
+          root.setProperty('--accent-glow', `rgba(${rgb}, 0.5)`);
+          
+          // Calculate Sidebar Tint
+          root.setProperty('--sidebar-bg', `rgba(${rgb}, 0.15)`); 
+          
+          // Ensure base is dark
+          root.setProperty('--bg-deep', '#020617');
+      }
+
+      function applyThemePreset(themeName) {
+        const root = document.documentElement.style;
+        if (themeName === 'ocean') { 
+            root.setProperty('--bg-deep', '#0f172a'); 
+            root.setProperty('--bg-gradient-start', '#0369a1'); 
+            root.setProperty('--bg-gradient-mid', '#0c4a6e'); 
+            root.setProperty('--accent-primary', '#38bdf8'); 
+            root.setProperty('--accent-glow', 'rgba(56, 189, 248, 0.5)'); 
+            root.setProperty('--sidebar-bg', 'rgba(12, 74, 110, 0.5)');
         }
-
-        function animateParticles() {
-            if (!isAnimating || !userSettings.particles) { ctx.clearRect(0, 0, canvas.width, canvas.height); return; }
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particlesArray.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animateParticles);
+        else if (themeName === 'sunset') { 
+            root.setProperty('--bg-deep', '#2a0a0a'); 
+            root.setProperty('--bg-gradient-start', '#c2410c'); 
+            root.setProperty('--bg-gradient-mid', '#451a03'); 
+            root.setProperty('--accent-primary', '#f97316'); 
+            root.setProperty('--accent-glow', 'rgba(249, 115, 22, 0.5)'); 
+            root.setProperty('--sidebar-bg', 'rgba(67, 20, 7, 0.5)');
         }
-        initParticles();
-
-        function toggleParticles(cb) {
-            userSettings.particles = cb.checked;
-            saveSettings();
-            initParticles();
+        else if (themeName === 'amoled') { 
+            root.setProperty('--bg-deep', '#000000'); 
+            root.setProperty('--bg-gradient-start', '#111111'); 
+            root.setProperty('--bg-gradient-mid', '#000000'); 
+            root.setProperty('--accent-primary', '#ffffff'); 
+            root.setProperty('--accent-glow', 'rgba(255, 255, 255, 0.2)'); 
+            root.setProperty('--sidebar-bg', 'rgba(20, 20, 20, 0.8)');
         }
-
-        // Navigation
-        function switchPage(pageId, navElement) {
-            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            if (navElement) {
-                document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-                navElement.classList.add('active');
-            }
-            if (pageId === 'home') displayRandomQuote();
+        else { 
+            // Midnight (Default)
+            root.setProperty('--bg-deep', '#020617'); 
+            root.setProperty('--bg-gradient-start', '#4c1d95'); 
+            root.setProperty('--bg-gradient-mid', '#1e1b4b'); 
+            root.setProperty('--accent-primary', '#8b5cf6'); 
+            root.setProperty('--accent-glow', 'rgba(139, 92, 246, 0.5)'); 
+            root.setProperty('--sidebar-bg', 'rgba(15, 23, 42, 0.7)');
         }
+      }
 
-        function startBrowsing() {
-            switchPage('games-page');
-            document.querySelectorAll('.nav-link')[1].classList.add('active');
+      // --- CLOAKING ---
+      function setDisguise(title, icon) {
+         userSettings.title = title; userSettings.icon = icon; saveSettings(); updateDisguise();
+      }
+      
+      // *** UPDATED: IMMEDIATE DISGUISE FOR CURRENT TAB ***
+      function updateDisguise() {
+        document.title = userSettings.title;
+        // Update favicon dynamically
+        let link = document.getElementById("dynamic-favicon");
+        if(!link) { 
+            link = document.createElement('link'); 
+            link.id = "dynamic-favicon";
+            link.rel = 'icon'; 
+            document.head.appendChild(link); 
         }
+        link.href = userSettings.icon;
+      }
+      
+      function toggleAutoCloak(cb) { userSettings.autoCloak = cb.checked; saveSettings(); }
 
-        function openUpdates() { document.getElementById('updates-modal').classList.add('active'); }
-        function closeUpdates() { document.getElementById('updates-modal').classList.remove('active'); }
+      function openAboutBlank() {
+        const win = window.open('about:blank', '_blank');
+        if(!win) return alert("Popups Blocked! Allow popups to use this feature.");
+        
+        const iframe = win.document.createElement('iframe');
+        iframe.style.width = "100%"; iframe.style.height = "100%"; iframe.style.border = "none";
+        iframe.style.position = "fixed"; iframe.style.top = "0"; iframe.style.left = "0";
+        iframe.src = window.location.href;
+        
+        win.document.body.appendChild(iframe);
+        win.document.title = userSettings.title; 
+        const link = win.document.createElement('link'); link.rel = "icon"; link.href = userSettings.icon;
+        win.document.head.appendChild(link);
+      }
 
-        function displayRandomQuote() {
-             const quotes = ["coded by the skids, for the skids", "teachers hate ts", "unblocked and unlocked", "running on pure caffeine", "if you're reading this, do your homework",
-            "no admins allowed", "security through obscurity", "ctrl + w to win instantly", "made with <3 and spaghetti code", "Set this up in alt tab to quickly escape",
-            "L AH", "decode this: aHR0cHM6Ly9hbmRyZXdodWlzLmdheQ==", "last updated: Feb 3, 2026", "need more blahaj", "typing this while going to class lol",
-            "mrbeast i neeeeed some money", "please speeed i neeeeed this - EMDC", "How are you playing Hollow Knight at school bro?",
-            "I'm gonna steal your os, remove the stupid stuff except the browser, and make it my own hahaha", "lmfao skids who steal my source code, riddle me this: It's public on github.",
-            "originally just a webview kajig", "frogiesarcade vibes", "L", "And I.. I will get my revenge - Conall Sadako", "This is where the fun begins - Obi Wan Kenobi",
-            "AH is depressed ahh vibes", "vibecoded type shi", "vibecoded, but it WORKS!", "skid approved!!", "It's VERSELL not VERSUL", "Monkey find computer. Monkey type.",
-            "blahhahahahhahhahahhahhahaah stupid messages", "I....am not Steve.", "por-tugal - phew", "buh bye", "hihihihihihihihi", "goguardian is trash", "lightsped sytems",
-            "go get the milk - therealfour, milk lover 67", "Pull up! Terrain Ahead - Flight #67 autopilot before crash", "Twinkle toes",
-            "No matter how much it feels like it, I'm not gay I swear! - A random", "I need more blahajjjjjj - vk6", "THIS IS MY ADDRESSS WHY U LEAKIN IT!!!??!?! - .vikc",
-            "yo the old games site are ancient compared to ts - guy", "Wait.. I can have MULTIPLE TABS?!? HOLY SHI*", "If you use this and I know you're a skid, screw you lmfao",
-            "generate an image of fartrizzeggplant1 hahahahaa", "if you use this, you're not gay", "https://bebby.w3spaces.com for more!", "you're dumb", "I'm depressed typing this",
-            "dont cry.. just.. cry", "L r/k12sysadmins", "gaming freedom!", "yall ready to play TS ALL DAY!?", "The ogs know of classroom.lol", "tyrone's stupid games",
-            "L linewize", "I have securly for breakfast, gogaurdian for lunch, and lightsped for dinner - a random sk1d", "if you read this, consider yourself lucky.",
-            "Albie plsssss bring the custom dmn back it was so PEAK", "educational.sbs", "dont mind me..I'm just here", "I'm jobless fr", "Jobless for using AI? Really?",
-            "if you called me a skid, doing it fucking again.", "Nig-eria.. woah, that was close", "not racist fr", "if you go on 'shinano r3*', you're a degenerate ",
-            "THIS SITE IS NOT FOR DEGENERATES. GO AWAY!!", "eat my pick- this pickle", "if i catch you tryna bypass to go to the hub consider yourself unlucky.",
-            "I should ring Alvin's gong - wise guy", "If you want to humiliate your enemies, do it in a way that doesn't waste your own time. Use AI - Sun Zu",
-            "skibdiidiididiididiidiidd", "albie was here", "L HAZEL, REISIMIKA, SOPQL, and EMMYWEMMY. - Absolute cinema guy", "AH you suck at batminton - anonymous",
-            "Go on.. touch app scripts. - dedede the third", "L NONDEGENERATES I USE SKIDBOOT - AH (bro can guess who)", "UNBLOCKED GAMES IN DA BIG 26!",
-            "NO G00NING (And I specifically am talking about a CERTAIN SOMEONE)", "Pathetic - AH", "If you made it this far, join the discord!", "You know I know if you hop on the hUb, do you?",
-            "Deepfakes of me lmfao", "L krish", "krishisaddictedtobrawlstars.raspberryip.com", "Hi, mr J20.","skids being skids","your a skid buddy", "lasy updated feb 5, 2026.. trust", "the type of shi i see on tiktok:", "I'm sorry, what-", "shravan u got no life", "fu yuvan", "skibididididididid sigma", 
-			 "ayy 67", "based in colorado springs (we know we doxxed ourselves)", "frogiesarcade ahh quotes", "money the money", "loading da loading","toggle off particles for better performance", "I'll steal your code hahaha - J20", "last message typed so far"];
-            document.getElementById('random-quote').innerText = '"' + quotes[Math.floor(Math.random() * quotes.length)] + '"';
+      // --- PANIC ---
+      function bindPanic() {
+        const inp = document.getElementById('panic-key');
+        inp.value = "[PRESS KEY]";
+        document.addEventListener('keydown', function h(e) {
+          userSettings.panicKey = e.key;
+          inp.value = e.key;
+          saveSettings();
+          document.removeEventListener('keydown', h);
+        });
+      }
+      function savePanicSettings() {
+         userSettings.panicUrl = document.getElementById('panic-url').value;
+         userSettings.panicEnabled = document.getElementById('panic-toggle').checked;
+         saveSettings();
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if(userSettings.panicEnabled && e.key === userSettings.panicKey) {
+            window.location.href = userSettings.panicUrl;
         }
-        displayRandomQuote();
+      });
 
-        // Clock & Stats
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock-time').innerText = now.toLocaleTimeString();
-            document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      // --- EXPERIMENTS ---
+      function toggleEdulearnOS(cb) {
+         if(cb.checked) window.location.href = "./x4konkor3.html";
+      }
+
+      // --- LIVE ONLINE USERS (VERCEL) ---
+      const onlineId = crypto.randomUUID();
+
+      async function updateOnline() {
+        try {
+          const r = await fetch(`/api/online?id=${onlineId}`, {
+            cache: "no-store"
+          });
+          if (!r.ok) return;
+          // The API must return PLAIN TEXT for this to work
+          document.getElementById("online-count").textContent = await r.text();
+        } catch {
+          // fail silently
         }
-        setInterval(updateClock, 1000); updateClock();
+      }
 
-        let startTime = Date.now();
-        setInterval(() => {
-            let diff = Math.floor((Date.now() - startTime) / 1000);
-            let m = Math.floor(diff / 60), s = diff % 60;
-            document.getElementById('game-timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-        }, 1000);
+      updateOnline();
+      setInterval(updateOnline, 15000);
 
-        let frameCount = 0, lastTime = performance.now();
-        function updateFPS() {
-            frameCount++; let now = performance.now();
-            if (now - lastTime >= 1000) {
-                let fps = frameCount; const fpsEl = document.getElementById('fps-display');
-                fpsEl.innerText = fps; fpsEl.className = "stat-value " + (fps >= 50 ? 'fps-high' : (fps >= 30 ? 'fps-med' : 'fps-low'));
-                frameCount = 0; lastTime = now;
-            }
-            requestAnimationFrame(updateFPS);
-        }
-        updateFPS();
-
-        // --- LIVE ONLINE USERS (VERCEL) ---
-        const onlineId = crypto.randomUUID();
-
-        async function updateOnline() {
-          try {
-            const r = await fetch(`/api/online?id=${onlineId}`, {
-              cache: "no-store"
-            });
-            if (!r.ok) return;
-            // The API must return PLAIN TEXT for this to work
-            document.getElementById("online-count").textContent = await r.text();
-          } catch {
-            // fail silently
+      // --- INIT ---
+      window.onload = () => {
+          // 1. APPLY DISGUISE IMMEDIATELY TO CURRENT TAB
+          updateDisguise();
+          
+          // 2. APPLY THEME
+          if (userSettings.theme === 'custom') {
+              applyCustomTheme(userSettings.customColor);
+          } else {
+              applyThemePreset(userSettings.theme);
           }
-        }
+          
+          // 3. AUTO-LAUNCH IF ENABLED
+          if(userSettings.autoCloak && window.self === window.top) openAboutBlank();
+      };
 
-        updateOnline();
-        setInterval(updateOnline, 15000);
+      // --- BATT & FPS ---
+      function updateBatteryUI(battery) {
+          const level = Math.round(battery.level * 100);
+          const isCharging = battery.charging;
+          const batVal = document.getElementById('bat-level');
+          const batIcon = document.getElementById('bat-icon');
+          
+          batVal.innerText = level + '%';
+          
+          // Reset Icon Classes
+          batIcon.className = "fa-solid";
+          
+          if (isCharging) {
+              batIcon.classList.add("fa-bolt");
+              batIcon.style.color = "#facc15"; // Yellow for charging
+          } else {
+              // Icon based on level
+              if (level > 75) batIcon.classList.add("fa-battery-full");
+              else if (level > 50) batIcon.classList.add("fa-battery-three-quarters");
+              else if (level > 25) batIcon.classList.add("fa-battery-half");
+              else batIcon.classList.add("fa-battery-quarter");
+              
+              // Color based on level
+              if (level > 50) batIcon.style.color = "#4ade80"; // Green
+              else if (level > 20) batIcon.style.color = "#facc15"; // Yellow
+              else batIcon.style.color = "#ef4444"; // Red
+          }
+      }
 
-        function updateBatteryUI(battery) {
-            const level = Math.round(battery.level * 100);
-            const icon = document.getElementById('bat-icon');
-            document.getElementById('battery-level').innerText = level + '%';
-            icon.className = "fa-solid " + (battery.charging ? "fa-bolt bat-charge" : (level > 50 ? "fa-battery-full bat-high" : (level > 20 ? "fa-battery-half bat-med" : "fa-battery-quarter bat-low")));
-        }
-        if (navigator.getBattery) navigator.getBattery().then(b => {
-            updateBatteryUI(b); b.onlevelchange = () => updateBatteryUI(b); b.onchargingchange = () => updateBatteryUI(b);
+      if(navigator.getBattery) {
+        navigator.getBattery().then(b => {
+          updateBatteryUI(b);
+          b.onlevelchange = () => updateBatteryUI(b);
+          b.onchargingchange = () => updateBatteryUI(b);
         });
+      }
+      
+      let frames = 0;
+      setInterval(() => {
+          const fps = frames;
+          const fpsEl = document.getElementById('fps-counter');
+          const fpsIcon = document.getElementById('fps-icon');
+          
+          fpsEl.innerText = fps;
+          
+          // Color Logic
+          if (fps >= 50) fpsIcon.style.color = "#4ade80"; // Green
+          else if (fps >= 30) fpsIcon.style.color = "#facc15"; // Yellow
+          else fpsIcon.style.color = "#ef4444"; // Red
+          
+          frames = 0;
+      }, 1000);
+      function loopFPS() { frames++; requestAnimationFrame(loopFPS); }
+      loopFPS();
 
-        // Settings Logic
-        function openSettings() { document.getElementById('settings-modal').classList.add('active'); applySettingsInputs(); }
-        function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
-
-        function switchSettingsTab(tabId, navItem) {
-            document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            document.querySelectorAll('.settings-nav-item').forEach(n => n.classList.remove('active'));
-            navItem.classList.add('active');
-        }
-
-        function applySettingsInputs() {
-            document.getElementById('auto-cloak-toggle').checked = userSettings.autoCloak;
-            document.getElementById('panic-toggle').checked = userSettings.panicEnabled;
-            document.getElementById('panic-key-display').value = userSettings.panicKey;
-            document.getElementById('panic-url').value = userSettings.panicUrl;
-            document.getElementById('custom-title').value = userSettings.title;
-            document.getElementById('custom-icon').value = userSettings.icon;
-            document.getElementById('theme-select').value = userSettings.theme;
-            document.getElementById('particle-toggle').checked = userSettings.particles;
-            document.getElementById('edulearnos-toggle').checked = false;
-        }
-
-        function saveSettings() { localStorage.setItem('el_settings', JSON.stringify(userSettings)); }
-
-        function changeTheme(val) { userSettings.theme = val; saveSettings(); applyTheme(val); }
-
-        function applyTheme(themeName) {
-            const root = document.documentElement.style;
-            
-            // Default reset
-            root.setProperty('--btn-text', '#ffffff');
-
-            if (themeName === 'ocean') { 
-                root.setProperty('--bg-body', '#0f172a'); 
-                root.setProperty('--bg-sidebar', '#1e293b'); 
-                root.setProperty('--accent', '#38bdf8'); 
-                themeColor = '#38bdf8'; // Update Particle Color
-            }
-            else if (themeName === 'sunset') { 
-                root.setProperty('--bg-body', '#2a0a0a'); 
-                root.setProperty('--bg-sidebar', '#3f1010'); 
-                root.setProperty('--accent', '#f97316'); 
-                themeColor = '#f97316'; // Update Particle Color
-            }
-            else if (themeName === 'amoled') { 
-                root.setProperty('--bg-body', '#000000'); 
-                root.setProperty('--bg-sidebar', '#000000'); 
-                root.setProperty('--accent', '#ffffff'); 
-                root.setProperty('--btn-text', '#000000');
-                themeColor = '#ffffff'; // Update Particle Color
-            }
-            else { 
-                // Midnight (Default)
-                root.setProperty('--bg-body', '#050505'); 
-                root.setProperty('--bg-sidebar', '#0a0a0a'); 
-                root.setProperty('--accent', '#c026d3'); 
-                themeColor = '#c026d3'; // Update Particle Color
-            }
-        }
-
-        function setDisguise(title, icon) { userSettings.title = title; userSettings.icon = icon; saveSettings(); updateDisguise(); applySettingsInputs(); }
-        function updateCustomDisguise() { userSettings.title = document.getElementById('custom-title').value || "Login"; userSettings.icon = document.getElementById('custom-icon').value || "https://cdn.classlink.com/production/launchpad/resources/images/favicon/favicon-32x32.png"; saveSettings(); updateDisguise(); }
-        function updateDisguise() { document.title = userSettings.title; document.getElementById('dynamic-favicon').href = userSettings.icon; }
-
-        function openAboutBlank() {
-            let win = window.open(); if (!win) return alert("Popups blocked.");
-            let iframe = win.document.createElement('iframe');
-            iframe.style = "position:fixed;top:0;left:0;width:100%;height:100%;border:none;";
-            iframe.src = window.location.href; win.document.body.appendChild(iframe);
-            win.document.title = userSettings.title;
-            let link = win.document.createElement('link'); link.rel = 'icon'; link.href = userSettings.icon; win.document.head.appendChild(link);
-        }
-
-        function toggleAutoCloak(cb) { userSettings.autoCloak = cb.checked; saveSettings(); }
-
-        // Experiments
-        function toggleEdulearnOS(cb) {
-            if (cb.checked) {
-                window.location.href = "./x4konkor3.html";
-            }
-        }
-
-        // Panic logic
-        let isBinding = false;
-        function startBinding() { const display = document.getElementById('panic-key-display'); display.value = "Press any key..."; display.style.border = "1px solid var(--accent)"; isBinding = true; }
-        function savePanicSettings() { userSettings.panicUrl = document.getElementById('panic-url').value; userSettings.panicEnabled = document.getElementById('panic-toggle').checked; saveSettings(); }
-
-        document.addEventListener('keydown', (e) => {
-            if (isBinding) {
-                e.preventDefault(); userSettings.panicKey = e.key;
-                document.getElementById('panic-key-display').value = e.key;
-                document.getElementById('panic-key-display').style.border = "";
-                isBinding = false; saveSettings(); return;
-            }
-            if (userSettings.panicEnabled && e.key === userSettings.panicKey) {
-                if (document.activeElement.tagName === 'INPUT') return;
-                window.location.href = userSettings.panicUrl; 
-            }
-        });
-
-        window.onload = () => {
-            applyTheme(userSettings.theme); updateDisguise();
-            if (userSettings.autoCloak && window.self === window.top) openAboutBlank();
-        };
-		</script>
+	</script>
 </body>
 
 </html>

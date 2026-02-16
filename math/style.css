@@ -1,84 +1,60 @@
+/* --- GN-MATH: EDULEARN MIDNIGHT THEME --- */
 :root {
-    /* EDULEARN MIDNIGHT PURPLE THEME */
+    /* Core Colors */
     --primary: #c026d3;          /* Vibrant Purple Accent */
     --primary-hover: #d946ef;    /* Lighter Purple Hover */
     --primary-light: rgba(192, 38, 211, 0.15);
-    --primary-lighter: rgba(192, 38, 211, 0.08);
     
     --accent: #e879f9;           /* Light Purple Accent */
-    --accent-light: rgba(232, 121, 249, 0.1);
     
-    --success: #22c55e;
-    --warning: #eab308;
-    
-    --text: #f5f5f5;
-    --text-muted: #a3a3a3;
-    --text-light: #737373;
-    
-    --bg: #050505;               /* Deepest Black */
+    /* Backgrounds */
+    --bg: #050505;               /* Deepest Black (Main) */
     --bg-secondary: #0a0a0a;     /* Sidebar/Header Black */
     --surface: #111111;          /* Card Background */
     --surface-hover: #181818;    /* Card Hover */
     
+    /* Text */
+    --text: #f5f5f5;             /* Main Text */
+    --text-muted: #a3a3a3;       /* Secondary Text */
+    
+    /* Borders & Glass */
     --border: #222222;
     --border-light: #333333;
-    
     --glass: rgba(5, 5, 5, 0.85);
     
-    /* SHADOWS & GLOWS */
-    --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.5);
-    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.6), 0 1px 2px -1px rgb(0 0 0 / 0.6);
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.8), 0 2px 4px -2px rgb(0 0 0 / 0.8);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.9), 0 4px 6px -4px rgb(0 0 0 / 0.9);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.95), 0 8px 10px -6px rgb(0 0 0 / 0.95);
-    
+    /* Shadows */
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.6);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.9);
     --shadow-glow: 0 0 20px rgba(192, 38, 211, 0.3); /* Purple Glow */
     
     --radius: 12px;
-    --radius-sm: 8px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
-    
-    --gradient-primary: linear-gradient(180deg, #c026d3 0%, #a21caf 100%);
-    --gradient-accent: linear-gradient(135deg, #f0abfc 0%, #c026d3 100%);
-    --gradient-surface: linear-gradient(180deg, #1a1a1a 0%, #111111 100%);
 }
 
+/* Ensure Dark Mode uses same palette */
 .dark-mode {
-    --primary: #c026d3;
-    --primary-hover: #d946ef;
-    --primary-light: rgba(192, 38, 211, 0.2);
-    --primary-lighter: rgba(192, 38, 211, 0.1);
-    --accent: #f0abfc;
-    --accent-light: rgba(240, 171, 252, 0.15);
     --bg: #050505;
-    --bg-secondary: #0a0a0a;
-    --surface: #111111;
-    --glass: rgba(5, 5, 5, 0.9);
-    --gradient-primary: linear-gradient(180deg, #c026d3 0%, #9333ea 100%);
+    --text: #f5f5f5;
 }
 
 * { box-sizing: border-box; }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: var(--bg);
     color: var(--text);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 400;
+    margin: 0;
+    padding: 0;
 }
 
+/* --- HEADER --- */
 header {
-    background: rgba(5, 5, 5, 0.9); /* Darker Header */
+    background: rgba(5, 5, 5, 0.9); /* Dark semi-transparent */
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: var(--shadow-lg);
     backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-lg);
 }
 
 .header-content {
@@ -94,13 +70,13 @@ header {
 .logo {
     font-size: 1.5rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
     color: var(--text);
-    /* GLOWING PURPLE LOGO EFFECT */
-    text-shadow: 0 0 10px rgba(192, 38, 211, 0.5), 0 0 20px rgba(192, 38, 211, 0.2);
     text-decoration: none;
+    /* Purple Neon Glow */
+    text-shadow: 0 0 15px rgba(192, 38, 211, 0.6);
 }
 
+/* --- SEARCH & FILTERS --- */
 .search-container {
     display: flex;
     flex: 1;
@@ -115,18 +91,15 @@ header {
     border-radius: var(--radius);
     background: var(--bg-secondary);
     color: var(--text);
-    font-size: 14px;
     outline: none;
     transition: all 0.3s;
 }
 
 #searchBar:focus {
-    border-color: var(--primary); /* Purple Border */
-    box-shadow: 0 0 0 2px rgba(192, 38, 211, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--primary-light);
     background: #000;
 }
-
-#searchBar::placeholder { color: var(--text-muted); }
 
 #sortOptions, #filterOptions {
     padding: 0.65rem 1rem;
@@ -134,11 +107,9 @@ header {
     border-radius: var(--radius);
     background: var(--bg-secondary);
     color: var(--text-muted);
-    font-size: 14px;
     cursor: pointer;
     outline: none;
     transition: all 0.3s;
-    min-width: 120px;
 }
 
 #sortOptions:hover, #filterOptions:hover {
@@ -147,13 +118,7 @@ header {
     color: var(--text);
 }
 
-/* --- SMALLER CONTROL ICONS --- */
-.control-buttons {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
-
+/* --- CONTROL BUTTONS --- */
 .control-buttons button {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
@@ -161,38 +126,22 @@ header {
     cursor: pointer;
     width: 32px;
     height: 32px;
-    border-radius: var(--radius-sm);
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
     transition: all 0.2s;
 }
 
 .control-buttons button:hover {
     background: var(--surface-hover);
-    border-color: var(--primary); /* Purple Border */
-    color: var(--primary);        /* Purple Icon */
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 10px var(--primary-light);
     transform: translateY(-1px);
-    box-shadow: 0 0 8px rgba(192, 38, 211, 0.15);
 }
 
-/* Icon size fix */
-.control-button img, 
-.control-buttons button i,
-.control-buttons button svg {
-    width: 14px;
-    height: 14px;
-    font-size: 14px;
-    transition: transform 0.4s ease;
-    display: block;
-}
-
-.control-buttons button:hover img,
-.control-buttons button:hover i {
-    transform: rotate(90deg);
-}
-
+/* --- MAIN GRID --- */
 main {
     margin: 0 auto;
     padding: 2rem 1rem;
@@ -200,24 +149,23 @@ main {
 }
 
 #zoneCount {
-    margin: 0 0 1.5rem;
-    font-size: 13px;
     color: var(--text-muted);
+    font-size: 13px;
     font-weight: 600;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
+/* Purple dot indicator */
 #zoneCount::before {
     content: '';
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--primary); /* Purple Dot */
-    box-shadow: 0 0 6px var(--primary);
+    background: var(--primary);
+    box-shadow: 0 0 5px var(--primary);
 }
 
 #container, #featuredZones {
@@ -226,24 +174,23 @@ main {
     gap: 1.25rem;
 }
 
-/* --- GAME CARD --- */
+/* --- GAME CARD (ZONE ITEM) --- */
 .zone-item {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    border-radius: 16px;
     overflow: hidden;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
-    position: relative;
     box-shadow: var(--shadow-sm);
 }
 
 .zone-item:hover {
     transform: translateY(-4px);
+    border-color: var(--primary);   /* Purple Border on Hover */
     box-shadow: var(--shadow-glow); /* Purple Glow */
-    border-color: var(--primary);   /* Purple Border */
     background: var(--surface-hover);
 }
 
@@ -251,42 +198,34 @@ main {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    display: block;
     background: #000;
-    transition: transform 0.4s;
-    opacity: 0.85;
+    opacity: 0.9;
+    transition: 0.3s;
 }
 
 .zone-item:hover img {
-    transform: scale(1.05);
     opacity: 1;
+    transform: scale(1.05);
 }
 
-/* SMALLER BUTTON BAR ON CARD */
 .zone-item button {
     background: transparent;
     color: var(--text);
     border: 0;
-    padding: 0.75rem 0.5rem;
-    cursor: pointer;
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 1.2;
+    padding: 1rem;
+    font-weight: 600;
     text-align: center;
-    min-height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 100%;
+    cursor: pointer;
     border-top: 1px solid transparent;
 }
 
 .zone-item:hover button {
-    background: rgba(192, 38, 211, 0.05); /* Slight purple tint */
-    border-top: 1px solid rgba(192, 38, 211, 0.2);
-    color: var(--text);
-    text-shadow: 0 0 8px rgba(192, 38, 211, 0.4);
+    background: var(--primary-light);
+    border-top-color: rgba(192, 38, 211, 0.2);
+    color: #fff;
+    text-shadow: 0 0 10px rgba(192, 38, 211, 0.5);
 }
-
 
 /* --- VIEWER MODAL --- */
 #zoneViewer {
@@ -296,55 +235,44 @@ main {
     z-index: 1000;
     display: none;
     flex-direction: column;
-    animation: slideInUp 0.3s ease;
 }
 
-@keyframes slideInUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-/* SMALLER VIEWER HEADER */
 .zone-header {
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border);
     color: var(--text);
     padding: 0 1rem;
-    height: 48px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.zone-title { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; }
-
-#zoneName {
-    font-size: 15px; 
-    font-weight: 600;
-    margin: 0;
+.zone-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
 }
 
-#zoneId { display: none; }
+#zoneName {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+}
 
 #zoneAuthor {
     font-size: 12px;
     color: var(--text-muted);
-    text-decoration: none;
 }
-#zoneAuthor:hover { color: var(--primary); }
-
-.zone-controls { display: flex; gap: 0.5rem; }
 
 .zone-controls button {
     background: #1a1a1a;
     border: 1px solid var(--border);
     color: var(--text-muted);
-    padding: 0.25rem 0.75rem;
-    height: 30px;
+    padding: 5px 12px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 12px;
-    font-weight: 500;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
+    transition: 0.2s;
 }
 
 .zone-controls button:hover {
@@ -361,46 +289,36 @@ main {
     background: #000;
 }
 
-
-/* --- POPUP / SETTINGS --- */
+/* --- SETTINGS POPUP --- */
 #popupOverlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(8px);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
-    padding: 1rem;
-    animation: fadeIn 0.2s ease;
 }
-
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .popup {
     background: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: 0 0 40px rgba(0,0,0,0.8);
-    width: 100%;
-    max-width: 480px;
     border: 1px solid var(--border);
-    animation: slideInScale 0.2s ease;
-    overflow: hidden;
+    border-radius: var(--radius);
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
 }
-
-@keyframes slideInScale { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
 .popup-header {
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border);
-    padding: 0.875rem 1rem;
+    padding: 1rem;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    color: var(--text);
+    font-weight: 700;
 }
-
-#popupTitle { margin: 0; font-size: 1.1rem; font-weight: 600; color: var(--text); }
 
 #popupClose {
     background: transparent;
@@ -408,43 +326,35 @@ main {
     color: var(--text-muted);
     cursor: pointer;
     font-size: 1.2rem;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 #popupClose:hover { color: #fff; }
 
-#popupBody { padding: 1.25rem; color: var(--text); }
+#popupBody { padding: 1.5rem; }
 
 #popupBody input[type="text"],
 #popupBody input[type="file"] {
     width: 100%;
-    padding: 0.65rem 0.875rem;
+    padding: 0.8rem;
     margin-bottom: 1rem;
     border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
     background: var(--bg);
     color: #fff;
-    font-size: 14px;
+    border-radius: 8px;
     outline: none;
-    transition: border-color 0.2s;
 }
 
 #popupBody input:focus { border-color: var(--primary); }
 
-/* Settings Save Button */
 .settings-button {
-    background: var(--primary); /* Purple Button */
-    color: white;
-    border: none;
-    padding: 0.75rem;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: all 0.2s;
     width: 100%;
+    padding: 0.8rem;
+    background: var(--primary); /* Purple Button */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 .settings-button:hover {
@@ -452,56 +362,22 @@ main {
     box-shadow: 0 0 15px var(--primary-light);
 }
 
-
 /* --- FOOTER --- */
 footer {
     background: var(--bg-secondary);
     border-top: 1px solid var(--border);
-    padding: 0.75rem;
+    padding: 1rem;
     text-align: center;
     position: fixed;
     bottom: 0;
-    left: 0;
     width: 100%;
-    z-index: 100;
 }
-
-.footer-links { display: flex; justify-content: center; gap: 2rem; }
 
 .footer-links a {
     color: var(--text-muted);
     text-decoration: none;
+    margin: 0 10px;
     font-size: 13px;
-    transition: color 0.2s;
 }
 
 .footer-links a:hover { color: var(--primary); }
-
-.info-button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    margin-left: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    transition: all 0.2s;
-    color: var(--text-muted);
-    vertical-align: middle;
-}
-
-.info-button:hover {
-    background-color: var(--primary-light);
-    color: var(--primary);
-    transform: scale(1.1);
-}
-
-@media (max-width: 768px) {
-    .header-content { flex-direction: column; gap: 0.75rem; }
-    .search-container { width: 100%; max-width: none; }
-    #container, #featuredZones { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-}
