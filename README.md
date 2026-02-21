@@ -2,9 +2,9 @@
 
 ![Edulearn OS V5.3.0](./imgs/example.png)
 
-*Edulearn V5.3.0 - The best unblocked "OS" with many features.* ![Edulearn Lite V5.3.0](./imgs/example2.png)
+*Edulearn V5.3.0 - The best unblocked "OS" with many features.* ![Edulearn Lite V6](./imgs/example2.png)
 
-*Edulearn Lite V5.3.0 - The Best Gaming Site.*
+*Edulearn Lite V6 - The Best Gaming Site.*
 
 ---
 
