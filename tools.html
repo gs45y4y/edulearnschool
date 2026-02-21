@@ -7,26 +7,25 @@
     <title>System Tools</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- CORE VARIABLES (MATCHING MIDNIGHT PURPLE LITE.HTML) --- */
+        /* --- CORE VARIABLES (BLUE LITE THEME) --- */
         :root {
-            /* Theme: Midnight Purple */
-            --bg-body: #050505;
-            --bg-sidebar: #0a0a0a;
-            --accent: #c026d3; /* Vibrant Purple */
-            --accent-glow: rgba(192, 38, 211, 0.4);
+            --bg-body: #020617; /* Deep slate/blue-black */
+            --bg-sidebar: #0f172a;
+            --accent: #3b82f6; /* Electric Blue */
+            --accent-glow: rgba(59, 130, 246, 0.4);
             
-            --text-main: #f5f5f5;
-            --text-muted: #a3a3a3;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
             
-            --card-bg: #111111;
+            --card-bg: #0f172a;
             
-            --glow-text: 0 0 10px rgba(192, 38, 211, 0.3);
-            --glow-strong: 0 0 20px rgba(192, 38, 211, 0.5);
+            --glow-text: 0 0 10px rgba(59, 130, 246, 0.3);
+            --glow-strong: 0 0 20px rgba(59, 130, 246, 0.5);
 
-            --border-color: #222222;
+            --border-color: #1e293b;
             
             --danger: #ef4444;
-            --success: #22c55e;
+            --success: #10b981;
         }
 
         * {
@@ -36,7 +35,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
             min-height: 100vh;
@@ -57,7 +56,7 @@
             height: 100%;
             z-index: 1;
             pointer-events: none;
-            opacity: 0.4;
+            opacity: 0.35;
         }
 
         /* --- HEADER --- */
@@ -76,10 +75,9 @@
             margin-bottom: 10px;
             letter-spacing: -1px;
             color: var(--text-main);
-            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* Subtle shadow instead of glow */
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); 
         }
         
-        /* Optional: Add purple gradient to text like hero title */
         .title span {
             color: var(--accent);
             text-shadow: var(--glow-text);
@@ -100,7 +98,7 @@
         .search-input {
             width: 100%;
             padding: 14px 20px 14px 45px;
-            background: rgba(0, 0, 0, 0.3); /* Transparent dark */
+            background: rgba(0, 0, 0, 0.3); 
             border: 1px solid var(--border-color);
             border-radius: 8px;
             color: var(--text-main);
@@ -158,7 +156,7 @@
 
         .tool-card:hover {
             transform: translateY(-4px);
-            background: #181818;
+            background: #1e293b;
             border-color: var(--accent);
             box-shadow: 0 0 15px var(--accent-glow);
         }
@@ -171,13 +169,13 @@
             width: 45px;
             height: 45px;
             border-radius: 8px;
-            background: rgba(192, 38, 211, 0.1); /* Low opacity purple */
+            background: rgba(59, 130, 246, 0.1); 
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
             color: var(--accent);
-            border: 1px solid rgba(192, 38, 211, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.2);
             text-shadow: var(--glow-text);
         }
 
@@ -259,7 +257,7 @@
         }
 
         .btn-back:hover {
-            background: rgba(192, 38, 211, 0.1);
+            background: rgba(59, 130, 246, 0.1);
             border-color: var(--accent);
             color: #fff;
         }
@@ -334,230 +332,236 @@
         <div class="search-container">
             <i class="fa-solid fa-search search-icon"></i>
             <input type="text" id="searchInput" class="search-input" placeholder="Find a utility...">
+        </div>
     </div>
+
+    <div class="tools-grid" id="toolsGrid"></div>
+
+    <div id="toolOverlay" class="tool-view-overlay">
+        <div class="tool-header-bar">
+            <button class="btn-back" onclick="closeTool()">
+                <i class="fa-solid fa-arrow-left"></i> Back to Tools
+            </button>
         </div>
+        <iframe id="toolFrame" class="tool-frame" src=""></iframe>
+    </div>
 
-        <div class="tools-grid" id="toolsGrid">
-        </div>
+    <div class="toast-container" id="toastContainer"></div>
 
-        <div id="toolOverlay" class="tool-view-overlay">
-            <div class="tool-header-bar">
-                <button class="btn-back" onclick="closeTool()">
-              <i class="fa-solid fa-arrow-left"></i> Back to Tools
-          </button>
-            </div>
-            <iframe id="toolFrame" class="tool-frame" src=""></iframe>
-        </div>
+    <script>
+        // Tool Data Configuration
+        const tools = [
+            {
+                name: "E2E v2",
+                desc: "Basically Uncrackable encryption for any social media platform!",
+                url: "./e2ev2.html",
+                icon: "fa-eye",
+                action: "open"
+            },
+            {
+                name: "WebRetro",
+                desc: "Browser-based retro game emulator",
+                url: "./webretro_standard.html",
+                icon: "fa-gamepad",
+                action: "open"
+            },
+            {
+                name: "Sh1mmer",
+                desc: "Enrollment modification utility",
+                url: "https://sh1mmer.me",
+                icon: "fa-microchip",
+                action: "copy"
+            },
+            {
+                name: "ExtPrint3r",
+                desc: "Extension manipulation & management",
+                url: "https://extprint3r.github.io/",
+                icon: "fa-puzzle-piece",
+                action: "copy"
+            },
+            {
+                name: "Versioner",
+                desc: "Check ChromeOS version details",
+                url: "https://vibec3der.github.io/chromeos-versioner",
+                icon: "fa-code-branch",
+                action: "copy"
+            },
+            {
+                name: "Old Bypasses",
+                desc: "Legacy unblocking methods collection",
+                url: "https://chessisfornerds.netlify.app",
+                icon: "fa-ghost",
+                action: "copy"
+            },
+            {
+                name: "Ingot",
+                desc: "Bookmarklet execution simplified",
+                url: "https://ingot.k12.lol",
+                icon: "fa-terminal",
+                action: "copy"
+            }
+        ];
 
-        <div class="toast-container" id="toastContainer"></div>
+        const grid = document.getElementById('toolsGrid');
+        const searchInput = document.getElementById('searchInput');
 
-        <script>
-            // Tool Data Configuration
-      const tools = [
-        {
-          name: "E2E v2",
-          desc: "Basically Uncrackable encryption for any social media platform!",
-          url: "./e2ev2.html",
-          icon: "fa-eye",
-          action: "open" // This tool opens in the iframe
-        },
-        {
-          name: "Sh1mmer",
-          desc: "Enrollment modification utility",
-          url: "https://sh1mmer.me",
-          icon: "fa-microchip",
-          action: "copy"
-        },
-        {
-          name: "ExtPrint3r",
-          desc: "Extension manipulation & management",
-          url: "https://extprint3r.github.io/",
-          icon: "fa-puzzle-piece",
-          action: "copy"
-        },
-        {
-          name: "Versioner",
-          desc: "Check ChromeOS version details",
-          url: "https://vibec3der.github.io/chromeos-versioner",
-          icon: "fa-code-branch",
-          action: "copy"
-        },
-        {
-          name: "Old Bypasses",
-          desc: "Legacy unblocking methods collection",
-          url: "https://chessisfornerds.netlify.app",
-          icon: "fa-ghost",
-          action: "copy"
-        },
-        {
-          name: "Ingot",
-          desc: "Bookmarklet execution simplified",
-          url: "https://ingot.k12.lol",
-          icon: "fa-terminal",
-          action: "copy"
+        // Render Cards
+        function renderTools(filter = "") {
+            grid.innerHTML = "";
+            const filtered = tools.filter(t => 
+                t.name.toLowerCase().includes(filter.toLowerCase()) || 
+                t.desc.toLowerCase().includes(filter.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No tools found matching "${filter}"</div>`;
+                return;
+            }
+
+            filtered.forEach(tool => {
+                const card = document.createElement('div');
+                card.className = 'tool-card';
+                // Decide click action based on tool property
+                card.onclick = () => handleToolClick(tool);
+                
+                const badgeText = tool.action === 'open' ? 'OPEN' : 'COPY';
+
+                card.innerHTML = `
+                    <div class="icon-box">
+                        <i class="fa-solid ${tool.icon}"></i>
+                    </div>
+                    <div class="tool-info">
+                        <div class="tool-name">${tool.name}</div>
+                        <div class="tool-desc">${tool.desc}</div>
+                    </div>
+                    <div class="copy-hint">${badgeText}</div>
+                `;
+                grid.appendChild(card);
+            });
         }
-      ];
 
-      const grid = document.getElementById('toolsGrid');
-      const searchInput = document.getElementById('searchInput');
-
-      // Render Cards
-      function renderTools(filter = "") {
-        grid.innerHTML = "";
-        const filtered = tools.filter(t => 
-          t.name.toLowerCase().includes(filter.toLowerCase()) || 
-          t.desc.toLowerCase().includes(filter.toLowerCase())
-        );
-
-        if (filtered.length === 0) {
-          grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 20px;">No tools found matching "${filter}"</div>`;
-          return;
+        // Handle Click (Switch Logic)
+        function handleToolClick(tool) {
+            if (tool.action === 'open') {
+                openToolView(tool.url);
+            } else {
+                copyToClipboard(tool.url, tool.name);
+            }
         }
 
-        filtered.forEach(tool => {
-          const card = document.createElement('div');
-          card.className = 'tool-card';
-          // Decide click action based on tool property
-          card.onclick = () => handleToolClick(tool);
-          
-          const badgeText = tool.action === 'open' ? 'OPEN' : 'COPY';
+        // Open Tool Logic
+        function openToolView(url) {
+            const overlay = document.getElementById('toolOverlay');
+            const frame = document.getElementById('toolFrame');
+            
+            frame.src = url;
+            overlay.classList.add('active');
+        }
 
-          card.innerHTML = `
-            <div class="icon-box">
-              <i class="fa-solid ${tool.icon}"></i>
-            </div>
-            <div class="tool-info">
-              <div class="tool-name">${tool.name}</div>
-              <div class="tool-desc">${tool.desc}</div>
-            </div>
-            <div class="copy-hint">${badgeText}</div>
-          `;
-          grid.appendChild(card);
+        // Close Tool Logic (Back Button)
+        function closeTool() {
+            const overlay = document.getElementById('toolOverlay');
+            const frame = document.getElementById('toolFrame');
+            
+            overlay.classList.remove('active');
+            frame.src = "about:blank"; // Stop any media/scripts running
+        }
+
+        // Copy Logic
+        async function copyToClipboard(text, name) {
+            try {
+                await navigator.clipboard.writeText(text);
+                showToast(`Copied URL for ${name}`);
+            } catch (err) {
+                showToast('Failed to copy', true);
+            }
+        }
+
+        // Toast Notification
+        function showToast(msg, isError = false) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            
+            const icon = isError ? 'fa-circle-xmark' : 'fa-circle-check';
+            const color = isError ? 'var(--danger)' : 'var(--success)';
+            
+            toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color}"></i> ${msg}`;
+            
+            container.appendChild(toast);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'fadeOut 0.3s forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Search Listener
+        searchInput.addEventListener('input', (e) => {
+            renderTools(e.target.value);
         });
-      }
 
-      // Handle Click (Switch Logic)
-      function handleToolClick(tool) {
-          if (tool.action === 'open') {
-              openToolView(tool.url);
-          } else {
-              copyToClipboard(tool.url, tool.name);
-          }
-      }
+        // Initial Load
+        renderTools();
 
-      // Open Tool Logic
-      function openToolView(url) {
-          const overlay = document.getElementById('toolOverlay');
-          const frame = document.getElementById('toolFrame');
-          
-          frame.src = url;
-          overlay.classList.add('active');
-      }
-
-      // Close Tool Logic (Back Button)
-      function closeTool() {
-          const overlay = document.getElementById('toolOverlay');
-          const frame = document.getElementById('toolFrame');
-          
-          overlay.classList.remove('active');
-          frame.src = "about:blank"; // Stop any media/scripts running
-      }
-
-      // Copy Logic
-      async function copyToClipboard(text, name) {
-        try {
-          await navigator.clipboard.writeText(text);
-          showToast(`Copied URL for ${name}`);
-        } catch (err) {
-          showToast('Failed to copy', true);
-        }
-      }
-
-      // Toast Notification
-      function showToast(msg, isError = false) {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = 'toast';
+        // --- PARTICLES SYSTEM ---
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
         
-        const icon = isError ? 'fa-circle-xmark' : 'fa-circle-check';
-        const color = isError ? 'var(--danger)' : 'var(--success)';
-        
-        toast.innerHTML = `<i class="fa-solid ${icon}" style="color: ${color}"></i> ${msg}`;
-        
-        container.appendChild(toast);
-
-        // Remove after 3 seconds
-        setTimeout(() => {
-          toast.style.animation = 'fadeOut 0.3s forwards';
-          setTimeout(() => toast.remove(), 300);
-        }, 3000);
-      }
-
-      // Search Listener
-      searchInput.addEventListener('input', (e) => {
-        renderTools(e.target.value);
-      });
-
-      // Initial Load
-      renderTools();
-
-      // --- PARTICLES SYSTEM ---
-      const canvas = document.getElementById('particles-js');
-      const ctx = canvas.getContext('2d');
-      let particlesArray = [];
-      
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-
-      class Particle {
-        constructor() {
-          this.x = Math.random() * canvas.width;
-          this.y = Math.random() * canvas.height;
-          this.size = Math.random() * 2 + 0.5;
-          this.speedX = Math.random() * 0.4 - 0.2;
-          this.speedY = Math.random() * 0.4 - 0.2;
-          this.opacity = Math.random() * 0.5 + 0.1;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
-        update() {
-          this.x += this.speedX;
-          this.y += this.speedY;
-          if (this.x < 0) this.x = canvas.width;
-          if (this.x > canvas.width) this.x = 0;
-          if (this.y < 0) this.y = canvas.height;
-          if (this.y > canvas.height) this.y = 0;
-        }
-        draw() {
-          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-      function initParticles() {
-        particlesArray = [];
-        const count = 30;
-        for (let i = 0; i < count; i++) {
-          particlesArray.push(new Particle());
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.4 - 0.2;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
-        animateParticles();
-      }
 
-      function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particlesArray.length; i++) {
-          particlesArray[i].update();
-          particlesArray[i].draw();
+        function initParticles() {
+            particlesArray = [];
+            const count = 30;
+            for (let i = 0; i < count; i++) {
+                particlesArray.push(new Particle());
+            }
+            animateParticles();
         }
-        requestAnimationFrame(animateParticles);
-      }
 
-      initParticles();
-        </script>
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+    </script>
 </body>
 
 </html>

@@ -1,11 +1,11 @@
-/* --- GN-MATH: EDULEARN MIDNIGHT THEME --- */
+/* --- GN-MATH: MIDNIGHT NAVY THEME (WITH SIZING FIXES) --- */
 :root {
     /* Core Colors */
-    --primary: #c026d3;          /* Vibrant Purple Accent */
-    --primary-hover: #d946ef;    /* Lighter Purple Hover */
-    --primary-light: rgba(192, 38, 211, 0.15);
+    --primary: #3b82f6;          /* Deep Royal/Navy Blue Accent */
+    --primary-hover: #60a5fa;    /* Lighter Blue Hover */
+    --primary-light: rgba(59, 130, 246, 0.15);
     
-    --accent: #e879f9;           /* Light Purple Accent */
+    --accent: #93c5fd;           /* Light Blue Accent */
     
     /* Backgrounds */
     --bg: #050505;               /* Deepest Black (Main) */
@@ -25,15 +25,9 @@
     /* Shadows */
     --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.6);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.9);
-    --shadow-glow: 0 0 20px rgba(192, 38, 211, 0.3); /* Purple Glow */
+    --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3); /* Blue Glow */
     
     --radius: 12px;
-}
-
-/* Ensure Dark Mode uses same palette */
-.dark-mode {
-    --bg: #050505;
-    --text: #f5f5f5;
 }
 
 * { box-sizing: border-box; }
@@ -48,7 +42,7 @@ body {
 
 /* --- HEADER --- */
 header {
-    background: rgba(5, 5, 5, 0.9); /* Dark semi-transparent */
+    background: rgba(5, 5, 5, 0.9);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
@@ -72,8 +66,7 @@ header {
     font-weight: 800;
     color: var(--text);
     text-decoration: none;
-    /* Purple Neon Glow */
-    text-shadow: 0 0 15px rgba(192, 38, 211, 0.6);
+    text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
 }
 
 /* --- SEARCH & FILTERS --- */
@@ -118,19 +111,31 @@ header {
     color: var(--text);
 }
 
-/* --- CONTROL BUTTONS --- */
+/* --- CONTROL BUTTONS & ICONS FIX --- */
+.control-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .control-buttons button {
     background: var(--bg-secondary);
     border: 1px solid var(--border);
     color: var(--text-muted);
     cursor: pointer;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.2s;
+}
+
+/* Prevents SVG/IMG icons from blowing up */
+button img, button svg {
+    max-width: 18px;
+    max-height: 18px;
+    object-fit: contain;
 }
 
 .control-buttons button:hover {
@@ -146,6 +151,7 @@ main {
     margin: 0 auto;
     padding: 2rem 1rem;
     padding-bottom: 6rem;
+    max-width: 1200px;
 }
 
 #zoneCount {
@@ -158,7 +164,6 @@ main {
     gap: 0.5rem;
 }
 
-/* Purple dot indicator */
 #zoneCount::before {
     content: '';
     width: 6px;
@@ -170,15 +175,15 @@ main {
 
 #container, #featuredZones {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 1.25rem;
 }
 
-/* --- GAME CARD (ZONE ITEM) --- */
+/* --- GAME CARD (ZONE ITEM) FIXES --- */
 .zone-item {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -189,18 +194,20 @@ main {
 
 .zone-item:hover {
     transform: translateY(-4px);
-    border-color: var(--primary);   /* Purple Border on Hover */
-    box-shadow: var(--shadow-glow); /* Purple Glow */
+    border-color: var(--primary);
+    box-shadow: var(--shadow-glow);
     background: var(--surface-hover);
 }
 
+/* Fixed image heights so cards match */
 .zone-item img {
     width: 100%;
-    aspect-ratio: 1;
+    height: 140px; 
     object-fit: cover;
     background: #000;
     opacity: 0.9;
     transition: 0.3s;
+    border-bottom: 1px solid var(--border);
 }
 
 .zone-item:hover img {
@@ -208,23 +215,28 @@ main {
     transform: scale(1.05);
 }
 
+/* Fixed long text names pushing cards out of shape */
 .zone-item button {
     background: transparent;
     color: var(--text);
     border: 0;
-    padding: 1rem;
+    padding: 0.85rem;
     font-weight: 600;
+    font-size: 14px;
     text-align: center;
     width: 100%;
     cursor: pointer;
     border-top: 1px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 
 .zone-item:hover button {
     background: var(--primary-light);
-    border-top-color: rgba(192, 38, 211, 0.2);
+    border-top-color: rgba(59, 130, 246, 0.2);
     color: #fff;
-    text-shadow: 0 0 10px rgba(192, 38, 211, 0.5);
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
 }
 
 /* --- VIEWER MODAL --- */
@@ -348,7 +360,7 @@ main {
 .settings-button {
     width: 100%;
     padding: 0.8rem;
-    background: var(--primary); /* Purple Button */
+    background: var(--primary);
     color: #fff;
     border: none;
     border-radius: 8px;
