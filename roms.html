@@ -62,73 +62,118 @@
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.6; }
 
         #library-view { padding: 40px; overflow-y: auto; height: 100%; position: relative; z-index: 10; }
-        .container { max-width: 1100px; margin: 0 auto; }
+        .container { max-width: 900px; margin: 0 auto; }
 
         header { margin-bottom: 30px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; }
         h1 { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 5px; }
         h1 i { color: var(--accent); margin-right: 10px; }
         .subtitle { color: var(--text-muted); font-size: 14px; }
 
-        .rom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-
-        .rom-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            overflow: hidden;
+        /* --- DIRECTORY LIST STYLES --- */
+        .directory-list {
             display: flex;
             flex-direction: column;
+            gap: 10px;
+        }
+
+        .dir-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px 20px;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .rom-card:hover {
+        .dir-row:hover {
             border-color: var(--accent);
-            box-shadow: 0 10px 30px -10px var(--accent-glow);
-            transform: translateY(-4px);
+            background: var(--accent-glow);
+            transform: translateX(4px);
+            box-shadow: -4px 4px 15px rgba(0,0,0,0.1);
         }
 
-        .card-body { padding: 20px; flex: 1; }
-        .rom-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-        .rom-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; }
-        
+        .dir-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .dir-icon {
+            font-size: 24px;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .dir-row:hover .dir-icon {
+            color: var(--accent);
+        }
+
+        .dir-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dir-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dir-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
         .sys-badge {
-            display: inline-block;
-            font-size: 11px;
-            background: var(--bg-toolbar);
+            font-size: 10px;
+            background: rgba(128, 128, 128, 0.1);
             border: 1px solid var(--border-color);
-            padding: 4px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
             color: var(--accent);
             font-weight: 800;
             text-transform: uppercase;
-            margin-bottom: 10px;
         }
 
-        .card-actions {
+        .dir-actions {
             display: flex;
-            border-top: 1px solid var(--border-color);
+            gap: 10px;
         }
 
-        .action-btn {
-            flex: 1;
-            padding: 12px;
-            background: transparent;
-            border: none;
+        .btn-list {
+            background: var(--bg-toolbar);
             color: var(--text-main);
-            font-weight: 600;
-            font-size: 13px;
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: 0.2s;
+            font-size: 13px;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
+            transition: 0.2s;
         }
 
-        .action-btn:hover { background: var(--accent-glow); color: var(--accent); }
-        .action-btn.download { border-left: 1px solid var(--border-color); }
+        .btn-list:hover {
+            background: var(--accent);
+            color: #ffffff;
+            border-color: var(--accent);
+        }
+
+        @media (max-width: 600px) {
+            .dir-row { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .dir-actions { width: 100%; justify-content: flex-start; }
+            .btn-list { flex: 1; justify-content: center; }
+        }
     </style>
 </head>
 
@@ -139,16 +184,17 @@
     <div id="library-view">
         <div class="container">
             <header>
-                <h1><i class="fa-solid fa-compact-disc"></i>Retro ROMs</h1>
-                <p class="subtitle">Download classics to play in WebRetro.</p>
+                <h1><i class="fa-solid fa-folder-open"></i>ROM Directory</h1>
+                <p class="subtitle">Download zipped files to launch inside your local emulator.</p>
             </header>
-            <div id="rom-container" class="rom-grid"></div>
+            
+            <div id="rom-container" class="directory-list">
+                </div>
         </div>
     </div>
 
     <script>
         // --- YOUR ROM FILES ---
-        // Ensure you have a folder called 'roms' with these .zip files in it!
         const romLibrary = [
             {
                 title: "Super Mario Bros",
@@ -182,29 +228,36 @@
             }
         ];
 
-        // --- RENDER LIBRARY ---
+        // --- RENDER DIRECTORY ---
         const container = document.getElementById('rom-container');
         
         romLibrary.forEach(rom => {
-            const card = document.createElement('div');
-            card.className = 'rom-card';
+            const row = document.createElement('div');
+            row.className = 'dir-row';
             
-            card.innerHTML = `
-                <div class="card-body">
-                    <span class="sys-badge">${rom.core.toUpperCase()}</span>
-                    <div class="rom-title">${rom.title}</div>
-                    <div class="rom-desc">${rom.desc}</div>
+            row.innerHTML = `
+                <div class="dir-info">
+                    <div class="dir-icon">
+                        <i class="fa-solid fa-file-zipper"></i>
+                    </div>
+                    <div class="dir-text">
+                        <div class="dir-title">
+                            ${rom.title} 
+                            <span class="sys-badge">${rom.core.toUpperCase()}</span>
+                        </div>
+                        <div class="dir-desc">${rom.desc}</div>
+                    </div>
                 </div>
-                <div class="card-actions">
-                    <button class="action-btn play" onclick="playRom('${rom.fileUrl}')">
+                <div class="dir-actions">
+                    <button class="btn-list" onclick="playRom('${rom.fileUrl}')">
                         <i class="fa-solid fa-play"></i> Play Web
                     </button>
-                    <button class="action-btn download" onclick="downloadRom('${rom.fileUrl}')">
+                    <button class="btn-list" onclick="downloadRom('${rom.fileUrl}')">
                         <i class="fa-solid fa-download"></i> Download
                     </button>
                 </div>
             `;
-            container.appendChild(card);
+            container.appendChild(row);
         });
 
         // --- ACTIONS ---
