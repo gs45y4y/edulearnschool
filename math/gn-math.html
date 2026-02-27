@@ -22,19 +22,46 @@
 
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Helper styles to remove inline CSS */
+        /* --- IMPORTED THEME SYSTEM FROM EDULEARN LITE --- */
+        :root {
+            --bg-color: #09090b;
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --accent: #6366f1;
+        }
+
+        body.theme-mocha {
+            --bg-color: #1e1e2e;
+            --text-main: #cdd6f4;
+            --text-muted: #a6adc8;
+            --accent: #cba6f7;
+        }
+
+        body.theme-inverted {
+            --bg-color: #f4f4f5;
+            --text-main: #18181b;
+            --text-muted: #52525b;
+            --accent: #4f46e5;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Helper styles */
         .ad-container { height: 90px; position: sticky; top: 0; z-index: 10; }
         .section-summary { font-size: 1.2rem; font-weight: bold; cursor: pointer; user-select: none; }
         .hidden { display: none; }
     </style>
-
 </head>
 
-<body class="dark-mode">
+<body>
     
     <header>
         <div class="header-content">
-            <div class="logo"> Edulearn | Learning </div>
+            <div class="logo"> Learning </div>
             
             <div class="search-container">
                 <input type="text" id="searchBar" placeholder="Search zones..." aria-label="Search zones" oninput="filterZones()">
@@ -127,10 +154,46 @@
 
     <script src="script.js" defer></script>
     <script>
+        // --- EDULEARN THEME SYNC ---
+        function syncEdulearnTheme() {
+            try {
+                // Fetch settings from local storage
+                const savedSettings = JSON.parse(localStorage.getItem('el_settings')) || {};
+                const theme = savedSettings.theme || 'default';
+                const bgUrl = savedSettings.bgUrl || '';
+
+                // Apply correct theme class
+                document.body.className = theme === 'default' ? '' : `theme-${theme}`;
+
+                // Apply custom background image if set
+                if (bgUrl) {
+                    document.body.style.backgroundImage = `url('${bgUrl}')`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundAttachment = 'fixed';
+                } else {
+                    document.body.style.backgroundImage = 'none';
+                }
+            } catch (err) {
+                console.error("Theme sync failed:", err);
+            }
+        }
+
+        // Run on initial load
+        syncEdulearnTheme();
+
+        // Listen for changes across other pages/frames (so it updates instantly without refresh)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'el_settings') {
+                syncEdulearnTheme();
+            }
+        });
+
+        // -----------------------------------
+
         // Check for privacy parameter
         const searchParams = new URLSearchParams(window.location.search);
         if (searchParams.get('privacy')) {
-            // Ensure loadPrivacy is defined in script.js or define it here
             if(typeof loadPrivacy === 'function') loadPrivacy();
         }
 

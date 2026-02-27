@@ -2,274 +2,403 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>AI Games</title>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<style>
-		/* --- CORE THEME --- */
-		:root {
-			--bg-body: #050505;
-			--bg-card: #111111;
-			--border-color: #222;
-			--accent: #c026d3;
-			--text-main: #f5f5f5;
-			--text-muted: #a3a3a3;
-		}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Games</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- IMPORTED THEME SYSTEM FROM EDULEARN LITE --- */
+        :root {
+            /* Default: Midnight Indigo */
+            --bg-color: #09090b;
+            --bg-toolbar: rgba(18, 18, 23, 0.85);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --accent: #6366f1;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --grid-color: rgba(255, 255, 255, 0.03);
+        }
 
-		* {
-			box-sizing: border-box;
-			margin: 0;
-			padding: 0;
-		}
+        body.theme-mocha {
+            --bg-color: #1e1e2e;
+            --bg-toolbar: rgba(30, 30, 46, 0.85);
+            --text-main: #cdd6f4;
+            --text-muted: #a6adc8;
+            --accent: #cba6f7;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-glow: rgba(203, 166, 247, 0.15);
+            --grid-color: rgba(255, 255, 255, 0.04);
+        }
 
-		body {
-			font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
-			background-color: var(--bg-body);
-			color: var(--text-main);
-			height: 100vh;
-			overflow: hidden;
-			display: flex;
-			flex-direction: column;
-		}
+        body.theme-inverted {
+            --bg-color: #f4f4f5;
+            --bg-toolbar: rgba(244, 244, 245, 0.85);
+            --text-main: #18181b;
+            --text-muted: #52525b;
+            --accent: #4f46e5;
+            --card-bg: rgba(0, 0, 0, 0.03);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --accent-glow: rgba(79, 70, 229, 0.15);
+            --grid-color: rgba(0, 0, 0, 0.04);
+        }
 
-		/* --- GAME LIST VIEW --- */
-		#library-view {
-			padding: 40px;
-			overflow-y: auto;
-			height: 100%;
-			animation: fadeIn 0.4s ease;
-		}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-		.container {
-			max-width: 1100px;
-			margin: 0 auto;
-		}
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            
+            /* The Static Background Grid */
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
 
-		header {
-			margin-bottom: 30px;
-			border-bottom: 1px solid var(--border-color);
-			padding-bottom: 20px;
-		}
+        /* --- SQUARE PARTICLES --- */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
+        }
 
-		h1 {
-			font-size: 32px;
-			font-weight: 800;
-			letter-spacing: -1px;
-			color: #fff;
-			margin-bottom: 5px;
-		}
+        /* --- GAME LIST VIEW --- */
+        #library-view {
+            padding: 40px;
+            overflow-y: auto;
+            height: 100%;
+            animation: fadeIn 0.4s ease;
+            position: relative;
+            z-index: 10;
+        }
 
-		h1 i {
-			color: var(--accent);
-			margin-right: 10px;
-		}
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-		.subtitle {
-			color: var(--text-muted);
-			font-size: 14px;
-		}
+        header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
 
-		.game-grid {
-			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-			gap: 20px;
-		}
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--text-main);
+            margin-bottom: 5px;
+        }
 
-		.game-card {
-			background: var(--bg-card);
-			border: 1px solid var(--border-color);
-			border-radius: 12px;
-			overflow: hidden;
-			cursor: pointer;
-			transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-			display: flex;
-			flex-direction: column;
-			position: relative;
-		}
+        h1 i {
+            color: var(--accent);
+            margin-right: 10px;
+        }
 
-		.game-card:hover {
-			transform: translateY(-4px);
-			border-color: var(--accent);
-			box-shadow: 0 10px 30px -10px rgba(192, 38, 211, 0.2);
-		}
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
 
-		.card-body {
-			padding: 20px;
-			flex: 1;
-			display: flex;
-			flex-direction: column;
-		}
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
 
-		.game-title {
-			font-size: 18px;
-			font-weight: 700;
-			margin-bottom: 8px;
-			color: #fff;
-		}
+        .game-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
 
-		.game-desc {
-			font-size: 13px;
-			color: var(--text-muted);
-			line-height: 1.5;
-			flex: 1;
-			margin-bottom: 15px;
-		}
+        .game-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -10px var(--accent-glow);
+            background: var(--accent-glow);
+        }
 
-		.game-tags {
-			display: flex;
-			gap: 8px;
-			flex-wrap: wrap;
-			margin-top: auto;
-		}
+        .card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
-		.tag {
-			font-size: 10px;
-			background: rgba(255, 255, 255, 0.05);
-			padding: 4px 8px;
-			border-radius: 4px;
-			color: #888;
-			font-weight: 600;
-			text-transform: uppercase;
-		}
+        .game-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
 
-		.play-btn-overlay {
-			position: absolute;
-			bottom: 20px;
-			right: 20px;
-			background: var(--accent);
-			color: #000;
-			width: 35px;
-			height: 35px;
-			border-radius: 50%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			opacity: 0;
-			transform: scale(0.8);
-			transition: 0.2s;
-		}
+        .game-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            flex: 1;
+            margin-bottom: 15px;
+        }
 
-		.game-card:hover .play-btn-overlay {
-			opacity: 1;
-			transform: scale(1);
-		}
+        .game-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
 
-		/* --- GAMEPLAY VIEW --- */
-		#game-view {
-			display: none;
-			flex-direction: column;
-			height: 100%;
-			background: #000;
-		}
+        .tag {
+            font-size: 10px;
+            background: var(--bg-toolbar);
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
 
-		.toolbar {
-			height: 50px;
-			background: var(--bg-card);
-			border-bottom: 1px solid var(--border-color);
-			display: flex;
-			align-items: center;
-			padding: 0 20px;
-			justify-content: space-between;
-		}
+        .play-btn-overlay {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: var(--bg-color);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: 0.2s;
+            box-shadow: 0 4px 15px var(--accent-glow);
+        }
 
-		.toolbar-left {
-			display: flex;
-			align-items: center;
-			gap: 15px;
-		}
+        .game-card:hover .play-btn-overlay {
+            opacity: 1;
+            transform: scale(1);
+        }
 
-		.btn-back {
-			background: transparent;
-			border: 1px solid var(--border-color);
-			color: var(--text-muted);
-			padding: 6px 12px;
-			border-radius: 6px;
-			cursor: pointer;
-			font-size: 12px;
-			display: flex;
-			align-items: center;
-			gap: 6px;
-			transition: 0.2s;
-		}
+        /* --- GAMEPLAY VIEW --- */
+        #game-view {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            background: var(--bg-color);
+            position: relative;
+            z-index: 20;
+        }
 
-		.btn-back:hover {
-			background: rgba(255, 255, 255, 0.1);
-			color: #fff;
-		}
+        .toolbar {
+            height: 50px;
+            background: var(--bg-toolbar);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
 
-		.current-game-title {
-			font-weight: 700;
-			font-size: 14px;
-			color: #fff;
-		}
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
 
-		.controls-hint {
-			font-size: 12px;
-			color: #888;
-			display: flex;
-			align-items: center;
-			gap: 8px;
-		}
+        .btn-back {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
 
-		.key-badge {
-			background: rgba(255, 255, 255, 0.1);
-			padding: 2px 6px;
-			border-radius: 4px;
-			font-family: monospace;
-			color: #ccc;
-		}
+        .btn-back:hover {
+            background: var(--card-bg);
+            border-color: var(--accent);
+            color: var(--text-main);
+        }
 
-		iframe {
-			flex: 1;
-			border: none;
-			width: 100%;
-			height: 100%;
-		}
+        .current-game-title {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-main);
+        }
 
-		@keyframes fadeIn {
-			from {
-				opacity: 0;
-				transform: translateY(10px);
-			}
+        .controls-hint {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-	</style>
+        .key-badge {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: var(--text-muted);
+        }
+
+        iframe {
+            flex: 1;
+            border: none;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-	<div id="library-view">
-		<div class="container">
-			<header>
-				<h1><i class="fa-solid fa-robot"></i>AI Games</h1>
-				<p class="subtitle">Curated selection of lightweight HTML5 games.</p>
-			</header>
-			<div id="game-container" class="game-grid">
-			</div>
-		</div>
-	</div>
+    <canvas id="particles-js"></canvas>
 
-	<div id="game-view">
-		<div class="toolbar">
-			<div class="toolbar-left">
-				<button class="btn-back" onclick="closeGame()">
+    <div id="library-view">
+        <div class="container">
+            <header>
+                <h1><i class="fa-solid fa-robot"></i>AI Games</h1>
+                <p class="subtitle">Curated selection of lightweight HTML5 games.</p>
+            </header>
+            <div id="game-container" class="game-grid">
+            </div>
+        </div>
+    </div>
+
+    <div id="game-view">
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <button class="btn-back" onclick="closeGame()">
                     <i class="fa-solid fa-arrow-left"></i> Library
                 </button>
-				<span id="active-title" class="current-game-title">Game Title</span>
-			</div>
-			<div class="controls-hint" id="active-controls">
-			</div>
-		</div>
-		<iframe id="game-frame" src="about:blank"></iframe>
-	</div>
+                <span id="active-title" class="current-game-title">Game Title</span>
+            </div>
+            <div class="controls-hint" id="active-controls">
+            </div>
+        </div>
+        <iframe id="game-frame" src="about:blank"></iframe>
+    </div>
 
-	<script>
-		// --- CONFIGURATION: ADD GAMES HERE ---
+    <script>
+        // --- COOL SPINNING SQUARES ANIMATION ---
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class SquareParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 8 + 3; // Random sizes
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.4 - 0.2;
+                this.opacity = Math.random() * 0.4 + 0.05;
+                this.angle = Math.random() * 360;
+                this.spin = Math.random() * 0.02 - 0.01; // Rotation speed
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.angle += this.spin;
+                
+                // Wrap around edges seamlessly
+                if (this.x < -20) this.x = canvas.width + 20;
+                if (this.x > canvas.width + 20) this.x = -20;
+                if (this.y < -20) this.y = canvas.height + 20;
+                if (this.y > canvas.height + 20) this.y = -20;
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.globalAlpha = this.opacity;
+                // Grab the current text-muted color for the squares so it matches themes
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#ffffff';
+                // Draw square centered on coordinates
+                ctx.fillRect(-this.size, -this.size, this.size * 2, this.size * 2);
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            const count = 45; // Amount of squares floating
+            for (let i = 0; i < count; i++) {
+                particlesArray.push(new SquareParticle());
+            }
+            animateParticles();
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+
+
+        // --- CONFIGURATION: ADD GAMES HERE ---
         const gamesList = [
             {
                 title: "Ballistic 2D",
@@ -292,14 +421,14 @@
                 controls: "Arrow Keys",
                 tags: ["Arcade", "Strategy"]
             },
-			{
+            {
                 title: "Cyber Detention 2026",
                 url: "./aigames/cyberdetention.html",
                 desc: "Avoid Teachers in this gemini-made game and don't get caught!",
                 controls: "left and right arrow keys, space to hide what you're doing.",
                 tags: ["Arcade", "Strategy", "Memes"]
             },
-			{
+            {
                 title: "Neon glide",
                 url: "./aigames/neonglide.html",
                 desc: "Glide through obstacles. Made by gemini",
@@ -350,10 +479,13 @@
             
             // Format controls display
             if(game.controls) {
-                activeControls.innerHTML = `<i class="fa-solid fa-keyboard"></i> ${game.controls}`;
+                activeControls.innerHTML = `<i class="fa-solid fa-keyboard"></i> <span class="key-badge">${game.controls}</span>`;
             } else {
                 activeControls.innerHTML = '';
             }
+
+            // Hide the particles
+            canvas.style.display = 'none';
         }
 
         // 3. Close Game
@@ -361,12 +493,55 @@
             gameFrame.src = 'about:blank'; // Stop game execution
             gameView.style.display = 'none';
             libraryView.style.display = 'block';
+            
+            // Bring back the particles
+            canvas.style.display = 'block';
         }
 
-        // Initialize
+        // Initialize Library on Load
         window.onload = renderLibrary;
 
-	</script>
+        // --- EDULEARN THEME SYNC ---
+        function syncEdulearnTheme() {
+            try {
+                // Fetch settings from local storage
+                const savedSettings = JSON.parse(localStorage.getItem('el_settings')) || {};
+                const theme = savedSettings.theme || 'default';
+                const bgUrl = savedSettings.bgUrl || '';
+
+                // Apply correct theme class
+                document.body.className = theme === 'default' ? '' : `theme-${theme}`;
+
+                // Apply custom background image if set
+                if (bgUrl) {
+                    document.body.style.backgroundImage = `url('${bgUrl}')`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundAttachment = 'fixed';
+                } else {
+                    // Reset to grid pattern if no custom background is applied
+                    document.body.style.backgroundImage = `
+                        linear-gradient(var(--grid-color) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)
+                    `;
+                    document.body.style.backgroundSize = '30px 30px';
+                }
+            } catch (err) {
+                console.error("Theme sync failed:", err);
+            }
+        }
+
+        // Run theme sync immediately 
+        syncEdulearnTheme();
+
+        // Listen for changes across other pages/frames
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'el_settings') {
+                syncEdulearnTheme();
+            }
+        });
+
+    </script>
 </body>
 
 </html>

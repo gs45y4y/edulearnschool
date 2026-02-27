@@ -89,6 +89,22 @@ Developed by technonyte0
         localStorage.setItem("discordAlertShown", "true");
       }
     };
+
+    // theme synchronization with main site settings
+    function syncEdulearnTheme() {
+      try {
+        const savedSettings = JSON.parse(localStorage.getItem('el_settings')) || {};
+        const theme = savedSettings.theme || 'default';
+        document.body.className = theme === 'default' ? '' : `theme-${theme}`;
+      } catch (err) {
+        console.error('Theme sync failed:', err);
+      }
+    }
+
+    syncEdulearnTheme();
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'el_settings') syncEdulearnTheme();
+    });
   </script>
 </head>
 

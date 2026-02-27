@@ -7,14 +7,42 @@
     <title>Edulearn | Extras</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* --- LITE CSS CORE (BLUE THEME) --- */
+        /* --- IMPORTED THEME SYSTEM FROM EDULEARN LITE --- */
         :root {
-            --bg-body: #020617; /* Deep slate/blue-black */
-            --bg-card: #0f172a;
-            --border-color: #1e293b;
-            --accent: #3b82f6; /* Electric Blue */
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            /* Default: Midnight Indigo */
+            --bg-color: #09090b;
+            --bg-toolbar: rgba(18, 18, 23, 0.85);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --accent: #6366f1;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --grid-color: rgba(255, 255, 255, 0.03);
+        }
+
+        body.theme-mocha {
+            --bg-color: #1e1e2e;
+            --bg-toolbar: rgba(30, 30, 46, 0.85);
+            --text-main: #cdd6f4;
+            --text-muted: #a6adc8;
+            --accent: #cba6f7;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-glow: rgba(203, 166, 247, 0.15);
+            --grid-color: rgba(255, 255, 255, 0.04);
+        }
+
+        body.theme-inverted {
+            --bg-color: #f4f4f5;
+            --bg-toolbar: rgba(244, 244, 245, 0.85);
+            --text-main: #18181b;
+            --text-muted: #52525b;
+            --accent: #4f46e5;
+            --card-bg: rgba(0, 0, 0, 0.03);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --accent-glow: rgba(79, 70, 229, 0.15);
+            --grid-color: rgba(0, 0, 0, 0.04);
         }
 
         * {
@@ -25,12 +53,31 @@
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
-            background-color: var(--bg-body);
+            background-color: var(--bg-color);
             color: var(--text-main);
             height: 100vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            
+            /* The Static Background Grid */
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- SQUARE PARTICLES --- */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.6;
         }
 
         /* --- MENU VIEW --- */
@@ -39,6 +86,8 @@
             overflow-y: auto;
             height: 100%;
             animation: fadeIn 0.4s ease;
+            position: relative;
+            z-index: 10;
         }
 
         .container {
@@ -49,8 +98,7 @@
         header {
             margin-bottom: 40px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
+            flex-direction: column;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 20px;
         }
@@ -72,7 +120,7 @@
 
         /* --- BUTTONS --- */
         .btn-nav {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-main);
             padding: 8px 16px;
@@ -84,10 +132,12 @@
             align-items: center;
             gap: 8px;
             transition: 0.2s;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
         }
 
         .btn-nav:hover {
-            background: rgba(59, 130, 246, 0.1);
+            background: var(--accent-glow);
             border-color: var(--accent);
         }
 
@@ -99,7 +149,7 @@
         }
 
         .extra-card {
-            background: var(--bg-card);
+            background: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 14px;
             padding: 24px;
@@ -109,13 +159,15 @@
             flex-direction: column;
             gap: 12px;
             position: relative;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .extra-card:hover {
             transform: translateY(-5px);
             border-color: var(--accent);
-            box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.3);
-            background: rgba(59, 130, 246, 0.02);
+            box-shadow: 0 10px 30px -10px var(--accent-glow);
+            background: var(--accent-glow);
         }
 
         .extra-card i {
@@ -140,7 +192,8 @@
             right: 15px;
             font-size: 10px;
             text-transform: uppercase;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
             color: var(--text-muted);
             padding: 3px 10px;
             border-radius: 5px;
@@ -152,12 +205,14 @@
             display: none;
             flex-direction: column;
             height: 100%;
-            background: #000;
+            background: var(--bg-color);
+            position: relative;
+            z-index: 20;
         }
 
         .app-toolbar {
             height: 50px;
-            background: var(--bg-card);
+            background: var(--bg-toolbar);
             border-bottom: 1px solid var(--border-color);
             display: flex;
             align-items: center;
@@ -195,6 +250,8 @@
 
 <body>
 
+    <canvas id="particles-js"></canvas>
+
     <div id="menu-view">
         <div class="container">
             <header>
@@ -202,18 +259,10 @@
                     <h1>Extras</h1>
                     <p class="subtitle">Launch tools without leaving the dashboard.</p>
                 </div>
-                <button class="btn-nav" onclick="backToSettings()">
-                    <i class="fa-solid fa-gear"></i> Settings
-                </button>
             </header>
 
             <div class="extras-grid">
-                <div class="extra-card" onclick="openApp('./graphcalc.html', 'Graphing Calculator')">
-                    <span class="badge">Tool</span>
-                    <i class="fa-solid fa-calculator"></i>
-                    <h3>Graphing Calc</h3>
-                    <p>Advanced visualization and function plotting.</p>
-                </div>
+                
 
                 <div class="extra-card" onclick="openApp('./musicplayer.html', 'Music Player')">
                     <span class="badge">Media</span>
@@ -234,7 +283,7 @@
                     <i class="fa-solid fa-robot"></i>
                     <h3>AI Games</h3>
                     <p> Games made by AI, fun classics, and more!</p>
-          <p> Challenge the Machine. </p>
+                    <p> Challenge the Machine. </p>
                 </div>
             </div>
         </div>
@@ -251,6 +300,73 @@
     </div>
 
     <script>
+        // --- COOL SPINNING SQUARES ANIMATION ---
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class SquareParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 8 + 3; // Random sizes
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.4 - 0.2;
+                this.opacity = Math.random() * 0.4 + 0.05;
+                this.angle = Math.random() * 360;
+                this.spin = Math.random() * 0.02 - 0.01; // Rotation speed
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.angle += this.spin;
+                
+                // Wrap around edges seamlessly
+                if (this.x < -20) this.x = canvas.width + 20;
+                if (this.x > canvas.width + 20) this.x = -20;
+                if (this.y < -20) this.y = canvas.height + 20;
+                if (this.y > canvas.height + 20) this.y = -20;
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.globalAlpha = this.opacity;
+                // Grab the current text-muted color for the squares so it matches themes
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#ffffff';
+                // Draw square centered on coordinates
+                ctx.fillRect(-this.size, -this.size, this.size * 2, this.size * 2);
+                ctx.restore();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            const count = 45; // Amount of squares floating
+            for (let i = 0; i < count; i++) {
+                particlesArray.push(new SquareParticle());
+            }
+            animateParticles();
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+
         // --- NAVIGATION LOGIC ---
 
         const menuView = document.getElementById('menu-view');
@@ -264,6 +380,7 @@
             appView.style.display = 'flex';
             titleLabel.innerText = title;
             iframe.src = url;
+            canvas.style.display = 'none'; // Hide squares while in an app
         }
 
         // Close the app and return to grid
@@ -273,20 +390,48 @@
             
             appView.style.display = 'none';
             menuView.style.display = 'block';
+            canvas.style.display = 'block'; // Bring back the squares
         }
 
-        // Return to the main Settings menu (Parent Frame)
-        function backToSettings() {
-            if (window.parent && typeof window.parent.openSettings === "function") {
-                window.parent.openSettings();
-                
-                // Find and click the Extras tab
-                const navItems = window.parent.document.querySelectorAll('.settings-nav-item');
-                navItems.forEach(item => {
-                    if(item.innerText.includes("Extras")) item.click();
-                });
+        // --- EDULEARN THEME SYNC ---
+        function syncEdulearnTheme() {
+            try {
+                // Fetch settings from local storage
+                const savedSettings = JSON.parse(localStorage.getItem('el_settings')) || {};
+                const theme = savedSettings.theme || 'default';
+                const bgUrl = savedSettings.bgUrl || '';
+
+                // Apply correct theme class
+                document.body.className = theme === 'default' ? '' : `theme-${theme}`;
+
+                // Apply custom background image if set
+                if (bgUrl) {
+                    document.body.style.backgroundImage = `url('${bgUrl}')`;
+                    document.body.style.backgroundSize = 'cover';
+                    document.body.style.backgroundPosition = 'center';
+                    document.body.style.backgroundAttachment = 'fixed';
+                } else {
+                    // Reset to grid pattern if no custom background is applied
+                    document.body.style.backgroundImage = `
+                        linear-gradient(var(--grid-color) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)
+                    `;
+                    document.body.style.backgroundSize = '30px 30px';
+                }
+            } catch (err) {
+                console.error("Theme sync failed:", err);
             }
         }
+
+        // Run on initial load
+        syncEdulearnTheme();
+
+        // Listen for changes across other pages/frames
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'el_settings') {
+                syncEdulearnTheme();
+            }
+        });
     </script>
 </body>
 

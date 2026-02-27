@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edulearn | Retro ROMs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- IMPORTED THEME SYSTEM FROM EDULEARN LITE --- */
+        :root {
+            --bg-color: #09090b;
+            --bg-toolbar: rgba(18, 18, 23, 0.85);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --accent: #6366f1;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --grid-color: rgba(255, 255, 255, 0.03);
+        }
+
+        body.theme-mocha {
+            --bg-color: #1e1e2e;
+            --bg-toolbar: rgba(30, 30, 46, 0.85);
+            --text-main: #cdd6f4;
+            --text-muted: #a6adc8;
+            --accent: #cba6f7;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-glow: rgba(203, 166, 247, 0.15);
+            --grid-color: rgba(255, 255, 255, 0.04);
+        }
+
+        body.theme-inverted {
+            --bg-color: #f4f4f5;
+            --bg-toolbar: rgba(244, 244, 245, 0.85);
+            --text-main: #18181b;
+            --text-muted: #52525b;
+            --accent: #4f46e5;
+            --card-bg: rgba(0, 0, 0, 0.03);
+            --border-color: rgba(0, 0, 0, 0.08);
+            --accent-glow: rgba(79, 70, 229, 0.15);
+            --grid-color: rgba(0, 0, 0, 0.04);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background-image: linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.6; }
+
+        #library-view { padding: 40px; overflow-y: auto; height: 100%; position: relative; z-index: 10; }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        header { margin-bottom: 30px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; }
+        h1 { font-size: 32px; font-weight: 800; letter-spacing: -1px; margin-bottom: 5px; }
+        h1 i { color: var(--accent); margin-right: 10px; }
+        .subtitle { color: var(--text-muted); font-size: 14px; }
+
+        .rom-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+        .rom-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.2s;
+        }
+
+        .rom-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px -10px var(--accent-glow);
+            transform: translateY(-4px);
+        }
+
+        .card-body { padding: 20px; flex: 1; }
+        .rom-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .rom-desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 15px; }
+        
+        .sys-badge {
+            display: inline-block;
+            font-size: 11px;
+            background: var(--bg-toolbar);
+            border: 1px solid var(--border-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: var(--accent);
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover { background: var(--accent-glow); color: var(--accent); }
+        .action-btn.download { border-left: 1px solid var(--border-color); }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="particles-js"></canvas>
+
+    <div id="library-view">
+        <div class="container">
+            <header>
+                <h1><i class="fa-solid fa-compact-disc"></i>Retro ROMs</h1>
+                <p class="subtitle">Download classics to play in WebRetro.</p>
+            </header>
+            <div id="rom-container" class="rom-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- YOUR ROM FILES ---
+        // Ensure you have a folder called 'roms' with these .zip files in it!
+        const romLibrary = [
+            {
+                title: "Super Mario Bros",
+                fileUrl: "./romsgames/supermariobros.zip", 
+                core: "nes",
+                desc: "The 8-bit platforming classic that started it all."
+            },
+            {
+                title: "Mario Kart DS",
+                fileUrl: "./romsgames/mariokartds.zip",
+                core: "nds",
+                desc: "Race against friends in this fast-paced karting legend."
+            },
+            {
+                title: "Pokémon Platinum",
+                fileUrl: "./roms/pokemonplatinum.zip",
+                core: "nds",
+                desc: "Explore the Sinnoh region, catch monsters, and conquer the Elite Four."
+            },
+            {
+                title: "The Legend of Zelda",
+                fileUrl: "./romsgames/legendofzelda.zip",
+                core: "nes",
+                desc: "It's dangerous to go alone! Take this classic top-down adventure."
+            },
+            {
+                title: "LEGO Star Wars",
+                fileUrl: "./romsgames/legostarwars.zip",
+                core: "nds",
+                desc: "Play through the epic sci-fi saga in blocky, stud-collecting form."
+            }
+        ];
+
+        // --- RENDER LIBRARY ---
+        const container = document.getElementById('rom-container');
+        
+        romLibrary.forEach(rom => {
+            const card = document.createElement('div');
+            card.className = 'rom-card';
+            
+            card.innerHTML = `
+                <div class="card-body">
+                    <span class="sys-badge">${rom.core.toUpperCase()}</span>
+                    <div class="rom-title">${rom.title}</div>
+                    <div class="rom-desc">${rom.desc}</div>
+                </div>
+                <div class="card-actions">
+                    <button class="action-btn play" onclick="playRom('${rom.fileUrl}')">
+                        <i class="fa-solid fa-play"></i> Play Web
+                    </button>
+                    <button class="action-btn download" onclick="downloadRom('${rom.fileUrl}')">
+                        <i class="fa-solid fa-download"></i> Download
+                    </button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        // --- ACTIONS ---
+        function downloadRom(url) {
+            // Opens the file link directly, triggering a download
+            window.open(url, '_blank');
+        }
+
+        function playRom(url) {
+            // 1. Alert the user on how to play
+            alert("To play this game, please open 'WebRetro' from the Tools section, then load the ROM file that is about to download!");
+            
+            // 2. Automatically trigger the download
+            downloadRom(url);
+        }
+
+        // --- PARTICLES & THEME SYNC ---
+        const canvas = document.getElementById('particles-js');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+        class SquareParticle {
+            constructor() {
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 8 + 3; this.speedX = Math.random() * 0.4 - 0.2; this.speedY = Math.random() * 0.4 - 0.2;
+                this.opacity = Math.random() * 0.4 + 0.05; this.angle = Math.random() * 360; this.spin = Math.random() * 0.02 - 0.01;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY; this.angle += this.spin;
+                if (this.x < -20) this.x = canvas.width + 20; if (this.x > canvas.width + 20) this.x = -20;
+                if (this.y < -20) this.y = canvas.height + 20; if (this.y > canvas.height + 20) this.y = -20;
+            }
+            draw() {
+                ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(this.angle); ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--text-muted').trim() || '#ffffff';
+                ctx.fillRect(-this.size, -this.size, this.size * 2, this.size * 2); ctx.restore();
+            }
+        }
+
+        function initParticles() { particlesArray = []; for (let i = 0; i < 45; i++) particlesArray.push(new SquareParticle()); animateParticles(); }
+        function animateParticles() { ctx.clearRect(0, 0, canvas.width, canvas.height); particlesArray.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animateParticles); }
+        initParticles();
+
+        function syncEdulearnTheme() {
+            try {
+                const savedSettings = JSON.parse(localStorage.getItem('el_settings')) || {};
+                document.body.className = savedSettings.theme === 'default' ? '' : `theme-${savedSettings.theme}`;
+                if (savedSettings.bgUrl) {
+                    document.body.style.backgroundImage = `url('${savedSettings.bgUrl}')`;
+                    document.body.style.backgroundSize = 'cover'; document.body.style.backgroundPosition = 'center'; document.body.style.backgroundAttachment = 'fixed';
+                } else {
+                    document.body.style.backgroundImage = `linear-gradient(var(--grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--grid-color) 1px, transparent 1px)`;
+                    document.body.style.backgroundSize = '30px 30px';
+                }
+            } catch (err) {}
+        }
+        syncEdulearnTheme();
+        window.addEventListener('storage', (e) => { if (e.key === 'el_settings') syncEdulearnTheme(); });
+    </script>
+</body>
+</html>
